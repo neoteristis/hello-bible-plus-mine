@@ -13,3 +13,5 @@ class ChatMessageSent extends ChatEvent {
   @override
   List<Object> get props => [message];
 }
+
+class ChatCategoriesFetched extends ChatEvent {}
