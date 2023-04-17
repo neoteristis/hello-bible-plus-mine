@@ -7,10 +7,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:gpt/features/chat/domain/usecases/change_conversation_usecase.dart';
 import 'package:gpt/features/chat/domain/usecases/fetch_categories_usecase.dart';
+import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/usecase/usecase.dart';
-import '../../domain/entities/category.dart';
 import '../../domain/entities/entities.dart';
 
 part 'chat_event.dart';
@@ -19,9 +19,11 @@ part 'chat_state.dart';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final FetchCategoriesUsecase fetchCategories;
   final ChangeConversationUsecase changeConversation;
+  final SendMessagesUsecase sendMessage;
   ChatBloc({
     required this.fetchCategories,
     required this.changeConversation,
+    required this.sendMessage,
   }) : super(const ChatState()) {
     on<ChatMessageSent>(_onChatMessageSent);
     on<ChatCategoriesFetched>(_onChatCategoriesFetched);
@@ -61,17 +63,32 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(
       state.copyWith(
         messages: List.of(state.messages!)..insert(0, textMessage),
+        messageStatus: Status.loading,
       ),
     );
-    await Future.delayed(Duration(seconds: 5));
-    final textAnswer = types.TextMessage(
-      author: state.receiver!,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: _randomString(),
-      text: 'hello there',
+    final res = await sendMessage(MessageParam(
+        content: event.message.text, conversation: state.conversation));
+
+    res.fold(
+      (l) {
+        print(l);
+        emit(state.copyWith(messageStatus: Status.failed));
+      },
+      (message) {
+        final textAnswer = types.TextMessage(
+          author: state.receiver!,
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          id: _randomString(),
+          text: message.response ?? '',
+        );
+        emit(
+          state.copyWith(
+            messages: List.of(state.messages!)..insert(0, textAnswer),
+            messageStatus: Status.loaded,
+          ),
+        );
+      },
     );
-    emit(state.copyWith(
-        messages: List.of(state.messages ?? [])..insert(0, textAnswer)));
   }
 
   void _onChatCategoriesFetched(

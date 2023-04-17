@@ -13,7 +13,7 @@ class SendMessagesUsecase implements Usecase<Message, MessageParam> {
   );
   @override
   Future<Either<Failure, Message>> call(MessageParam param) async {
-    return await chatRepository.sendMessages(param);
+    return await chatRepository.sendMessage(param);
   }
 }
 
@@ -24,6 +24,13 @@ class MessageParam extends Equatable {
     this.content,
     this.conversation,
   });
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "content": content,
+        "conversation": conversation?.id,
+      };
+
   @override
   List<Object?> get props => [
         content,

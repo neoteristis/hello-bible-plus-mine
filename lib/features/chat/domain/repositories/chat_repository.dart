@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
-import '../entities/category.dart';
-import '../entities/conversation.dart';
+import '../entities/entities.dart';
+import '../usecases/send_messages_usecase.dart';
 
 abstract class ChatRepository {
   Future<Either<Failure, List<Category>>> fetchCategories();
   Future<Either<Failure, Conversation>> changeConversation(Category cat);
+  Future<Either<Failure, Message>> sendMessage(MessageParam param);
 }

@@ -1,3 +1,5 @@
+import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
+
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/error/exception.dart';
@@ -6,6 +8,7 @@ import '../../domain/entities/entities.dart';
 abstract class ChatRemoteDatasources {
   Future<List<Category>> fetchCategories();
   Future<Conversation> changeConversation(Category cat);
+  Future<Message> sendMessage(MessageParam param);
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -31,6 +34,18 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
         "category": cat.id,
       });
       return Conversation.fromJson(res.data);
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<Message> sendMessage(MessageParam param) async {
+    try {
+      final res =
+          await baseRepo.post(ApiConstants.messages, body: param.toJson());
+      return Message.fromJson(res.data);
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());
