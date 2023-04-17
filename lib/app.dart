@@ -10,16 +10,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ChatBloc>(),
-      child: MaterialApp(
-        title: 'hello bible',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: ChatPage(),
-      ),
+    return MaterialApp(
+      title: 'hello bible',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(iconTheme: IconThemeData(color: Colors.brown[400])),
+      home: const ChatPage(),
     );
   }
 }

@@ -14,10 +14,76 @@ class ChatPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Hello Bible'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(
+                  Icons.list,
+                  color: Colors.brown[400],
+                  size: 30,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+          centerTitle: false,
+          title: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Hello',
+                  style: TextStyle(color: Colors.brown[400], fontSize: 30),
+                ),
+                TextSpan(
+                  text: 'Bible',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown[900],
+                      fontSize: 30),
+                ),
+              ],
+            ),
+          ),
         ),
         drawer: Drawer(
-          child: Column(children: []),
+          child: ListView(children: [
+            DrawerHeader(
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Hello',
+                        style:
+                            TextStyle(color: Colors.brown[400], fontSize: 40),
+                      ),
+                      TextSpan(
+                        text: 'Bible',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.brown[900],
+                            fontSize: 40),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const ListTile(
+              title: Text('Que dit la Bible ?'),
+            ),
+            const ListTile(
+              title: Text('Que dirait Jésus ?'),
+            ),
+            const ListTile(
+              title: Text('Comment prier ?'),
+            )
+          ]),
         ),
         body: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
