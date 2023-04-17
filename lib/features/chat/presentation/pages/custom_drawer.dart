@@ -30,17 +30,16 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
         ),
-        const ListTile(
-          title: Text('Que dit la Bible ?'),
-        ),
-        const ListTile(
-          title: Text('Que dirait Jésus ?'),
-        ),
-        const ListTile(
-          title: Text('Comment prier ?'),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return const ListTile(
+              title: Text('Que dit la Bible ?'),
+            );
+          },
         )
       ]),
     );
   }
 }
-

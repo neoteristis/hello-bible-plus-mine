@@ -55,6 +55,8 @@ class ChatPage extends StatelessWidget {
         body: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
             return ui.Chat(
+              inputOptions: const ui.InputOptions(
+                  sendButtonVisibilityMode: ui.SendButtonVisibilityMode.always),
               messages: state.messages ?? [],
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message));
