@@ -5,6 +5,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../bloc/chat_bloc.dart';
+import 'custom_drawer.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -50,41 +51,7 @@ class ChatPage extends StatelessWidget {
             ),
           ),
         ),
-        drawer: Drawer(
-          child: ListView(children: [
-            DrawerHeader(
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Hello',
-                        style:
-                            TextStyle(color: Colors.brown[400], fontSize: 40),
-                      ),
-                      TextSpan(
-                        text: 'Bible',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.brown[900],
-                            fontSize: 40),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const ListTile(
-              title: Text('Que dit la Bible ?'),
-            ),
-            const ListTile(
-              title: Text('Que dirait Jésus ?'),
-            ),
-            const ListTile(
-              title: Text('Comment prier ?'),
-            )
-          ]),
-        ),
+        drawer: const CustomDrawer(),
         body: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
             return ui.Chat(
@@ -131,8 +98,8 @@ Widget bubbleBuilder(
           radius: const Radius.circular(20.0),
           color: state.sender!.id != message.author.id ||
                   message.type == types.MessageType.image
-              ? const Color(0xfff5f5f7)
-              : Colors.blue,
+              ? Colors.brown[400]
+              : Colors.brown[900],
           margin: nextMessageInGroup
               ? const BubbleEdges.symmetric(horizontal: 6)
               : null,
