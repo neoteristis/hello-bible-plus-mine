@@ -47,10 +47,14 @@ void repository() {
 
 void usecase() {
   getIt.registerLazySingleton(() => FetchCategoriesUsecase(getIt()));
+  getIt.registerLazySingleton(() => ChatConversationChanged(getIt()));
 }
 
 void bloc() {
   getIt.registerFactory(
-    () => ChatBloc(fetchCategories: getIt()),
+    () => ChatBloc(
+      fetchCategories: getIt(),
+      changeConversation: getIt(),
+    ),
   );
 }
