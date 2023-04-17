@@ -98,8 +98,8 @@ Widget bubbleBuilder(
           radius: const Radius.circular(20.0),
           color: state.sender!.id != message.author.id ||
                   message.type == types.MessageType.image
-              ? Colors.brown[400]
-              : Colors.brown[900],
+              ? Colors.white
+              : Colors.brown[400],
           margin: nextMessageInGroup
               ? const BubbleEdges.symmetric(horizontal: 6)
               : null,
@@ -109,7 +109,10 @@ Widget bubbleBuilder(
                   ? BubbleNip.leftBottom
                   : BubbleNip.rightBottom,
           child: message.type == types.MessageType.text
-              ? Text(message.text)
+              ? Text(
+                  message.text,
+                  style: TextStyle(),
+                )
               : child,
         );
       },

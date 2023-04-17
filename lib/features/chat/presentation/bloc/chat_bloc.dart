@@ -11,7 +11,7 @@ part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(const ChatState()) {
-    //on<ChatMessageSent>(_onChatMessageSent);
+    on<ChatMessageSent>(_onChatMessageSent);
   }
 
   void _onChatMessageSent(
@@ -29,7 +29,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messages: List.of(state.messages!)..insert(0, textMessage),
       ),
     );
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 5));
     final textAnswer = types.TextMessage(
       author: state.receiver!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
