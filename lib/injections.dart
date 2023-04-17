@@ -54,7 +54,8 @@ void repository() {
 }
 
 void usecase() {
-  getIt.registerLazySingleton(() => FetchCategoriesUsecase(getIt()));
+  getIt.registerLazySingleton(
+      () => FetchCategoriesUsecase(chatRepository: getIt()));
   getIt.registerLazySingleton(() => ChangeConversationUsecase(getIt()));
   getIt.registerLazySingleton(() => SendMessagesUsecase(getIt()));
 }

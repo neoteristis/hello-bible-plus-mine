@@ -7,8 +7,19 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../bloc/chat_bloc.dart';
 import 'custom_drawer.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  @override
+  void initState() {
+    context.read<ChatBloc>().add(ChatCategoriesFetched());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +66,6 @@ class ChatPage extends StatelessWidget {
         body: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
             return ui.Chat(
-              inputOptions: const ui.InputOptions(
-                  sendButtonVisibilityMode: ui.SendButtonVisibilityMode.always),
               messages: state.messages ?? [],
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message));
@@ -113,7 +122,12 @@ Widget bubbleBuilder(
           child: message.type == types.MessageType.text
               ? Text(
                   message.text,
-                  style: TextStyle(),
+                  style: TextStyle(
+                    color: state.sender!.id != message.author.id ||
+                            message.type == types.MessageType.image
+                        ? Colors.brown[400]
+                        : Colors.white,
+                  ),
                 )
               : child,
         );

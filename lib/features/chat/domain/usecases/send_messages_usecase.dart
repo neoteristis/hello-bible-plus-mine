@@ -26,7 +26,6 @@ class MessageParam extends Equatable {
   });
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "content": content,
         "conversation": conversation?.id,
       };

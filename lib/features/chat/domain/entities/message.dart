@@ -44,7 +44,7 @@ class Message extends Equatable {
       conversation: json["conversation"] == null
           ? null
           : Conversation.fromJson(json["conversation"]),
-      response: json["response"],
+      response: json["response"]["content"],
       created: json["created"],
       updated: json["updated"],
     );
