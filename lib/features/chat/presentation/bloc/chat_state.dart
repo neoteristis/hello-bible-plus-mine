@@ -5,11 +5,11 @@ class ChatState extends Equatable {
     this.messages = const [],
     this.sender = const types.User(
       firstName: 'sender',
-      id: 'sender_1',
+      id: '82091008-a484-4a89-ae75-a22bf8d6f3hgf',
     ),
     this.receiver = const types.User(
       firstName: 'receiver',
-      id: 'receiver_1',
+      id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
     ),
   });
 

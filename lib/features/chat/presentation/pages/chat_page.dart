@@ -44,11 +44,7 @@ class ChatPage extends StatelessWidget {
               //   //   color: Colors.white,
               //   // ),
               // ),
-              user: const types.User(
-                firstName: 'loggedInUser 1',
-                lastName: 'best',
-                id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
-              ),
+              user: state.sender!,
             );
           },
         ),

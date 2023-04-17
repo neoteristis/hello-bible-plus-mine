@@ -26,7 +26,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
     emit(
       state.copyWith(
-        messages: List.of(state.messages!)..add(textMessage),
+        messages: List.of(state.messages!)..insert(0, textMessage),
       ),
     );
     await Future.delayed(Duration(seconds: 5));
@@ -37,7 +37,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       text: 'hello there',
     );
     emit(state.copyWith(
-        messages: List.of(state.messages ?? [])..add(textAnswer)));
+        messages: List.of(state.messages ?? [])..insert(0, textAnswer)));
   }
 
   String _randomString() {
