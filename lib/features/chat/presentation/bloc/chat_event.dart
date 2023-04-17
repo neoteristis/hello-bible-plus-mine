@@ -25,3 +25,5 @@ class ChatConversationChanged extends ChatEvent {
   @override
   List<Object> get props => [category];
 }
+
+class ChatConversationCleared extends ChatEvent {}

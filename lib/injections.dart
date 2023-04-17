@@ -5,10 +5,12 @@ import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/domain/usecases/fetch_categories_usecase.dart';
 import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'core/base_repository/base_repository.dart';
 import 'core/base_repository/base_repository_imp.dart';
 import 'core/dio_interceptors/interceptors.dart';
+import 'core/network/network_info.dart';
 import 'features/chat/data/datasources/chat_remote_datasources.dart';
 import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/change_conversation_usecase.dart';
@@ -38,6 +40,14 @@ Future external() async {
   await dioHandling();
   getIt.registerLazySingleton<BaseRepository>(
       () => BaseRepositoryImp(dio: getIt()));
+  final InternetConnectionChecker internetConnectionChecker =
+      InternetConnectionChecker();
+  getIt.registerLazySingleton(() => InternetConnectionChecker());
+  getIt.registerLazySingleton<NetworkInfo>(
+    () => NetworkInfoImp(
+      getIt(),
+    ),
+  );
 }
 
 void dataSource() {
@@ -49,7 +59,8 @@ void repository() {
   // getIt.registerLazySingleton<ChatRemoteDatasources>(
   //     () => ChatRemoteDatasourcesImp(getIt()));
   getIt.registerLazySingleton<ChatRepository>(
-    () => ChatRepositoryImp(remote: ChatRemoteDatasourcesImp(getIt())),
+    () => ChatRepositoryImp(
+        remote: ChatRemoteDatasourcesImp(getIt()), networkInfo: getIt()),
   );
 }
 

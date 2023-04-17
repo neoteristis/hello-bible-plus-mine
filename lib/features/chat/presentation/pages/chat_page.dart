@@ -1,10 +1,10 @@
-import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../bloc/chat_bloc.dart';
+import '../widgets/categories_widget.dart';
+import '../widgets/chat_body.dart';
+import '../widgets/custom_app_bar.dart';
 import 'custom_drawer.dart';
 
 class ChatPage extends StatefulWidget {
@@ -24,112 +24,51 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: Icon(
-                  Icons.list,
-                  color: Colors.brown[400],
-                  size: 30,
-                ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          centerTitle: false,
-          title: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Hello',
-                  style: TextStyle(color: Colors.brown[400], fontSize: 30),
-                ),
-                TextSpan(
-                  text: 'Bible',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.brown[900],
-                      fontSize: 30),
-                ),
-              ],
-            ),
-          ),
-        ),
-        drawer: const CustomDrawer(),
-        body: BlocBuilder<ChatBloc, ChatState>(
-          builder: (context, state) {
-            return ui.Chat(
-              messages: state.messages ?? [],
-              onSendPressed: (message) {
-                context.read<ChatBloc>().add(ChatMessageSent(message));
-              },
-              bubbleRtlAlignment: ui.BubbleRtlAlignment.right,
-              bubbleBuilder: bubbleBuilder,
-              emptyState: const SizedBox.shrink(),
-              disableImageGallery: true,
-              theme: ui.DefaultChatTheme(
-                attachmentButtonMargin: const EdgeInsets.all(0),
-                attachmentButtonIcon: Container(),
-                documentIcon: Container(),
-                inputMargin:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                inputBackgroundColor: Colors.white,
-                inputTextColor: Colors.black,
-                inputPadding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                inputContainerDecoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                ),
-              ),
-              user: state.sender!,
-            );
-          },
-        ),
+      child: BlocBuilder<ChatBloc, ChatState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: Color(0xFFF8F4F1),
+            key: context.read<ChatBloc>().scaffoldKey,
+            appBar: CustomAppBar(),
+            drawer: CustomDrawer(),
+            body: state.conversation == null
+                ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF202040).withOpacity(0.08),
+                            offset: const Offset(0, 8),
+                            blurRadius: 16,
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: Text(
+                          //     'Commencer un nouveau conversation',
+                          //     style:
+                          //         TextStyle(color: Colors.brown[400], fontSize: 16),
+                          //   ),
+                          // ),
+                          CategoriesWidget(
+                            isWhite: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : ChatBody(),
+          );
+        },
       ),
     );
   }
 }
-
-Widget bubbleBuilder(
-  Widget child, {
-  required message,
-  required nextMessageInGroup,
-}) =>
-    BlocBuilder<ChatBloc, ChatState>(
-      builder: (context, state) {
-        return Bubble(
-          radius: const Radius.circular(20.0),
-          color: state.sender!.id != message.author.id ||
-                  message.type == types.MessageType.image
-              ? Colors.white
-              : Colors.brown[400],
-          margin: nextMessageInGroup
-              ? const BubbleEdges.symmetric(horizontal: 6)
-              : null,
-          nip: nextMessageInGroup
-              ? BubbleNip.no
-              : state.sender!.id != message.author.id
-                  ? BubbleNip.leftBottom
-                  : BubbleNip.rightBottom,
-          child: message.type == types.MessageType.text
-              ? Text(
-                  message.text,
-                  style: TextStyle(
-                    color: state.sender!.id != message.author.id ||
-                            message.type == types.MessageType.image
-                        ? Colors.brown[400]
-                        : Colors.white,
-                  ),
-                )
-              : child,
-        );
-      },
-    );

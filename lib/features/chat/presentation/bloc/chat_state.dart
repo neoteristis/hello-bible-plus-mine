@@ -20,6 +20,7 @@ class ChatState extends Equatable {
     this.conversation,
     this.conversationStatus = Status.init,
     this.messageStatus = Status.init,
+    this.failure,
   });
 
   final List<types.Message>? messages;
@@ -30,6 +31,7 @@ class ChatState extends Equatable {
   final Conversation? conversation;
   final Status? conversationStatus;
   final Status? messageStatus;
+  final Failure? failure;
 
   @override
   List<Object?> get props => [
@@ -41,6 +43,7 @@ class ChatState extends Equatable {
         conversation,
         conversationStatus,
         messageStatus,
+        failure,
       ];
 
   ChatState copyWith({
@@ -50,8 +53,10 @@ class ChatState extends Equatable {
     List<Category>? categories,
     Status? catStatus,
     Conversation? conversation,
+    bool clearConversation = false,
     Status? conversationStatus,
     Status? messageStatus,
+    Failure? failure,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -59,9 +64,11 @@ class ChatState extends Equatable {
       receiver: receiver ?? this.receiver,
       categories: categories ?? this.categories,
       catStatus: catStatus ?? this.catStatus,
-      conversation: conversation ?? this.conversation,
+      conversation:
+          clearConversation ? null : conversation ?? this.conversation,
       conversationStatus: conversationStatus ?? this.conversationStatus,
       messageStatus: messageStatus ?? this.messageStatus,
+      failure: failure ?? this.failure,
     );
   }
 }

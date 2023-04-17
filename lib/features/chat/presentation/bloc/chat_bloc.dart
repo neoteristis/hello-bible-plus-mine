@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:gpt/features/chat/domain/usecases/change_conversation_usecase.dart';
@@ -10,6 +11,7 @@ import 'package:gpt/features/chat/domain/usecases/fetch_categories_usecase.dart'
 import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 
 import '../../../../core/constants/status.dart';
+import '../../../../core/error/failure.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../domain/entities/entities.dart';
 
@@ -28,6 +30,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatMessageSent>(_onChatMessageSent);
     on<ChatCategoriesFetched>(_onChatCategoriesFetched);
     on<ChatConversationChanged>(_onChatConversationChanged);
+    on<ChatConversationCleared>(_onChatConversationCleared);
+  }
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatConversationCleared(
+    ChatConversationCleared event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(state.copyWith(clearConversation: true));
   }
 
   void _onChatConversationChanged(
@@ -39,12 +51,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     res.fold(
       (l) {
         print(l);
-        emit(state.copyWith(conversationStatus: Status.failed));
+        emit(state.copyWith(conversationStatus: Status.failed, failure: l));
       },
       (conversation) => emit(
         state.copyWith(
           conversation: conversation,
           conversationStatus: Status.loaded,
+          messages: [],
         ),
       ),
     );
@@ -104,6 +117,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(
           state.copyWith(
             catStatus: Status.failed,
+            failure: l,
           ),
         );
       },

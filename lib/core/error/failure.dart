@@ -66,7 +66,7 @@ abstract class Failure extends Equatable {
 class ServerFailure extends Failure {
   final String? info;
   const ServerFailure({this.info})
-      : super(message: info ?? 'Server error', code: 500);
+      : super(message: info ?? 'Erreur de serveur', code: 500);
 }
 
 class BadRequestFailure extends Failure {
