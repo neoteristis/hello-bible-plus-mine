@@ -1,12 +1,11 @@
-import 'package:dio/dio.dart';
-
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/error/exception.dart';
-import '../../domain/entities/category.dart';
+import '../../domain/entities/entities.dart';
 
 abstract class ChatRemoteDatasources {
   Future<List<Category>> fetchCategories();
+  Future<Conversation> changeConversation(Category cat);
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -19,6 +18,19 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
     try {
       final res = await baseRepo.get(ApiConstants.categories);
       return (res.data as List).map((m) => Category.fromJson(m)).toList();
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<Conversation> changeConversation(Category cat) async {
+    try {
+      final res = await baseRepo.post(ApiConstants.conversation, body: {
+        "category": cat.id,
+      });
+      return Conversation.fromJson(res.data);
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());

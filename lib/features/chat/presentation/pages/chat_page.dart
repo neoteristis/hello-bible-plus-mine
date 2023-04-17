@@ -5,6 +5,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../bloc/chat_bloc.dart';
+import 'custom_drawer.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -14,15 +15,48 @@ class ChatPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Que dit la Bible?'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(
+                  Icons.list,
+                  color: Colors.brown[400],
+                  size: 30,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+          centerTitle: false,
+          title: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Hello',
+                  style: TextStyle(color: Colors.brown[400], fontSize: 30),
+                ),
+                TextSpan(
+                  text: 'Bible',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown[900],
+                      fontSize: 30),
+                ),
+              ],
+            ),
+          ),
         ),
-        drawer: Drawer(
-          child: Column(children: []),
-        ),
+        drawer: const CustomDrawer(),
         body: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
             return ui.Chat(
-              showUserAvatars: true,
+              inputOptions: const ui.InputOptions(
+                  sendButtonVisibilityMode: ui.SendButtonVisibilityMode.always),
               messages: state.messages ?? [],
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message));
@@ -30,21 +64,22 @@ class ChatPage extends StatelessWidget {
               bubbleRtlAlignment: ui.BubbleRtlAlignment.right,
               bubbleBuilder: bubbleBuilder,
               emptyState: const SizedBox.shrink(),
-              // theme: DefaultChatTheme(
-              //   attachmentButtonIcon: null,
-              //   inputTextStyle: TextStyle(fontWeight: FontWeight.normal),
-              //   inputPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-              //   inputBorderRadius: BorderRadius.all(Radius.circular(20)),
-              //   inputContainerDecoration: BoxDecoration(
-              //       border: Border.all(
-              //     color: Colors.black,
-              //   )),
-              //   inputBackgroundColor: Colors.white,
-              //   // sendButtonIcon: Icon(
-              //   //   Icons.abc,
-              //   //   color: Colors.white,
-              //   // ),
-              // ),
+              disableImageGallery: true,
+              theme: ui.DefaultChatTheme(
+                attachmentButtonMargin: const EdgeInsets.all(0),
+                attachmentButtonIcon: Container(),
+                documentIcon: Container(),
+                inputMargin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                inputBackgroundColor: Colors.white,
+                inputTextColor: Colors.black,
+                inputPadding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                inputContainerDecoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                ),
+              ),
               user: state.sender!,
             );
           },
@@ -62,28 +97,25 @@ Widget bubbleBuilder(
     BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         return Bubble(
-            padding: BubbleEdges.all(10),
-            radius: const Radius.circular(20.0),
-            color: state.sender!.id != message.author.id ||
-                    message.type == types.MessageType.image
-                ? const Color(0xfff5f5f7)
-                : Theme.of(context).primaryColor,
-            margin: nextMessageInGroup
-                ? const BubbleEdges.symmetric(horizontal: 6)
-                : null,
-            nip: nextMessageInGroup
-                ? BubbleNip.no
-                : state.sender!.id != message.author.id
-                    ? BubbleNip.leftBottom
-                    : BubbleNip.rightBottom,
-            child: message.type == types.MessageType.text
-                ? Text(message.text,
-                    style: TextStyle(
-                      color: state.sender!.id != message.author.id ||
-                              message.type == types.MessageType.image
-                          ? Colors.black
-                          : Colors.white,
-                    ))
-                : child);
+          radius: const Radius.circular(20.0),
+          color: state.sender!.id != message.author.id ||
+                  message.type == types.MessageType.image
+              ? Colors.white
+              : Colors.brown[400],
+          margin: nextMessageInGroup
+              ? const BubbleEdges.symmetric(horizontal: 6)
+              : null,
+          nip: nextMessageInGroup
+              ? BubbleNip.no
+              : state.sender!.id != message.author.id
+                  ? BubbleNip.leftBottom
+                  : BubbleNip.rightBottom,
+          child: message.type == types.MessageType.text
+              ? Text(
+                  message.text,
+                  style: TextStyle(),
+                )
+              : child,
+        );
       },
     );

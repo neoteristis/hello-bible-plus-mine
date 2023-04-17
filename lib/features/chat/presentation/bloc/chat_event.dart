@@ -15,3 +15,13 @@ class ChatMessageSent extends ChatEvent {
 }
 
 class ChatCategoriesFetched extends ChatEvent {}
+
+class ChatConversationChanged extends ChatEvent {
+  final Category category;
+  const ChatConversationChanged(
+    this.category,
+  );
+
+  @override
+  List<Object> get props => [category];
+}

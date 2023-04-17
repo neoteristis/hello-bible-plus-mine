@@ -17,6 +17,8 @@ class ChatState extends Equatable {
     ),
     this.categories = const [],
     this.catStatus = Status.init,
+    this.conversation,
+    this.conversationStatus = Status.init,
   });
 
   final List<types.Message>? messages;
@@ -24,6 +26,8 @@ class ChatState extends Equatable {
   final types.User? receiver;
   final List<Category>? categories;
   final Status? catStatus;
+  final Conversation? conversation;
+  final Status? conversationStatus;
 
   @override
   List<Object?> get props => [
@@ -32,6 +36,8 @@ class ChatState extends Equatable {
         receiver,
         categories,
         catStatus,
+        conversation,
+        conversationStatus,
       ];
 
   ChatState copyWith({
@@ -40,6 +46,8 @@ class ChatState extends Equatable {
     types.User? receiver,
     List<Category>? categories,
     Status? catStatus,
+    Conversation? conversation,
+    Status? conversationStatus,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -47,6 +55,8 @@ class ChatState extends Equatable {
       receiver: receiver ?? this.receiver,
       categories: categories ?? this.categories,
       catStatus: catStatus ?? this.catStatus,
+      conversation: conversation ?? this.conversation,
+      conversationStatus: conversationStatus ?? this.conversationStatus,
     );
   }
 }

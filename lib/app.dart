@@ -12,12 +12,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<ChatBloc>(),
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'hello bible',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
         home: ChatPage(),
       ),
     );

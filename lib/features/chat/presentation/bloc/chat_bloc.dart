@@ -32,12 +32,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatConversationChanged event,
     Emitter<ChatState> emit,
   ) async {
+    emit(state.copyWith(conversationStatus: Status.loading));
     final res = await changeConversation(event.category);
     res.fold(
-      (l) => null,
+      (l) {
+        print(l);
+        emit(state.copyWith(conversationStatus: Status.failed));
+      },
       (conversation) => emit(
         state.copyWith(
           conversation: conversation,
+          conversationStatus: Status.loaded,
         ),
       ),
     );
