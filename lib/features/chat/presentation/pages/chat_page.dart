@@ -14,7 +14,7 @@ class ChatPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Hello Bible'),
+          title: const Text('Que dit la Bible?'),
         ),
         drawer: Drawer(
           child: Column(children: []),
@@ -22,13 +22,14 @@ class ChatPage extends StatelessWidget {
         body: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
             return ui.Chat(
+              showUserAvatars: true,
               messages: state.messages ?? [],
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message));
               },
               bubbleRtlAlignment: ui.BubbleRtlAlignment.right,
               bubbleBuilder: bubbleBuilder,
-              emptyState: SizedBox.shrink(),
+              emptyState: const SizedBox.shrink(),
               // theme: DefaultChatTheme(
               //   attachmentButtonIcon: null,
               //   inputTextStyle: TextStyle(fontWeight: FontWeight.normal),
@@ -61,22 +62,28 @@ Widget bubbleBuilder(
     BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         return Bubble(
-          radius: const Radius.circular(20.0),
-          color: state.sender!.id != message.author.id ||
-                  message.type == types.MessageType.image
-              ? const Color(0xfff5f5f7)
-              : Colors.blue,
-          margin: nextMessageInGroup
-              ? const BubbleEdges.symmetric(horizontal: 6)
-              : null,
-          nip: nextMessageInGroup
-              ? BubbleNip.no
-              : state.sender!.id != message.author.id
-                  ? BubbleNip.leftBottom
-                  : BubbleNip.rightBottom,
-          child: message.type == types.MessageType.text
-              ? Text(message.text)
-              : child,
-        );
+            padding: BubbleEdges.all(10),
+            radius: const Radius.circular(20.0),
+            color: state.sender!.id != message.author.id ||
+                    message.type == types.MessageType.image
+                ? const Color(0xfff5f5f7)
+                : Theme.of(context).primaryColor,
+            margin: nextMessageInGroup
+                ? const BubbleEdges.symmetric(horizontal: 6)
+                : null,
+            nip: nextMessageInGroup
+                ? BubbleNip.no
+                : state.sender!.id != message.author.id
+                    ? BubbleNip.leftBottom
+                    : BubbleNip.rightBottom,
+            child: message.type == types.MessageType.text
+                ? Text(message.text,
+                    style: TextStyle(
+                      color: state.sender!.id != message.author.id ||
+                              message.type == types.MessageType.image
+                          ? Colors.black
+                          : Colors.white,
+                    ))
+                : child);
       },
     );
