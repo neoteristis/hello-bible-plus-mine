@@ -5,13 +5,47 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:gpt/features/chat/domain/usecases/change_conversation_usecase.dart';
+import 'package:gpt/features/chat/domain/usecases/fetch_categories_usecase.dart';
+
+import '../../../../core/constants/status.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../../domain/entities/category.dart';
+import '../../domain/entities/entities.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  ChatBloc() : super(const ChatState()) {
+  final FetchCategoriesUsecase fetchCategories;
+  final ChangeConversationUsecase changeConversation;
+  ChatBloc({
+    required this.fetchCategories,
+    required this.changeConversation,
+  }) : super(const ChatState()) {
     on<ChatMessageSent>(_onChatMessageSent);
+    on<ChatCategoriesFetched>(_onChatCategoriesFetched);
+    on<ChatConversationChanged>(_onChatConversationChanged);
+  }
+
+  void _onChatConversationChanged(
+    ChatConversationChanged event,
+    Emitter<ChatState> emit,
+  ) async {
+    emit(state.copyWith(conversationStatus: Status.loading));
+    final res = await changeConversation(event.category);
+    res.fold(
+      (l) {
+        print(l);
+        emit(state.copyWith(conversationStatus: Status.failed));
+      },
+      (conversation) => emit(
+        state.copyWith(
+          conversation: conversation,
+          conversationStatus: Status.loaded,
+        ),
+      ),
+    );
   }
 
   void _onChatMessageSent(
@@ -29,7 +63,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messages: List.of(state.messages!)..insert(0, textMessage),
       ),
     );
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 5));
     final textAnswer = types.TextMessage(
       author: state.receiver!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
@@ -38,6 +72,28 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
     emit(state.copyWith(
         messages: List.of(state.messages ?? [])..insert(0, textAnswer)));
+  }
+
+  void _onChatCategoriesFetched(
+    ChatCategoriesFetched event,
+    Emitter<ChatState> emit,
+  ) async {
+    emit(state.copyWith(catStatus: Status.loading));
+    final res = await fetchCategories(NoParams());
+
+    res.fold(
+      (l) {
+        print(l);
+        emit(
+          state.copyWith(
+            catStatus: Status.failed,
+          ),
+        );
+      },
+      (categories) => emit(
+        state.copyWith(categories: categories, catStatus: Status.loaded),
+      ),
+    );
   }
 
   String _randomString() {
