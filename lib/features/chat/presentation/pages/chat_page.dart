@@ -94,22 +94,23 @@ class ChatPage extends StatelessWidget {
               },
               bubbleRtlAlignment: ui.BubbleRtlAlignment.right,
               bubbleBuilder: bubbleBuilder,
-              emptyState: SizedBox.shrink(),
-              // theme: DefaultChatTheme(
-              //   attachmentButtonIcon: null,
-              //   inputTextStyle: TextStyle(fontWeight: FontWeight.normal),
-              //   inputPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-              //   inputBorderRadius: BorderRadius.all(Radius.circular(20)),
-              //   inputContainerDecoration: BoxDecoration(
-              //       border: Border.all(
-              //     color: Colors.black,
-              //   )),
-              //   inputBackgroundColor: Colors.white,
-              //   // sendButtonIcon: Icon(
-              //   //   Icons.abc,
-              //   //   color: Colors.white,
-              //   // ),
-              // ),
+              emptyState: const SizedBox.shrink(),
+              disableImageGallery: true,
+              theme: ui.DefaultChatTheme(
+                attachmentButtonMargin: const EdgeInsets.all(0),
+                attachmentButtonIcon: Container(),
+                documentIcon: Container(),
+                inputMargin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                inputBackgroundColor: Colors.white,
+                inputTextColor: Colors.black,
+                inputPadding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                inputContainerDecoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                ),
+              ),
               user: state.sender!,
             );
           },
