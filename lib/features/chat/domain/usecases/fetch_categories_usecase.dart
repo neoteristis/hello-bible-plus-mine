@@ -7,9 +7,9 @@ import '../repositories/chat_repository.dart';
 
 class FetchCategoriesUsecase implements Usecase<List<Category>, NoParams> {
   final ChatRepository chatRepository;
-  FetchCategoriesUsecase(
-    this.chatRepository,
-  );
+  FetchCategoriesUsecase({
+    required this.chatRepository,
+  });
   @override
   Future<Either<Failure, List<Category>>> call(NoParams _) async {
     return await chatRepository.fetchCategories();

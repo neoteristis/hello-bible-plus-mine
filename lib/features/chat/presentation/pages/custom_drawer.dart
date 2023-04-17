@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gpt/core/constants/status.dart';
+
+import '../bloc/chat_bloc.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -8,7 +12,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(children: [
+      child: Column(children: [
         DrawerHeader(
           child: Center(
             child: RichText(
@@ -30,14 +34,36 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
         ),
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return const ListTile(
-              title: Text('Que dit la Bible ?'),
-            );
-          },
+        Expanded(
+          child: BlocBuilder<ChatBloc, ChatState>(
+            builder: (context, state) {
+              switch (state.catStatus) {
+                case Status.loading:
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.brown[400],
+                    ),
+                  );
+                case Status.loaded:
+                  return SingleChildScrollView(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.categories?.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(state.categories?[index].name ??
+                              'Que dit la Bible ?'),
+                          onTap: () {},
+                        );
+                      },
+                    ),
+                  );
+                default:
+                  return Container();
+              }
+            },
+          ),
         )
       ]),
     );
