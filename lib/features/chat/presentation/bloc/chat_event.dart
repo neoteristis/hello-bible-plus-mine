@@ -6,3 +6,10 @@ abstract class ChatEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ChatMessageSent extends ChatEvent {
+  final types.PartialText message;
+  const ChatMessageSent(this.message);
+  @override
+  List<Object> get props => [message];
+}

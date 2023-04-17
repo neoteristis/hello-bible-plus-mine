@@ -2,7 +2,7 @@ part of 'chat_bloc.dart';
 
 class ChatState extends Equatable {
   const ChatState({
-    this.messages,
+    this.messages = const [],
     this.sender = const types.User(
       firstName: 'sender',
       id: 'sender_1',
