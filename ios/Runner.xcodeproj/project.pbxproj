@@ -68,7 +68,6 @@
 				8F4300611DE9F7E9A38F3CAD /* Pods-Runner.release.xcconfig */,
 				7EDC72DA04638CE35B51F3EB /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -347,7 +346,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.gpt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.myagency.gpt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

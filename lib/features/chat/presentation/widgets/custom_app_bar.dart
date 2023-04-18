@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 
 import '../../../../core/widgets/logo_widget.dart';
@@ -51,7 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             return Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                state.conversation!.category!.name ?? 'Hello',
+                state.conversation?.category?.name ?? 'Hello',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -74,11 +75,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: Icon(
-                Icons.list,
-                color: Colors.white,
-                size: 30,
+              icon: Transform.scale(
+                scaleX: -1,
+                child: SvgPicture.asset('assets/icons/icon_drawer.svg',
+                    width: 25, color: Colors.white),
               ),
+              // Icon(
+              //   Icons.list,
+              //   color: Colors.white,
+              //   size: 30,
+              // ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },

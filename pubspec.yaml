@@ -44,6 +44,8 @@ dependencies:
   bubble: ^1.2.1
   lottie: ^2.3.2
   internet_connection_checker: ^1.0.0+1
+  flutter_svg: ^2.0.5
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +72,7 @@ flutter:
   assets:
     - .env
     - assets/images/
+    - assets/icons/
   fonts:
     - family: Poppins
       fonts:

@@ -52,19 +52,13 @@ class CategoriesWidget extends StatelessWidget {
               return ListView.separated(
                 shrinkWrap: true,
                 // physics: const NeverScrollableScrollPhysics(),
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: state.categories!.length,
                 separatorBuilder: (context, index) => Divider(
                   color: isWhite! ? Colors.brown[400] : Colors.white,
                 ),
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      state.categories?[index].name ?? 'Que dit la Bible ?',
-                      style: TextStyle(
-                        color: isWhite! ? Colors.brown[400] : Colors.white,
-                      ),
-                    ),
+                  return InkWell(
                     onTap: () {
                       context
                           .read<ChatBloc>()
@@ -78,6 +72,17 @@ class CategoriesWidget extends StatelessWidget {
                             ),
                           );
                     },
+                    splashColor: Theme.of(context).primaryColor,
+                    highlightColor: Colors.black.withOpacity(.5),
+                    child: ListTile(
+                      splashColor: Theme.of(context).primaryColor,
+                      title: Text(
+                        state.categories?[index].name ?? 'Que dit la Bible ?',
+                        style: TextStyle(
+                          color: isWhite! ? Colors.brown[400] : Colors.white,
+                        ),
+                      ),
+                    ),
                   );
                 },
               );
@@ -94,7 +99,6 @@ final linearTertiaryAccentDecoration = BoxDecoration(
   gradient: LinearGradient(
     colors: [
       Colors.brown[400]!,
-      // Color(0xFF017585),
       Colors.brown[300]!,
     ],
     begin: Alignment.topCenter,
