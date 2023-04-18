@@ -85,7 +85,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     res.fold(
       (l) {
         print(l);
-        emit(state.copyWith(messageStatus: Status.failed));
+        emit(state.copyWith(messageStatus: Status.failed, failure: l));
       },
       (message) {
         final textAnswer = types.TextMessage(
