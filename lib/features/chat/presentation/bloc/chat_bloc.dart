@@ -51,7 +51,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final res = await changeConversation(event.category);
     res.fold(
       (l) {
-        print(l);
         emit(state.copyWith(
             conversationStatus: Status.failed,
             failure: l,
@@ -88,7 +87,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     res.fold(
       (l) {
-        print(l);
         emit(state.copyWith(messageStatus: Status.failed, failure: l));
       },
       (message) {
@@ -117,7 +115,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     res.fold(
       (l) {
-        print(l);
         emit(
           state.copyWith(
             catStatus: Status.failed,

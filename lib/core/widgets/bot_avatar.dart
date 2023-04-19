@@ -11,7 +11,7 @@ class BotAvatar extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.all(8.0),
       child: FaIcon(
-        FontAwesomeIcons.bookBible,
+        FontAwesomeIcons.faceSmileBeam,
         color: Colors.black54,
         size: 20,
       ),

@@ -26,11 +26,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
           return LogoWidget();
-          // }
-          // return Text(
-          //   state.conversation!.category!.name ?? 'Hello',
-          //   style: TextStyle(color: Colors.white, fontSize: 20),
-          // );
         },
       ),
       bottom: PreferredSize(
@@ -52,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             return Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                state.conversation?.category?.name ?? 'Hello',
+                state.conversation?.category?.name ?? 'loading...',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -80,11 +75,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: SvgPicture.asset('assets/icons/icon_drawer.svg',
                     width: 25, color: Colors.white),
               ),
-              // Icon(
-              //   Icons.list,
-              //   color: Colors.white,
-              //   size: 30,
-              // ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },

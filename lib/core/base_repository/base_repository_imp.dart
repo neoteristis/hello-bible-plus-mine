@@ -24,18 +24,13 @@ class BaseRepositoryImp implements BaseRepository {
     Encoding? encoding,
     bool? addToken,
   }) async {
-    // Dio actualDio;
-    // if (withoutToken! && dioWithoutToken != null) {
-    //   actualDio = dioWithoutToken!;
-    // }else{
-    //   actualDio = dio;
-    // }
     return await dio.post(
       url!,
       data: body,
       options: Options(
-          headers: headers ?? this.headers,
-          extra: {'add_token': addToken ?? true}),
+        headers: headers ?? this.headers,
+        extra: {'add_token': addToken ?? true},
+      ),
     );
   }
 
@@ -48,8 +43,9 @@ class BaseRepositoryImp implements BaseRepository {
     return await dio.get(
       url!,
       options: Options(
-          headers: headers ?? this.headers,
-          extra: {'add_token': addToken ?? true}),
+        headers: headers ?? this.headers,
+        extra: {'add_token': addToken ?? true},
+      ),
     );
   }
 
