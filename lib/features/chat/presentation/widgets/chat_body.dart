@@ -33,6 +33,25 @@ class ChatBody extends StatelessWidget {
               child: CustomProgressIndicator(),
             );
           case Status.loaded:
+            String defaultMessage = 'Bonjour. Comment puis-je vous aider?';
+            switch (state.conversation?.category?.id) {
+              case 14:
+                defaultMessage =
+                    'Bonjour. Pour savoir ce que la Bible dit sur un sujet.';
+                break;
+              case 15:
+                defaultMessage =
+                    'Bonjour. Vous aimeriez savoir ce que dirait Jésus.';
+                break;
+              case 16:
+                defaultMessage =
+                    'Bonjour. Vous aimeriez de l\'aide pour prier.';
+                break;
+              default:
+                defaultMessage = 'Bonjour. Comment puis-je vous aider?';
+                break;
+            }
+
             return ui.Chat(
               showUserAvatars: true,
               avatarBuilder: (uid) => const BotAvatar(),
@@ -42,9 +61,9 @@ class ChatBody extends StatelessWidget {
               },
               // bubbleRtlAlignment: ui.BubbleRtlAlignment.right,
               bubbleBuilder: bubbleBuilder,
-              emptyState: const Center(
+              emptyState: Center(
                 child: Text(
-                  'Vous pouvez commencer une conversation',
+                  defaultMessage,
                   style: TextStyle(
                     color: brown,
                   ),

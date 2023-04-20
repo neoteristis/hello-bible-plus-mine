@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
+import '../../../../core/widgets/logo_widget.dart';
 import '../bloc/chat_bloc.dart';
 import '../widgets/chat_body.dart';
 import '../widgets/container_categories_widget.dart';
@@ -21,6 +23,8 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
 
+  double radius = 56;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,5 +42,11 @@ class _ChatPageState extends State<ChatPage> {
         },
       ),
     );
+  }
+
+  void redraw() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 }

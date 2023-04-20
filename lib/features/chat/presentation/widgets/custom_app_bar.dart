@@ -47,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             return Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                state.conversation?.category?.name ?? 'loading...',
+                state.conversation?.category?.name ?? 'chargement...',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
