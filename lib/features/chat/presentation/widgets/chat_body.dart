@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:gpt/core/constants/color_constants.dart';
-import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/theme/chat_theme.dart';
@@ -59,24 +58,22 @@ class ChatBody extends StatelessWidget {
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message));
               },
-              // bubbleRtlAlignment: ui.BubbleRtlAlignment.right,
               bubbleBuilder: bubbleBuilder,
               emptyState: Center(
                 child: Text(
                   defaultMessage,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: brown,
                   ),
                 ),
               ),
-              // disableImageGallery: true,
               theme: chatTheme(context),
               user: state.sender!,
               listBottomWidget: const ListBottomChatWidget(),
               scrollPhysics: const BouncingScrollPhysics(),
             );
           case Status.failed:
-            return ContainerCategoriesWidget();
+            return const ContainerCategoriesWidget();
           default:
             return const SizedBox.shrink();
         }
