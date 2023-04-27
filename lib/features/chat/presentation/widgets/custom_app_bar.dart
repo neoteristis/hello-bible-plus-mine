@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gpt/core/constants/color_constants.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 
 import '../../../../core/widgets/logo_widget.dart';
@@ -16,16 +17,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       // elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.elliptical(MediaQuery.of(context).size.width, 56.0),
-        ),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.vertical(
+      //     bottom: Radius.elliptical(MediaQuery.of(context).size.width, 56.0),
+      //   ),
+      // ),
       automaticallyImplyLeading: false,
       centerTitle: false,
       title: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
-          return LogoWidget();
+          return const LogoWidget();
         },
       ),
       bottom: PreferredSize(
@@ -33,8 +34,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
             if (state.conversation == null) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
+              return const Padding(
+                padding: EdgeInsets.all(10.0),
                 child: Text(
                   '👋  Bonjour ',
                   style: TextStyle(
@@ -48,9 +49,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.all(15.0),
               child: Text(
                 state.conversation?.category?.name ?? 'chargement...',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -63,7 +64,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               context.read<ChatBloc>().add(ChatConversationCleared());
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.add,
               color: Colors.white,
             )),
@@ -72,8 +73,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             return IconButton(
               icon: Transform.scale(
                 scaleX: -1,
-                child: SvgPicture.asset('assets/icons/icon_drawer.svg',
-                    width: 25, color: Colors.white),
+                child: SvgPicture.asset(
+                  'assets/icons/icon_drawer.svg',
+                  width: 25,
+                  colorFilter: const ColorFilter.mode(
+                      ColorConstants.secondary, BlendMode.srcIn),
+                ),
               ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();

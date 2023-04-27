@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-
-import '../../../../core/widgets/logo_widget.dart';
 import '../bloc/chat_bloc.dart';
 import '../widgets/chat_body.dart';
 import '../widgets/container_categories_widget.dart';
@@ -23,30 +20,22 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
 
-  double radius = 56;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Color(0xFFF8F4F1),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             key: context.read<ChatBloc>().scaffoldKey,
-            appBar: CustomAppBar(),
-            drawer: CustomDrawer(),
+            appBar: const CustomAppBar(),
+            drawer: const CustomDrawer(),
             body: state.conversation == null
-                ? ContainerCategoriesWidget()
-                : ChatBody(),
+                ? const ContainerCategoriesWidget()
+                : const ChatBody(),
           );
         },
       ),
     );
-  }
-
-  void redraw() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
   }
 }

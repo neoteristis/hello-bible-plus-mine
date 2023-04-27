@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
-import 'package:gpt/features/chat/domain/usecases/fetch_categories_usecase.dart';
-import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -13,7 +11,7 @@ import 'core/dio_interceptors/interceptors.dart';
 import 'core/network/network_info.dart';
 import 'features/chat/data/datasources/chat_remote_datasources.dart';
 import 'features/chat/data/repositories/chat_repository_imp.dart';
-import 'features/chat/domain/usecases/change_conversation_usecase.dart';
+import 'features/chat/domain/usecases/usecases.dart';
 
 final getIt = GetIt.instance;
 
@@ -42,7 +40,7 @@ Future external() async {
       () => BaseRepositoryImp(dio: getIt()));
   final InternetConnectionChecker internetConnectionChecker =
       InternetConnectionChecker();
-  getIt.registerLazySingleton(() => InternetConnectionChecker());
+  getIt.registerLazySingleton(() => internetConnectionChecker);
   getIt.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImp(
       getIt(),
@@ -69,6 +67,7 @@ void usecase() {
       () => FetchCategoriesUsecase(chatRepository: getIt()));
   getIt.registerLazySingleton(() => ChangeConversationUsecase(getIt()));
   getIt.registerLazySingleton(() => SendMessagesUsecase(getIt()));
+  getIt.registerLazySingleton(() => GetResponseMessagesUsecase(getIt()));
 }
 
 void bloc() {
@@ -77,6 +76,7 @@ void bloc() {
       fetchCategories: getIt(),
       changeConversation: getIt(),
       sendMessage: getIt(),
+      getResponseMessages: getIt(),
     ),
   );
 }

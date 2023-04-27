@@ -1,3 +1,4 @@
+import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,45 @@ class ListBottomChatWidget extends StatelessWidget {
                 children: const [
                   BotAvatar(),
                   Expanded(child: TypingIndicator(showIndicator: true)),
+                ],
+              ),
+            );
+          case Status.loaded:
+            return Padding(
+              padding: const EdgeInsets.only(left: 24.0, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const BotAvatar(),
+                  // if (!state.isTyping!)
+                  Expanded(
+                    flex: 5,
+                    child: Bubble(
+                      radius: const Radius.circular(20.0),
+                      color: Colors.white,
+                      margin: const BubbleEdges.symmetric(horizontal: 0),
+                      nip: BubbleNip.leftBottom,
+                      child: TextFormField(
+                        enabled: false,
+                        minLines: 1,
+                        maxLines: null,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Theme.of(context).primaryColor),
+                        controller: state.textEditingController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.zero),
+                      ),
+                    ),
+                  ),
+                  // if (!state.isTyping!)
+                  //   Expanded(child: TypingIndicator(showIndicator: true)),
+                  const Spacer(
+                    flex: 1,
+                  ),
                 ],
               ),
             );

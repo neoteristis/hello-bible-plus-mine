@@ -39,13 +39,15 @@ class BaseRepositoryImp implements BaseRepository {
     String? url, {
     Map<String, String>? headers,
     bool? addToken,
+    Options? options,
   }) async {
     return await dio.get(
       url!,
-      options: Options(
-        headers: headers ?? this.headers,
-        extra: {'add_token': addToken ?? true},
-      ),
+      options: options ??
+          Options(
+            headers: headers ?? this.headers,
+            extra: {'add_token': addToken ?? true},
+          ),
     );
   }
 

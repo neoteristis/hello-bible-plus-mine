@@ -20,52 +20,50 @@ class CustomDrawer extends StatelessWidget {
           children: [
             Container(
               height: double.infinity,
-              decoration: BoxDecoration(color: Colors.white),
+              decoration: const BoxDecoration(color: ColorConstants.background),
               width: MediaQuery.of(context).size.width * 0.85,
-              child: Column(children: [
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    dividerTheme:
-                        const DividerThemeData(color: Colors.transparent),
-                  ),
-                  child: DrawerHeader(
-                    padding: EdgeInsets.zero,
-                    decoration:
-                        BoxDecoration(color: Theme.of(context).primaryColor),
-                    child: Stack(
-                      children: [
-                        const Center(
-                          child: LogoWidget(size: 40),
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          // alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.close_rounded,
-                              color: ColorConstants.secondary,
-                              size: 25,
-                            ),
-                            onPressed: () {
-                              context
-                                  .read<ChatBloc>()
-                                  .scaffoldKey
-                                  .currentState
-                                  ?.closeDrawer();
-                            },
+              child: Column(
+                children: [
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                      dividerTheme:
+                          const DividerThemeData(color: Colors.transparent),
+                    ),
+                    child: DrawerHeader(
+                      padding: EdgeInsets.zero,
+                      decoration:
+                          BoxDecoration(color: Theme.of(context).primaryColor),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: LogoWidget(size: 40),
                           ),
-                        )
-                      ],
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.close_rounded,
+                                color: ColorConstants.secondary,
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                context
+                                    .read<ChatBloc>()
+                                    .scaffoldKey
+                                    .currentState
+                                    ?.closeDrawer();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                CategoriesWidget(
-                  isWhite: true,
-                )
-              ]),
+                  const CategoriesWidget()
+                ],
+              ),
             ),
-            // CloseDrawerIcon(),
           ],
         ),
       ),

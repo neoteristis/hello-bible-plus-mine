@@ -12,7 +12,7 @@ class BotAvatar extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       child: FaIcon(
         FontAwesomeIcons.faceSmileBeam,
-        color: Colors.black54,
+        color: Color(0xff9e9cab),
         size: 20,
       ),
     );

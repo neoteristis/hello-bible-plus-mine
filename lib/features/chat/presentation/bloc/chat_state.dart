@@ -21,6 +21,11 @@ class ChatState extends Equatable {
     this.conversationStatus = Status.init,
     this.messageStatus = Status.init,
     this.failure,
+    this.textEditingController,
+    this.isTyping = false,
+    this.newMessage = '',
+    this.theme,
+    this.streamMessage = true,
   });
 
   final List<types.Message>? messages;
@@ -32,9 +37,15 @@ class ChatState extends Equatable {
   final Status? conversationStatus;
   final Status? messageStatus;
   final Failure? failure;
+  final TextEditingController? textEditingController;
+  final bool? isTyping;
+  final String? newMessage;
+  final ThemeData? theme;
+  final bool? streamMessage;
 
   @override
   List<Object?> get props => [
+        newMessage,
         messages,
         sender,
         receiver,
@@ -44,6 +55,10 @@ class ChatState extends Equatable {
         conversationStatus,
         messageStatus,
         failure,
+        textEditingController,
+        isTyping,
+        theme,
+        streamMessage,
       ];
 
   ChatState copyWith({
@@ -57,6 +72,12 @@ class ChatState extends Equatable {
     Status? conversationStatus,
     Status? messageStatus,
     Failure? failure,
+    TextEditingController? textEditingController,
+    bool? isTyping,
+    String? newMessage,
+    bool clearNewMessage = false,
+    ThemeData? theme,
+    bool? streamMessage,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -69,6 +90,12 @@ class ChatState extends Equatable {
       conversationStatus: conversationStatus ?? this.conversationStatus,
       messageStatus: messageStatus ?? this.messageStatus,
       failure: failure ?? this.failure,
+      textEditingController:
+          textEditingController ?? this.textEditingController,
+      isTyping: isTyping ?? this.isTyping,
+      newMessage: clearNewMessage ? null : newMessage ?? this.newMessage,
+      theme: theme ?? this.theme,
+      streamMessage: streamMessage ?? this.streamMessage,
     );
   }
 }

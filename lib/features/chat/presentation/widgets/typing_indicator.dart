@@ -3,13 +3,15 @@ import 'dart:math';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/color_constants.dart';
+
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
     super.key,
     this.showIndicator = false,
     this.bubbleColor = const Color(0xFF646b7f),
-    this.flashingCircleDarkColor = const Color(0xFF8D6E63),
-    this.flashingCircleBrightColor = const Color(0xFFFFFFFF),
+    this.flashingCircleDarkColor = ColorConstants.primary,
+    this.flashingCircleBrightColor = ColorConstants.secondary,
   });
 
   final bool showIndicator;
@@ -27,8 +29,6 @@ class _TypingIndicatorState extends State<TypingIndicator>
 
   late Animation<double> _indicatorSpaceAnimation;
 
-  late Animation<double> _smallBubbleAnimation;
-  late Animation<double> _mediumBubbleAnimation;
   late Animation<double> _largeBubbleAnimation;
 
   late AnimationController _repeatingController;
@@ -44,9 +44,11 @@ class _TypingIndicatorState extends State<TypingIndicator>
 
     _appearanceController = AnimationController(
       vsync: this,
-    )..addListener(() {
-        setState(() {});
-      });
+    )..addListener(
+        () {
+          setState(() {});
+        },
+      );
 
     _indicatorSpaceAnimation = CurvedAnimation(
       parent: _appearanceController,
@@ -56,17 +58,6 @@ class _TypingIndicatorState extends State<TypingIndicator>
       begin: 0.0,
       end: 60.0,
     ));
-
-    _smallBubbleAnimation = CurvedAnimation(
-      parent: _appearanceController,
-      curve: const Interval(0.0, 0.5, curve: Curves.elasticOut),
-      reverseCurve: const Interval(0.0, 0.3, curve: Curves.easeOut),
-    );
-    _mediumBubbleAnimation = CurvedAnimation(
-      parent: _appearanceController,
-      curve: const Interval(0.2, 0.7, curve: Curves.elasticOut),
-      reverseCurve: const Interval(0.2, 0.6, curve: Curves.easeOut),
-    );
     _largeBubbleAnimation = CurvedAnimation(
       parent: _appearanceController,
       curve: const Interval(0.3, 1.0, curve: Curves.elasticOut),
@@ -129,24 +120,6 @@ class _TypingIndicatorState extends State<TypingIndicator>
       },
       child: Stack(
         children: [
-          // AnimatedBubble(
-          //   animation: _smallBubbleAnimation,
-          //   left: 8,
-          //   bottom: 8,
-          //   bubble: CircleBubble(
-          //     size: 8,
-          //     bubbleColor: widget.bubbleColor,
-          //   ),
-          // ),
-          // AnimatedBubble(
-          //   animation: _mediumBubbleAnimation,
-          //   left: 10,
-          //   bottom: 10,
-          //   bubble: CircleBubble(
-          //     size: 16,
-          //     bubbleColor: widget.bubbleColor,
-          //   ),
-          // ),
           AnimatedBubble(
             animation: _largeBubbleAnimation,
             left: 12,
@@ -241,17 +214,9 @@ class StatusBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Bubble(
-      // width: 70,
-      // height: 30,
-      // padding: const EdgeInsets.symmetric(horizontal: 8),
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.circular(27),
-      //   color: bubbleColor,
-      // ),
       radius: const Radius.circular(20.0),
       color: Colors.white,
-      // margin: BubbleEdges.only(top: 10),
-      padding: BubbleEdges.all(10),
+      padding: const BubbleEdges.all(10),
       alignment: Alignment.topLeft,
       nip: BubbleNip.leftBottom,
       child: Row(
@@ -313,8 +278,7 @@ class FlashingCircle extends StatelessWidget {
         return Container(
           width: 8,
           height: 8,
-          margin: EdgeInsets.all(2),
-          // padding: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Color.lerp(

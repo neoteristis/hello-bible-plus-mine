@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
-import '../../../../core/helper/unfocus_keyboard.dart';
+import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
+import 'category_item_widget.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({
     super.key,
-    this.isWhite,
   });
-
-  final bool? isWhite;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +19,8 @@ class CategoriesWidget extends StatelessWidget {
         builder: (context, state) {
           switch (state.catStatus) {
             case Status.loading:
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.brown[400],
-                ),
+              return const Center(
+                child: CustomProgressIndicator(),
               );
             case Status.failed:
               return Center(
@@ -32,7 +29,7 @@ class CategoriesWidget extends StatelessWidget {
                   children: [
                     Text(
                       state.failure?.message ?? 'Une erreur s\'est produite',
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: ColorConstants.danger),
                     ),
                     TextButton.icon(
                       onPressed: () {
@@ -49,40 +46,16 @@ class CategoriesWidget extends StatelessWidget {
                 ),
               );
             case Status.loaded:
-              return ListView.separated(
+              return ListView.builder(
                 shrinkWrap: true,
-                // physics: const NeverScrollableScrollPhysics(),
                 physics: const BouncingScrollPhysics(),
                 itemCount: state.categories!.length,
-                separatorBuilder: (context, index) => Divider(
-                  color: isWhite! ? Colors.brown[400] : Colors.white,
-                ),
+                // separatorBuilder: (context, index) => Divider(
+                //   color: Theme.of(context).primaryColor.withOpacity(.5),
+                // ),
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      context
-                          .read<ChatBloc>()
-                          .scaffoldKey
-                          .currentState
-                          ?.closeDrawer();
-                      unfocusKeyboard();
-                      context.read<ChatBloc>().add(
-                            ChatConversationChanged(
-                              state.categories![index],
-                            ),
-                          );
-                    },
-                    splashColor: Theme.of(context).primaryColor,
-                    highlightColor: Colors.black.withOpacity(.5),
-                    child: ListTile(
-                      splashColor: Theme.of(context).primaryColor,
-                      title: Text(
-                        state.categories?[index].name ?? 'Que dit la Bible ?',
-                        style: TextStyle(
-                          color: isWhite! ? Colors.brown[400] : Colors.white,
-                        ),
-                      ),
-                    ),
+                  return CategoryItemWidget(
+                    category: state.categories?[index],
                   );
                 },
               );
@@ -94,14 +67,3 @@ class CategoriesWidget extends StatelessWidget {
     );
   }
 }
-
-final linearTertiaryAccentDecoration = BoxDecoration(
-  gradient: LinearGradient(
-    colors: [
-      Colors.brown[400]!,
-      Colors.brown[300]!,
-    ],
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-  ),
-);

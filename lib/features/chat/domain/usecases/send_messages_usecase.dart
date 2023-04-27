@@ -20,9 +20,11 @@ class SendMessagesUsecase implements Usecase<Message, MessageParam> {
 class MessageParam extends Equatable {
   final String? content;
   final Conversation? conversation;
+  final bool? streamMessage;
   const MessageParam({
     this.content,
     this.conversation,
+    this.streamMessage,
   });
 
   Map<String, dynamic> toJson() => {
@@ -34,5 +36,6 @@ class MessageParam extends Equatable {
   List<Object?> get props => [
         content,
         conversation,
+        streamMessage,
       ];
 }

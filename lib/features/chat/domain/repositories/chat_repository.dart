@@ -8,4 +8,5 @@ abstract class ChatRepository {
   Future<Either<Failure, List<Category>>> fetchCategories();
   Future<Either<Failure, Conversation>> changeConversation(Category cat);
   Future<Either<Failure, Message>> sendMessage(MessageParam param);
+  Future<Either<Failure, dynamic>> getResponseMessages(int idConversation);
 }

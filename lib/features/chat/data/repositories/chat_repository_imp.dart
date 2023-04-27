@@ -59,4 +59,19 @@ class ChatRepositoryImp implements ChatRepository {
       return const Left(NoConnexionFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, dynamic>> getResponseMessages(
+      int idConversation) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.getResponseMessages(idConversation);
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
 }

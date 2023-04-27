@@ -1,19 +1,23 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:gpt/features/chat/domain/usecases/change_conversation_usecase.dart';
-import 'package:gpt/features/chat/domain/usecases/fetch_categories_usecase.dart';
-import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 
 import '../../../../core/constants/status.dart';
+import '../../../../core/constants/string_constants.dart';
 import '../../../../core/error/failure.dart';
+import '../../../../core/sse/sse.dart';
+import '../../../../core/theme/theme.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../domain/entities/entities.dart';
+import '../../domain/usecases/usecases.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -22,18 +26,130 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final FetchCategoriesUsecase fetchCategories;
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
+  final GetResponseMessagesUsecase getResponseMessages;
+  late StreamSubscription<SseMessage>? streamSubscription;
   ChatBloc({
     required this.fetchCategories,
     required this.changeConversation,
     required this.sendMessage,
-  }) : super(const ChatState()) {
+    required this.getResponseMessages,
+  }) : super(
+          ChatState(
+            textEditingController: TextEditingController(),
+          ),
+        ) {
     on<ChatMessageSent>(_onChatMessageSent);
     on<ChatCategoriesFetched>(_onChatCategoriesFetched);
     on<ChatConversationChanged>(_onChatConversationChanged);
     on<ChatConversationCleared>(_onChatConversationCleared);
+    on<ChatMessageAdded>(_onChatMessageAdded);
+    on<ChatTypingStatusChanged>(_onChatTypingStatusChanged);
+    on<ChatMessageJoined>(_onChatMessageJoined);
+    on<ChatMessageAnswerGot>(_onChatMessageAnswerGot);
+    on<ChatMessageModChanged>(_onChatMessageModChanged);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatMessageModChanged(
+    ChatMessageModChanged event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(state.copyWith(streamMessage: event.value));
+  }
+
+  void _onChatMessageAnswerGot(
+    ChatMessageAnswerGot event,
+    Emitter<ChatState> emit,
+  ) async {
+    final res = await getResponseMessages(event.messageId);
+    res.fold(
+        (l) => emit(
+              state.copyWith(
+                messageStatus: Status.failed,
+                failure: ServerFailure(
+                  info: e.toString(),
+                ),
+              ),
+            ), (rs) async {
+      String messageJoined = '';
+      try {
+        streamSubscription = rs.data?.stream
+            .transform(unit8Transformer)
+            .transform(const Utf8Decoder())
+            .transform(const LineSplitter())
+            .transform(const SseTransformer())
+            .listen((event) async {
+          debugPrint(event.data);
+          String trunck = '';
+          if (event.data.length > 1) {
+            trunck = event.data.substring(1);
+          }
+          add(const ChatTypingStatusChanged(
+            isTyping: true,
+          ));
+          if (trunck == endMessageMarker) {
+            debugPrint(messageJoined);
+            streamSubscription?.cancel();
+            add(ChatMessageJoined(newMessage: messageJoined));
+            // emit(state.copyWith(clearNewMessage: true));
+            // state.textEditingController?.clear();
+            // final textAnswer = types.TextMessage(
+            //   author: state.receiver!,
+            //   createdAt: DateTime.now().millisecondsSinceEpoch,
+            //   id: _randomString(),
+            //   text: messageJoined,
+            // );
+            // add(ChatMessageAdded(textMessage: textAnswer));
+          }
+          if (trunck != endMessageMarker) {
+            state.textEditingController?.text =
+                '${state.textEditingController?.text}$trunck';
+            add(ChatMessageJoined(newMessage: '${state.newMessage}$trunck'));
+
+            messageJoined = '$messageJoined$trunck';
+          }
+        });
+      } catch (e) {
+        emit(state.copyWith(
+            messageStatus: Status.failed,
+            failure: ServerFailure(info: e.toString())));
+      }
+    });
+  }
+
+  void _onChatTypingStatusChanged(
+    ChatTypingStatusChanged event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        isTyping: event.isTyping,
+        messageStatus: event.isTyping ? Status.loaded : Status.init,
+        clearNewMessage: event.clearMessage ?? false,
+      ),
+    );
+  }
+
+  void _onChatMessageAdded(
+    ChatMessageAdded event,
+    Emitter<ChatState> emit,
+  ) {
+    final textAnswer = event.textMessage;
+    emit(
+      state.copyWith(
+        messages: List.of(state.messages!)..insert(0, textAnswer),
+        messageStatus: Status.init,
+      ),
+    );
+  }
+
+  void _onChatMessageJoined(
+    ChatMessageJoined event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(state.copyWith(newMessage: event.newMessage));
+  }
 
   void _onChatConversationCleared(
     ChatConversationCleared event,
@@ -47,7 +163,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     emit(state.copyWith(
-        conversationStatus: Status.loading, conversation: Conversation()));
+        conversationStatus: Status.loading,
+        conversation: const Conversation()));
     final res = await changeConversation(event.category);
     res.fold(
       (l) {
@@ -59,6 +176,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (conversation) => emit(
         state.copyWith(
           conversation: conversation,
+          theme: theme(event.category.colorTheme),
           conversationStatus: Status.loaded,
           messages: [],
         ),
@@ -70,11 +188,27 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatMessageSent event,
     Emitter<ChatState> emit,
   ) async {
+    if (state.streamMessage! && state.messages!.isNotEmpty) {
+      state.textEditingController?.clear();
+      final textAnswer = types.TextMessage(
+        author: state.receiver!,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: _randomString(),
+        text: state.newMessage ?? '',
+      );
+      emit(
+        state.copyWith(
+          messages: List.of(state.messages!)..insert(0, textAnswer),
+          messageStatus: Status.init,
+        ),
+      );
+      // add(ChatMessageAdded(textMessage: textAnswer));
+    }
     final textMessage = types.TextMessage(
       author: state.sender!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: _randomString(),
-      text: event.message.text,
+      text: event.textMessage,
     );
     emit(
       state.copyWith(
@@ -82,24 +216,41 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messageStatus: Status.loading,
       ),
     );
-    final res = await sendMessage(MessageParam(
-        content: event.message.text, conversation: state.conversation));
+    final res = await sendMessage(
+      MessageParam(
+        content: event.textMessage,
+        conversation: state.conversation,
+        streamMessage: state.streamMessage,
+      ),
+    );
 
     res.fold(
       (l) {
         emit(state.copyWith(messageStatus: Status.failed, failure: l));
       },
       (message) {
-        final textAnswer = types.TextMessage(
+        if (message.response == null) {
+          if (message.id != null) {
+            return add(ChatMessageAnswerGot(messageId: message.id!));
+          } else {
+            return emit(
+              state.copyWith(
+                messageStatus: Status.failed,
+                failure: const ServerFailure(info: 'conversation introuvable'),
+              ),
+            );
+          }
+        }
+        final textMessage = types.TextMessage(
           author: state.receiver!,
           createdAt: DateTime.now().millisecondsSinceEpoch,
           id: _randomString(),
-          text: message.response ?? '',
+          text: message.response?.trim() ?? '',
         );
         emit(
           state.copyWith(
-            messages: List.of(state.messages!)..insert(0, textAnswer),
-            messageStatus: Status.loaded,
+            messages: List.of(state.messages!)..insert(0, textMessage),
+            messageStatus: Status.init,
           ),
         );
       },
@@ -127,6 +278,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
     );
   }
+
+  StreamTransformer<Uint8List, List<int>> unit8Transformer =
+      StreamTransformer.fromHandlers(
+    handleData: (data, sink) {
+      sink.add(List<int>.from(data));
+    },
+  );
 
   String _randomString() {
     final random = Random.secure();

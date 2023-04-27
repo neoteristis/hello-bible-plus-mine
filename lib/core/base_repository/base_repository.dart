@@ -15,6 +15,7 @@ abstract class BaseRepository {
     String? url, {
     Map<String, String>? headers,
     bool? addToken,
+    Options? options,
   });
 
   Future<Response> patch(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+import '../../../../../core/constants/color_constants.dart';
 import '../../bloc/chat_bloc.dart';
 
 Widget bubbleBuilder(
@@ -29,7 +30,7 @@ Widget bubbleBuilder(
           color: state.sender!.id != message.author.id ||
                   message.type == types.MessageType.image
               ? Colors.white
-              : Colors.brown[400],
+              : ColorConstants.primary,
           margin: nextMessageInGroup
               ? const BubbleEdges.symmetric(horizontal: 6)
               : null,
@@ -44,7 +45,7 @@ Widget bubbleBuilder(
                   style: TextStyle(
                     color: state.sender!.id != message.author.id ||
                             message.type == types.MessageType.image
-                        ? Color(0xFF8D6E63)
+                        ? ColorConstants.primary
                         : Colors.white,
                   ),
                 )
