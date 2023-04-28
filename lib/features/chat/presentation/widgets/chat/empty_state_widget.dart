@@ -27,6 +27,15 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> {
       buildWhen: (previous, current) =>
           previous.conversation != current.conversation,
       builder: (context, state) {
+        String? welcomePhrase;
+        try {
+          welcomePhrase = state.categories
+              ?.firstWhere(
+                  (element) => element.id == state.conversation?.category?.id)
+              .welcomePhrase;
+        } catch (_) {
+          welcomePhrase = 'Bonjour. Comment puis-je vous aider ?';
+        }
         return Center(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
@@ -35,12 +44,11 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  state.categories
-                          ?.firstWhere((element) =>
-                              element.id == state.conversation?.category?.id)
-                          .welcomePhrase ??
+                  welcomePhrase == null || welcomePhrase == ""
+                      ?
                       // state.conversation!.category!.welcomePhrase ??
-                      'Bonjour. Comment puis-je vous aider ?',
+                      'Bonjour. Comment puis-je vous aider ?'
+                      : welcomePhrase,
                   // defaultMessage,
                   // textAlign: TextAlign.center,
                   style: TextStyle(

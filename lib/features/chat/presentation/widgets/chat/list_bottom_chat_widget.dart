@@ -21,9 +21,14 @@ class ListBottomChatWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  BotAvatar(),
-                  Expanded(child: TypingIndicator(showIndicator: true)),
+                children: [
+                  const BotAvatar(),
+                  Expanded(
+                    child: TypingIndicator(
+                      showIndicator: true,
+                      flashingCircleDarkColor: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -44,6 +49,7 @@ class ListBottomChatWidget extends StatelessWidget {
                       margin: const BubbleEdges.symmetric(horizontal: 0),
                       nip: BubbleNip.leftBottom,
                       child: TextFormField(
+                        cursorColor: Theme.of(context).primaryColor,
                         enabled: false,
                         minLines: 1,
                         maxLines: null,

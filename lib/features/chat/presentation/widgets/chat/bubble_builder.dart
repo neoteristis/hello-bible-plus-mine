@@ -30,7 +30,7 @@ Widget bubbleBuilder(
           color: state.sender!.id != message.author.id ||
                   message.type == types.MessageType.image
               ? Colors.white
-              : ColorConstants.primary,
+              : Theme.of(context).primaryColor,
           margin: nextMessageInGroup
               ? const BubbleEdges.symmetric(horizontal: 6)
               : null,
@@ -45,7 +45,7 @@ Widget bubbleBuilder(
                   style: TextStyle(
                     color: state.sender!.id != message.author.id ||
                             message.type == types.MessageType.image
-                        ? ColorConstants.primary
+                        ? Theme.of(context).primaryColor
                         : Colors.white,
                   ),
                 )

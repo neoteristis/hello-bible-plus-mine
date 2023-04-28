@@ -10,7 +10,7 @@ class ContainerCategoriesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: Container(
         // decoration: BoxDecoration(
         //   borderRadius: BorderRadius.circular(10),
@@ -27,7 +27,7 @@ class ContainerCategoriesWidget extends StatelessWidget {
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
               CategoriesWidget(),
             ],

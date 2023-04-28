@@ -105,6 +105,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           if (trunck != endMessageMarker) {
             state.textEditingController?.text =
                 '${state.textEditingController?.text}$trunck';
+            state.textEditingController?.selection = TextSelection.fromPosition(
+                TextPosition(offset: state.textEditingController!.text.length));
             add(ChatMessageJoined(newMessage: '${state.newMessage}$trunck'));
 
             messageJoined = '$messageJoined$trunck';

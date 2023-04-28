@@ -20,11 +20,14 @@ class CategoryItemWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: 2.0,
+        horizontal: 0,
+      ),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: category?.colorTheme ?? ColorConstants.primary,
+          borderRadius: BorderRadius.circular(2),
+          color: category?.colorTheme?.withOpacity(1) ?? ColorConstants.primary,
           boxShadow: [
             BoxShadow(
               color: const Color(0xFF202040).withOpacity(0.08),
@@ -52,8 +55,9 @@ class CategoryItemWidget extends StatelessWidget {
               category!.name ?? 'non défini',
               // 'This is a a long category name for you to test it better this is even longer than that',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
+                fontSize: 14,
               ),
             ),
           ),

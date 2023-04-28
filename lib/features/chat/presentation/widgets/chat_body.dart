@@ -44,24 +44,24 @@ class _ChatBodyState extends State<ChatBody> {
               child: CustomProgressIndicator(),
             );
           case Status.loaded:
-            String defaultMessage = 'Bonjour. Comment puis-je vous aider?';
-            switch (state.conversation?.category?.id) {
-              case 14:
-                defaultMessage =
-                    'Bonjour. Pour savoir ce que la Bible dit sur un sujet.';
-                break;
-              case 15:
-                defaultMessage =
-                    'Bonjour. Vous aimeriez savoir ce que dirait Jésus.';
-                break;
-              case 16:
-                defaultMessage =
-                    'Bonjour. Vous aimeriez de l\'aide pour prier.';
-                break;
-              default:
-                defaultMessage = 'Bonjour. Comment puis-je vous aider?';
-                break;
-            }
+            // String defaultMessage = 'Bonjour. Comment puis-je vous aider?';
+            // switch (state.conversation?.category?.id) {
+            //   case 14:
+            //     defaultMessage =
+            //         'Bonjour. Pour savoir ce que la Bible dit sur un sujet.';
+            //     break;
+            //   case 15:
+            //     defaultMessage =
+            //         'Bonjour. Vous aimeriez savoir ce que dirait Jésus.';
+            //     break;
+            //   case 16:
+            //     defaultMessage =
+            //         'Bonjour. Vous aimeriez de l\'aide pour prier.';
+            //     break;
+            //   default:
+            //     defaultMessage = 'Bonjour. Comment puis-je vous aider?';
+            //     break;
+            // }
 
             return ui.Chat(
               showUserAvatars: true,
@@ -78,9 +78,9 @@ class _ChatBodyState extends State<ChatBody> {
               scrollPhysics: const BouncingScrollPhysics(),
               customBottomWidget: Visibility(
                 visible: state.messages!.isNotEmpty,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, bottom: 8.0, right: 15.0),
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(left: 15.0, bottom: 8.0, right: 15.0),
                   child: CustomBottomWidget(),
                   // child: TextField(
                   //   onChanged: (value) {
@@ -134,19 +134,5 @@ class _ChatBodyState extends State<ChatBody> {
         }
       },
     );
-  }
-}
-
-class name extends StatefulWidget {
-  const name({super.key});
-
-  @override
-  State<name> createState() => _nameState();
-}
-
-class _nameState extends State<name> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

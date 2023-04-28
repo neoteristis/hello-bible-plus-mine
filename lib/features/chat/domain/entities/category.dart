@@ -25,9 +25,9 @@ class Category extends Equatable {
         prompt: json["prompt"],
         model: json["model"],
         welcomePhrase: json['welcomePhrase'],
-        colorTheme: json['colorCode'] != null
-            ? (json['colorCode'] as String).hexToColor
-            : null,
+        colorTheme: json['colorCode'] == null || json['colorCode'] == ''
+            ? null
+            : (json['colorCode'] as String).hexToColor,
       );
 
   Map<String, dynamic> toJson() => {
