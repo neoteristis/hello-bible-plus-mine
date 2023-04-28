@@ -23,9 +23,9 @@ class LogoWidget extends StatelessWidget {
           TextSpan(
             text: 'Bible',
             style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.brown[900],
-                fontSize: size ?? 20),
+              color: Colors.white,
+              fontSize: size ?? 20,
+            ),
           ),
         ],
       ),

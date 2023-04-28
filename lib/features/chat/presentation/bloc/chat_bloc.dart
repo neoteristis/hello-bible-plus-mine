@@ -164,6 +164,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatConversationChanged event,
     Emitter<ChatState> emit,
   ) async {
+    state.textEditingController?.clear();
     emit(state.copyWith(
         conversationStatus: Status.loading,
         conversation: const Conversation()));

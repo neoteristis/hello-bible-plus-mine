@@ -46,18 +46,19 @@ class CategoriesWidget extends StatelessWidget {
                 ),
               );
             case Status.loaded:
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: state.categories!.length,
-                // separatorBuilder: (context, index) => Divider(
-                //   color: Theme.of(context).primaryColor.withOpacity(.5),
-                // ),
-                itemBuilder: (context, index) {
-                  return CategoryItemWidget(
-                    category: state.categories?[index],
-                  );
-                },
+              return Center(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //     crossAxisCount: 2),
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: state.categories!.length,
+                  itemBuilder: (context, index) {
+                    return CategoryItemWidget(
+                      category: state.categories?[index],
+                    );
+                  },
+                ),
               );
             default:
               return Container();

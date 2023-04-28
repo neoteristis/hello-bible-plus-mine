@@ -22,11 +22,11 @@ class CategoryItemWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 2.0,
-        horizontal: 0,
+        horizontal: 2.0,
       ),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
+          borderRadius: BorderRadius.circular(10),
           color: category?.colorTheme?.withOpacity(1) ?? ColorConstants.primary,
           boxShadow: [
             BoxShadow(
@@ -49,15 +49,17 @@ class CategoryItemWidget extends StatelessWidget {
           },
           splashColor: Theme.of(context).primaryColor,
           highlightColor: Colors.black.withOpacity(.5),
-          child: ListTile(
-            splashColor: Theme.of(context).primaryColor,
-            title: Text(
-              category!.name ?? 'non défini',
-              // 'This is a a long category name for you to test it better this is even longer than that',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
+          child: Center(
+            child: ListTile(
+              splashColor: Theme.of(context).primaryColor,
+              title: Text(
+                category!.name ?? 'non défini',
+                // 'This is a a long category name for you to test it better this is even longer than that',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),

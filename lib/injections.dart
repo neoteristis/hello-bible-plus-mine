@@ -12,6 +12,7 @@ import 'core/network/network_info.dart';
 import 'features/chat/data/datasources/chat_remote_datasources.dart';
 import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/usecases.dart';
+import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -78,5 +79,9 @@ void bloc() {
       sendMessage: getIt(),
       getResponseMessages: getIt(),
     ),
+  );
+
+  getIt.registerFactory(
+    () => DonationBloc(),
   );
 }

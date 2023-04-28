@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/constants/color_constants.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../core/widgets/logo_widget.dart';
 
@@ -15,13 +16,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
+      // backgroundColor: Theme.of(context).primaryColor,
       // elevation: 0,
       // shape: RoundedRectangleBorder(
       //   borderRadius: BorderRadius.vertical(
       //     bottom: Radius.elliptical(MediaQuery.of(context).size.width, 56.0),
       //   ),
       // ),
+      flexibleSpace: FlexibleSpaceBar(
+        background: Image.asset(
+          'assets/images/bible.webp',
+          fit: BoxFit.cover,
+        ),
+      ),
       automaticallyImplyLeading: false,
       centerTitle: false,
       title: BlocBuilder<ChatBloc, ChatState>(
@@ -34,26 +41,37 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
             if (state.conversation == null) {
-              return const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  '👋  Bonjour ',
-                  style: TextStyle(
+              return Container(
+                width: double.infinity,
+                decoration: BoxDecoration(color: Colors.white.withOpacity(.3)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '👋  Bonjour ',
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w200),
+                      fontSize: 17,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               );
             }
-            return Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                state.conversation?.category?.name ?? 'chargement...',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+
+            return Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withOpacity(.5)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  state.conversation?.category?.name ?? 'chargement...',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             );
           },

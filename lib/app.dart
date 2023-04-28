@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/theme/theme.dart';
 
 import 'features/chat/presentation/bloc/chat_bloc.dart';
+import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/pages/chat_page.dart';
 import 'injections.dart';
 
@@ -11,8 +12,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ChatBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<ChatBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<DonationBloc>(),
+        ),
+      ],
       child: BlocBuilder<ChatBloc, ChatState>(
         buildWhen: (previous, current) => previous.theme != current.theme,
         builder: (context, state) {
