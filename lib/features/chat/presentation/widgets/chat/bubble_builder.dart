@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../../../../../core/constants/color_constants.dart';
 import '../../bloc/chat_bloc.dart';
@@ -40,6 +41,12 @@ Widget bubbleBuilder(
                   ? BubbleNip.leftBottom
                   : BubbleNip.rightBottom,
           child: message.type == types.MessageType.text
+              // ? Markdown(
+              //     padding: EdgeInsets.zero,
+              //     shrinkWrap: true,
+              //     softLineBreak: true,
+              //     data: message.text,
+              //   )
               ? Text(
                   message.text,
                   style: TextStyle(

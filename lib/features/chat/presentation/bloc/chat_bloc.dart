@@ -82,6 +82,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             .listen((event) async {
           debugPrint(event.data);
           String trunck = '';
+          if (event.data == ' ') {
+            trunck = '\n';
+          }
           if (event.data.length > 1) {
             trunck = event.data.substring(1);
           }
