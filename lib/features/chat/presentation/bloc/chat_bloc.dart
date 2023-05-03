@@ -92,22 +92,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             debugPrint(messageJoined);
             streamSubscription?.cancel();
             add(ChatMessageJoined(newMessage: messageJoined));
-            // emit(state.copyWith(clearNewMessage: true));
-            // state.textEditingController?.clear();
-            // final textAnswer = types.TextMessage(
-            //   author: state.receiver!,
-            //   createdAt: DateTime.now().millisecondsSinceEpoch,
-            //   id: _randomString(),
-            //   text: messageJoined,
-            // );
-            // add(ChatMessageAdded(textMessage: textAnswer));
           }
           if (trunck != endMessageMarker) {
             state.textEditingController?.text =
                 '${state.textEditingController?.text}$trunck';
-            state.textEditingController?.selection = TextSelection.fromPosition(
-                TextPosition(offset: state.textEditingController!.text.length));
-            add(ChatMessageJoined(newMessage: '${state.newMessage}$trunck'));
 
             messageJoined = '$messageJoined$trunck';
           }
@@ -128,7 +116,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       state.copyWith(
         isTyping: event.isTyping,
         messageStatus: event.isTyping ? Status.loaded : Status.init,
-        clearNewMessage: event.clearMessage ?? false,
+        // clearNewMessage: event.clearMessage ?? false,
       ),
     );
   }
@@ -150,7 +138,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatMessageJoined event,
     Emitter<ChatState> emit,
   ) {
-    emit(state.copyWith(newMessage: event.newMessage));
+    emit(state.copyWith(newMessage: event.newMessage, isTyping: false));
   }
 
   void _onChatConversationCleared(
@@ -192,6 +180,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     if (state.streamMessage! && state.messages!.isNotEmpty) {
+      /*
+        the last message on the screen is still the customMessage build from the textEditingController,
+        then you have to add the actual message here before inserting the new message from the user typing
+      */
+
+      //first clear the text controller
+
       state.textEditingController?.clear();
       final textAnswer = types.TextMessage(
         author: state.receiver!,
@@ -199,6 +194,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         id: _randomString(),
         text: state.newMessage ?? '',
       );
+
+      // then add the new message
+
       emit(
         state.copyWith(
           messages: List.of(state.messages!)..insert(0, textAnswer),

@@ -44,25 +44,6 @@ class _ChatBodyState extends State<ChatBody> {
               child: CustomProgressIndicator(),
             );
           case Status.loaded:
-            // String defaultMessage = 'Bonjour. Comment puis-je vous aider?';
-            // switch (state.conversation?.category?.id) {
-            //   case 14:
-            //     defaultMessage =
-            //         'Bonjour. Pour savoir ce que la Bible dit sur un sujet.';
-            //     break;
-            //   case 15:
-            //     defaultMessage =
-            //         'Bonjour. Vous aimeriez savoir ce que dirait Jésus.';
-            //     break;
-            //   case 16:
-            //     defaultMessage =
-            //         'Bonjour. Vous aimeriez de l\'aide pour prier.';
-            //     break;
-            //   default:
-            //     defaultMessage = 'Bonjour. Comment puis-je vous aider?';
-            //     break;
-            // }
-
             return ui.Chat(
               showUserAvatars: true,
               avatarBuilder: (uid) => const BotAvatar(),
@@ -82,48 +63,6 @@ class _ChatBodyState extends State<ChatBody> {
                   padding:
                       EdgeInsets.only(left: 15.0, bottom: 8.0, right: 15.0),
                   child: CustomBottomWidget(),
-                  // child: TextField(
-                  //   onChanged: (value) {
-                  //     setState(() {});
-                  //   },
-                  //   controller:
-                  //       textEditingController ?? TextEditingController(),
-                  //   cursorColor: Theme.of(context).primaryColor,
-                  //   decoration: InputDecoration(
-                  //     filled: true,
-                  //     fillColor: Colors.white,
-                  //     contentPadding: const EdgeInsets.only(left: 8),
-                  //     suffixIcon: Visibility(
-                  //       visible: textEditingController!.text.isNotEmpty,
-                  //       child: IconButton(
-                  //         onPressed: () {
-                  //           unfocusKeyboard();
-                  //           context.read<ChatBloc>().add(
-                  //                 ChatMessageSent(
-                  //                   textEditingController!.text,
-                  //                 ),
-                  //               );
-
-                  //           textEditingController!.clear();
-                  //         },
-                  //         icon: Icon(
-                  //           Icons.send_rounded,
-                  //           color: Theme.of(context).primaryColor,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     hintText: 'Ecrivez-ici . . . ',
-                  //     hintStyle: TextStyle(
-                  //         color:
-                  //             Theme.of(context).primaryColor.withOpacity(.7)),
-                  //     border: const OutlineInputBorder(
-                  //         borderRadius: BorderRadius.all(Radius.circular(10)),
-                  //         borderSide: BorderSide.none),
-                  //     focusedBorder: const OutlineInputBorder(
-                  //         borderRadius: BorderRadius.all(Radius.circular(10)),
-                  //         borderSide: BorderSide.none),
-                  //   ),
-                  // ),
                 ),
               ),
             );

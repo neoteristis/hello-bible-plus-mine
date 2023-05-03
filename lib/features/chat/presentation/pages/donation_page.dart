@@ -71,24 +71,8 @@ class _DonationPageState extends State<DonationPage> {
                   ),
                 );
               case Status.loaded:
-                return Stack(
-                  children: [
-                    WebViewWidget(
-                      controller: controller!,
-                    ),
-                    Positioned(
-                      top: 10,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Icon(
-                          Icons.home,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+                return WebViewWidget(
+                  controller: controller!,
                 );
               case Status.failed:
                 return const Center(

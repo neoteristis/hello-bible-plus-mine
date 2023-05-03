@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 
+import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../bloc/chat_bloc.dart';
+import '../typing_indicator.dart';
 
 class CustomBottomWidget extends StatefulWidget {
   const CustomBottomWidget({super.key});
@@ -22,19 +25,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Padding(
-        //   padding: const EdgeInsets.only(left: 15.0, bottom: 8.0),
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       Expanded(
-        //         child: ExpansionTile(
-        //           iconColor: Theme.of(context).primaryColor,
-        //           collapsedIconColor: Theme.of(context).primaryColor,
-        //           title:
-        TextField(
+    return TextField(
       onChanged: (value) {
         setState(() {});
       },
@@ -57,9 +48,18 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
 
               textEditingController!.clear();
             },
-            icon: Icon(
-              Icons.send_rounded,
-              color: Theme.of(context).primaryColor,
+            icon: BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                return Visibility(
+                  visible: !state.isTyping!,
+                  // add here the widget to show while typing
+                  replacement: const SizedBox.shrink(),
+                  child: Icon(
+                    Icons.send_rounded,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -73,37 +73,6 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide.none),
       ),
-    )
-
-        // ),
-        //         children: [
-        //           BlocBuilder<ChatBloc, ChatState>(
-        //             buildWhen: (previous, current) =>
-        //                 previous.streamMessage != current.streamMessage,
-        //             builder: (context, state) {
-        //               return SwitchListTile.adaptive(
-        //                 activeColor: Theme.of(context).primaryColor,
-        //                 contentPadding: const EdgeInsets.only(left: 18, right: 0),
-        //                 value: state.streamMessage ?? true,
-        //                 onChanged: (value) {
-        //                   context
-        //                       .read<ChatBloc>()
-        //                       .add(ChatMessageModChanged(value: value));
-        //                 },
-        //                 title: Text(
-        //                   'Message en streaming',
-        //                   softWrap: false,
-        //                   overflow: TextOverflow.visible,
-        //                   style: Theme.of(context).textTheme.bodySmall,
-        //                 ),
-        //               );
-        //             },
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        ;
+    );
   }
 }

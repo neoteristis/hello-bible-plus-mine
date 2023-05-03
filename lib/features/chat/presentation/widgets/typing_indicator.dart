@@ -12,12 +12,14 @@ class TypingIndicator extends StatefulWidget {
     this.bubbleColor = const Color(0xFF646b7f),
     this.flashingCircleDarkColor = ColorConstants.primary,
     this.flashingCircleBrightColor = ColorConstants.secondary,
+    this.showBubble = true,
   });
 
   final bool showIndicator;
   final Color bubbleColor;
   final Color flashingCircleDarkColor;
   final Color flashingCircleBrightColor;
+  final bool? showBubble;
 
   @override
   State<TypingIndicator> createState() => _TypingIndicatorState();
@@ -130,6 +132,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
               flashingCircleDarkColor: widget.flashingCircleDarkColor,
               flashingCircleBrightColor: widget.flashingCircleBrightColor,
               bubbleColor: widget.bubbleColor,
+              showBubble: widget.showBubble!,
             ),
           ),
         ],
@@ -203,6 +206,7 @@ class StatusBubble extends StatelessWidget {
     required this.flashingCircleBrightColor,
     required this.flashingCircleDarkColor,
     required this.bubbleColor,
+    required this.showBubble,
   });
 
   final AnimationController repeatingController;
@@ -210,41 +214,75 @@ class StatusBubble extends StatelessWidget {
   final Color flashingCircleDarkColor;
   final Color flashingCircleBrightColor;
   final Color bubbleColor;
+  final bool showBubble;
 
   @override
   Widget build(BuildContext context) {
+    if (!showBubble) {
+      return RowFlashingCircle(
+        repeatingController: repeatingController,
+        dotIntervals: dotIntervals,
+        flashingCircleDarkColor: flashingCircleDarkColor,
+        flashingCircleBrightColor: flashingCircleBrightColor,
+      );
+    }
     return Bubble(
       radius: const Radius.circular(20.0),
       color: Colors.white,
       padding: const BubbleEdges.all(10),
       alignment: Alignment.topLeft,
       nip: BubbleNip.leftBottom,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FlashingCircle(
-            index: 0,
-            repeatingController: repeatingController,
-            dotIntervals: dotIntervals,
-            flashingCircleDarkColor: flashingCircleDarkColor,
-            flashingCircleBrightColor: flashingCircleBrightColor,
-          ),
-          FlashingCircle(
-            index: 1,
-            repeatingController: repeatingController,
-            dotIntervals: dotIntervals,
-            flashingCircleDarkColor: flashingCircleDarkColor,
-            flashingCircleBrightColor: flashingCircleBrightColor,
-          ),
-          FlashingCircle(
-            index: 2,
-            repeatingController: repeatingController,
-            dotIntervals: dotIntervals,
-            flashingCircleDarkColor: flashingCircleDarkColor,
-            flashingCircleBrightColor: flashingCircleBrightColor,
-          ),
-        ],
+      child: RowFlashingCircle(
+        repeatingController: repeatingController,
+        dotIntervals: dotIntervals,
+        flashingCircleDarkColor: flashingCircleDarkColor,
+        flashingCircleBrightColor: flashingCircleBrightColor,
       ),
+    );
+  }
+}
+
+class RowFlashingCircle extends StatelessWidget {
+  const RowFlashingCircle({
+    super.key,
+    required this.repeatingController,
+    required this.dotIntervals,
+    required this.flashingCircleDarkColor,
+    required this.flashingCircleBrightColor,
+  });
+
+  final AnimationController repeatingController;
+  final List<Interval> dotIntervals;
+  final Color flashingCircleDarkColor;
+  final Color flashingCircleBrightColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        FlashingCircle(
+          index: 0,
+          repeatingController: repeatingController,
+          dotIntervals: dotIntervals,
+          flashingCircleDarkColor: flashingCircleDarkColor,
+          flashingCircleBrightColor: flashingCircleBrightColor,
+        ),
+        FlashingCircle(
+          index: 1,
+          repeatingController: repeatingController,
+          dotIntervals: dotIntervals,
+          flashingCircleDarkColor: flashingCircleDarkColor,
+          flashingCircleBrightColor: flashingCircleBrightColor,
+        ),
+        FlashingCircle(
+          index: 2,
+          repeatingController: repeatingController,
+          dotIntervals: dotIntervals,
+          flashingCircleDarkColor: flashingCircleDarkColor,
+          flashingCircleBrightColor: flashingCircleBrightColor,
+        ),
+      ],
     );
   }
 }
