@@ -67,42 +67,42 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ),
                   const CategoriesWidget(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white,
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     color: const Color(0xFF202040).withOpacity(0.08),
-                        //     offset: const Offset(0, 8),
-                        //     blurRadius: 16,
-                        //     spreadRadius: 0,
-                        //   ),
-                        // ],
-                      ),
-                      child: TextButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const DonationPage(),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.favorite_border_rounded,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        label: Text(
-                          'Faire un don',
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 15),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(5),
+                  //       color: Colors.white,
+                  //       // boxShadow: [
+                  //       //   BoxShadow(
+                  //       //     color: const Color(0xFF202040).withOpacity(0.08),
+                  //       //     offset: const Offset(0, 8),
+                  //       //     blurRadius: 16,
+                  //       //     spreadRadius: 0,
+                  //       //   ),
+                  //       // ],
+                  //     ),
+                  //     child: TextButton.icon(
+                  //       onPressed: () {
+                  //         Navigator.of(context).push(
+                  //           MaterialPageRoute(
+                  //             builder: (context) => const DonationPage(),
+                  //           ),
+                  //         );
+                  //       },
+                  //       icon: Icon(
+                  //         Icons.favorite_border_rounded,
+                  //         color: Theme.of(context).primaryColor,
+                  //       ),
+                  //       label: Text(
+                  //         'Faire un don',
+                  //         style: TextStyle(
+                  //             color: Theme.of(context).primaryColor,
+                  //             fontSize: 15),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

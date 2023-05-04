@@ -90,3 +90,5 @@ class ChatIncomingMessageLoaded extends ChatEvent {
   @override
   List<Object> get props => [message];
 }
+
+class ChatFocusNodeDisposed extends ChatEvent {}

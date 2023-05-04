@@ -9,6 +9,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:gpt/core/extension/string_extension.dart';
+import 'package:gpt/core/helper/unfocus_keyboard.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
@@ -36,6 +38,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
+            focusNode: FocusNode(),
           ),
         ) {
     on<ChatMessageSent>(_onChatMessageSent);
@@ -48,9 +51,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatMessageAnswerGot>(_onChatMessageAnswerGot);
     on<ChatMessageModChanged>(_onChatMessageModChanged);
     on<ChatIncomingMessageLoaded>(_onChatIncomingMessageLoaded);
+    on<ChatFocusNodeDisposed>(_onChatFocusNodeDisposed);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatFocusNodeDisposed(
+    ChatFocusNodeDisposed event,
+    Emitter<ChatState> emit,
+  ) {
+    state.focusNode?.dispose();
+  }
 
   void _onChatIncomingMessageLoaded(
     ChatIncomingMessageLoaded event,
@@ -91,7 +102,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           debugPrint(event.data);
           String trunck = '';
           if (event.data == ' ') {
-            trunck = '\n';
+            trunck = '\n\n';
           }
           if (event.data.length > 1) {
             trunck = event.data.substring(1);
@@ -102,7 +113,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           if (trunck == endMessageMarker) {
             debugPrint(messageJoined);
             streamSubscription?.cancel();
-            add(ChatMessageJoined(newMessage: messageJoined));
+            // FocusManager.instance.primaryFocus?.requestFocus(state.focusNode);
+            state.focusNode?.requestFocus();
+            add(ChatMessageJoined(newMessage: messageJoined.trim()));
           }
           if (trunck != endMessageMarker) {
             state.textEditingController?.text =
@@ -165,25 +178,34 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     state.textEditingController?.clear();
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         conversationStatus: Status.loading,
-        conversation: const Conversation()));
+        conversation: const Conversation(),
+      ),
+    );
     final res = await changeConversation(event.category);
     res.fold(
       (l) {
-        emit(state.copyWith(
+        emit(
+          state.copyWith(
             conversationStatus: Status.failed,
             failure: l,
-            clearConversation: true));
+            clearConversation: true,
+          ),
+        );
       },
-      (conversation) => emit(
-        state.copyWith(
-          conversation: conversation,
-          theme: theme(event.category.colorTheme),
-          conversationStatus: Status.loaded,
-          messages: [],
-        ),
-      ),
+      (conversation) {
+        state.focusNode?.requestFocus();
+        emit(
+          state.copyWith(
+            conversation: conversation,
+            theme: theme(event.category.colorTheme),
+            conversationStatus: Status.loaded,
+            messages: [],
+          ),
+        );
+      },
     );
   }
 
@@ -221,7 +243,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       author: state.sender!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: _randomString(),
-      text: event.textMessage,
+      text: event.textMessage.capitalize.trimRight(),
     );
     emit(
       state.copyWith(

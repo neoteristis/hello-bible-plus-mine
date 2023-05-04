@@ -25,4 +25,13 @@ class RegistrationRepositoryImp implements RegistrationRepository {
     }
     return const Left(NoConnexionFailure());
   }
+
+  @override
+  Future<Either<Failure, dynamic>> checkAuth() async {
+    try {
+      return Right(await local.getToken());
+    } catch (e) {
+      return const Left(CacheFailure());
+    }
+  }
 }

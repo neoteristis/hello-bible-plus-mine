@@ -26,10 +26,11 @@ Widget bubbleBuilder(
         // }
         return Bubble(
           radius: const Radius.circular(20.0),
-          color: state.sender!.id != message.author.id ||
-                  message.type == types.MessageType.image
-              ? Colors.white
-              : Theme.of(context).primaryColor,
+          color: Colors.white,
+          // color: state.sender!.id != message.author.id ||
+          //         message.type == types.MessageType.image
+          //     ? Colors.white
+          //     : Theme.of(context).primaryColor,
           margin: nextMessageInGroup
               ? const BubbleEdges.symmetric(horizontal: 6)
               : null,
@@ -55,12 +56,12 @@ Widget bubbleBuilder(
               //       )
               ? Text(
                   message.text,
-                  style: TextStyle(
-                    color: state.sender!.id != message.author.id ||
-                            message.type == types.MessageType.image
-                        ? Theme.of(context).primaryColor
-                        : Colors.white,
-                  ),
+                  // style: TextStyle(
+                  //   color: state.sender!.id != message.author.id ||
+                  //           message.type == types.MessageType.image
+                  //       ? Theme.of(context).primaryColor
+                  //       : Colors.white,
+                  // ),
                 )
               : child,
         );

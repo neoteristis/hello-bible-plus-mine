@@ -27,6 +27,7 @@ class ChatState extends Equatable {
     this.theme,
     this.streamMessage = true,
     this.incoming = '',
+    this.focusNode,
   });
 
   final List<types.Message>? messages;
@@ -44,6 +45,7 @@ class ChatState extends Equatable {
   final ThemeData? theme;
   final bool? streamMessage;
   final String? incoming;
+  final FocusNode? focusNode;
 
   @override
   List<Object?> get props => [
@@ -62,6 +64,7 @@ class ChatState extends Equatable {
         theme,
         streamMessage,
         incoming,
+        focusNode,
       ];
 
   ChatState copyWith({
@@ -82,6 +85,7 @@ class ChatState extends Equatable {
     ThemeData? theme,
     bool? streamMessage,
     String? incoming,
+    FocusNode? focusNode,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -101,6 +105,7 @@ class ChatState extends Equatable {
       theme: theme ?? this.theme,
       streamMessage: streamMessage ?? this.streamMessage,
       incoming: incoming ?? this.incoming,
+      focusNode: focusNode ?? this.focusNode,
     );
   }
 }
