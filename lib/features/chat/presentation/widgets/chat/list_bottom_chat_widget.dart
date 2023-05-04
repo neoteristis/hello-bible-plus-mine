@@ -1,6 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/widgets/bot_avatar.dart';
@@ -41,34 +42,47 @@ class ListBottomChatWidget extends StatelessWidget {
                 children: [
                   const BotAvatar(),
                   // if (!state.isTyping!)
-                  Expanded(
-                    flex: 5,
+                  Container(
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * .70),
                     child: Bubble(
-                      radius: const Radius.circular(20.0),
-                      color: Colors.white,
-                      margin: const BubbleEdges.symmetric(horizontal: 0),
-                      nip: BubbleNip.leftBottom,
-                      child: TextFormField(
-                        cursorColor: Theme.of(context).primaryColor,
-                        enabled: false,
-                        minLines: 1,
-                        maxLines: null,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Theme.of(context).primaryColor),
-                        controller: state.textEditingController,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.zero),
-                      ),
-                    ),
+                        radius: const Radius.circular(20.0),
+                        color: Colors.white,
+                        margin: const BubbleEdges.symmetric(horizontal: 0),
+                        nip: BubbleNip.leftBottom,
+                        child: Text(
+                          state.incoming ?? '',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
+                        // child: Markdown(
+                        //   padding: EdgeInsets.zero,
+                        //   shrinkWrap: true,
+                        //   softLineBreak: true,
+                        //   data: state.incoming ?? '',
+                        // )
+                        // child: TextFormField(
+                        //   cursorColor: Theme.of(context).primaryColor,
+                        //   enabled: false,
+                        //   minLines: 1,
+                        //   maxLines: null,
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .bodyMedium
+                        //       ?.copyWith(color: Theme.of(context).primaryColor),
+                        //   controller: state.textEditingController,
+                        //   decoration: const InputDecoration(
+                        //       border: InputBorder.none,
+                        //       contentPadding: EdgeInsets.zero),
+                        // ),
+                        ),
                   ),
                   // if (!state.isTyping!)
                   //   Expanded(child: TypingIndicator(showIndicator: true)),
-                  const Spacer(
-                    flex: 1,
-                  ),
+                  // const Spacer(
+                  //   flex: 1,
+                  // ),
                 ],
               ),
             );

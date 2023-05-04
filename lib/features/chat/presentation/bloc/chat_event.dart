@@ -80,3 +80,13 @@ class ChatMessageModChanged extends ChatEvent {
   @override
   List<Object> get props => [value];
 }
+
+class ChatIncomingMessageLoaded extends ChatEvent {
+  final String message;
+  const ChatIncomingMessageLoaded({
+    required this.message,
+  });
+
+  @override
+  List<Object> get props => [message];
+}

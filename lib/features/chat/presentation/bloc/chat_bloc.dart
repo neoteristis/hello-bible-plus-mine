@@ -47,9 +47,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatMessageJoined>(_onChatMessageJoined);
     on<ChatMessageAnswerGot>(_onChatMessageAnswerGot);
     on<ChatMessageModChanged>(_onChatMessageModChanged);
+    on<ChatIncomingMessageLoaded>(_onChatIncomingMessageLoaded);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatIncomingMessageLoaded(
+    ChatIncomingMessageLoaded event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(state.copyWith(incoming: event.message));
+  }
 
   void _onChatMessageModChanged(
     ChatMessageModChanged event,
@@ -101,6 +109,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 '${state.textEditingController?.text}$trunck';
 
             messageJoined = '$messageJoined$trunck';
+            add(ChatIncomingMessageLoaded(message: messageJoined));
           }
         });
       } catch (e) {
