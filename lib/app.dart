@@ -4,7 +4,6 @@ import 'package:gpt/core/theme/theme.dart';
 
 import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
-import 'features/chat/presentation/pages/chat_page.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
 import 'features/user/presentation/pages/registration_page.dart';

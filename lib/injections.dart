@@ -19,7 +19,6 @@ import 'features/chat/domain/usecases/usecases.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/user/data/repositories/registration_repository_imp.dart';
 import 'features/user/domain/repositories/registration_repository.dart';
-import 'features/user/domain/usecases/registration_usecase.dart';
 import 'features/user/domain/usecases/usecases.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 

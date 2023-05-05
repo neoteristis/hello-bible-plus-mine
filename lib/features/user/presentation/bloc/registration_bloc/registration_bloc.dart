@@ -163,7 +163,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         ? emit(
             state.copyWith(
               registrationInputs: state.registrationInputs.copyWith(
-                country: RequiredInput.dirty(
+                country: const RequiredInput.dirty(
                   '',
                 ),
               ),
