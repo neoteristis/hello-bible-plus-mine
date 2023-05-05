@@ -33,7 +33,7 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   Future<Conversation> changeConversation(Category cat) async {
     try {
       final res = await baseRepo.post(ApiConstants.conversation, body: {
-        "category": cat.id,
+        'category': cat.id,
       });
       return Conversation.fromJson(res.data);
     } catch (e) {
@@ -61,8 +61,8 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
       final res = await baseRepo.get(
         ApiConstants.answer(idConversation),
         options: Options(headers: {
-          "Accept": "text/event-stream",
-          "Cache-Control": "no-cache",
+          'Accept': 'text/event-stream',
+          'Cache-Control': 'no-cache',
         }, responseType: ResponseType.stream),
       );
       return res;

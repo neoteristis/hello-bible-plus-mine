@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/constants/color_constants.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../core/widgets/logo_widget.dart';
 
@@ -44,8 +43,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               return Container(
                 width: double.infinity,
                 decoration: BoxDecoration(color: Colors.white.withOpacity(.3)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
                     '👋  Bonjour ',
                     style: TextStyle(
@@ -66,7 +65,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   state.conversation?.category?.name ?? 'chargement...',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 17,
                   ),

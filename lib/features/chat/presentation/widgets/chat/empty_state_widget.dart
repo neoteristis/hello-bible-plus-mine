@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../bloc/chat_bloc.dart';
 import 'custom_bottom_widget.dart';
 
@@ -44,7 +42,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  welcomePhrase == null || welcomePhrase == ""
+                  welcomePhrase == null || welcomePhrase == ''
                       ?
                       // state.conversation!.category!.welcomePhrase ??
                       'Bonjour. Comment puis-je vous aider ?'
@@ -59,10 +57,10 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> {
                     // height: 1.5,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                CustomBottomWidget()
+                const CustomBottomWidget()
               ],
             ),
           ),

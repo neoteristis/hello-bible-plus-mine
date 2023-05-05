@@ -15,7 +15,7 @@ final _routerForLogin = GoRouter(
     GoRoute(
       path: RouteName.home,
       builder: (context, state) => const RegistrationPage(),
-      routes: [],
+      routes: const [],
     )
   ],
 );

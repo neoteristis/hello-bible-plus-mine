@@ -11,27 +11,13 @@ class ContainerCategoriesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Container(
-        // decoration: BoxDecoration(
-        //   borderRadius: BorderRadius.circular(10),
-        //   color: Colors.white,
-        //   boxShadow: [
-        //     BoxShadow(
-        //       color: const Color(0xFF202040).withOpacity(0.08),
-        //       offset: const Offset(0, 8),
-        //       blurRadius: 16,
-        //       spreadRadius: 0,
-        //     ),
-        //   ],
-        // ),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              CategoriesWidget(),
-            ],
-          ),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            CategoriesWidget(),
+          ],
         ),
       ),
     );

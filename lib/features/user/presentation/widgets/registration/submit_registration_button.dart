@@ -10,7 +10,7 @@ class SubmitRegistrationButton extends StatelessWidget {
     return RoundedLoadingButton(
       controller: RoundedLoadingButtonController(),
       onPressed: () {},
-      child: Text('Valider'),
+      child: const Text('Valider'),
     );
   }
 }

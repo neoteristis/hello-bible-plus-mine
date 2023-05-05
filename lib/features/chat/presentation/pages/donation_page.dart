@@ -4,7 +4,6 @@ import 'package:gpt/features/chat/presentation/bloc/donation_bloc/donation_bloc.
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../core/constants/status.dart';
-import '../../../../core/widgets/custom_progress_indicator.dart';
 
 class DonationPage extends StatefulWidget {
   const DonationPage({super.key});
@@ -79,7 +78,7 @@ class _DonationPageState extends State<DonationPage> {
                   child: Text('Une erreur s\'est produite'),
                 );
               default:
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
             }
           },
         ),

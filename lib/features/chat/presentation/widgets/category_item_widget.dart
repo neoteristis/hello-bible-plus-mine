@@ -56,7 +56,7 @@ class CategoryItemWidget extends StatelessWidget {
                 category!.name ?? 'non défini',
                 // 'This is a a long category name for you to test it better this is even longer than that',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                 ),

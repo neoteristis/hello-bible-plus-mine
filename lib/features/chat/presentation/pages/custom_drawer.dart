@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gpt/features/chat/presentation/pages/donation_page.dart';
 
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/widgets/logo_widget.dart';
@@ -34,7 +33,7 @@ class CustomDrawer extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
-                          image: DecorationImage(
+                          image: const DecorationImage(
                               image: AssetImage(
                                 'assets/images/bible.webp',
                               ),

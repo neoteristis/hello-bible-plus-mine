@@ -116,7 +116,10 @@ abstract class FormzInput<T, E> {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) return false;
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
+
     return other is FormzInput<T, E> &&
         other.value == value &&
         other.isPure == isPure;

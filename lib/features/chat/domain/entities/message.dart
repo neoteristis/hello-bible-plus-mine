@@ -39,25 +39,25 @@ class Message extends Equatable {
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      id: json["id"],
-      content: json["content"],
-      conversation: json["conversation"] == null
+      id: json['id'],
+      content: json['content'],
+      conversation: json['conversation'] == null
           ? null
-          : Conversation.fromJson(json["conversation"]),
+          : Conversation.fromJson(json['conversation']),
       response:
-          json.containsKey("response") ? json["response"]["content"] : null,
-      created: json["created"],
-      updated: json["updated"],
+          json.containsKey('response') ? json['response']['content'] : null,
+      created: json['created'],
+      updated: json['updated'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "content": content,
-        "conversation": conversation?.toJson(),
-        "response": response,
-        "created": created,
-        "updated": updated,
+        'id': id,
+        'content': content,
+        'conversation': conversation?.toJson(),
+        'response': response,
+        'created': created,
+        'updated': updated,
       };
 
   @override

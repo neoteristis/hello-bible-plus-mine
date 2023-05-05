@@ -1,5 +1,6 @@
 import '../helper/formz.dart';
 
+// ignore: unused_field
 enum UnrequiredInputValidationError { _ }
 
 class UnrequiredInput

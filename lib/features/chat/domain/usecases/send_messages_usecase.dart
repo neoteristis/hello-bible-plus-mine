@@ -28,8 +28,8 @@ class MessageParam extends Equatable {
   });
 
   Map<String, dynamic> toJson() => {
-        "content": content,
-        "conversation": conversation?.id,
+        'content': content,
+        'conversation': conversation?.id,
       };
 
   @override

@@ -20,10 +20,10 @@ class Category extends Equatable {
   final Color? colorTheme;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        name: json["name"],
-        prompt: json["prompt"],
-        model: json["model"],
+        id: json['id'],
+        name: json['name'],
+        prompt: json['prompt'],
+        model: json['model'],
         welcomePhrase: json['welcomePhrase'],
         colorTheme: json['colorCode'] == null || json['colorCode'] == ''
             ? null
@@ -31,10 +31,10 @@ class Category extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "prompt": prompt,
-        "model": model,
+        'id': id,
+        'name': name,
+        'prompt': prompt,
+        'model': model,
       };
 
   @override

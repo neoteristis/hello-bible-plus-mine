@@ -35,21 +35,21 @@ class Conversation extends Equatable {
 
   factory Conversation.fromJson(Map<String, dynamic> json) {
     return Conversation(
-      id: json["id"],
-      title: json["title"],
+      id: json['id'],
+      title: json['title'],
       category:
-          json["category"] == null ? null : Category.fromJson(json["category"]),
-      created: json["created"],
-      updated: json["updated"],
+          json['category'] == null ? null : Category.fromJson(json['category']),
+      created: json['created'],
+      updated: json['updated'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "category": category?.toJson(),
-        "created": created,
-        "updated": updated,
+        'id': id,
+        'title': title,
+        'category': category?.toJson(),
+        'created': created,
+        'updated': updated,
       };
 
   @override

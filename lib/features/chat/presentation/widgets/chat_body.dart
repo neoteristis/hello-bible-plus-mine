@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/features/chat/presentation/widgets/chat/custom_bottom_widget.dart';
 
 import '../../../../core/constants/status.dart';

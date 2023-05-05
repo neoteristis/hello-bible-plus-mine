@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 
-import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../bloc/chat_bloc.dart';
-import '../typing_indicator.dart';
 
 class CustomBottomWidget extends StatefulWidget {
   const CustomBottomWidget({super.key});
@@ -41,6 +38,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           onChanged: (value) {
             setState(() {});
           },
+          keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.sentences,
           focusNode: state,
           controller: textEditingController ?? TextEditingController(),
           cursorColor: Theme.of(context).primaryColor,

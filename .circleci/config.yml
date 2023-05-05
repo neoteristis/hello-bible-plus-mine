@@ -1,0 +1,29 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@2.0.0
+  flutter-orb: circleci/flutter@1.1.0
+  ruby: circleci/ruby@1.6.0
+  macos: circleci/macos@2.1.0
+
+jobs:
+  flutter_tests:
+    docker:
+      - image: cirrusci/flutter
+    steps:
+      - checkout
+      - run: sudo gem install bundler:1.12.0
+      - run: flutter doctor
+      - run: flutter packages get
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
+      - run: flutter test --coverage
+
+workflows:
+  version: 2.1
+  test_and_distribute:
+    jobs:
+      - flutter-orb/lint:
+          version: 3.3.3
+  build-test-and-approval-deploy:
+    jobs:
+      - flutter_tests

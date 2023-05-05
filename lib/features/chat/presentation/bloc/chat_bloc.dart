@@ -9,8 +9,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:gpt/core/extension/string_extension.dart';
-import 'package:gpt/core/helper/unfocus_keyboard.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
@@ -243,7 +241,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       author: state.sender!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: _randomString(),
-      text: event.textMessage.capitalize.trimRight(),
+      text: event.textMessage.trimRight(),
     );
     emit(
       state.copyWith(
