@@ -7,6 +7,7 @@ class User extends Equatable {
   final String? email;
   final String? validationCode;
   final String? country;
+
   const User({
     this.id,
     this.lastName,

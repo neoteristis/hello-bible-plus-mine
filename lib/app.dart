@@ -5,6 +5,9 @@ import 'package:gpt/core/theme/theme.dart';
 import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/pages/chat_page.dart';
+import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
+import 'features/user/presentation/pages/registration_page.dart';
 import 'injections.dart';
 
 class App extends StatelessWidget {
@@ -20,6 +23,12 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<DonationBloc>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<RegistrationBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<AuthBloc>(),
+        ),
       ],
       child: BlocBuilder<ChatBloc, ChatState>(
         buildWhen: (previous, current) => previous.theme != current.theme,
@@ -28,7 +37,8 @@ class App extends StatelessWidget {
             title: 'hello bible',
             theme: state.theme ?? theme(null),
             debugShowCheckedModeBanner: false,
-            home: const ChatPage(),
+            // home: const ChatPage(),
+            home: const RegistrationPage(),
           );
         },
       ),

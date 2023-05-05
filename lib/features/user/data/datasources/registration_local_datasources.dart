@@ -10,9 +10,9 @@ abstract class RegistrationLocalDatasources {
 
 class RegistrationLocalDatasourcesImp implements RegistrationLocalDatasources {
   final DbService db;
-  RegistrationLocalDatasourcesImp({
-    required this.db,
-  });
+  RegistrationLocalDatasourcesImp(
+    this.db,
+  );
   @override
   Future saveToken(Token token) async {
     await db.saveToken(token);

@@ -18,7 +18,7 @@ class CodeRegistrationInput extends StatelessWidget {
             labelText: 'Code',
             errorMaxLines: 2,
             errorText: state.registrationInputs.code.isNotValid
-                ? state.registrationInputs.code.displayError!.text
+                ? state.registrationInputs.code.displayError?.text
                 : null,
           ),
           onChanged: (code) => context

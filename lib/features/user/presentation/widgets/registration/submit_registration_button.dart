@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gpt/features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
 
 import '../../../../../core/widgets/rounded_loading_button.dart';
 
@@ -8,8 +10,11 @@ class SubmitRegistrationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RoundedLoadingButton(
+      animateOnTap: false,
       controller: RoundedLoadingButtonController(),
-      onPressed: () {},
+      onPressed: () {
+        context.read<RegistrationBloc>().add(RegistrationSubmitted());
+      },
       child: const Text('Valider'),
     );
   }

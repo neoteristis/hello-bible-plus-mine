@@ -8,9 +8,9 @@ import '../repositories/registration_repository.dart';
 
 class RegistrationUsecase extends Usecase<dynamic, User> {
   final RegistrationRepository repo;
-  RegistrationUsecase({
-    required this.repo,
-  });
+  RegistrationUsecase(
+    this.repo,
+  );
   @override
   Future<Either<Failure, dynamic>> call(User params) async {
     return await repo.register(params);

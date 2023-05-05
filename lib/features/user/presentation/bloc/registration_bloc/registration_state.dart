@@ -44,7 +44,7 @@ class RegistrationInputs with FormzMixin {
 
   RegistrationInputs copyWith({
     RequiredInput? name,
-    RequiredInput? firstname,
+    FirstNameInput? firstname,
     EmailInput? email,
     RequiredInput? country,
     RequiredInput? code,
