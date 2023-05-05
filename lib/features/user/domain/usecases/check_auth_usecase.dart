@@ -7,9 +7,9 @@ import '../repositories/registration_repository.dart';
 
 class CheckAuthUsecase extends Usecase<dynamic, NoParams> {
   final RegistrationRepository repo;
-  CheckAuthUsecase({
-    required this.repo,
-  });
+  CheckAuthUsecase(
+    this.repo,
+  );
   @override
   Future<Either<Failure, dynamic>> call(NoParams params) async {
     return await repo.checkAuth();

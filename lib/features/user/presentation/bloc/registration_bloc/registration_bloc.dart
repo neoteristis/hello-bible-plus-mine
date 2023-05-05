@@ -1,15 +1,19 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gpt/features/user/domain/usecases/registration_usecase.dart';
 
 import '../../../../../core/helper/formz.dart';
 import '../../../../../core/models/required_input.dart';
 import '../../../data/models/email_input.dart';
+import '../../../data/models/first_name_input.dart';
 
 part 'registration_event.dart';
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
-  RegistrationBloc() : super(const RegistrationState()) {
+  final RegistrationUsecase registration;
+  RegistrationBloc({required this.registration})
+      : super(const RegistrationState()) {
     on<RegistrationNameChanged>(_onRegistrationNameChanged);
     on<RegistrationFirstnameChanged>(_onRegistrationFirstnameChanged);
     on<RegistrationEmailChanged>(_onRegistrationEmailChanged);
@@ -39,7 +43,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) {
     final registrationInputs = state.registrationInputs.copyWith(
-      firstname: RequiredInput.dirty(
+      firstname: FirstNameInput.dirty(
         event.firstname,
       ),
     );
@@ -103,7 +107,68 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) {
     if (state.registrationInputs.isNotValid) {
+      checkEmptyError(emit);
+      print('-------------------invalid input');
       return;
     }
+    print('-------------------valid input');
+  }
+
+  void checkEmptyError(Emitter<RegistrationState> emit) {
+    state.registrationInputs.email.isPure
+        ? emit(
+            state.copyWith(
+              registrationInputs: state.registrationInputs.copyWith(
+                email: const EmailInput.dirty(
+                  '',
+                ),
+              ),
+            ),
+          )
+        : null;
+    state.registrationInputs.name.isPure
+        ? emit(
+            state.copyWith(
+              registrationInputs: state.registrationInputs.copyWith(
+                name: const RequiredInput.dirty(
+                  '',
+                ),
+              ),
+            ),
+          )
+        : null;
+    state.registrationInputs.firstname.isPure
+        ? emit(
+            state.copyWith(
+              registrationInputs: state.registrationInputs.copyWith(
+                firstname: const FirstNameInput.dirty(
+                  '',
+                ),
+              ),
+            ),
+          )
+        : null;
+    state.registrationInputs.code.isPure
+        ? emit(
+            state.copyWith(
+              registrationInputs: state.registrationInputs.copyWith(
+                code: const RequiredInput.dirty(
+                  '',
+                ),
+              ),
+            ),
+          )
+        : null;
+    state.registrationInputs.country.isPure
+        ? emit(
+            state.copyWith(
+              registrationInputs: state.registrationInputs.copyWith(
+                country: RequiredInput.dirty(
+                  '',
+                ),
+              ),
+            ),
+          )
+        : null;
   }
 }
