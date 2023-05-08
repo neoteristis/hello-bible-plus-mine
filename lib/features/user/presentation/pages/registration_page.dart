@@ -15,6 +15,7 @@ class RegistrationPage extends StatelessWidget {
           EmailRegistrationInput(),
           CountryRegistrationInput(),
           CodeRegistrationInput(),
+          InvalidCodeWidget(),
           SubmitRegistrationButton(),
         ],
       ),
