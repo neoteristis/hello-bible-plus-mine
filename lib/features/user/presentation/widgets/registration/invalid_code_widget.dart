@@ -13,8 +13,9 @@ class InvalidCodeWidget extends StatelessWidget {
           style: const TextStyle(fontSize: 16.0, color: Colors.black),
           children: [
             const TextSpan(
-                text:
-                    'Votre code semble être incorrect. Si vous n’avez pas encore reçus votre code de validation '),
+              text:
+                  'Votre code semble être incorrect. Si vous n’avez pas encore reçus votre code de validation ',
+            ),
             TextSpan(
               text: 'clique ici',
               style: const TextStyle(
