@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/theme/theme.dart';
 
+import 'core/routes/route_name.dart';
 import 'core/routes/router.dart';
 import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
@@ -35,7 +36,8 @@ class App extends StatelessWidget {
           return BlocBuilder<AuthBloc, AuthState>(
             buildWhen: (previous, current) => previous.route != current.route,
             builder: (context, authState) {
-              final route = authState.route;
+              // final route = authState.route;
+              const route = RouteName.logged;
               return MaterialApp.router(
                 title: 'hello bible +',
                 theme: state.theme ?? theme(null),

@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_tts/flutter_tts.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
@@ -27,12 +28,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
+  final FlutterTts tts;
   late StreamSubscription<SseMessage>? streamSubscription;
   ChatBloc({
     required this.fetchCategories,
     required this.changeConversation,
     required this.sendMessage,
     required this.getResponseMessages,
+    required this.tts,
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
@@ -98,20 +101,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             .transform(const SseTransformer())
             .listen((event) async {
           debugPrint(event.data);
+
           String trunck = '';
+
           if (event.data == ' ') {
             trunck = '\n\n';
           }
           if (event.data.length > 1) {
             trunck = event.data.substring(1);
           }
-          add(const ChatTypingStatusChanged(
-            isTyping: true,
-          ));
+          add(
+            const ChatTypingStatusChanged(
+              isTyping: true,
+            ),
+          );
           if (trunck == endMessageMarker) {
             debugPrint(messageJoined);
             streamSubscription?.cancel();
-            // FocusManager.instance.primaryFocus?.requestFocus(state.focusNode);
             state.focusNode?.requestFocus();
             add(ChatMessageJoined(newMessage: messageJoined.trim()));
           }
@@ -139,7 +145,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       state.copyWith(
         isTyping: event.isTyping,
         messageStatus: event.isTyping ? Status.loaded : Status.init,
-        // clearNewMessage: event.clearMessage ?? false,
       ),
     );
   }
@@ -237,6 +242,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
       // add(ChatMessageAdded(textMessage: textAnswer));
     }
+    tts.stop();
     final textMessage = types.TextMessage(
       author: state.sender!,
       createdAt: DateTime.now().millisecondsSinceEpoch,

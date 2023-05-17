@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
@@ -57,6 +58,14 @@ Future external() async {
       getIt(),
     ),
   );
+  final FlutterTts flutterTts = FlutterTts();
+  await flutterTts.setSharedInstance(true);
+  await flutterTts.setSpeechRate(0.5);
+  await flutterTts.setLanguage('fr-FR');
+  // await flutterTts.setVoice({'name': 'Karen', 'locale': 'fr-FR'});
+  await flutterTts.setVolume(1.0);
+
+  getIt.registerLazySingleton<FlutterTts>(() => flutterTts);
 }
 
 void dataSource() {
@@ -105,6 +114,7 @@ void bloc() {
       changeConversation: getIt(),
       sendMessage: getIt(),
       getResponseMessages: getIt(),
+      tts: getIt(),
     ),
   );
 

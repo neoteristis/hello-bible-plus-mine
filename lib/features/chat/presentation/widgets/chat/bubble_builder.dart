@@ -12,24 +12,9 @@ Widget bubbleBuilder(
 }) =>
     BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
-        // if (state.messageStatus == Status.loading) {
-        //   return Bubble(
-        //     // Show loading bubble
-        //     color: Colors.grey[300],
-        //     child: SizedBox(
-        //       width: 24,
-        //       height: 24,
-        //       child: Text('loading'),
-        //     ),
-        //   );
-        // }
         return Bubble(
           radius: const Radius.circular(20.0),
           color: Colors.white,
-          // color: state.sender!.id != message.author.id ||
-          //         message.type == types.MessageType.image
-          //     ? Colors.white
-          //     : Theme.of(context).primaryColor,
           margin: nextMessageInGroup
               ? const BubbleEdges.symmetric(horizontal: 6)
               : null,
@@ -39,28 +24,14 @@ Widget bubbleBuilder(
                   ? BubbleNip.leftBottom
                   : BubbleNip.rightBottom,
           child: message.type == types.MessageType.text
-              // ? state.sender!.id != message.author.id ||
-              //         message.type == types.MessageType.image
-              //     ? Markdown(
-              //         padding: EdgeInsets.zero,
-              //         shrinkWrap: true,
-              //         softLineBreak: true,
-              //         data: message.text,
-              //       )
-              //     : Text(
-              //         message.text,
-              //         style: TextStyle(
-              //           color: Colors.white,
-              //         ),
-              //       )
               ? Text(
                   message.text,
-                  // style: TextStyle(
-                  //   color: state.sender!.id != message.author.id ||
-                  //           message.type == types.MessageType.image
-                  //       ? Theme.of(context).primaryColor
-                  //       : Colors.white,
-                  // ),
+                  style: TextStyle(
+                    color: state.sender!.id != message.author.id ||
+                            message.type == types.MessageType.image
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
+                  ),
                 )
               : child,
         );
