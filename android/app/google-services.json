@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "994190058581",
+    "project_id": "hello-bible-plus",
+    "storage_bucket": "hello-bible-plus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994190058581:android:e20ad9d570af54daf560dc",
+        "android_client_info": {
+          "package_name": "com.example.gpt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "994190058581-9q8njd54g553b6fgb35mbr4oq1pb9sf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gpt",
+            "certificate_hash": "f934901b8a4ebdbf79c41aedbab8a84f36be1187"
+          }
+        },
+        {
+          "client_id": "994190058581-btlocgg7k7cqm3stc32b14s1f1vv475u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4HEn9BxEMhpKRnCOWCThpBHMqoV9DjRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "994190058581-btlocgg7k7cqm3stc32b14s1f1vv475u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "994190058581-dfqg6r9qac823ivv8gut94bs2t6ojpq9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myagency.gpt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
