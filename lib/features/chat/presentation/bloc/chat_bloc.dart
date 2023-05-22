@@ -9,7 +9,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_tts/flutter_tts.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
@@ -28,14 +27,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
-  final FlutterTts tts;
+  // final FlutterTts tts;
   late StreamSubscription<SseMessage>? streamSubscription;
   ChatBloc({
     required this.fetchCategories,
     required this.changeConversation,
     required this.sendMessage,
     required this.getResponseMessages,
-    required this.tts,
+    // required this.tts,
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
@@ -242,7 +241,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
       // add(ChatMessageAdded(textMessage: textAnswer));
     }
-    tts.stop();
+    // tts.stop();
     final textMessage = types.TextMessage(
       author: state.sender!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
