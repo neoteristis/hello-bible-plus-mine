@@ -9,13 +9,18 @@ class SubmitRegistrationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RoundedLoadingButton(
-      animateOnTap: false,
-      controller: RoundedLoadingButtonController(),
-      onPressed: () {
-        context.read<RegistrationBloc>().add(RegistrationSubmitted());
+    return BlocBuilder<RegistrationBloc, RegistrationState>(
+      buildWhen:(previous, current) => previous.registrationBtnController != current.registrationBtnController,
+      builder: (context, state) {
+        return RoundedLoadingButton(
+          animateOnTap: false,
+          controller: state.registrationBtnController ?? RoundedLoadingButtonController(),
+          onPressed: () {
+            context.read<RegistrationBloc>().add(RegistrationSubmitted());
+          },
+          child: const Text('Valider'),
+        );
       },
-      child: const Text('Valider'),
     );
   }
 }

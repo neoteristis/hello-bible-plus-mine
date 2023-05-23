@@ -13,6 +13,8 @@ import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:gpt/features/user/data/datasources/datasources.dart';
 import 'package:gpt/features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 import 'core/base_repository/base_repository.dart';
 import 'core/base_repository/base_repository_imp.dart';
@@ -24,10 +26,12 @@ import 'features/chat/data/datasources/chat_remote_datasources.dart';
 import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/usecases.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
+import 'features/user/data/models/box/user_box.dart';
 import 'features/user/data/repositories/registration_repository_imp.dart';
 import 'features/user/domain/repositories/registration_repository.dart';
 import 'features/user/domain/usecases/usecases.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'objectbox.g.dart';
 
 final getIt = GetIt.instance;
 
@@ -51,14 +55,29 @@ Future<void> dioHandling() async {
 }
 
 Future external() async {
+  final documentsDirectory = await getApplicationDocumentsDirectory();
+  final databaseDirectory = p.join(documentsDirectory.path, 'hello_bible_plus');
+
+  // Future<Store> openStore() {...} is defined in the generated objectbox.g.dart
+
   await dioHandling();
   getIt.registerLazySingleton<BaseRepository>(
       () => BaseRepositoryImp(dio: getIt()));
   final InternetConnectionChecker internetConnectionChecker =
       InternetConnectionChecker();
   getIt.registerLazySingleton(() => internetConnectionChecker);
+
+  final store = await openStore(directory: databaseDirectory);
+  getIt.registerLazySingleton(() => store);
+  getIt.registerLazySingleton(() => Box<UserBox>(getIt()));
+
   getIt.registerLazySingleton<DbService>(
-      () => DbServiceImp(secureStorage: const FlutterSecureStorage()));
+    () => DbServiceImp(
+      secureStorage: const FlutterSecureStorage(),
+      store: getIt(),
+      userBox: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImp(
       getIt(),
@@ -72,15 +91,6 @@ Future external() async {
   if (!kIsWeb) {
     await setupFlutterNotifications();
   }
-
-  // await Firebase.initializeApp();
-  // final fcmToken = await FirebaseMessaging.instance.getToken();
-  // print(fcmToken);
-  // FirebaseMessaging.onMessage.listen(
-  //   (RemoteMessage message) {
-  //     Log.info(message);
-  //   },
-  // );
 }
 
 void dataSource() {

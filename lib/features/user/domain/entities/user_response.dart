@@ -16,10 +16,11 @@ class UserResponse extends Equatable {
         token,
       ];
 
-  factory UserResponse.fromMap(Map<String, dynamic> map) {
+  factory UserResponse.fromJson(Map<String, dynamic> map) {
     return UserResponse(
-      user: map['user'] != null ? User.fromJson(map['user']) : null,
-      token: map['token'] != null ? Token.fromJson(map['token']) : null,
+      user: User.fromJson(map),
+      token:
+          map['token'] != null ? Token(token: map['token'], refresh: '') : null,
     );
   }
 }

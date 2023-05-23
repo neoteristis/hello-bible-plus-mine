@@ -6,6 +6,8 @@ abstract class RegistrationLocalDatasources {
   Future saveUser(User user);
   Future saveToken(Token token);
   Future<String?> getToken();
+  Future<User?> getUser();
+  Future deleteAuth();
 }
 
 class RegistrationLocalDatasourcesImp implements RegistrationLocalDatasources {
@@ -20,11 +22,22 @@ class RegistrationLocalDatasourcesImp implements RegistrationLocalDatasources {
 
   @override
   Future saveUser(User user) async {
-    throw UnimplementedError();
+    await db.saveUser(user);
   }
 
   @override
   Future<String?> getToken() async {
     return await db.getToken();
+  }
+
+  @override
+  Future<User?> getUser() async {
+    return await db.getUser();
+  }
+
+  @override
+  Future deleteAuth() async {
+    await db.deleteToken();
+    await db.deleteUser();
   }
 }

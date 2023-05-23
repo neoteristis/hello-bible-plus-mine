@@ -51,8 +51,8 @@ class _CountryRegistrationInputState extends State<CountryRegistrationInput> {
             ),
           ),
           suggestionsCallback: (pattern) async {
-            final suggest = countriesListJson
-                .where((element) => element['name']!.contains(pattern));
+            final suggest = countriesListJson.where((element) =>
+                element['name']!.toLowerCase().contains(pattern.toLowerCase()));
 
             return suggest;
           },

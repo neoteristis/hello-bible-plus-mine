@@ -1,9 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/usecases/registration_usecase.dart';
+import 'package:logger/logger.dart';
 
+import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/formz.dart';
 import '../../../../../core/models/required_input.dart';
+import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../../data/models/email_input.dart';
 import '../../../data/models/first_name_input.dart';
 
@@ -13,7 +17,8 @@ part 'registration_state.dart';
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final RegistrationUsecase registration;
   RegistrationBloc({required this.registration})
-      : super(const RegistrationState()) {
+      : super(RegistrationState(
+            registrationBtnController: RoundedLoadingButtonController())) {
     on<RegistrationNameChanged>(_onRegistrationNameChanged);
     on<RegistrationFirstnameChanged>(_onRegistrationFirstnameChanged);
     on<RegistrationEmailChanged>(_onRegistrationEmailChanged);
@@ -105,13 +110,37 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   void _onRegistrationSubmitted(
     RegistrationSubmitted event,
     Emitter<RegistrationState> emit,
-  ) {
+  ) async {
     if (state.registrationInputs.isNotValid) {
       checkEmptyError(emit);
       print('-------------------invalid input');
       return;
     }
+    state.registrationBtnController?.start();
+    emit(state.copyWith(status: Status.loading));
+    final inputs = state.registrationInputs;
     print('-------------------valid input');
+    final res = await registration(
+      User(
+        lastName: inputs.name.value,
+        firstName: inputs.firstname.value,
+        email: inputs.email.value,
+        validationCode: inputs.code.value,
+        country: inputs.country.value,
+      ),
+    );
+    state.registrationBtnController?.stop();
+    res.fold((l) {
+      Logger().d(l);
+      emit(state.copyWith(status: Status.failed));
+    }, (r) {
+      Logger().i('success');
+      emit(
+        state.copyWith(
+          status: Status.loaded,
+        ),
+      );
+    });
   }
 
   void checkEmptyError(Emitter<RegistrationState> emit) {

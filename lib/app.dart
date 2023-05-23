@@ -36,8 +36,8 @@ class App extends StatelessWidget {
           return BlocBuilder<AuthBloc, AuthState>(
             buildWhen: (previous, current) => previous.route != current.route,
             builder: (context, authState) {
-              // final route = authState.route;
-              const route = RouteName.logged;
+              final route = authState.route;
+              // const route = RouteName.logged;
               return MaterialApp.router(
                 title: 'hello bible +',
                 theme: state.theme ?? theme(null),

@@ -1,19 +1,33 @@
 part of 'registration_bloc.dart';
 
 class RegistrationState extends Equatable {
-  const RegistrationState(
-      {this.registrationInputs = const RegistrationInputs()});
+  const RegistrationState({
+    this.registrationInputs = const RegistrationInputs(),
+    this.registrationBtnController,
+    this.status = Status.init,
+  });
 
   final RegistrationInputs registrationInputs;
+  final RoundedLoadingButtonController? registrationBtnController;
+  final Status? status;
 
   @override
-  List<Object?> get props => [registrationInputs];
+  List<Object?> get props => [
+        registrationInputs,
+        registrationBtnController,
+        status,
+      ];
 
   RegistrationState copyWith({
     RegistrationInputs? registrationInputs,
+    RoundedLoadingButtonController? registrationBtnController,
+    Status? status,
   }) {
     return RegistrationState(
       registrationInputs: registrationInputs ?? this.registrationInputs,
+      registrationBtnController:
+          registrationBtnController ?? this.registrationBtnController,
+      status: status ?? this.status,
     );
   }
 }

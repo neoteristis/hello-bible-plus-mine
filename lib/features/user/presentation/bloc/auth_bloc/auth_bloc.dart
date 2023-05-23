@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.checkAuth,
   }) : super(const AuthState()) {
     on<AuthStarted>(_onAuthStarted);
+    on<AuthSuccessfullyLogged>(_onAuthSuccessfullyLogged);
   }
 
   void _onAuthStarted(
@@ -28,5 +29,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(route: RouteName.logged));
       }
     });
+  }
+
+  void _onAuthSuccessfullyLogged(
+    AuthSuccessfullyLogged event,
+    Emitter<AuthState> emit,
+  ) {
+    emit(state.copyWith(route: RouteName.logged));
   }
 }

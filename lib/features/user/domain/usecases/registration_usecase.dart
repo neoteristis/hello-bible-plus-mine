@@ -6,13 +6,13 @@ import '../../../../core/usecase/usecase.dart';
 import '../entities/user.dart';
 import '../repositories/registration_repository.dart';
 
-class RegistrationUsecase extends Usecase<dynamic, User> {
+class RegistrationUsecase extends Usecase<User, User> {
   final RegistrationRepository repo;
   RegistrationUsecase(
     this.repo,
   );
   @override
-  Future<Either<Failure, dynamic>> call(User params) async {
+  Future<Either<Failure, User>> call(User params) async {
     return await repo.register(params);
   }
 }

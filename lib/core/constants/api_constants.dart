@@ -7,4 +7,7 @@ class ApiConstants {
   static String answer(int id) => '/response_message?message_id=$id';
   static String messages2(int? id) => '/chat/$id';
   // Add more API strings here
+
+  // new api
+  static const String registration = '/users';
 }
