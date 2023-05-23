@@ -29,7 +29,7 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         final userRes = res.user;
         if (token != null && userRes != null) {
           local.saveToken(token);
-          local.saveUser(user);
+          local.saveUser(userRes);
         } else {
           return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
         }
@@ -46,6 +46,15 @@ class RegistrationRepositoryImp implements RegistrationRepository {
   Future<Either<Failure, dynamic>> checkAuth() async {
     try {
       return Right(await local.getToken());
+    } catch (e) {
+      return const Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> deleteAuth() async {
+    try {
+      return Right(await local.deleteAuth());
     } catch (e) {
       return const Left(CacheFailure());
     }

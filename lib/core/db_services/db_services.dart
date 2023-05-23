@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
 
 import '../../features/user/data/models/box/user_box.dart';
 import '../../features/user/domain/entities/user.dart';
@@ -41,6 +42,7 @@ class DbServiceImp implements DbService {
   @override
   Future<User?> getUser() async {
     final users = userBox.getAll();
+    Logger().w(users.length);
     if (users.isNotEmpty) {
       final user = users.first.toEntity();
       return user;
@@ -50,6 +52,7 @@ class DbServiceImp implements DbService {
 
   @override
   Future saveUser(User user) async {
+    Logger().d('saving this user : $user');
     final userModel = UserBox.fromEntity(user);
 
     final findUserQuery =

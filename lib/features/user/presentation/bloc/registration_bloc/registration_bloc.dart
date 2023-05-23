@@ -134,7 +134,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       Logger().d(l);
       emit(state.copyWith(status: Status.failed));
     }, (r) {
-      Logger().i('success');
+      Logger().i('success $r');
       emit(
         state.copyWith(
           status: Status.loaded,

@@ -34,8 +34,7 @@ final _entities = <ModelEntity>[
             id: const IdUid(2, 534331793983346611),
             name: 'idString',
             type: 9,
-            flags: 34848,
-            indexId: const IdUid(1, 1244437634396254790)),
+            flags: 0),
         ModelProperty(
             id: const IdUid(3, 3638541182721892749),
             name: 'lastName',
@@ -86,7 +85,7 @@ ModelDefinition getObjectBoxModel() {
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
-      retiredIndexUids: const [],
+      retiredIndexUids: const [1244437634396254790],
       retiredPropertyUids: const [],
       retiredRelationUids: const [],
       modelVersion: 5,

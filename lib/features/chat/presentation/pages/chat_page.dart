@@ -22,7 +22,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
-    context.read<ChatBloc>().add(ChatCategoriesFetched());
+    context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
 
     Stream<String> tokenStream;
     tokenStream = FirebaseMessaging.instance.onTokenRefresh;

@@ -16,6 +16,7 @@ class ChatState extends Equatable {
           'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
     ),
     this.categories = const [],
+    this.categoriesBySection = const [],
     this.catStatus = Status.init,
     this.conversation,
     this.conversationStatus = Status.init,
@@ -34,6 +35,7 @@ class ChatState extends Equatable {
   final types.User? sender;
   final types.User? receiver;
   final List<Category>? categories;
+  final List<CategoriesBySection> categoriesBySection;
   final Status? catStatus;
   final Conversation? conversation;
   final Status? conversationStatus;
@@ -49,6 +51,7 @@ class ChatState extends Equatable {
 
   @override
   List<Object?> get props => [
+        categoriesBySection,
         newMessage,
         messages,
         sender,
@@ -72,6 +75,7 @@ class ChatState extends Equatable {
     types.User? sender,
     types.User? receiver,
     List<Category>? categories,
+    List<CategoriesBySection>? categoriesBySection,
     Status? catStatus,
     Conversation? conversation,
     bool clearConversation = false,
@@ -92,6 +96,7 @@ class ChatState extends Equatable {
       sender: sender ?? this.sender,
       receiver: receiver ?? this.receiver,
       categories: categories ?? this.categories,
+      categoriesBySection: categoriesBySection ?? this.categoriesBySection,
       catStatus: catStatus ?? this.catStatus,
       conversation:
           clearConversation ? null : conversation ?? this.conversation,

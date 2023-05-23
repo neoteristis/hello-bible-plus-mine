@@ -11,14 +11,14 @@ class Conversation extends Equatable {
     this.updated,
   });
 
-  final int? id;
+  final String? id;
   final String? title;
   final Category? category;
   final String? created;
   final String? updated;
 
   Conversation copyWith({
-    int? id,
+    String? id,
     String? title,
     Category? category,
     String? created,
@@ -35,7 +35,7 @@ class Conversation extends Equatable {
 
   factory Conversation.fromJson(Map<String, dynamic> json) {
     return Conversation(
-      id: json['id'],
+      id: json['_id'],
       title: json['title'],
       category:
           json['category'] == null ? null : Category.fromJson(json['category']),

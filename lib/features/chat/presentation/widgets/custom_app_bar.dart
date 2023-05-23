@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/constants/color_constants.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
 import '../../../../core/widgets/logo_widget.dart';
 
@@ -78,13 +79,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-            onPressed: () {
-              context.read<ChatBloc>().add(ChatConversationCleared());
-            },
-            icon: const Icon(
-              Icons.add,
-              color: Colors.white,
-            )),
+          onPressed: () {
+            context.read<ChatBloc>().add(ChatConversationCleared());
+          },
+          icon: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
         Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -98,7 +100,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               onPressed: () {
-                Scaffold.of(context).openDrawer();
+                // Scaffold.of(context).openDrawer();
+                context.read<AuthBloc>().add(AuthLogoutSubmitted());
               },
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             );

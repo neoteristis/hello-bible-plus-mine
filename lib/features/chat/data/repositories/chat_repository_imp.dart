@@ -3,21 +3,28 @@ import 'package:gpt/core/error/exception.dart';
 
 import 'package:gpt/core/error/failure.dart';
 import 'package:gpt/features/chat/domain/entities/category.dart';
+import 'package:gpt/features/chat/domain/entities/category_by_section.dart';
 import 'package:gpt/features/chat/domain/entities/conversation.dart';
 import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 import 'package:gpt/features/chat/domain/entities/message.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../core/network/network_info.dart';
 import '../../domain/repositories/chat_repository.dart';
+import '../datasources/chat_local_datasources.dart';
 import '../datasources/chat_remote_datasources.dart';
 
 class ChatRepositoryImp implements ChatRepository {
-  final ChatRemoteDatasourcesImp remote;
+  final ChatRemoteDatasources remote;
+  final ChatLocalDatasources local;
   final NetworkInfo networkInfo;
+
   ChatRepositoryImp({
     required this.remote,
     required this.networkInfo,
+    required this.local,
   });
+
   @override
   Future<Either<Failure, List<Category>>> fetchCategories() async {
     if (await networkInfo.isConnected) {
@@ -36,8 +43,13 @@ class ChatRepositoryImp implements ChatRepository {
   Future<Either<Failure, Conversation>> changeConversation(Category cat) async {
     if (await networkInfo.isConnected) {
       try {
-        final res = await remote.changeConversation(cat);
-        return Right(res);
+        final user = await local.getUser();
+        final uid = user?.idString;
+        if (uid != null) {
+          final res = await remote.changeConversation(cat: cat, uid: uid);
+          return Right(res);
+        }
+        return const Left(ServerFailure(info: 'Utilisateur introuvalbe'));
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }
@@ -62,10 +74,25 @@ class ChatRepositoryImp implements ChatRepository {
 
   @override
   Future<Either<Failure, dynamic>> getResponseMessages(
-      int idConversation) async {
+      String idConversation) async {
     if (await networkInfo.isConnected) {
       try {
         final res = await remote.getResponseMessages(idConversation);
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CategoriesBySection>>>
+      fetchCategoriesBySection() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.fetchCategoriesBySection();
         return Right(res);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));

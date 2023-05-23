@@ -17,6 +17,8 @@ class ChatMessageSent extends ChatEvent {
 
 class ChatCategoriesFetched extends ChatEvent {}
 
+class ChatCategoriesBySectionFetched extends ChatEvent {}
+
 class ChatConversationChanged extends ChatEvent {
   final Category category;
   const ChatConversationChanged(
@@ -62,13 +64,13 @@ class ChatMessageJoined extends ChatEvent {
 }
 
 class ChatMessageAnswerGot extends ChatEvent {
-  final int messageId;
+  final String conversationId;
   const ChatMessageAnswerGot({
-    required this.messageId,
+    required this.conversationId,
   });
 
   @override
-  List<Object> get props => [messageId];
+  List<Object> get props => [conversationId];
 }
 
 class ChatMessageModChanged extends ChatEvent {

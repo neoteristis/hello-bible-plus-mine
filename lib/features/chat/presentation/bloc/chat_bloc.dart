@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:logger/logger.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
@@ -24,17 +25,17 @@ part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final FetchCategoriesUsecase fetchCategories;
+  final FetchCategoriesBySectionUsecase fetchCategoriesBySection;
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
-  // final FlutterTts tts;
   late StreamSubscription<SseMessage>? streamSubscription;
   ChatBloc({
+    required this.fetchCategoriesBySection,
     required this.fetchCategories,
     required this.changeConversation,
     required this.sendMessage,
     required this.getResponseMessages,
-    // required this.tts,
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
@@ -43,6 +44,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ) {
     on<ChatMessageSent>(_onChatMessageSent);
     on<ChatCategoriesFetched>(_onChatCategoriesFetched);
+    on<ChatCategoriesBySectionFetched>(_onChatCategoriesBySectionFetched);
     on<ChatConversationChanged>(_onChatConversationChanged);
     on<ChatConversationCleared>(_onChatConversationCleared);
     on<ChatMessageAdded>(_onChatMessageAdded);
@@ -55,6 +57,31 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatCategoriesBySectionFetched(
+    ChatCategoriesBySectionFetched event,
+    Emitter<ChatState> emit,
+  ) async {
+    emit(state.copyWith(catStatus: Status.loading));
+    final res = await fetchCategoriesBySection(NoParams());
+
+    return res.fold(
+      (l) {
+        emit(
+          state.copyWith(
+            catStatus: Status.failed,
+            failure: l,
+          ),
+        );
+      },
+      (categoriesBySection) => emit(
+        state.copyWith(
+          categoriesBySection: categoriesBySection,
+          catStatus: Status.loaded,
+        ),
+      ),
+    );
+  }
 
   void _onChatFocusNodeDisposed(
     ChatFocusNodeDisposed event,
@@ -81,7 +108,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatMessageAnswerGot event,
     Emitter<ChatState> emit,
   ) async {
-    final res = await getResponseMessages(event.messageId);
+    final res = await getResponseMessages(event.conversationId);
     res.fold(
         (l) => emit(
               state.copyWith(
@@ -248,6 +275,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       id: _randomString(),
       text: event.textMessage.trimRight(),
     );
+    Logger().w(textMessage);
     emit(
       state.copyWith(
         messages: List.of(state.messages!)..insert(0, textMessage),
@@ -264,12 +292,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     res.fold(
       (l) {
-        emit(state.copyWith(messageStatus: Status.failed, failure: l));
+        emit(
+          state.copyWith(
+            messageStatus: Status.failed,
+            failure: l,
+          ),
+        );
       },
       (message) {
         if (message.response == null) {
-          if (message.id != null) {
-            return add(ChatMessageAnswerGot(messageId: message.id!));
+          final idConversation = state.conversation?.id;
+          if (idConversation != null) {
+            return add(ChatMessageAnswerGot(conversationId: idConversation));
           } else {
             return emit(
               state.copyWith(
@@ -279,6 +313,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             );
           }
         }
+
+        // going here if the message answer isn't stream
         final textMessage = types.TextMessage(
           author: state.receiver!,
           createdAt: DateTime.now().millisecondsSinceEpoch,

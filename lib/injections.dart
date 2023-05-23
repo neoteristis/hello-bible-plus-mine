@@ -22,6 +22,7 @@ import 'core/db_services/db_services.dart';
 import 'core/dio_interceptors/interceptors.dart';
 import 'core/helper/log.dart';
 import 'core/network/network_info.dart';
+import 'features/chat/data/datasources/chat_local_datasources.dart';
 import 'features/chat/data/datasources/chat_remote_datasources.dart';
 import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/usecases.dart';
@@ -97,6 +98,9 @@ void dataSource() {
   getIt.registerLazySingleton<ChatRemoteDatasources>(
       () => ChatRemoteDatasourcesImp(getIt()));
 
+  getIt.registerLazySingleton<ChatLocalDatasources>(
+      () => ChatLocalDatasourcesImp(db: getIt()));
+
   getIt.registerLazySingleton<RegistrationRemoteDatasources>(
       () => RegistrationRemoteDatasourcesImp(getIt()));
 
@@ -109,7 +113,7 @@ void repository() {
   //     () => ChatRemoteDatasourcesImp(getIt()));
   getIt.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImp(
-        remote: ChatRemoteDatasourcesImp(getIt()), networkInfo: getIt()),
+        remote: getIt(), networkInfo: getIt(), local: getIt()),
   );
 
   getIt.registerLazySingleton<RegistrationRepository>(
@@ -130,6 +134,10 @@ void usecase() {
 
   getIt.registerLazySingleton(() => RegistrationUsecase(getIt()));
   getIt.registerLazySingleton(() => CheckAuthUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => FetchCategoriesBySectionUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => DeleteAuthUsecase(getIt()));
 }
 
 void bloc() {
@@ -139,6 +147,7 @@ void bloc() {
       changeConversation: getIt(),
       sendMessage: getIt(),
       getResponseMessages: getIt(),
+      fetchCategoriesBySection: getIt(),
       // tts: getIt(),
     ),
   );
@@ -152,7 +161,10 @@ void bloc() {
   );
 
   getIt.registerFactory(
-    () => AuthBloc(checkAuth: getIt()),
+    () => AuthBloc(
+      checkAuth: getIt(),
+      deleteAuth: getIt(),
+    ),
   );
 }
 

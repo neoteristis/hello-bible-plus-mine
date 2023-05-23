@@ -6,7 +6,7 @@ import '../../../domain/entities/user.dart';
 class UserBox {
   @Id()
   int? idInt;
-  @Unique(onConflict: ConflictStrategy.replace)
+  // @Unique(onConflict: ConflictStrategy.replace)
   String? idString;
   String? lastName;
   String? firstName;

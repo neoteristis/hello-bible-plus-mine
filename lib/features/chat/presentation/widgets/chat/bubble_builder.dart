@@ -26,11 +26,8 @@ Widget bubbleBuilder(
           child: message.type == types.MessageType.text
               ? Text(
                   message.text,
-                  style: TextStyle(
-                    color: state.sender!.id != message.author.id ||
-                            message.type == types.MessageType.image
-                        ? Theme.of(context).primaryColor
-                        : Colors.white,
+                  style: const TextStyle(
+                    color: Colors.black,
                   ),
                 )
               : child,

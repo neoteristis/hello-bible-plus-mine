@@ -8,9 +8,13 @@ import '../../domain/entities/entities.dart';
 
 abstract class ChatRemoteDatasources {
   Future<List<Category>> fetchCategories();
-  Future<Conversation> changeConversation(Category cat);
+  Future<Conversation> changeConversation({
+    required Category cat,
+    required String uid,
+  });
   Future<Message> sendMessage(MessageParam param);
-  Future getResponseMessages(int idConversation);
+  Future getResponseMessages(String idConversation);
+  Future<List<CategoriesBySection>> fetchCategoriesBySection();
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -30,10 +34,14 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   }
 
   @override
-  Future<Conversation> changeConversation(Category cat) async {
+  Future<Conversation> changeConversation({
+    required Category cat,
+    required String uid,
+  }) async {
     try {
       final res = await baseRepo.post(ApiConstants.conversation, body: {
         'category': cat.id,
+        'user': uid,
       });
       return Conversation.fromJson(res.data);
     } catch (e) {
@@ -46,7 +54,7 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   Future<Message> sendMessage(MessageParam param) async {
     try {
       final res = await baseRepo.post(
-          ApiConstants.messages(param.streamMessage ?? true),
+          ApiConstants.messages(param.conversation!.id!),
           body: param.toJson());
       final message = Message.fromJson(res.data);
       return message;
@@ -56,7 +64,7 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   }
 
   @override
-  Future getResponseMessages(int idConversation) async {
+  Future getResponseMessages(String idConversation) async {
     try {
       final res = await baseRepo.get(
         ApiConstants.answer(idConversation),
@@ -66,6 +74,20 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
         }, responseType: ResponseType.stream),
       );
       return res;
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<List<CategoriesBySection>> fetchCategoriesBySection() async {
+    try {
+      final res = await baseRepo.get(ApiConstants.categoriesBySection);
+
+      return (res.data as List)
+          .map((m) => CategoriesBySection.fromJson(m))
+          .toList();
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());

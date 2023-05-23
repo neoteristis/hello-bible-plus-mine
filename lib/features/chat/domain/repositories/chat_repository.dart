@@ -6,7 +6,8 @@ import '../usecases/send_messages_usecase.dart';
 
 abstract class ChatRepository {
   Future<Either<Failure, List<Category>>> fetchCategories();
+  Future<Either<Failure, List<CategoriesBySection>>> fetchCategoriesBySection();
   Future<Either<Failure, Conversation>> changeConversation(Category cat);
   Future<Either<Failure, Message>> sendMessage(MessageParam param);
-  Future<Either<Failure, dynamic>> getResponseMessages(int idConversation);
+  Future<Either<Failure, dynamic>> getResponseMessages(String idConversation);
 }

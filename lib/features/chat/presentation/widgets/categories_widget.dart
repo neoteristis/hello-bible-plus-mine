@@ -5,6 +5,7 @@ import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
+import 'categories_by_section_widget.dart';
 import 'category_item_widget.dart';
 
 class CategoriesWidget extends StatelessWidget {
@@ -49,13 +50,11 @@ class CategoriesWidget extends StatelessWidget {
               return Center(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //     crossAxisCount: 2),
                   physics: const BouncingScrollPhysics(),
-                  itemCount: state.categories!.length,
+                  itemCount: state.categoriesBySection.length,
                   itemBuilder: (context, index) {
-                    return CategoryItemWidget(
-                      category: state.categories?[index],
+                    return CategoriesBySectionWidget(
+                      data: state.categoriesBySection[index],
                     );
                   },
                 ),

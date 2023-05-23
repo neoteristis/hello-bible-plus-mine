@@ -6,4 +6,5 @@ import '../entities/user.dart';
 abstract class RegistrationRepository {
   Future<Either<Failure, User>> register(User user);
   Future<Either<Failure, dynamic>> checkAuth();
+  Future<Either<Failure, dynamic>> deleteAuth();
 }
