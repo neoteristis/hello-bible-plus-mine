@@ -5,12 +5,12 @@ import 'package:gpt/core/error/failure.dart';
 import 'package:gpt/features/chat/domain/entities/category.dart';
 import 'package:gpt/features/chat/domain/entities/category_by_section.dart';
 import 'package:gpt/features/chat/domain/entities/conversation.dart';
-import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
+import 'package:gpt/features/chat/domain/entities/historical_conversation.dart';
 import 'package:gpt/features/chat/domain/entities/message.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../core/network/network_info.dart';
 import '../../domain/repositories/chat_repository.dart';
+import '../../domain/usecases/usecases.dart';
 import '../datasources/chat_local_datasources.dart';
 import '../datasources/chat_remote_datasources.dart';
 
@@ -40,13 +40,17 @@ class ChatRepositoryImp implements ChatRepository {
   }
 
   @override
-  Future<Either<Failure, Conversation>> changeConversation(Category cat) async {
+  Future<Either<Failure, Conversation>> changeConversation(
+      PChangeConversation param) async {
     if (await networkInfo.isConnected) {
       try {
         final user = await local.getUser();
         final uid = user?.idString;
         if (uid != null) {
-          final res = await remote.changeConversation(cat: cat, uid: uid);
+          final res = await remote.changeConversation(
+              cat: param.category,
+              uid: uid,
+              conversationId: param.conversationId);
           return Right(res);
         }
         return const Left(ServerFailure(info: 'Utilisateur introuvalbe'));
@@ -101,4 +105,49 @@ class ChatRepositoryImp implements ChatRepository {
       return const Left(NoConnexionFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<HistoricalConversation>>> fetchHistorical(
+      PHistorical param) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final user = await local.getUser();
+        final uid = user?.idString;
+        if (uid != null) {
+          final res = await remote
+              .fetchHistoricalConversation(param.copyWith(uid: uid));
+          // Logger().w(res);
+          return Right(res);
+        } else {
+          return const Left(ServerFailure(info: 'Utilisateur introuvalbe'));
+        }
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  // @override
+  // Future<Either<Failure, Conversation>> getConversationById(String conversationId)async  {
+  //    if (await networkInfo.isConnected) {
+  //     try {
+  //       final user = await local.getUser();
+  //       final uid = user?.idString;
+  //       if (uid != null) {
+  //         final res = await remote.changeConversation(
+  //             cat: param.category,
+  //             uid: uid,
+  //             conversationId: param.conversationId);
+  //         return Right(res);
+  //       }
+  //       return const Left(ServerFailure(info: 'Utilisateur introuvalbe'));
+  //     } on ServerException catch (e) {
+  //       return Left(ServerFailure(info: e.message));
+  //     }
+  //   } else {
+  //     return const Left(NoConnexionFailure());
+  //   }
+  // }
 }

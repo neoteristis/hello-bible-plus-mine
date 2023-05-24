@@ -4,4 +4,5 @@ class RouteName {
   static const String home = '/';
   static const String registration = '/registration';
   static const String registrationFailed = '/failed';
+  static const String historical = '/historical';
 }

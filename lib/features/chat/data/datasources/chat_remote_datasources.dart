@@ -5,16 +5,20 @@ import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/error/exception.dart';
 import '../../domain/entities/entities.dart';
+import '../../domain/usecases/fetch_historical_usecase.dart';
 
 abstract class ChatRemoteDatasources {
   Future<List<Category>> fetchCategories();
   Future<Conversation> changeConversation({
     required Category cat,
     required String uid,
+    String? conversationId,
   });
   Future<Message> sendMessage(MessageParam param);
   Future getResponseMessages(String idConversation);
   Future<List<CategoriesBySection>> fetchCategoriesBySection();
+  Future<List<HistoricalConversation>> fetchHistoricalConversation(
+      PHistorical param);
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -37,9 +41,19 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   Future<Conversation> changeConversation({
     required Category cat,
     required String uid,
+    String? conversationId,
   }) async {
     try {
-      final res = await baseRepo.post(ApiConstants.conversation, body: {
+      Response res;
+      if (conversationId != null) {
+        res = await baseRepo.patch(
+            ApiConstants.conversation(conversationId: conversationId),
+            body: {
+              'category': cat.id,
+              'user': uid,
+            });
+      }
+      res = await baseRepo.post(ApiConstants.conversation(), body: {
         'category': cat.id,
         'user': uid,
       });
@@ -87,6 +101,21 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
 
       return (res.data as List)
           .map((m) => CategoriesBySection.fromJson(m))
+          .toList();
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<List<HistoricalConversation>> fetchHistoricalConversation(
+      PHistorical param) async {
+    try {
+      final res = await baseRepo.get(ApiConstants.historical(param));
+
+      return (res.data as List)
+          .map((m) => HistoricalConversation.fromJson(m))
           .toList();
     } catch (e) {
       print(e.toString());

@@ -27,6 +27,7 @@ import 'features/chat/data/datasources/chat_remote_datasources.dart';
 import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/usecases.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
+import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import 'features/user/data/models/box/user_box.dart';
 import 'features/user/data/repositories/registration_repository_imp.dart';
 import 'features/user/domain/repositories/registration_repository.dart';
@@ -138,6 +139,7 @@ void usecase() {
   getIt.registerLazySingleton(() => FetchCategoriesBySectionUsecase(getIt()));
 
   getIt.registerLazySingleton(() => DeleteAuthUsecase(getIt()));
+  getIt.registerLazySingleton(() => FetchHistoricalUsecase(getIt()));
 }
 
 void bloc() {
@@ -164,6 +166,12 @@ void bloc() {
     () => AuthBloc(
       checkAuth: getIt(),
       deleteAuth: getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => HistoricalBloc(
+      fetchHistorical: getIt(),
     ),
   );
 }

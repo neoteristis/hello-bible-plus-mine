@@ -15,55 +15,53 @@ class CategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: BlocBuilder<ChatBloc, ChatState>(
-        builder: (context, state) {
-          switch (state.catStatus) {
-            case Status.loading:
-              return const Center(
-                child: CustomProgressIndicator(),
-              );
-            case Status.failed:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      state.failure?.message ?? 'Une erreur s\'est produite',
-                      style: const TextStyle(color: ColorConstants.danger),
+    return BlocBuilder<ChatBloc, ChatState>(
+      builder: (context, state) {
+        switch (state.catStatus) {
+          case Status.loading:
+            return const Center(
+              child: CustomProgressIndicator(),
+            );
+          case Status.failed:
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.failure?.message ?? 'Une erreur s\'est produite',
+                    style: const TextStyle(color: ColorConstants.danger),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      context.read<ChatBloc>().add(ChatCategoriesFetched());
+                    },
+                    icon: Icon(Icons.refresh_rounded,
+                        color: Theme.of(context).primaryColor),
+                    label: Text(
+                      'Rafraichir',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
-                    TextButton.icon(
-                      onPressed: () {
-                        context.read<ChatBloc>().add(ChatCategoriesFetched());
-                      },
-                      icon: Icon(Icons.refresh_rounded,
-                          color: Theme.of(context).primaryColor),
-                      label: Text(
-                        'Rafraichir',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            case Status.loaded:
-              return Center(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: state.categoriesBySection.length,
-                  itemBuilder: (context, index) {
-                    return CategoriesBySectionWidget(
-                      data: state.categoriesBySection[index],
-                    );
-                  },
-                ),
-              );
-            default:
-              return Container();
-          }
-        },
-      ),
+                  )
+                ],
+              ),
+            );
+          case Status.loaded:
+            return Center(
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: state.categoriesBySection.length,
+                itemBuilder: (context, index) {
+                  return CategoriesBySectionWidget(
+                    data: state.categoriesBySection[index],
+                  );
+                },
+              ),
+            );
+          default:
+            return Container();
+        }
+      },
     );
   }
 }

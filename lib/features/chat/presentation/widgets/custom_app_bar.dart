@@ -6,6 +6,7 @@ import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
 import '../../../../core/widgets/logo_widget.dart';
+import '../bloc/historical_bloc/historical_bloc.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key}) : super(key: key);
@@ -80,6 +81,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           onPressed: () {
+            context.read<HistoricalBloc>().add(HistoricalFetched());
             context.read<ChatBloc>().add(ChatConversationCleared());
           },
           icon: const Icon(

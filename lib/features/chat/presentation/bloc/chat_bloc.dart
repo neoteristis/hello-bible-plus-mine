@@ -54,9 +54,57 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatMessageModChanged>(_onChatMessageModChanged);
     on<ChatIncomingMessageLoaded>(_onChatIncomingMessageLoaded);
     on<ChatFocusNodeDisposed>(_onChatFocusNodeDisposed);
+    on<ChatConversationInited>(_onChatConversationInited);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatConversationInited(
+    ChatConversationInited event,
+    Emitter<ChatState> emit,
+  ) async {
+    final historical = event.historical;
+    state.textEditingController?.clear();
+    emit(
+      state.copyWith(
+        conversationStatus: Status.loading,
+        conversation: const Conversation(),
+        messages: [],
+        clearNewMessage: true,
+      ),
+    );
+    state.focusNode?.requestFocus();
+    Category? categorySelected;
+    for (final CategoriesBySection catSection in state.categoriesBySection) {
+      if (catSection.categories != null) {
+        for (final Category category in catSection.categories!) {
+          if (category.id == historical.category) {
+            categorySelected = category;
+            break;
+          }
+        }
+      }
+    }
+    final conversation =
+        Conversation(id: historical.idString, category: categorySelected);
+    emit(
+      state.copyWith(
+        conversation: conversation,
+        theme: theme(conversation.category?.colorTheme),
+        conversationStatus: Status.loaded,
+      ),
+    );
+    for (final message in historical.messages) {
+      final author = message.role == Role.user ? state.sender : state.receiver;
+      final text = types.TextMessage(
+        author: author!,
+        createdAt: message.createdAt?.millisecondsSinceEpoch,
+        id: _randomString(),
+        text: message.content ?? '',
+      );
+      add(ChatMessageAdded(textMessage: text));
+    }
+  }
 
   void _onChatCategoriesBySectionFetched(
     ChatCategoriesBySectionFetched event,
@@ -213,7 +261,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         conversation: const Conversation(),
       ),
     );
-    final res = await changeConversation(event.category);
+    final res =
+        await changeConversation(PChangeConversation(category: event.category));
     res.fold(
       (l) {
         emit(
@@ -231,6 +280,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             conversation: conversation,
             theme: theme(event.category.colorTheme),
             conversationStatus: Status.loaded,
+            //TODO check this
             messages: [],
           ),
         );
@@ -242,7 +292,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatMessageSent event,
     Emitter<ChatState> emit,
   ) async {
-    if (state.streamMessage! && state.messages!.isNotEmpty) {
+    if (state.streamMessage! &&
+        state.messages!.isNotEmpty &&
+        state.newMessage != null) {
       /*
         the last message on the screen is still the customMessage build from the textEditingController,
         then you have to add the actual message here before inserting the new message from the user typing

@@ -94,3 +94,13 @@ class ChatIncomingMessageLoaded extends ChatEvent {
 }
 
 class ChatFocusNodeDisposed extends ChatEvent {}
+
+class ChatConversationInited extends ChatEvent {
+  final HistoricalConversation historical;
+  const ChatConversationInited({
+    required this.historical,
+  });
+
+  @override
+  List<Object> get props => [historical];
+}

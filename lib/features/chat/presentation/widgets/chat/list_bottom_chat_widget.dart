@@ -51,6 +51,7 @@ class ListBottomChatWidget extends StatelessWidget {
                         nip: BubbleNip.leftBottom,
                         child: Text(
                           state.incoming ?? '',
+                          // textAlign: TextAlign.justify,
                           // style: TextStyle(
                           //   color: Theme.of(context).primaryColor,
                           // ),

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/theme/theme.dart';
 
-import 'core/routes/route_name.dart';
 import 'core/routes/router.dart';
 import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
+import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
 import 'injections.dart';
@@ -28,6 +28,10 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<AuthBloc>()..add(AuthStarted()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              getIt<HistoricalBloc>()..add(HistoricalFetched()),
         ),
       ],
       child: BlocBuilder<ChatBloc, ChatState>(

@@ -26,6 +26,7 @@ Widget bubbleBuilder(
           child: message.type == types.MessageType.text
               ? Text(
                   message.text,
+                  // textAlign: TextAlign.justify,
                   style: const TextStyle(
                     color: Colors.black,
                   ),
