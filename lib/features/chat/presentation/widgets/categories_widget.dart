@@ -6,7 +6,6 @@ import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
 import 'categories_by_section_widget.dart';
-import 'category_item_widget.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({

@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:gpt/core/error/failure.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/repositories/registration_repository.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';

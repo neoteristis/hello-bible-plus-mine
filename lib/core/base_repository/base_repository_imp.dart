@@ -40,6 +40,7 @@ class BaseRepositoryImp implements BaseRepository {
     Map<String, String>? headers,
     bool? addToken,
     Options? options,
+    // ResponseType? responseType,
   }) async {
     return await dio.get(
       url!,

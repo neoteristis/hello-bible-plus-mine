@@ -58,3 +58,13 @@ class RegistrationValidationCodeChanged extends RegistrationEvent {
 }
 
 class RegistrationSubmitted extends RegistrationEvent {}
+
+class RegistrationTopicSubscribed extends RegistrationEvent {
+  final User user;
+  const RegistrationTopicSubscribed({
+    required this.user,
+  });
+
+  @override
+  List<Object?> get props => [user];
+}

@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class Token extends Equatable {
-  final String token;
-  final String refresh;
+  final String? token;
+  final String? refresh;
 
   const Token({
-    required this.token,
-    required this.refresh,
+    this.token,
+    this.refresh,
   });
 
   @override
@@ -18,7 +18,7 @@ class Token extends Equatable {
   factory Token.fromJson(Map<String, dynamic> map) {
     return Token(
       token: map['token'] ?? '',
-      refresh: map['refresh'] ?? '',
+      refresh: map['refresh_token'] ?? '',
     );
   }
 }

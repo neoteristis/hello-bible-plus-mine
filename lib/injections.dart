@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
@@ -53,7 +54,15 @@ Future<void> dioHandling() async {
     ),
   );
   getIt.registerLazySingleton(() => dio);
-  dio.interceptors.add(LoggingInterceptors());
+  dio.interceptors
+    ..add(LoggingInterceptors())
+    ..add(
+      AppInterceptors(
+        baseRepo: getIt(),
+        db: getIt(),
+        dio: dio,
+      ),
+    );
 }
 
 Future external() async {
@@ -62,7 +71,6 @@ Future external() async {
 
   // Future<Store> openStore() {...} is defined in the generated objectbox.g.dart
 
-  await dioHandling();
   getIt.registerLazySingleton<BaseRepository>(
       () => BaseRepositoryImp(dio: getIt()));
   final InternetConnectionChecker internetConnectionChecker =
@@ -87,12 +95,25 @@ Future external() async {
   );
 
   await Firebase.initializeApp();
+  FirebaseMessaging.instance.getInitialMessage().then(
+    (message) {
+      showFlutterNotification;
+      getIt<StreamController<String?>>(instanceName: 'select_nofitication')
+          .add('message');
+      // showFlutterNotification;
+    },
+  );
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (!kIsWeb) {
     await setupFlutterNotifications();
   }
+  final stripePublishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY_TEST'];
+  if (stripePublishableKey != null) {
+    Stripe.publishableKey = stripePublishableKey;
+  }
+  await dioHandling();
 }
 
 void dataSource() {
@@ -215,6 +236,10 @@ Future<void> setupFlutterNotifications() async {
   );
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  flutterLocalNotificationsPlugin
+      .getNotificationAppLaunchDetails()
+      .then((value) => selectNotificationStream.add('heeeey'));
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('mipmap/ic_launcher');

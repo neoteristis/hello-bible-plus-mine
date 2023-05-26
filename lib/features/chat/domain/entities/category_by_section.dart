@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:logger/logger.dart';
 
 import 'entities.dart';
 

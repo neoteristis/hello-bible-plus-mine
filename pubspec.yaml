@@ -39,6 +39,7 @@ dependencies:
   objectbox_flutter_libs: any
   path_provider: ^2.0.15
   intl: ^0.17.0
+  flutter_stripe: ^9.2.0
 
 dev_dependencies:
   flutter_test:

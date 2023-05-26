@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/routes/route_name.dart';
-import '../../domain/entities/entities.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
 import 'categories_widget.dart';
 import 'historical/historical_item_widget.dart';
@@ -17,13 +15,13 @@ class ContainerCategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
+    return const Padding(
+      padding: EdgeInsets.all(10.0),
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             LastHistoricWidget(),
             Expanded(child: CategoriesWidget()),
           ],
@@ -47,8 +45,8 @@ class LastHistoricWidget extends StatelessWidget {
           case Status.loading:
             return const Text('loading');
           case Status.loaded:
-            final lastConverstation = state.historicals?.first;
-            if (lastConverstation == null) {
+            final lastConverstation = state.historicals;
+            if (lastConverstation == null || lastConverstation.isEmpty) {
               return const Text('débutez votre conversation');
             }
             return GestureDetector(
@@ -56,7 +54,7 @@ class LastHistoricWidget extends StatelessWidget {
                 context.go(RouteName.historical);
               },
               child: HistoricalItemWidget(
-                historic: lastConverstation,
+                historic: lastConverstation.first,
               ),
             );
           case Status.failed:

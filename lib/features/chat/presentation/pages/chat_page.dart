@@ -3,7 +3,12 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gpt/core/base_repository/base_repository.dart';
+import 'package:gpt/core/constants/api_constants.dart';
+import 'package:gpt/core/routes/route_name.dart';
 import 'package:logger/logger.dart';
+import '../../../../core/db_services/db_services.dart';
 import '../../../../core/helper/log.dart';
 import '../../../../injections.dart';
 import '../bloc/chat_bloc.dart';
@@ -27,11 +32,16 @@ class _ChatPageState extends State<ChatPage> {
     Stream<String> tokenStream;
     tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     tokenStream.listen(setToken);
-    FirebaseMessaging.instance.getToken().then((value) => Log.info(value));
 
-    FirebaseMessaging.instance.getInitialMessage().then(
-          (message) => showFlutterNotification,
-        );
+    FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic');
+
+    // FirebaseMessaging.instance.getInitialMessage().then(
+    //   (message) {
+    //     // getIt<StreamController<String?>>(instanceName: 'select_nofitication')
+    //     //     .add('message');
+    //     showFlutterNotification;
+    //   },
+    // );
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
@@ -63,6 +73,7 @@ class _ChatPageState extends State<ChatPage> {
         .stream
         .listen(
       (String? payload) {
+        context.go(RouteName.historical);
         if (payload != null) {
           Logger().w('a new notif selected');
         }
@@ -92,7 +103,14 @@ class _ChatPageState extends State<ChatPage> {
 
 void setToken(String? token) async {
   Log.info(token);
-  // await getIt<Dio>().post('api/user/token-firebase', data: {
-  //   'token_firebase': token,
-  // });
+  final user = await getIt<DbServiceImp>().getUser();
+  final id = user?.idString;
+  if (id != null) {
+    await getIt<BaseRepository>().patch(
+      '${ApiConstants.registration}/$id',
+      body: {
+        'deviceToken': token,
+      },
+    );
+  }
 }

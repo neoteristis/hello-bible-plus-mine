@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/usecases/registration_usecase.dart';
 import 'package:logger/logger.dart';
@@ -25,6 +26,21 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationCountryChanged>(_onRegistrationCountryChanged);
     on<RegistrationValidationCodeChanged>(_onRegistrationValidationCodeChanged);
     on<RegistrationSubmitted>(_onRegistrationSubmitted);
+    on<RegistrationTopicSubscribed>(_onRegistrationTopicSubscribed);
+  }
+
+  void _onRegistrationTopicSubscribed(
+    RegistrationTopicSubscribed event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    try {
+      await FirebaseMessaging.instance
+          .subscribeToTopic('/topics/646b259a13564a177f2ec16c');
+      // await FirebaseMessaging.instance.subscribeToTopic(
+      //     'https://hellobox-api-test.my-preprod.space/${event.user.idString}');
+    } catch (e) {
+      Logger().w(e);
+    }
   }
 
   void _onRegistrationNameChanged(
@@ -113,13 +129,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   ) async {
     if (state.registrationInputs.isNotValid) {
       checkEmptyError(emit);
-      print('-------------------invalid input');
       return;
     }
     state.registrationBtnController?.start();
     emit(state.copyWith(status: Status.loading));
     final inputs = state.registrationInputs;
-    print('-------------------valid input');
+    final deviceToken = await FirebaseMessaging.instance.getToken();
+
     final res = await registration(
       User(
         lastName: inputs.name.value,
@@ -127,19 +143,21 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         email: inputs.email.value,
         validationCode: inputs.code.value,
         country: inputs.country.value,
+        deviceToken: deviceToken,
       ),
     );
     state.registrationBtnController?.stop();
     res.fold((l) {
       Logger().d(l);
       emit(state.copyWith(status: Status.failed));
-    }, (r) {
-      Logger().i('success $r');
+    }, (user) {
+      Logger().i('success $user');
       emit(
         state.copyWith(
           status: Status.loaded,
         ),
       );
+      add(RegistrationTopicSubscribed(user: user));
     });
   }
 

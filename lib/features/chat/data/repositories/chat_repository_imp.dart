@@ -81,7 +81,8 @@ class ChatRepositoryImp implements ChatRepository {
       String idConversation) async {
     if (await networkInfo.isConnected) {
       try {
-        final res = await remote.getResponseMessages(idConversation);
+        final token = await local.getToken();
+        final res = await remote.getResponseMessages(idConversation, token);
         return Right(res);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));

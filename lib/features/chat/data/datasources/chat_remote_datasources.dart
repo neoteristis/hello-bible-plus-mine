@@ -3,6 +3,7 @@ import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
+import '../../../../core/entities/token.dart';
 import '../../../../core/error/exception.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/fetch_historical_usecase.dart';
@@ -15,7 +16,7 @@ abstract class ChatRemoteDatasources {
     String? conversationId,
   });
   Future<Message> sendMessage(MessageParam param);
-  Future getResponseMessages(String idConversation);
+  Future getResponseMessages(String idConversation, Token token);
   Future<List<CategoriesBySection>> fetchCategoriesBySection();
   Future<List<HistoricalConversation>> fetchHistoricalConversation(
       PHistorical param);
@@ -78,14 +79,22 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   }
 
   @override
-  Future getResponseMessages(String idConversation) async {
+  Future getResponseMessages(String idConversation, Token token) async {
     try {
       final res = await baseRepo.get(
         ApiConstants.answer(idConversation),
-        options: Options(headers: {
-          'Accept': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-        }, responseType: ResponseType.stream),
+        options: Options(
+          headers: {
+            'Accept': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Authorization': 'Bearer ${token.token}',
+            // 'Authorization':
+            //     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NzBiMzRjM2EyNWU1MzNiNjIxMWJjOCIsImNvdW50cnkiOiJNYWRhZ2FzY2FyIiwibmFtZSI6IlJhYXphZmltYWhhdHJhdHJhIiwiZmlyc3RuYW1lIjoiSm9vaGFyeSIsImVtYWlsIjoiam9vaGFyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6InJhYXphZmltYWhhdHJhdHJhMTY4NTEwNzUzMjQ0OCIsInJvbGVzIjpbXSwiaWF0IjoxNjg1MTA3NTMyLCJleHAiOjE2ODUxMTExMzJ9.txaKUroCECANuALLx9KM17iYjWdM2WNGLfCCA1s6QTc'
+          },
+          responseType: ResponseType.stream,
+        ),
+        // responseType: ResponseType.stream,
+        addToken: true,
       );
       return res;
     } catch (e) {
@@ -97,7 +106,8 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   @override
   Future<List<CategoriesBySection>> fetchCategoriesBySection() async {
     try {
-      final res = await baseRepo.get(ApiConstants.categoriesBySection);
+      final res =
+          await baseRepo.get(ApiConstants.categoriesBySection, addToken: true);
 
       return (res.data as List)
           .map((m) => CategoriesBySection.fromJson(m))
@@ -112,7 +122,8 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   Future<List<HistoricalConversation>> fetchHistoricalConversation(
       PHistorical param) async {
     try {
-      final res = await baseRepo.get(ApiConstants.historical(param));
+      final res =
+          await baseRepo.get(ApiConstants.historical(param), addToken: true);
 
       return (res.data as List)
           .map((m) => HistoricalConversation.fromJson(m))

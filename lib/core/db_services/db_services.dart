@@ -9,6 +9,7 @@ import '../entities/token.dart';
 abstract class DbService {
   Future saveToken(Token token);
   Future<String?> getToken();
+  Future<String?> getRefreshToken();
   Future deleteToken();
   Future saveUser(User user);
   Future<User?> getUser();
@@ -27,6 +28,7 @@ class DbServiceImp implements DbService {
   @override
   Future saveToken(Token token) async {
     await secureStorage.write(key: 'jwt', value: token.token);
+    await secureStorage.write(key: 'jwt_refresh', value: token.refresh);
   }
 
   @override
@@ -68,5 +70,10 @@ class DbServiceImp implements DbService {
   @override
   Future deleteUser() async {
     userBox.removeAll();
+  }
+
+  @override
+  Future<String?> getRefreshToken() async {
+    return await secureStorage.read(key: 'jwt_refresh');
   }
 }

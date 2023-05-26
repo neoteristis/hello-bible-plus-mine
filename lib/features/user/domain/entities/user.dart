@@ -8,6 +8,7 @@ class User extends Equatable {
   final String? email;
   final String? validationCode;
   final String? country;
+  final String? deviceToken;
 
   const User({
     this.idString,
@@ -17,6 +18,7 @@ class User extends Equatable {
     this.email,
     this.validationCode,
     this.country,
+    this.deviceToken,
   });
   @override
   List<Object?> get props => [
@@ -27,6 +29,7 @@ class User extends Equatable {
         email,
         validationCode,
         country,
+        deviceToken,
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -46,6 +49,7 @@ class User extends Equatable {
       'email': email,
       'code': validationCode,
       'country': country,
+      'deviceToken': deviceToken,
     };
   }
 }
