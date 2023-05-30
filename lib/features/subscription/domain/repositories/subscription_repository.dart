@@ -6,4 +6,7 @@ import '../usecases/payment_intent_usecase.dart';
 
 abstract class SubscriptionRepository {
   Future<Either<Failure, PaymentData>> sendPayment(PPayment params);
+  Future<Either<Failure, bool>> initPaymentSheet(PaymentData data);
+  Future<Either<Failure, bool>> presentPaymentSheet();
+  Future<Either<Failure, bool>> confirmPaymentSheet();
 }

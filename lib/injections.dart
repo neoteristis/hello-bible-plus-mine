@@ -171,6 +171,12 @@ void usecase() {
   getIt.registerLazySingleton(() => FetchHistoricalUsecase(getIt()));
 
   getIt.registerLazySingleton(() => PaymentIntentUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => InitPaymentUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => PresentPaymentUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => ConfirmPaymentUsecase(getIt()));
 }
 
 void bloc() {
@@ -206,7 +212,12 @@ void bloc() {
     ),
   );
   getIt.registerFactory(
-    () => SubscriptionBloc(paymentIntent: getIt()),
+    () => SubscriptionBloc(
+      paymentIntent: getIt(),
+      initPaymentSheet: getIt(),
+      presentPaymentSheet: getIt(),
+      confirmPaymentSheet: getIt(),
+    ),
   );
 }
 

@@ -29,4 +29,46 @@ class SubscriptionRepositoryImp implements SubscriptionRepository {
       return const Left(NoConnexionFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> initPaymentSheet(PaymentData data) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.initPaymentSheet(data);
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> presentPaymentSheet() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.presentPaymentSheet();
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> confirmPaymentSheet() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.confirmPaymentSheet();
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
 }

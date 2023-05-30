@@ -15,3 +15,9 @@ class SubscriptionPaymentDataRequested extends SubscriptionEvent {
   @override
   List<Object> get props => [amount];
 }
+
+class SubscriptionPaymentSheetInited extends SubscriptionEvent {}
+
+class SubscriptionPaymentSheetPresented extends SubscriptionEvent {}
+
+class SubscriptionPaymentSheetConfirmed extends SubscriptionEvent {}
