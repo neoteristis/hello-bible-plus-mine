@@ -310,24 +310,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         text: state.newMessage ?? '',
       );
 
-      // then add the new message
-
       emit(
         state.copyWith(
           messages: List.of(state.messages!)..insert(0, textAnswer),
           messageStatus: Status.init,
         ),
       );
-      // add(ChatMessageAdded(textMessage: textAnswer));
     }
-    // tts.stop();
     final textMessage = types.TextMessage(
       author: state.sender!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: _randomString(),
       text: event.textMessage.trimRight(),
     );
-    Logger().w(textMessage);
     emit(
       state.copyWith(
         messages: List.of(state.messages!)..insert(0, textMessage),

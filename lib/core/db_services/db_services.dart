@@ -44,7 +44,6 @@ class DbServiceImp implements DbService {
   @override
   Future<User?> getUser() async {
     final users = userBox.getAll();
-    Logger().w(users.length);
     if (users.isNotEmpty) {
       final user = users.first.toEntity();
       return user;

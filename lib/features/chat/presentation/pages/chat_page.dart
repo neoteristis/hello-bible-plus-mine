@@ -27,6 +27,14 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        if (message != null) {
+          getIt<StreamController<String?>>(instanceName: 'select_nofitication')
+              .add('message');
+        }
+      },
+    );
     context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
 
     Stream<String> tokenStream;
@@ -34,14 +42,6 @@ class _ChatPageState extends State<ChatPage> {
     tokenStream.listen(setToken);
 
     FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic');
-
-    // FirebaseMessaging.instance.getInitialMessage().then(
-    //   (message) {
-    //     // getIt<StreamController<String?>>(instanceName: 'select_nofitication')
-    //     //     .add('message');
-    //     showFlutterNotification;
-    //   },
-    // );
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 

@@ -95,14 +95,7 @@ Future external() async {
   );
 
   await Firebase.initializeApp();
-  FirebaseMessaging.instance.getInitialMessage().then(
-    (message) {
-      showFlutterNotification;
-      getIt<StreamController<String?>>(instanceName: 'select_nofitication')
-          .add('message');
-      // showFlutterNotification;
-    },
-  );
+  // Firebase
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

@@ -83,7 +83,6 @@ class AppInterceptors extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    Logger().i(options.headers);
     if (options.extra['add_token'] == true) {
       final String? jwt = await db.getToken();
       if (jwt != null) {

@@ -34,8 +34,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) async {
     try {
-      await FirebaseMessaging.instance
-          .subscribeToTopic('/topics/646b259a13564a177f2ec16c');
+      await FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic');
       // await FirebaseMessaging.instance.subscribeToTopic(
       //     'https://hellobox-api-test.my-preprod.space/${event.user.idString}');
     } catch (e) {
