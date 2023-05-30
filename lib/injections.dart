@@ -11,6 +11,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:gpt/features/user/data/datasources/datasources.dart';
 import 'package:gpt/features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -29,6 +30,10 @@ import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/usecases.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
+import 'features/subscription/data/datasources/subscription_remote_datasources.dart';
+import 'features/subscription/data/repositories/subscription_repository_imp.dart';
+import 'features/subscription/domain/repositories/subscription_repository.dart';
+import 'features/subscription/domain/usecases/usecases.dart';
 import 'features/user/data/models/box/user_box.dart';
 import 'features/user/data/repositories/registration_repository_imp.dart';
 import 'features/user/domain/repositories/registration_repository.dart';
@@ -121,6 +126,9 @@ void dataSource() {
 
   getIt.registerLazySingleton<RegistrationLocalDatasources>(
       () => RegistrationLocalDatasourcesImp(getIt()));
+
+  getIt.registerLazySingleton<SubscriptionRemoteDatasources>(
+      () => SubscriptionRemoteDatasourcesImp(getIt()));
 }
 
 void repository() {
@@ -136,6 +144,13 @@ void repository() {
       remote: getIt(),
       local: getIt(),
       network: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<SubscriptionRepository>(
+    () => SubscriptionRepositoryImp(
+      remote: getIt(),
+      networkInfo: getIt(),
     ),
   );
 }
@@ -154,6 +169,8 @@ void usecase() {
 
   getIt.registerLazySingleton(() => DeleteAuthUsecase(getIt()));
   getIt.registerLazySingleton(() => FetchHistoricalUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => PaymentIntentUsecase(getIt()));
 }
 
 void bloc() {
@@ -187,6 +204,9 @@ void bloc() {
     () => HistoricalBloc(
       fetchHistorical: getIt(),
     ),
+  );
+  getIt.registerFactory(
+    () => SubscriptionBloc(paymentIntent: getIt()),
   );
 }
 
