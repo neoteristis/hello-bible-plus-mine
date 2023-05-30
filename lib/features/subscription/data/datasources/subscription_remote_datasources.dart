@@ -41,6 +41,7 @@ class SubscriptionRemoteDatasourcesImp
           customerId: parm.customerId,
           paymentIntentClientSecret: parm.paymentIntent,
           customerEphemeralKeySecret: parm.ephemeralKey,
+          googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'DE'),
         ),
       );
       return true;
