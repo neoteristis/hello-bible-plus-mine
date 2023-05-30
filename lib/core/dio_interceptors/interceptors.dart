@@ -85,6 +85,7 @@ class AppInterceptors extends Interceptor {
   ) async {
     if (options.extra['add_token'] == true) {
       final String? jwt = await db.getToken();
+      Logger().w(jwt);
       if (jwt != null) {
         options.headers['Authorization'] = 'Bearer $jwt';
       }
@@ -98,6 +99,7 @@ class AppInterceptors extends Interceptor {
     final RequestOptions origin = err.requestOptions;
     if (err.response?.statusCode == 401) {
       final String? refreshToken = await db.getRefreshToken();
+      Logger().i(refreshToken);
       if (refreshToken != null) {
         try {
           final res = await baseRepo.post(

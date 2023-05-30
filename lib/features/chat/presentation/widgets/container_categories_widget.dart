@@ -15,7 +15,7 @@ class ContainerCategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.all(10.0),
       child: Center(
         child: Column(
@@ -24,6 +24,11 @@ class ContainerCategoriesWidget extends StatelessWidget {
           children: [
             LastHistoricWidget(),
             Expanded(child: CategoriesWidget()),
+            TextButton(
+                onPressed: () {
+                  context.go(RouteName.subscribe);
+                },
+                child: Text('subscribe'))
           ],
         ),
       ),
