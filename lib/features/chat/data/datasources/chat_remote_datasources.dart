@@ -47,6 +47,7 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
     try {
       Response res;
       if (conversationId != null) {
+        print('b');
         res = await baseRepo.patch(
             ApiConstants.conversation(conversationId: conversationId),
             body: {
@@ -54,10 +55,12 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
               'user': uid,
             });
       }
+
       res = await baseRepo.post(ApiConstants.conversation(), body: {
         'category': cat.id,
         'user': uid,
       });
+
       return Conversation.fromJson(res.data);
     } catch (e) {
       print(e.toString());

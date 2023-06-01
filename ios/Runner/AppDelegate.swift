@@ -2,6 +2,7 @@ import UIKit
 import Flutter
 import FirebaseCore
 import flutter_local_notifications
+import StripeApplePay
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -14,6 +15,7 @@ import flutter_local_notifications
     FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
         GeneratedPluginRegistrant.register(with: registry)
     }
+    StripeAPI.defaultPublishableKey = "pk_test_51NBGrSG1aZCtR7k22nyDEZF5b6TnRaIITOvdjDlGSgefCvwEMpultKcCDZpYqQiqaIsy0ggmlEXHvwqztuwfiuH600z8kcalG1"
 
     if #available(iOS 10.0, *) {
       UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate

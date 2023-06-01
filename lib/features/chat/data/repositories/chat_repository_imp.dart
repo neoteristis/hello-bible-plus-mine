@@ -7,6 +7,7 @@ import 'package:gpt/features/chat/domain/entities/category_by_section.dart';
 import 'package:gpt/features/chat/domain/entities/conversation.dart';
 import 'package:gpt/features/chat/domain/entities/historical_conversation.dart';
 import 'package:gpt/features/chat/domain/entities/message.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../core/network/network_info.dart';
 import '../../domain/repositories/chat_repository.dart';
@@ -45,6 +46,7 @@ class ChatRepositoryImp implements ChatRepository {
     if (await networkInfo.isConnected) {
       try {
         final user = await local.getUser();
+        Logger().i(user);
         final uid = user?.idString;
         if (uid != null) {
           final res = await remote.changeConversation(

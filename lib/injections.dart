@@ -111,6 +111,9 @@ Future external() async {
   if (stripePublishableKey != null) {
     Stripe.publishableKey = stripePublishableKey;
   }
+  Stripe.merchantIdentifier = 'merchant.com.hello.bible.plus';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
   await dioHandling();
 }
 
