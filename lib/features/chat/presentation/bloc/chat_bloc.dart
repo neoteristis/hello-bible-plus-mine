@@ -261,10 +261,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         conversation: const Conversation(),
       ),
     );
+    print(1);
     final res =
         await changeConversation(PChangeConversation(category: event.category));
+
+    print(2);
     res.fold(
       (l) {
+        print(3);
         emit(
           state.copyWith(
             conversationStatus: Status.failed,
@@ -274,6 +278,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
       },
       (conversation) {
+        print(4);
         state.focusNode?.requestFocus();
         emit(
           state.copyWith(
