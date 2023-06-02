@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/formz.dart';
 import '../../../../../core/models/required_input.dart';
+import '../../../../../core/models/unrequired_input.dart';
 import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../../data/models/email_input.dart';
 import '../../../data/models/first_name_input.dart';
@@ -111,7 +112,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) {
     final registrationInputs = state.registrationInputs.copyWith(
-      code: RequiredInput.dirty(
+      code: UnrequiredInput.dirty(
         event.code,
       ),
     );
@@ -194,17 +195,17 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             ),
           )
         : null;
-    state.registrationInputs.code.isPure
-        ? emit(
-            state.copyWith(
-              registrationInputs: state.registrationInputs.copyWith(
-                code: const RequiredInput.dirty(
-                  '',
-                ),
-              ),
-            ),
-          )
-        : null;
+    // state.registrationInputs.code.isPure
+    //     ? emit(
+    //         state.copyWith(
+    //           registrationInputs: state.registrationInputs.copyWith(
+    //             code: const UnrequiredInput.dirty(
+    //               '',
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //     : null;
     state.registrationInputs.country.isPure
         ? emit(
             state.copyWith(

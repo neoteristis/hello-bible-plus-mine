@@ -15,7 +15,13 @@ class ApiConstants {
   // Add more API strings here
 
   // new api
-  static const String registration = '/users';
+  static String registration({String? uid}) {
+    if (uid == null) {
+      return '/users';
+    }
+    return '/users/$uid';
+  }
+
   static const String categoriesBySection = '/categories_by_section';
   static String historical(PHistorical params) {
     final String api = ApiConstants.conversation();
@@ -24,5 +30,7 @@ class ApiConstants {
     return '$api$parameters';
   }
 
-  static const String payment = '/users/payment_intent';
+  static const String payment = '/users/create-subscription';
+
+  static const String subscriptions = '/subscription-types';
 }

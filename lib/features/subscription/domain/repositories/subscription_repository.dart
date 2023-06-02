@@ -9,4 +9,6 @@ abstract class SubscriptionRepository {
   Future<Either<Failure, bool>> initPaymentSheet(PaymentData data);
   Future<Either<Failure, bool>> presentPaymentSheet();
   Future<Either<Failure, bool>> confirmPaymentSheet();
+  Future<Either<Failure, List<SubscriptionType>>> getSubscriptionsType();
+  Future<Either<Failure, dynamic>> updateSubsctiption(String id);
 }

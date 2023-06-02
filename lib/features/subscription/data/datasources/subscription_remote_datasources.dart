@@ -11,6 +11,9 @@ abstract class SubscriptionRemoteDatasources {
   Future<bool> initPaymentSheet(PaymentData parm);
   Future<bool> presentPaymentSheet();
   Future<bool> confirmPaymentSheet();
+  Future<List<SubscriptionType>> getSubscriptionsType();
+  Future updateSubscription(
+      {required String subscriptionId, required String uid});
 }
 
 class SubscriptionRemoteDatasourcesImp
@@ -22,8 +25,7 @@ class SubscriptionRemoteDatasourcesImp
   @override
   Future<PaymentData> sendPayment(PPayment param) async {
     try {
-      final res = await baseRepo.post(ApiConstants.payment,
-          body: {'amount': 1000}, addToken: true);
+      final res = await baseRepo.post(ApiConstants.payment, addToken: true);
 
       return PaymentData.fromJson(res.data);
     } catch (e) {
@@ -83,6 +85,37 @@ class SubscriptionRemoteDatasourcesImp
       } else {
         throw ServerException(message: e.toString());
       }
+    }
+  }
+
+  @override
+  Future<List<SubscriptionType>> getSubscriptionsType() async {
+    try {
+      final res = await baseRepo.get(ApiConstants.subscriptions);
+      return (res.data as List)
+          .map((m) => SubscriptionType.fromJson(m))
+          .toList();
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future updateSubscription({
+    required String subscriptionId,
+    required String uid,
+  }) async {
+    try {
+      await baseRepo.patch(
+        ApiConstants.registration(uid: uid),
+        body: {'subscriptionType': subscriptionId},
+        addToken: true,
+      );
+      return true;
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
     }
   }
 }

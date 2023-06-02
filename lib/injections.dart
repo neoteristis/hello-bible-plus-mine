@@ -154,6 +154,7 @@ void repository() {
     () => SubscriptionRepositoryImp(
       remote: getIt(),
       networkInfo: getIt(),
+      registrationLocal: getIt(),
     ),
   );
 }
@@ -180,6 +181,10 @@ void usecase() {
   getIt.registerLazySingleton(() => PresentPaymentUsecase(getIt()));
 
   getIt.registerLazySingleton(() => ConfirmPaymentUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => FetchSubscriptionTypesUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => UpdateSubscriptionUsecase(getIt()));
 }
 
 void bloc() {
@@ -220,6 +225,8 @@ void bloc() {
       initPaymentSheet: getIt(),
       presentPaymentSheet: getIt(),
       confirmPaymentSheet: getIt(),
+      fetchSubscriptions: getIt(),
+      updateSubscription: getIt(),
     ),
   );
 }

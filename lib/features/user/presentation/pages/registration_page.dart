@@ -18,15 +18,15 @@ class RegistrationPage extends StatelessWidget {
           context.read<AuthBloc>().add(AuthSuccessfullyLogged());
         }
       },
-      child: Scaffold(
+      child: const Scaffold(
         body: Column(
-          children: const [
+          children: [
             FirstnameRegistrationInput(),
             NameRegistrationInput(),
             EmailRegistrationInput(),
             CountryRegistrationInput(),
-            CodeRegistrationInput(),
-            InvalidCodeWidget(),
+            // CodeRegistrationInput(),
+            // InvalidCodeWidget(),
             SubmitRegistrationButton(),
           ],
         ),

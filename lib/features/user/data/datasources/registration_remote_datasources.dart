@@ -20,7 +20,7 @@ class RegistrationRemoteDatasourcesImp
   Future<UserResponse> registration(User user) async {
     try {
       final res =
-          await baseRepo.post(ApiConstants.registration, body: user.toJson());
+          await baseRepo.post(ApiConstants.registration(), body: user.toJson());
       return UserResponse.fromJson(res.data);
     } on DioError catch (e) {
       Logger().w(e);

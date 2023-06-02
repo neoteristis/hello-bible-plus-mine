@@ -38,14 +38,14 @@ class RegistrationInputs with FormzMixin {
     this.firstname = const RequiredInput.pure(),
     this.email = const EmailInput.pure(),
     this.country = const RequiredInput.pure(),
-    this.code = const RequiredInput.pure(),
+    this.code = const UnrequiredInput.pure(),
   });
 
   final RequiredInput name;
   final RequiredInput firstname;
   final EmailInput email;
   final RequiredInput country;
-  final RequiredInput code;
+  final UnrequiredInput code;
 
   @override
   List<FormzInput> get inputs => [
@@ -61,7 +61,7 @@ class RegistrationInputs with FormzMixin {
     FirstNameInput? firstname,
     EmailInput? email,
     RequiredInput? country,
-    RequiredInput? code,
+    UnrequiredInput? code,
   }) {
     return RegistrationInputs(
       name: name ?? this.name,

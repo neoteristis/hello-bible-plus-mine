@@ -5,15 +5,18 @@ import 'package:gpt/features/subscription/domain/usecases/payment_intent_usecase
 
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
+import '../../../user/data/datasources/datasources.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/repositories/subscription_repository.dart';
 import '../datasources/subscription_remote_datasources.dart';
 
 class SubscriptionRepositoryImp implements SubscriptionRepository {
   final SubscriptionRemoteDatasources remote;
+  final RegistrationLocalDatasources registrationLocal;
   final NetworkInfo networkInfo;
   SubscriptionRepositoryImp({
     required this.remote,
+    required this.registrationLocal,
     required this.networkInfo,
   });
   @override
@@ -64,6 +67,43 @@ class SubscriptionRepositoryImp implements SubscriptionRepository {
       try {
         final res = await remote.confirmPaymentSheet();
         return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SubscriptionType>>> getSubscriptionsType() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.getSubscriptionsType();
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> updateSubsctiption(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final user = await registrationLocal.getUser();
+        final uid = user?.idString;
+        print('a');
+        if (uid != null) {
+          print('b');
+          final res =
+              await remote.updateSubscription(subscriptionId: id, uid: uid);
+          print('c');
+          return Right(res);
+        }
+        return const Left(CacheFailure());
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }

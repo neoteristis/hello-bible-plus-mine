@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:gpt/features/subscription/domain/usecases/payment_intent_usecase.dart';
 import 'package:gpt/features/subscription/domain/usecases/usecases.dart';
 import 'package:logger/logger.dart';
 
@@ -17,16 +16,54 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   final InitPaymentUsecase initPaymentSheet;
   final PresentPaymentUsecase presentPaymentSheet;
   final ConfirmPaymentUsecase confirmPaymentSheet;
+  final FetchSubscriptionTypesUsecase fetchSubscriptions;
+  final UpdateSubscriptionUsecase updateSubscription;
   SubscriptionBloc({
     required this.paymentIntent,
     required this.initPaymentSheet,
     required this.presentPaymentSheet,
     required this.confirmPaymentSheet,
+    required this.fetchSubscriptions,
+    required this.updateSubscription,
   }) : super(const SubscriptionState()) {
     on<SubscriptionPaymentDataRequested>(_onSubscriptionPaymentDataRequested);
     on<SubscriptionPaymentSheetInited>(_onSubscriptionPaymentSheetInited);
     on<SubscriptionPaymentSheetPresented>(_onSubscriptionPaymentSheetPresented);
     on<SubscriptionPaymentSheetConfirmed>(_onSubscriptionPaymentSheetConfirmed);
+    on<SubscriptionFetched>(_onSubscriptionFetched);
+    on<SubscriptionUpdated>(_onSubscriptionUpdated);
+  }
+
+  void _onSubscriptionUpdated(
+    SubscriptionUpdated event,
+    Emitter<SubscriptionState> emit,
+  ) async {
+    final res = await updateSubscription(event.subscriptionId);
+
+    return res.fold((l) => print('not updated'),
+        (r) => add(SubscriptionPaymentDataRequested(1000)));
+  }
+
+  void _onSubscriptionFetched(
+    SubscriptionFetched event,
+    Emitter<SubscriptionState> emit,
+  ) async {
+    emit(state.copyWith(status: Status.loading));
+    final res = await fetchSubscriptions(NoParams());
+    return res.fold(
+      (l) => emit(
+        state.copyWith(
+          status: Status.failed,
+          failure: l,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          status: Status.loaded,
+          subscriptions: r,
+        ),
+      ),
+    );
   }
 
   void _onSubscriptionPaymentSheetConfirmed(

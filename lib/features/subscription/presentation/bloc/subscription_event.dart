@@ -21,3 +21,14 @@ class SubscriptionPaymentSheetInited extends SubscriptionEvent {}
 class SubscriptionPaymentSheetPresented extends SubscriptionEvent {}
 
 class SubscriptionPaymentSheetConfirmed extends SubscriptionEvent {}
+
+class SubscriptionFetched extends SubscriptionEvent {}
+
+class SubscriptionUpdated extends SubscriptionEvent {
+  final String subscriptionId;
+  const SubscriptionUpdated({
+    required this.subscriptionId,
+  });
+  @override
+  List<Object> get props => [subscriptionId];
+}

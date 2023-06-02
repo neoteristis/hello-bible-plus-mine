@@ -47,7 +47,6 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
     try {
       Response res;
       if (conversationId != null) {
-        print('b');
         res = await baseRepo.patch(
             ApiConstants.conversation(conversationId: conversationId),
             body: {
