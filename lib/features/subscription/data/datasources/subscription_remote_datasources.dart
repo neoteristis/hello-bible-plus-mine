@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/error/exception.dart';
+import '../../../../core/models/message_response.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/payment_intent_usecase.dart';
 
@@ -14,6 +17,7 @@ abstract class SubscriptionRemoteDatasources {
   Future<List<SubscriptionType>> getSubscriptionsType();
   Future updateSubscription(
       {required String subscriptionId, required String uid});
+  Future<MessageResponse> checkCode(String code);
 }
 
 class SubscriptionRemoteDatasourcesImp
@@ -113,6 +117,32 @@ class SubscriptionRemoteDatasourcesImp
         addToken: true,
       );
       return true;
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<MessageResponse> checkCode(String code) async {
+    try {
+      final res = await baseRepo.get(
+        ApiConstants.code(code),
+      );
+      return MessageResponse.fromJson(res.data);
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      final res = e.response;
+      final message = res?.data != null
+          ? MessageResponse.fromJson(res?.data).message
+          : e.toString();
+      if (e.response?.statusCode == 404) {
+        throw NotFoundException();
+      } else {
+        throw ServerException(message: message);
+      }
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());

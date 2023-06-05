@@ -4,22 +4,40 @@ import '../../features/chat/presentation/pages/chat_page.dart';
 import '../../features/chat/presentation/pages/historical_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/user/presentation/pages/registration_page.dart';
+import '../../splash_screen.dart';
 import 'route_name.dart';
 
 Map<String, GoRouter> routers = {
   RouteName.login: _routerForLogin,
   RouteName.logged: _routerForLogged,
+  RouteName.splash: _routerSplash,
 };
+
+final _routerSplash = GoRouter(
+  initialLocation: RouteName.home,
+  routes: [
+    GoRoute(
+      path: RouteName.home,
+      builder: (context, state) => const SplashScreen(),
+      routes: const [],
+    )
+  ],
+);
 
 final _routerForLogin = GoRouter(
   initialLocation: RouteName.home,
   routes: [
     GoRoute(
       path: RouteName.home,
-      // builder: (context, state) => const RegistrationPage(),
+      builder: (context, state) => const RegistrationPage(),
+      // builder: (context, state) => const SubscriptionPage(),
+      routes: const [],
+    ),
+    GoRoute(
+      path: RouteName.home,
       builder: (context, state) => const SubscriptionPage(),
       routes: const [],
-    )
+    ),
   ],
 );
 

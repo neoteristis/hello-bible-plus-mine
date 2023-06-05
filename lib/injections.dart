@@ -41,6 +41,9 @@ import 'features/user/domain/usecases/usecases.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'objectbox.g.dart';
 
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 final getIt = GetIt.instance;
 
 Future<void> init() async {
@@ -271,6 +274,8 @@ Future<void> setupFlutterNotifications() async {
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+  getIt.registerLazySingleton(() => flutterLocalNotificationsPlugin);
+
   flutterLocalNotificationsPlugin
       .getNotificationAppLaunchDetails()
       .then((value) => selectNotificationStream.add('heeeey'));
@@ -292,6 +297,8 @@ Future<void> setupFlutterNotifications() async {
     },
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
   );
+
+  // await scheduledNotification();
 
   /// Create an Android Notification Channel.
   ///
@@ -357,3 +364,33 @@ void onDidReceiveLocalNotification(
 
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+// Future scheduledNotification() async {
+//   tz.initializeTimeZones();
+
+//   tz.setLocalLocation(tz.getLocation('Africa/Nairobi'));
+
+//   await flutterLocalNotificationsPlugin.zonedSchedule(
+//     0,
+//     'scheduled title',
+//     'scheduled body',
+//     tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+//     const NotificationDetails(
+//       android: AndroidNotificationDetails(
+//         'high_importance_channel', // id
+//         'High Importance Notifications', // title
+//         channelDescription: 'This channel is used for important notifications.',
+//         priority: Priority.high,
+//         importance: Importance.high,
+//       ),
+//       iOS: DarwinNotificationDetails(
+//         presentAlert: true,
+//         presentBadge: true,
+//         presentSound: true,
+//       ),
+//     ),
+//     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+//     uiLocalNotificationDateInterpretation:
+//         UILocalNotificationDateInterpretation.absoluteTime,
+//   );
+// }

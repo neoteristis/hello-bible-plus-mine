@@ -30,10 +30,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<AuthBloc>()..add(AuthStarted()),
         ),
-        BlocProvider(
-          create: (context) =>
-              getIt<HistoricalBloc>()..add(HistoricalFetched()),
-        ),
+        BlocProvider(create: (context) => getIt<HistoricalBloc>()
+            // ..add(HistoricalFetched()),
+            ),
         BlocProvider(
           create: (context) => getIt<SubscriptionBloc>(),
         ),

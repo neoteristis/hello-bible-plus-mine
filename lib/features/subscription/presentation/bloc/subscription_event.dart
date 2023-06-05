@@ -32,3 +32,15 @@ class SubscriptionUpdated extends SubscriptionEvent {
   @override
   List<Object> get props => [subscriptionId];
 }
+
+class SubscriptionCodeChanged extends SubscriptionEvent {
+  final String code;
+  const SubscriptionCodeChanged(
+    this.code,
+  );
+
+  @override
+  List<Object> get props => [code];
+}
+
+class SubscriptionCodeChecked extends SubscriptionEvent {}
