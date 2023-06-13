@@ -28,15 +28,9 @@ class SubscriptionsListWidget extends StatelessWidget {
                 ...subscriptions
                     .map((sub) => GestureDetector(
                           onTap: () {
-                            // final id = sub.id;
-                            // if (id != null) {
-                            //   context
-                            //       .read<SubscriptionBloc>()
-                            //       .add(SubscriptionUpdated(subscriptionId: sub.id!));
-                            // }
-                            // context
-                            //     .read<SubscriptionBloc>()
-                            //     .add(SubscriptionPaymentDataRequested(1000));
+                            context
+                                .read<SubscriptionBloc>()
+                                .add(SubscriptionPaymentDataRequested(sub));
                           },
                           child: ListTile(
                             title: Text(

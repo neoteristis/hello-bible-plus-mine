@@ -4,3 +4,5 @@ export 'present_payment_usecase.dart';
 export 'confirm_payment_usecase.dart';
 export 'fetch_subscription_types_usecase.dart';
 export 'update_subscription_usecase.dart';
+export 'check_code_usecase.dart';
+export 'cancel_subscription_usecase.dart';

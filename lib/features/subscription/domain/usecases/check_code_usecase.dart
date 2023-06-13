@@ -12,5 +12,7 @@ class CheckCodeUsecase implements Usecase<MessageResponse, String> {
     this.subscription,
   );
   @override
-  Future<Either<Failure, MessageResponse?>> call(String params) async {}
+  Future<Either<Failure, MessageResponse?>> call(String code) async {
+    return await subscription.checkCode(code);
+  }
 }

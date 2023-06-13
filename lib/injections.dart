@@ -11,12 +11,14 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:gpt/features/introduction/presentation/bloc/introduction_bloc.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:gpt/features/user/data/datasources/datasources.dart';
 import 'package:gpt/features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/base_repository/base_repository.dart';
 import 'core/base_repository/base_repository_imp.dart';
@@ -89,11 +91,16 @@ Future external() async {
   getIt.registerLazySingleton(() => store);
   getIt.registerLazySingleton(() => Box<UserBox>(getIt()));
 
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  getIt.registerLazySingleton<SharedPreferences>(() => prefs);
+
   getIt.registerLazySingleton<DbService>(
     () => DbServiceImp(
       secureStorage: const FlutterSecureStorage(),
       store: getIt(),
       userBox: getIt(),
+      sharedPreferences: getIt(),
     ),
   );
   getIt.registerLazySingleton<NetworkInfo>(
@@ -187,7 +194,11 @@ void usecase() {
 
   getIt.registerLazySingleton(() => FetchSubscriptionTypesUsecase(getIt()));
 
-  getIt.registerLazySingleton(() => UpdateSubscriptionUsecase(getIt()));
+  // getIt.registerLazySingleton(() => UpdateSubscriptionUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => CheckCodeUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => CancelSubscriptionUsecase(getIt()));
 }
 
 void bloc() {
@@ -229,7 +240,15 @@ void bloc() {
       presentPaymentSheet: getIt(),
       confirmPaymentSheet: getIt(),
       fetchSubscriptions: getIt(),
-      updateSubscription: getIt(),
+      // updateSubscription: getIt(),
+      checkCode: getIt(),
+      cancelSubscription: getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => IntroductionBloc(
+      db: getIt(),
     ),
   );
 }

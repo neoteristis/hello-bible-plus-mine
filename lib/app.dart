@@ -6,6 +6,7 @@ import 'core/routes/router.dart';
 import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
+import 'features/introduction/presentation/bloc/introduction_bloc.dart';
 import 'features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
@@ -35,6 +36,9 @@ class App extends StatelessWidget {
             ),
         BlocProvider(
           create: (context) => getIt<SubscriptionBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<IntroductionBloc>(),
         ),
       ],
       child: BlocBuilder<ChatBloc, ChatState>(

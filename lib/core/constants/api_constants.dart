@@ -33,4 +33,8 @@ class ApiConstants {
   static const String payment = '/users/create-subscription';
 
   static const String subscriptions = '/subscription-types';
+
+  static String code(String code) => '/access-code/check/$code';
+
+  static const String cancelSubscription = '/users/cancel-subscription';
 }

@@ -18,7 +18,8 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   final PresentPaymentUsecase presentPaymentSheet;
   final ConfirmPaymentUsecase confirmPaymentSheet;
   final FetchSubscriptionTypesUsecase fetchSubscriptions;
-  final UpdateSubscriptionUsecase updateSubscription;
+  final CancelSubscriptionUsecase cancelSubscription;
+  // final UpdateSubscriptionUsecase updateSubscription;
   final CheckCodeUsecase checkCode;
   SubscriptionBloc({
     required this.paymentIntent,
@@ -26,7 +27,8 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
     required this.presentPaymentSheet,
     required this.confirmPaymentSheet,
     required this.fetchSubscriptions,
-    required this.updateSubscription,
+    required this.cancelSubscription,
+    // required this.updateSubscription,
     required this.checkCode,
   }) : super(
           SubscriptionState(
@@ -38,9 +40,34 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
     on<SubscriptionPaymentSheetPresented>(_onSubscriptionPaymentSheetPresented);
     on<SubscriptionPaymentSheetConfirmed>(_onSubscriptionPaymentSheetConfirmed);
     on<SubscriptionFetched>(_onSubscriptionFetched);
-    on<SubscriptionUpdated>(_onSubscriptionUpdated);
+    // on<SubscriptionUpdated>(_onSubscriptionUpdated);
     on<SubscriptionCodeChanged>(_onSubscriptionCodeChanged);
     on<SubscriptionCodeChecked>(_onSubscriptionCodeChecked);
+    on<SubscriptionCanceled>(_onSubscriptionCanceled);
+  }
+
+  void _onSubscriptionCanceled(
+    SubscriptionCanceled event,
+    Emitter<SubscriptionState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        cancelSubscriptionStatus: Status.loading,
+      ),
+    );
+    final res = await cancelSubscription(NoParams());
+    return res.fold(
+      (l) => emit(
+        state.copyWith(
+          cancelSubscriptionStatus: Status.failed,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          cancelSubscriptionStatus: Status.loaded,
+        ),
+      ),
+    );
   }
 
   void _onSubscriptionCodeChanged(
@@ -60,12 +87,14 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   ) async {
     final code = state.code;
     if (code != null) {
+      state.buttonController?.start();
       emit(
         state.copyWith(
           checkCodeStatus: Status.loading,
         ),
       );
       final res = await checkCode(code);
+      state.buttonController?.stop();
       return res.fold(
         (l) {
           bool invalidCode = false;
@@ -95,15 +124,15 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
     );
   }
 
-  void _onSubscriptionUpdated(
-    SubscriptionUpdated event,
-    Emitter<SubscriptionState> emit,
-  ) async {
-    final res = await updateSubscription(event.subscriptionId);
+  // void _onSubscriptionUpdated(
+  //   SubscriptionUpdated event,
+  //   Emitter<SubscriptionState> emit,
+  // ) async {
+  //   final res = await updateSubscription(event.subscription);
 
-    return res.fold((l) => print('not updated'),
-        (r) => add(SubscriptionPaymentDataRequested(1000)));
-  }
+  //   return res.fold((l) => print('not updated'),
+  //       (r) => add(SubscriptionPaymentDataRequested(1000)));
+  // }
 
   void _onSubscriptionFetched(
     SubscriptionFetched event,
@@ -160,8 +189,14 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   ) async {
     final res = await presentPaymentSheet(NoParams());
     return res.fold(
-      (l) => emit(state.copyWith(failure: l, status: Status.failed)),
-      (r) => Logger().i('sucess'),
+      (l) => emit(
+        state.copyWith(
+          failure: l,
+          status: Status.failed,
+        ),
+      ),
+      // (r) => print('success'),
+      (r) => SubscriptionPaymentSheetConfirmed(),
     );
   }
 
@@ -174,7 +209,7 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
         status: Status.loading,
       ),
     );
-    final res = await paymentIntent(PPayment(amount: event.amount));
+    final res = await paymentIntent(event.subsriptionType);
     return res.fold(
       (l) => emit(
         state.copyWith(

@@ -24,7 +24,7 @@ class HistoricalPage extends StatelessWidget {
             case Status.loaded:
               final historicals = state.historicals;
               if (historicals == null || historicals.isEmpty) {
-                return Text('La liste est vide');
+                return const Text('La liste est vide');
               }
               return ListView.builder(
                 itemBuilder: (context, index) => GestureDetector(
@@ -40,11 +40,11 @@ class HistoricalPage extends StatelessWidget {
                 itemCount: historicals.length,
               );
             case Status.failed:
-              return Center(
+              return const Center(
                 child: Text('Une erreur s\'est produite'),
               );
             default:
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
           }
         },
       ),

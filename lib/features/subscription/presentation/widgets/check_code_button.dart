@@ -17,7 +17,8 @@ class CheckCodeButton extends StatelessWidget {
       builder: (context, state) {
         return RoundedLoadingButton(
           animateOnTap: false,
-          controller: RoundedLoadingButtonController(),
+          controller:
+              state.buttonController ?? RoundedLoadingButtonController(),
           onPressed: () {
             context.read<SubscriptionBloc>().add(SubscriptionCodeChecked());
           },
