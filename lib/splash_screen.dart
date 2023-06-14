@@ -35,39 +35,37 @@ class SplashScreen extends StatelessWidget {
           },
         ),
       ],
-      child: SafeArea(
-        child: const Scaffold(
-          backgroundColor: Color(0xFF2EB67D),
-          body: Stack(
-            children: [
-              Center(
-                child: LogoWithText(
-                  logoColor: Colors.white,
+      child: const Scaffold(
+        backgroundColor: Color(0xFF2EB67D),
+        body: Stack(
+          children: [
+            Center(
+              child: LogoWithText(
+                logoColor: Colors.white,
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        'HelloBible+ - Copyright 2023',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Text(
-                          'HelloBible+ - Copyright 2023',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

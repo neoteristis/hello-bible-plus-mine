@@ -21,7 +21,7 @@ class SocialConnectButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * .6,
+      width: MediaQuery.of(context).size.width * .65,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 15.0),
         child: RoundedLoadingButton(
@@ -30,25 +30,25 @@ class SocialConnectButton extends StatelessWidget {
           onPressed: onPressed,
           borderRadius: 10,
           child: child ??
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (icon != null) icon!,
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    if (label != null)
-                      Text(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  if (icon != null) Expanded(child: icon!),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  if (label != null)
+                    Expanded(
+                      flex: 4,
+                      child: Text(
                         label!,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
         ),
       ),

@@ -22,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/base_repository/base_repository.dart';
 import 'core/base_repository/base_repository_imp.dart';
+import 'core/bloc/obscure_text/obscure_text_cubit.dart';
 import 'core/db_services/db_services.dart';
 import 'core/dio_interceptors/interceptors.dart';
 import 'core/helper/log.dart';
@@ -251,6 +252,8 @@ void bloc() {
       db: getIt(),
     ),
   );
+
+  getIt.registerFactory(() => ObscureTextCubit());
 }
 
 @pragma('vm:entry-point')

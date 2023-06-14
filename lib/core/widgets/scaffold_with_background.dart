@@ -17,16 +17,37 @@ class ScaffoldWithBackground extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         extendBody: true,
+        backgroundColor: Colors.white,
         extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
           centerTitle: false,
-          title: TextButton.icon(
-              onPressed: onPop,
-              icon: Icon(Icons.arrow_back_ios),
-              label: Text('Retour')),
+          title: Visibility(
+            visible: onPop != null,
+            child: GestureDetector(
+              onTap: onPop,
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.arrow_back_ios,
+                    size: 20,
+                    color: Color(0xFF24282E),
+                  ),
+                  Text(
+                    'Retour',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 17,
+                      color: Color(0xFF24282E),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
         body: Stack(
           children: [
