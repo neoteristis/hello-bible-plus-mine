@@ -11,15 +11,18 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:gpt/features/introduction/presentation/bloc/introduction_bloc.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:gpt/features/user/data/datasources/datasources.dart';
 import 'package:gpt/features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/base_repository/base_repository.dart';
 import 'core/base_repository/base_repository_imp.dart';
+import 'core/bloc/obscure_text/obscure_text_cubit.dart';
 import 'core/db_services/db_services.dart';
 import 'core/dio_interceptors/interceptors.dart';
 import 'core/helper/log.dart';
@@ -40,6 +43,9 @@ import 'features/user/domain/repositories/registration_repository.dart';
 import 'features/user/domain/usecases/usecases.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'objectbox.g.dart';
+
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 final getIt = GetIt.instance;
 
@@ -86,11 +92,16 @@ Future external() async {
   getIt.registerLazySingleton(() => store);
   getIt.registerLazySingleton(() => Box<UserBox>(getIt()));
 
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  getIt.registerLazySingleton<SharedPreferences>(() => prefs);
+
   getIt.registerLazySingleton<DbService>(
     () => DbServiceImp(
       secureStorage: const FlutterSecureStorage(),
       store: getIt(),
       userBox: getIt(),
+      sharedPreferences: getIt(),
     ),
   );
   getIt.registerLazySingleton<NetworkInfo>(
@@ -184,7 +195,11 @@ void usecase() {
 
   getIt.registerLazySingleton(() => FetchSubscriptionTypesUsecase(getIt()));
 
-  getIt.registerLazySingleton(() => UpdateSubscriptionUsecase(getIt()));
+  // getIt.registerLazySingleton(() => UpdateSubscriptionUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => CheckCodeUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => CancelSubscriptionUsecase(getIt()));
 }
 
 void bloc() {
@@ -226,9 +241,19 @@ void bloc() {
       presentPaymentSheet: getIt(),
       confirmPaymentSheet: getIt(),
       fetchSubscriptions: getIt(),
-      updateSubscription: getIt(),
+      // updateSubscription: getIt(),
+      checkCode: getIt(),
+      cancelSubscription: getIt(),
     ),
   );
+
+  getIt.registerFactory(
+    () => IntroductionBloc(
+      db: getIt(),
+    ),
+  );
+
+  getIt.registerFactory(() => ObscureTextCubit());
 }
 
 @pragma('vm:entry-point')
@@ -271,6 +296,8 @@ Future<void> setupFlutterNotifications() async {
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+  getIt.registerLazySingleton(() => flutterLocalNotificationsPlugin);
+
   flutterLocalNotificationsPlugin
       .getNotificationAppLaunchDetails()
       .then((value) => selectNotificationStream.add('heeeey'));
@@ -292,6 +319,8 @@ Future<void> setupFlutterNotifications() async {
     },
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
   );
+
+  // await scheduledNotification();
 
   /// Create an Android Notification Channel.
   ///
@@ -357,3 +386,33 @@ void onDidReceiveLocalNotification(
 
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+// Future scheduledNotification() async {
+//   tz.initializeTimeZones();
+
+//   tz.setLocalLocation(tz.getLocation('Africa/Nairobi'));
+
+//   await flutterLocalNotificationsPlugin.zonedSchedule(
+//     0,
+//     'scheduled title',
+//     'scheduled body',
+//     tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+//     const NotificationDetails(
+//       android: AndroidNotificationDetails(
+//         'high_importance_channel', // id
+//         'High Importance Notifications', // title
+//         channelDescription: 'This channel is used for important notifications.',
+//         priority: Priority.high,
+//         importance: Importance.high,
+//       ),
+//       iOS: DarwinNotificationDetails(
+//         presentAlert: true,
+//         presentBadge: true,
+//         presentSound: true,
+//       ),
+//     ),
+//     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+//     uiLocalNotificationDateInterpretation:
+//         UILocalNotificationDateInterpretation.absoluteTime,
+//   );
+// }

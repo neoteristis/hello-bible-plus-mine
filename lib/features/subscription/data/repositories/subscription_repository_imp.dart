@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:gpt/core/error/failure.dart';
+import 'package:gpt/core/models/message_response.dart';
 import 'package:gpt/features/subscription/domain/usecases/payment_intent_usecase.dart';
 
 import '../../../../core/error/exception.dart';
@@ -20,7 +21,8 @@ class SubscriptionRepositoryImp implements SubscriptionRepository {
     required this.networkInfo,
   });
   @override
-  Future<Either<Failure, PaymentData>> sendPayment(PPayment params) async {
+  Future<Either<Failure, PaymentData>> sendPayment(
+      SubscriptionType params) async {
     if (await networkInfo.isConnected) {
       try {
         final res = await remote.sendPayment(params);
@@ -89,21 +91,48 @@ class SubscriptionRepositoryImp implements SubscriptionRepository {
     }
   }
 
+  // @override
+  // Future<Either<Failure, dynamic>> updateSubsctiption(String id) async {
+  //   if (await networkInfo.isConnected) {
+  //     try {
+  //       final user = await registrationLocal.getUser();
+  //       final uid = user?.idString;
+  //       if (uid != null) {
+  //         final res =
+  //             await remote.updateSubscription(subscriptionId: id, uid: uid);
+  //         return Right(res);
+  //       }
+  //       return const Left(CacheFailure());
+  //     } on ServerException catch (e) {
+  //       return Left(ServerFailure(info: e.message));
+  //     }
+  //   } else {
+  //     return const Left(NoConnexionFailure());
+  //   }
+  // }
+
   @override
-  Future<Either<Failure, dynamic>> updateSubsctiption(String id) async {
+  Future<Either<Failure, MessageResponse>> checkCode(String code) async {
     if (await networkInfo.isConnected) {
       try {
-        final user = await registrationLocal.getUser();
-        final uid = user?.idString;
-        print('a');
-        if (uid != null) {
-          print('b');
-          final res =
-              await remote.updateSubscription(subscriptionId: id, uid: uid);
-          print('c');
-          return Right(res);
-        }
-        return const Left(CacheFailure());
+        final res = await remote.checkCode(code);
+        return Right(res);
+      } on NotFoundException {
+        return const Left(NotFoundFailure());
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> cancelSubscription() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.cancelSubscription();
+        return Right(res);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }

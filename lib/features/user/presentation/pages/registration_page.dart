@@ -1,35 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
+import '../widgets/registrations/registrations.dart';
+import 'dart:io' show Platform;
 
-import '../../../../core/constants/status.dart';
-import '../bloc/registration_bloc/registration_bloc.dart';
-import '../widgets/registration/widget_registration.dart';
+import 'base_page.dart';
 
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
-      listenWhen: (previous, current) => previous.status != current.status,
-      listener: (context, state) {
-        if (state.status == Status.loaded) {
-          context.read<AuthBloc>().add(AuthSuccessfullyLogged());
-        }
-      },
-      child: const Scaffold(
-        body: Column(
-          children: [
-            FirstnameRegistrationInput(),
-            NameRegistrationInput(),
-            EmailRegistrationInput(),
-            CountryRegistrationInput(),
-            // CodeRegistrationInput(),
-            // InvalidCodeWidget(),
-            SubmitRegistrationButton(),
-          ],
-        ),
+    return BasePage(
+      goBackSocialConnect: false,
+      body: Column(
+        children: [
+          if (Platform.isIOS) AppleConnectButton(),
+          GoogleConnectButton(),
+          FacebookConnectButton(),
+        ],
       ),
     );
   }

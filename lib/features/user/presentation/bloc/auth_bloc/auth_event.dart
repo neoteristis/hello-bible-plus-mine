@@ -12,3 +12,5 @@ class AuthStarted extends AuthEvent {}
 class AuthSuccessfullyLogged extends AuthEvent {}
 
 class AuthLogoutSubmitted extends AuthEvent {}
+
+class AuthLoginForwarded extends AuthEvent {}

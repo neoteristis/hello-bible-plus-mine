@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/user/data/models/box/user_box.dart';
 import '../../features/user/domain/entities/user.dart';
@@ -14,16 +15,20 @@ abstract class DbService {
   Future saveUser(User user);
   Future<User?> getUser();
   Future deleteUser();
+  bool getLaunchState();
+  Future<bool> saveLaunchState();
 }
 
 class DbServiceImp implements DbService {
   final FlutterSecureStorage secureStorage;
   final Store store;
   final Box<UserBox> userBox;
+  final SharedPreferences sharedPreferences;
   DbServiceImp({
     required this.secureStorage,
     required this.store,
     required this.userBox,
+    required this.sharedPreferences,
   });
   @override
   Future saveToken(Token token) async {
@@ -74,5 +79,16 @@ class DbServiceImp implements DbService {
   @override
   Future<String?> getRefreshToken() async {
     return await secureStorage.read(key: 'jwt_refresh');
+  }
+
+  @override
+  bool getLaunchState() {
+    final res = sharedPreferences.getBool('launch');
+    return res ?? false;
+  }
+
+  @override
+  Future<bool> saveLaunchState() async {
+    return await sharedPreferences.setBool('launch', true);
   }
 }

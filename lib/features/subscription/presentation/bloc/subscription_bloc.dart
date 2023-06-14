@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../../../core/widgets/rounded_loading_button.dart';
 import '../../domain/entities/entities.dart';
 
 part 'subscription_event.dart';
@@ -17,32 +18,121 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   final PresentPaymentUsecase presentPaymentSheet;
   final ConfirmPaymentUsecase confirmPaymentSheet;
   final FetchSubscriptionTypesUsecase fetchSubscriptions;
-  final UpdateSubscriptionUsecase updateSubscription;
+  final CancelSubscriptionUsecase cancelSubscription;
+  // final UpdateSubscriptionUsecase updateSubscription;
+  final CheckCodeUsecase checkCode;
   SubscriptionBloc({
     required this.paymentIntent,
     required this.initPaymentSheet,
     required this.presentPaymentSheet,
     required this.confirmPaymentSheet,
     required this.fetchSubscriptions,
-    required this.updateSubscription,
-  }) : super(const SubscriptionState()) {
+    required this.cancelSubscription,
+    // required this.updateSubscription,
+    required this.checkCode,
+  }) : super(
+          SubscriptionState(
+            buttonController: RoundedLoadingButtonController(),
+          ),
+        ) {
     on<SubscriptionPaymentDataRequested>(_onSubscriptionPaymentDataRequested);
     on<SubscriptionPaymentSheetInited>(_onSubscriptionPaymentSheetInited);
     on<SubscriptionPaymentSheetPresented>(_onSubscriptionPaymentSheetPresented);
     on<SubscriptionPaymentSheetConfirmed>(_onSubscriptionPaymentSheetConfirmed);
     on<SubscriptionFetched>(_onSubscriptionFetched);
-    on<SubscriptionUpdated>(_onSubscriptionUpdated);
+    // on<SubscriptionUpdated>(_onSubscriptionUpdated);
+    on<SubscriptionCodeChanged>(_onSubscriptionCodeChanged);
+    on<SubscriptionCodeChecked>(_onSubscriptionCodeChecked);
+    on<SubscriptionCanceled>(_onSubscriptionCanceled);
   }
 
-  void _onSubscriptionUpdated(
-    SubscriptionUpdated event,
+  void _onSubscriptionCanceled(
+    SubscriptionCanceled event,
     Emitter<SubscriptionState> emit,
   ) async {
-    final res = await updateSubscription(event.subscriptionId);
-
-    return res.fold((l) => print('not updated'),
-        (r) => add(SubscriptionPaymentDataRequested(1000)));
+    emit(
+      state.copyWith(
+        cancelSubscriptionStatus: Status.loading,
+      ),
+    );
+    final res = await cancelSubscription(NoParams());
+    return res.fold(
+      (l) => emit(
+        state.copyWith(
+          cancelSubscriptionStatus: Status.failed,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          cancelSubscriptionStatus: Status.loaded,
+        ),
+      ),
+    );
   }
+
+  void _onSubscriptionCodeChanged(
+    SubscriptionCodeChanged event,
+    Emitter<SubscriptionState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        code: event.code,
+      ),
+    );
+  }
+
+  void _onSubscriptionCodeChecked(
+    SubscriptionCodeChecked event,
+    Emitter<SubscriptionState> emit,
+  ) async {
+    final code = state.code;
+    if (code != null) {
+      state.buttonController?.start();
+      emit(
+        state.copyWith(
+          checkCodeStatus: Status.loading,
+        ),
+      );
+      final res = await checkCode(code);
+      state.buttonController?.stop();
+      return res.fold(
+        (l) {
+          bool invalidCode = false;
+          if (l is NotFoundFailure) {
+            invalidCode = true;
+          }
+          emit(
+            state.copyWith(
+              checkCodeStatus: Status.failed,
+              failure: l,
+              invalidCode: invalidCode,
+            ),
+          );
+        },
+        (r) => emit(
+          state.copyWith(
+            checkCodeStatus: Status.loaded,
+            invalidCode: false,
+          ),
+        ),
+      );
+    }
+    return emit(
+      state.copyWith(
+        invalidCode: true,
+      ),
+    );
+  }
+
+  // void _onSubscriptionUpdated(
+  //   SubscriptionUpdated event,
+  //   Emitter<SubscriptionState> emit,
+  // ) async {
+  //   final res = await updateSubscription(event.subscription);
+
+  //   return res.fold((l) => print('not updated'),
+  //       (r) => add(SubscriptionPaymentDataRequested(1000)));
+  // }
 
   void _onSubscriptionFetched(
     SubscriptionFetched event,
@@ -99,8 +189,14 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   ) async {
     final res = await presentPaymentSheet(NoParams());
     return res.fold(
-      (l) => emit(state.copyWith(failure: l, status: Status.failed)),
-      (r) => Logger().i('sucess'),
+      (l) => emit(
+        state.copyWith(
+          failure: l,
+          status: Status.failed,
+        ),
+      ),
+      // (r) => print('success'),
+      (r) => SubscriptionPaymentSheetConfirmed(),
     );
   }
 
@@ -113,7 +209,7 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
         status: Status.loading,
       ),
     );
-    final res = await paymentIntent(PPayment(amount: event.amount));
+    final res = await paymentIntent(event.subsriptionType);
     return res.fold(
       (l) => emit(
         state.copyWith(

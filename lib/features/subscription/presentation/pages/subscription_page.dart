@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
 
-import '../../../../core/widgets/rounded_loading_button.dart';
-import '../../../user/presentation/widgets/registration/widget_registration.dart';
+import '../../../../core/constants/status.dart';
+import '../../../user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import '../widgets/widgets.dart';
 
 class SubscriptionPage extends StatefulWidget {
@@ -22,29 +22,31 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            children: [
-              SubscriptionsListWidget(),
-              Container(
-                decoration: BoxDecoration(),
-                child: Text('Offre gratuit pour l\'instant'),
-              ),
-              Text('Ou'),
-              CodeRegistrationInput(),
-              InvalidCodeWidget(),
-              SizedBox(
-                height: 10,
-              ),
-              RoundedLoadingButton(
-                controller: RoundedLoadingButtonController(),
-                onPressed: () {},
-                child: Text('valider'),
-              ),
-            ],
+    return BlocListener<SubscriptionBloc, SubscriptionState>(
+      listenWhen: (previous, current) =>
+          previous.checkCodeStatus != current.checkCodeStatus,
+      listener: (context, state) {
+        if (state.checkCodeStatus == Status.loaded) {
+          context.read<AuthBloc>().add(AuthSuccessfullyLogged());
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
+              children: const [
+                SubscriptionsListWidget(),
+                FreeOfferOptionButtonWidget(),
+                Text('Ou'),
+                CodeRegistrationInput(),
+                InvalidCodeWidget(),
+                SizedBox(
+                  height: 10,
+                ),
+                CheckCodeButton(),
+              ],
+            ),
           ),
         ),
       ),

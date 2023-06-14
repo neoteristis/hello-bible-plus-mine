@@ -35,7 +35,7 @@ class _ChatPageState extends State<ChatPage> {
         }
       },
     );
-    context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
+    // context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
 
     Stream<String> tokenStream;
     tokenStream = FirebaseMessaging.instance.onTokenRefresh;
