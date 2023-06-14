@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/core/helper/show_error_dialog.dart';
+import 'package:gpt/core/helper/unfocus_keyboard.dart';
+import 'package:gpt/core/models/required_input.dart';
+import '../../../../core/constants/status.dart';
 import '../../../../core/routes/route_name.dart';
+import '../bloc/registration_bloc/registration_bloc.dart';
 import 'custom_password_input.dart';
 import 'input_base_page.dart';
 
@@ -9,24 +15,77 @@ class CreatePasswordInputPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InputBasePage(
-      title: 'Continuer pour créer votre compte',
-      field: const Column(
-        children: [
-          CustomPasswordInput(
-            label: 'Créer mon mot de passe',
+    final FocusNode _confirmPsdFocusNode = FocusNode();
+    return BlocConsumer<RegistrationBloc, RegistrationState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        switch (state.status) {
+          case Status.loaded:
+            context.go(RouteName.namePicture);
+            break;
+          case Status.failed:
+            showErrorDialog(context, state.failure?.message);
+            break;
+          default:
+        }
+      },
+      buildWhen: (previous, current) =>
+          previous.registrationBtnController !=
+          current.registrationBtnController,
+      builder: (context, state) {
+        return InputBasePage(
+          title: 'Continuer pour créer votre compte',
+          field: Column(
+            children: [
+              BlocBuilder<RegistrationBloc, RegistrationState>(
+                buildWhen: (previous, current) =>
+                    previous.password != current.password,
+                builder: (context, state) {
+                  return CustomPasswordInput(
+                    label: 'Créer mon mot de passe',
+                    onChanged: (value) => context.read<RegistrationBloc>().add(
+                          RegistrationPasswordChanged(value),
+                        ),
+                    errorText: state.password.isNotValid
+                        ? state.password.displayError?.text
+                        : null,
+                    onFieldSubmitted: (_) {
+                      unfocusKeyboard();
+                      FocusScope.of(context).requestFocus(_confirmPsdFocusNode);
+                    },
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 13,
+              ),
+              BlocBuilder<RegistrationBloc, RegistrationState>(
+                buildWhen: (previous, current) =>
+                    previous.confirmPassword != current.confirmPassword ||
+                    previous.confirmPassordError != current.confirmPassordError,
+                builder: (context, state) {
+                  return CustomPasswordInput(
+                    focusNode: _confirmPsdFocusNode,
+                    label: 'Confirmer le nouveau mot de passe',
+                    onChanged: (value) => context.read<RegistrationBloc>().add(
+                          RegistrationConfirmPasswordChanged(value),
+                        ),
+                    errorText: state.confirmPassordError,
+                    onFieldSubmitted: (_) => onSubmit(context),
+                  );
+                },
+              ),
+            ],
           ),
-          SizedBox(
-            height: 13,
-          ),
-          CustomPasswordInput(
-            label: 'Confirmer le nouveau mot de passe',
-          ),
-        ],
-      ),
-      onContinue: () {
-        context.go(RouteName.namePicture);
+          buttonController: state.registrationBtnController,
+          onContinue: () => onSubmit(context),
+        );
       },
     );
   }
+}
+
+void onSubmit(BuildContext context) {
+  unfocusKeyboard();
+  context.read<RegistrationBloc>().add(RegistrationSubmitted());
 }

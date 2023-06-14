@@ -9,6 +9,8 @@ class User extends Equatable {
   final String? validationCode;
   final String? country;
   final String? deviceToken;
+  final String? password;
+  final String? photo;
 
   const User({
     this.idString,
@@ -19,6 +21,8 @@ class User extends Equatable {
     this.validationCode,
     this.country,
     this.deviceToken,
+    this.password,
+    this.photo,
   });
   @override
   List<Object?> get props => [
@@ -30,6 +34,8 @@ class User extends Equatable {
         validationCode,
         country,
         deviceToken,
+        password,
+        photo,
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -39,17 +45,43 @@ class User extends Equatable {
       firstName: json['firstname'],
       email: json['email'],
       country: json['country'],
+      photo: json['photo'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson_1() {
+    return {
+      // 'name': lastName,
+      // 'firstname': firstName,
+      'email': email,
+      // 'code': validationCode,
+      'country': 'Madagascar',
+      // 'deviceToken': deviceToken,
+      'password': password,
+    };
+  }
+
+  Map<String, dynamic> toJsonLogin() {
+    return {
+      // 'name': lastName,
+      // 'firstname': firstName,
+      'username': email,
+      // 'code': validationCode,
+      // 'deviceToken': deviceToken,
+      'password': password,
+    };
+  }
+
+  Map<String, dynamic> toJson_2() {
     return {
       'name': lastName,
-      'firstname': firstName,
-      'email': email,
-      'code': validationCode,
-      'country': country,
-      'deviceToken': deviceToken,
+      // 'photo': photo,
+      // 'firstname': firstName,
+      // 'email': email,
+      // 'code': validationCode,
+      // 'country': country,
+      // 'deviceToken': deviceToken,
+      // 'password': password,
     };
   }
 }

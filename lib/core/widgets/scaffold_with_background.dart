@@ -19,7 +19,7 @@ class ScaffoldWithBackground extends StatelessWidget {
         extendBody: true,
         backgroundColor: Colors.white,
         extendBodyBehindAppBar: true,
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

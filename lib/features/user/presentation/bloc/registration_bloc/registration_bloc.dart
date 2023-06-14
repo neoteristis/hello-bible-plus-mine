@@ -3,24 +3,41 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/usecases/registration_usecase.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../../core/constants/status.dart';
+import '../../../../../core/error/failure.dart';
 import '../../../../../core/helper/formz.dart';
 import '../../../../../core/models/required_input.dart';
 import '../../../../../core/models/unrequired_input.dart';
+import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../../data/models/email_input.dart';
 import '../../../data/models/first_name_input.dart';
+import '../../../domain/usecases/pick_picture_usecase.dart';
+import '../../../domain/usecases/usecases.dart';
 
 part 'registration_event.dart';
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final RegistrationUsecase registration;
-  RegistrationBloc({required this.registration})
-      : super(RegistrationState(
-            registrationBtnController: RoundedLoadingButtonController())) {
+  final CheckEmailUsecase checkEmail;
+  final UpdateUserUsecase updateUser;
+  final PickPictureUsecase pickPicture;
+  RegistrationBloc({
+    required this.registration,
+    required this.checkEmail,
+    required this.updateUser,
+    required this.pickPicture,
+  }) : super(
+          RegistrationState(
+            registrationBtnController: RoundedLoadingButtonController(),
+            checkEmailBtnController: RoundedLoadingButtonController(),
+            updateUserBtnController: RoundedLoadingButtonController(),
+          ),
+        ) {
     on<RegistrationNameChanged>(_onRegistrationNameChanged);
     on<RegistrationFirstnameChanged>(_onRegistrationFirstnameChanged);
     on<RegistrationEmailChanged>(_onRegistrationEmailChanged);
@@ -28,6 +45,121 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationValidationCodeChanged>(_onRegistrationValidationCodeChanged);
     on<RegistrationSubmitted>(_onRegistrationSubmitted);
     on<RegistrationTopicSubscribed>(_onRegistrationTopicSubscribed);
+
+    //new
+    on<RegistrationEmailChecked>(_onRegistrationEmailChecked);
+    on<RegistrationPasswordChanged>(_onRegistrationPasswordChanged);
+    on<RegistrationConfirmPasswordChanged>(
+        _onRegistrationConfirmPasswordChanged);
+    on<RegistrationUserUpdated>(_onRegistrationUserUpdated);
+    on<RegistrationPicturePicked>(_onRegistrationPicturePicked);
+  }
+
+  void _onRegistrationPicturePicked(
+    RegistrationPicturePicked event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    emit(state.copyWith(pickPictureStatus: Status.loading));
+    final res = await pickPicture(event.source);
+    res.fold(
+      (l) => emit(
+        state.copyWith(
+          pickPictureStatus: Status.failed,
+          failure: l,
+        ),
+      ),
+      (file) => emit(
+        state.copyWith(
+          image: file,
+          pickPictureStatus: Status.loaded,
+        ),
+      ),
+    );
+  }
+
+  void _onRegistrationUserUpdated(
+    RegistrationUserUpdated event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    final name = state.name;
+    if (name.isNotValid) {
+      name.isPure
+          ? emit(
+              state.copyWith(
+                name: const RequiredInput.dirty(
+                  '',
+                ),
+              ),
+            )
+          : null;
+      return;
+    }
+    state.updateUserBtnController?.start();
+    emit(state.copyWith(updateStatus: Status.loading));
+    final res = await updateUser(
+      User(
+        lastName: name.value,
+        photo: state.image?.path,
+      ),
+    );
+    state.updateUserBtnController?.stop();
+    res.fold(
+      (l) => emit(
+        state.copyWith(
+          updateStatus: Status.failed,
+          failure: l,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          updateStatus: Status.loaded,
+        ),
+      ),
+    );
+  }
+
+  void _onRegistrationEmailChecked(
+    RegistrationEmailChecked event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    final email = state.email;
+    if (email.isNotValid) {
+      email.isPure
+          ? emit(
+              state.copyWith(
+                email: const EmailInput.dirty(
+                  '',
+                ),
+              ),
+            )
+          : null;
+      return;
+    }
+    state.checkEmailBtnController?.start();
+    emit(
+      state.copyWith(
+        goto: GoTo.init,
+        emailCheckStatus: Status.loading,
+      ),
+    );
+
+    final res = await checkEmail(email.value);
+    state.checkEmailBtnController?.stop();
+    return res.fold(
+      (l) => emit(
+        state.copyWith(
+          emailCheckStatus: Status.failed,
+          failure: l,
+        ),
+      ),
+      (isEmailExist) {
+        if (isEmailExist) {
+          emit(state.copyWith(goto: GoTo.login));
+        } else {
+          emit(state.copyWith(goto: GoTo.registration));
+        }
+      },
+    );
   }
 
   void _onRegistrationTopicSubscribed(
@@ -47,14 +179,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationNameChanged event,
     Emitter<RegistrationState> emit,
   ) {
-    final registrationInputs = state.registrationInputs.copyWith(
-      name: RequiredInput.dirty(
-        event.name,
-      ),
-    );
+    print(event.name);
     emit(
       state.copyWith(
-        registrationInputs: registrationInputs,
+        name: RequiredInput.dirty(
+          event.name,
+        ),
       ),
     );
   }
@@ -79,14 +209,37 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationEmailChanged event,
     Emitter<RegistrationState> emit,
   ) {
-    final registrationInputs = state.registrationInputs.copyWith(
-      email: EmailInput.dirty(
-        event.email,
-      ),
-    );
     emit(
       state.copyWith(
-        registrationInputs: registrationInputs,
+        email: EmailInput.dirty(
+          event.email,
+        ),
+      ),
+    );
+  }
+
+  void _onRegistrationPasswordChanged(
+    RegistrationPasswordChanged event,
+    Emitter<RegistrationState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        password: RequiredInput.dirty(
+          event.password,
+        ),
+      ),
+    );
+  }
+
+  void _onRegistrationConfirmPasswordChanged(
+    RegistrationConfirmPasswordChanged event,
+    Emitter<RegistrationState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        confirmPassword: RequiredInput.dirty(
+          event.confirmPassword,
+        ),
       ),
     );
   }
@@ -127,74 +280,106 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationSubmitted event,
     Emitter<RegistrationState> emit,
   ) async {
-    if (state.registrationInputs.isNotValid) {
+    if (state.password.isNotValid || state.confirmPassword.isNotValid) {
       checkEmptyError(emit);
       return;
     }
+    final password = state.password.value;
+    final confirmPassword = state.confirmPassword.value;
+    if (confirmPassword != password) {
+      return emit(
+        state.copyWith(
+          confirmPassordError: 'Mot de passe non confirmé',
+        ),
+      );
+    }
+    emit(state.copyWith(clearConfirmPasswordError: true));
     state.registrationBtnController?.start();
     emit(state.copyWith(status: Status.loading));
-    final inputs = state.registrationInputs;
-    final deviceToken = await FirebaseMessaging.instance.getToken();
+
+    // final deviceToken = await FirebaseMessaging.instance.getToken();
 
     final res = await registration(
       User(
-        lastName: inputs.name.value,
-        firstName: inputs.firstname.value,
-        email: inputs.email.value,
-        validationCode: inputs.code.value,
-        country: inputs.country.value,
-        deviceToken: deviceToken,
+        // lastName: inputs.name.value,
+        // firstName: inputs.firstname.value,
+        email: state.email.value,
+        password: state.password.value,
+        // validationCode: inputs.code.value,
+        // country: inputs.country.value,
+        // deviceToken: deviceToken,
       ),
     );
     state.registrationBtnController?.stop();
     res.fold((l) {
-      Logger().d(l);
-      emit(state.copyWith(status: Status.failed));
+      emit(
+        state.copyWith(
+          status: Status.failed,
+          failure: l,
+        ),
+      );
     }, (user) {
-      Logger().i('success $user');
       emit(
         state.copyWith(
           status: Status.loaded,
         ),
       );
-      add(RegistrationTopicSubscribed(user: user));
+      add(
+        RegistrationTopicSubscribed(
+          user: user,
+        ),
+      );
     });
   }
 
   void checkEmptyError(Emitter<RegistrationState> emit) {
-    state.registrationInputs.email.isPure
+    // state.registrationInputs.email.isPure
+    //     ? emit(
+    //         state.copyWith(
+    //           registrationInputs: state.registrationInputs.copyWith(
+    //             email: const EmailInput.dirty(
+    //               '',
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //     : null;
+    state.password.isPure
         ? emit(
             state.copyWith(
-              registrationInputs: state.registrationInputs.copyWith(
-                email: const EmailInput.dirty(
-                  '',
-                ),
+              password: const RequiredInput.dirty(
+                '',
               ),
             ),
           )
         : null;
-    state.registrationInputs.name.isPure
+    state.confirmPassword.isPure
         ? emit(
-            state.copyWith(
-              registrationInputs: state.registrationInputs.copyWith(
-                name: const RequiredInput.dirty(
-                  '',
-                ),
-              ),
-            ),
+            state.copyWith(confirmPassordError: 'Mot de passe non confirmé'),
           )
         : null;
-    state.registrationInputs.firstname.isPure
-        ? emit(
-            state.copyWith(
-              registrationInputs: state.registrationInputs.copyWith(
-                firstname: const FirstNameInput.dirty(
-                  '',
-                ),
-              ),
-            ),
-          )
-        : null;
+    // state.registrationInputs.name.isPure
+    //     ? emit(
+    //         state.copyWith(
+    //           registrationInputs: state.registrationInputs.copyWith(
+    //             name: const RequiredInput.dirty(
+    //               '',
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //     : null;
+    // state.registrationInputs.firstname.isPure
+    //     ? emit(
+    //         state.copyWith(
+    //           registrationInputs: state.registrationInputs.copyWith(
+    //             firstname: const FirstNameInput.dirty(
+    //               '',
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //     : null;
     // state.registrationInputs.code.isPure
     //     ? emit(
     //         state.copyWith(
@@ -206,16 +391,16 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     //         ),
     //       )
     //     : null;
-    state.registrationInputs.country.isPure
-        ? emit(
-            state.copyWith(
-              registrationInputs: state.registrationInputs.copyWith(
-                country: const RequiredInput.dirty(
-                  '',
-                ),
-              ),
-            ),
-          )
-        : null;
+    // state.registrationInputs.country.isPure
+    //     ? emit(
+    //         state.copyWith(
+    //           registrationInputs: state.registrationInputs.copyWith(
+    //             country: const RequiredInput.dirty(
+    //               '',
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //     : null;
   }
 }

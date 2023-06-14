@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
+import 'package:gpt/core/widgets/rounded_loading_button.dart';
 
 import 'base_page.dart';
 
@@ -11,12 +12,14 @@ class InputBasePage extends StatelessWidget {
     required this.onContinue,
     this.title,
     this.goBackSocialConnect,
+    this.buttonController,
   });
 
   final Widget field;
   final VoidCallback onContinue;
   final String? title;
   final bool? goBackSocialConnect;
+  final RoundedLoadingButtonController? buttonController;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +37,11 @@ class InputBasePage extends StatelessWidget {
               height: 15,
             ),
             CustomButtonWidget(ButtonType.black).build(
-                context: context,
-                onPressed: onContinue,
-                label: 'Continuer',
-                width: double.infinity),
+              controller: buttonController,
+              context: context,
+              onPressed: onContinue,
+              label: 'Continuer',
+            ),
             SizedBox(
               height: 15,
             ),

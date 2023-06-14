@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:gpt/core/helper/show_error_dialog.dart';
+import 'package:gpt/core/helper/unfocus_keyboard.dart';
+import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
-import '../../../../core/bloc/obscure_text/obscure_text_cubit.dart';
-import '../../../../core/routes/route_name.dart';
-import '../../../../core/widgets/custom_text_field.dart';
+import '../../../../core/constants/status.dart';
 import 'custom_password_input.dart';
 import 'input_base_page.dart';
 
@@ -13,14 +14,55 @@ class PasswordInputPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InputBasePage(
-      title: 'Continuer pour se connecter à votre compte',
-      field: CustomPasswordInput(
-        label: 'Saisir mon mot de passe',
-      ),
-      onContinue: () {
-        context.go(RouteName.newPassword);
+    return BlocConsumer<AuthBloc, AuthState>(
+      listenWhen: (previous, current) =>
+          previous.loginStatus != current.loginStatus,
+      listener: (context, state) {
+        switch (state.loginStatus) {
+          case Status.loaded:
+            context
+              ..read<AuthBloc>().add(AuthSuccessfullyLogged())
+              ..read<ChatBloc>().add(
+                ChatCategoriesBySectionFetched(),
+              );
+            break;
+          case Status.failed:
+            showErrorDialog(context, state.failure?.message);
+            break;
+          default:
+        }
+      },
+      buildWhen: (previous, current) =>
+          previous.loginBtnController != current.loginBtnController,
+      builder: (context, state) {
+        return InputBasePage(
+          title: 'Continuer pour se connecter à votre compte',
+          field: BlocBuilder<AuthBloc, AuthState>(
+            buildWhen: (previous, current) =>
+                previous.passwordError != current.passwordError,
+            builder: (context, state) {
+              return CustomPasswordInput(
+                label: 'Saisir mon mot de passe',
+                onChanged: (password) =>
+                    context.read<AuthBloc>().add(AuthPasswordChanged(password)),
+                errorText: state.passwordError,
+                onFieldSubmitted: (_) => onSubmit(
+                  context,
+                ),
+              );
+            },
+          ),
+          buttonController: state.loginBtnController,
+          onContinue: () => onSubmit(
+            context,
+          ),
+        );
       },
     );
   }
+}
+
+void onSubmit(BuildContext context) {
+  unfocusKeyboard();
+  context.read<AuthBloc>().add(AuthSubmitted());
 }

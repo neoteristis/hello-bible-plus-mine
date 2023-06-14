@@ -200,6 +200,14 @@ void usecase() {
   getIt.registerLazySingleton(() => CheckCodeUsecase(getIt()));
 
   getIt.registerLazySingleton(() => CancelSubscriptionUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => CheckEmailUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => PickPictureUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => UpdateUserUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => LoginUsecase(getIt()));
 }
 
 void bloc() {
@@ -219,13 +227,19 @@ void bloc() {
   );
 
   getIt.registerFactory(
-    () => RegistrationBloc(registration: getIt()),
+    () => RegistrationBloc(
+      registration: getIt(),
+      checkEmail: getIt(),
+      pickPicture: getIt(),
+      updateUser: getIt(),
+    ),
   );
 
   getIt.registerFactory(
     () => AuthBloc(
       checkAuth: getIt(),
       deleteAuth: getIt(),
+      login: getIt(),
     ),
   );
 

@@ -20,7 +20,11 @@ class MessageResponse extends Equatable {
   factory MessageResponse.fromJson(Map<String, dynamic> map) {
     return MessageResponse(
       statusCode: map['statusCode']?.toInt() ?? 0,
-      message: map['message'] ?? '',
+      message: map['message'] == null
+          ? ''
+          : (map['message'] is List && (map['message'] as List).isNotEmpty)
+              ? (map['message'] as List).first
+              : map['message'],
       error: map['error'] ?? '',
     );
   }

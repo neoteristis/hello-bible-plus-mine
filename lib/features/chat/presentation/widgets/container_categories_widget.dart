@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/status.dart';
+import '../../../../core/db_services/db_services.dart';
 import '../../../../core/routes/route_name.dart';
+import '../../../../injections.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
 import 'categories_widget.dart';
 import 'historical/historical_item_widget.dart';
@@ -24,6 +26,12 @@ class ContainerCategoriesWidget extends StatelessWidget {
           children: [
             LastHistoricWidget(),
             Expanded(child: CategoriesWidget()),
+            TextButton(
+                onPressed: () {
+                  getIt<DbService>().deleteToken();
+                  getIt<DbService>().deleteUser();
+                },
+                child: Text('deconnexion')),
             TextButton(
                 onPressed: () {
                   context.go(RouteName.subscribe);

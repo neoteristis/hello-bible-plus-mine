@@ -97,7 +97,8 @@ class AppInterceptors extends Interceptor {
   FutureOr<dynamic> onError(
       DioError err, ErrorInterceptorHandler handler) async {
     final RequestOptions origin = err.requestOptions;
-    if (err.response?.statusCode == 401) {
+    if (err.response?.statusCode == 401 &&
+        err.requestOptions.extra['add_token'] == true) {
       final String? refreshToken = await db.getRefreshToken();
       Logger().i(refreshToken);
       if (refreshToken != null) {

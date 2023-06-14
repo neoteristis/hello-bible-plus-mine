@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpt/core/helper/unfocus_keyboard.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -7,12 +8,18 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.decoration,
     this.obscureText,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.focusNode,
   });
 
   final String label;
   final TextEditingController? controller;
   final InputDecoration? decoration;
   final bool? obscureText;
+  final ValueSetter<String>? onChanged;
+  final ValueSetter<String>? onFieldSubmitted;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +38,19 @@ class CustomTextField extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        SizedBox(
-          height: 50,
-          child: TextFormField(
-            obscureText: obscureText ?? false,
-            controller: controller,
-            decoration: decoration,
-            autofocus: true,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
-              color: Color(0xFF223159).withOpacity(.9),
-            ),
+        TextFormField(
+          focusNode: focusNode,
+          obscureText: obscureText ?? false,
+          controller: controller,
+          decoration: decoration,
+          autofocus: true,
+          onChanged: onChanged,
+          onTapOutside: (event) => unfocusKeyboard(),
+          onFieldSubmitted: onFieldSubmitted,
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+            color: Color(0xFF223159).withOpacity(.9),
           ),
         ),
       ],

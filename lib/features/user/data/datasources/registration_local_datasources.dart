@@ -1,8 +1,11 @@
+import 'package:image_picker/image_picker.dart';
+
 import '../../../../core/db_services/db_services.dart';
 import '../../../../core/entities/token.dart';
 import '../../domain/entities/user.dart';
 
 abstract class RegistrationLocalDatasources {
+  Future<XFile?> getPicture(ImageSource source);
   Future saveUser(User user);
   Future saveToken(Token token);
   Future<String?> getToken();
@@ -39,5 +42,15 @@ class RegistrationLocalDatasourcesImp implements RegistrationLocalDatasources {
   Future deleteAuth() async {
     await db.deleteToken();
     await db.deleteUser();
+  }
+
+  @override
+  Future<XFile?> getPicture(ImageSource source) async {
+    try {
+      final XFile? image = await ImagePicker().pickImage(source: source);
+      return image;
+    } catch (e) {
+      return null;
+    }
   }
 }

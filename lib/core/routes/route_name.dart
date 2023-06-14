@@ -14,3 +14,9 @@ class RouteName {
   static const String subscribe = '/subscribe';
   static const String subscription = '/registration/subscription';
 }
+
+enum GoTo {
+  init,
+  login,
+  registration,
+}

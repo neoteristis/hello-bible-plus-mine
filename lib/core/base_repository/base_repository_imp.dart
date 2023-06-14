@@ -62,6 +62,7 @@ class BaseRepositoryImp implements BaseRepository {
   }) async {
     return await dio.patch(
       url!,
+      data: body,
       options: Options(
           headers: headers ?? this.headers,
           extra: {'add_token': addToken ?? true}),

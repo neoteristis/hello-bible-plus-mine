@@ -68,3 +68,42 @@ class RegistrationTopicSubscribed extends RegistrationEvent {
   @override
   List<Object?> get props => [user];
 }
+
+class RegistrationEmailChecked extends RegistrationEvent {
+  const RegistrationEmailChecked();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class RegistrationPasswordChanged extends RegistrationEvent {
+  final String password;
+  const RegistrationPasswordChanged(
+    this.password,
+  );
+  @override
+  List<Object?> get props => [password];
+}
+
+class RegistrationConfirmPasswordChanged extends RegistrationEvent {
+  final String confirmPassword;
+  const RegistrationConfirmPasswordChanged(
+    this.confirmPassword,
+  );
+  @override
+  List<Object?> get props => [confirmPassword];
+}
+
+class RegistrationUserUpdated extends RegistrationEvent {}
+
+class RegistrationPicturePicked extends RegistrationEvent {
+  final ImageSource source;
+  const RegistrationPicturePicked({
+    required this.source,
+  });
+
+  @override
+  List<Object?> get props => [
+        source,
+      ];
+}

@@ -2,6 +2,7 @@
 import '../../features/chat/domain/usecases/fetch_historical_usecase.dart';
 
 class ApiConstants {
+  static const String login = '/auth/login';
   static const String categories = '/categories';
   static String conversation({String? conversationId}) {
     if (conversationId != null) {
@@ -9,6 +10,8 @@ class ApiConstants {
     }
     return '/conversations';
   }
+
+  static String checkEmail(String email) => '/user_email?email=$email';
 
   static String messages(String conversationId) => '/messages/$conversationId';
   static String answer(String conversationId) => '/messages/$conversationId';
