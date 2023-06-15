@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../constants/color_constants.dart';
 
+const primaryColor = Color(0xFF22B573);
+
 ThemeData theme(Color? color) => ThemeData(
       fontFamily: 'SfProText',
-      primaryColor: color ?? ColorConstants.primary,
+      primaryColor: color ?? primaryColor,
+      iconTheme: IconThemeData(color: primaryColor),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
           borderSide: BorderSide.none,

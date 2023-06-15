@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpt/core/extension/string_extension.dart';
 
 import 'entities.dart';
@@ -13,6 +14,7 @@ class Category extends Equatable {
     this.welcomePhrase,
     this.colorTheme,
     this.section,
+    this.logo,
   });
 
   final String? id;
@@ -22,8 +24,11 @@ class Category extends Equatable {
   final String? welcomePhrase;
   final Color? colorTheme;
   final Section? section;
+  final String? logo;
 
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
+  factory Category.fromJson(Map<String, dynamic> json) {
+    final logo = json['logo'];
+    return Category(
         id: json['_id'],
         name: json['name'],
         prompt: json['prompt'],
@@ -34,7 +39,10 @@ class Category extends Equatable {
         colorTheme: json['colorCode'] == null || json['colorCode'] == ''
             ? null
             : (json['colorCode'] as String).hexToColor,
-      );
+        logo: logo != null && logo != 'null' && logo != 'undefined'
+            ? '${dotenv.env['BASE_URL']!}/${json['logo']}'
+            : null);
+  }
 
   Map<String, dynamic> toJson() => {
         'id': id,
