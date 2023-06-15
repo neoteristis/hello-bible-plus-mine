@@ -6,14 +6,14 @@ class ChatState extends Equatable {
     this.sender = const types.User(
       firstName: 'sender',
       id: '82091008-a484-4a89-ae75-a22bf8d6f3hgf',
-      imageUrl:
-          'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
+      // imageUrl:
+      //     'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
     ),
     this.receiver = const types.User(
       firstName: 'receiver',
       id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
-      imageUrl:
-          'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
+      // imageUrl:
+      //     'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
     ),
     this.categories = const [],
     this.categoriesBySection = const [],

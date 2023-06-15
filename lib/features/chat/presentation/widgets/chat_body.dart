@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:gpt/features/chat/presentation/widgets/chat/custom_bottom_widget.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/theme/chat_theme.dart';
@@ -43,23 +44,28 @@ class _ChatBodyState extends State<ChatBody> {
             );
           case Status.loaded:
             return ui.Chat(
-              showUserAvatars: true,
-              avatarBuilder: (uid) => const BotAvatar(),
+              dateFormat: DateFormat('h:mm a'),
+              // dateHeaderThreshold: 100,
+              dateHeaderBuilder: (p0) => SizedBox.shrink(),
+              // showUserAvatars: true,
+              // avatarBuilder: (uid) => const BotAvatar(),
               messages: state.messages ?? [],
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message.text));
               },
               bubbleBuilder: bubbleBuilder,
               emptyState: const EmptyStateWidget(),
+
               theme: chatTheme(context),
               user: state.sender!,
               listBottomWidget: const ListBottomChatWidget(),
               scrollPhysics: const BouncingScrollPhysics(),
-              customBottomWidget: Visibility(
-                visible: state.messages!.isNotEmpty,
-                child: const Padding(
+              customBottomWidget: const Visibility(
+                // visible: state.messages!.isNotEmpty,
+                visible: true,
+                child: Padding(
                   padding:
-                      EdgeInsets.only(left: 15.0, bottom: 8.0, right: 15.0),
+                      EdgeInsets.only(left: 15.0, bottom: 20.0, right: 15.0),
                   child: CustomBottomWidget(),
                 ),
               ),

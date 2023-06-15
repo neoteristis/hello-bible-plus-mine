@@ -27,12 +27,20 @@ class LogoWithText extends StatelessWidget {
           color: logoColor,
           size: logoSize,
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         RichText(
           text: TextSpan(
             text: 'Hello',
+            // style: Theme.of(context).textTheme.,
+            // style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            //       fontSize: textSize,
+            //       // fontWeight: FontWeight.w500,
+            //       // color: Color(
+            //       //   0xFF0C0C0C,
+            //       // ),
+            //     ),
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: textSize ?? 31,

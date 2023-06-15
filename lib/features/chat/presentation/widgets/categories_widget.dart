@@ -56,8 +56,8 @@ class CategoriesWidget extends StatelessWidget {
                     index: index,
                   );
                 },
-                separatorBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
+                separatorBuilder: (context, index) => const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
                     color: Color(0xFFE3E6E8),

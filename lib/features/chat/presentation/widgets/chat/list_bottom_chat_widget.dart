@@ -1,9 +1,8 @@
-import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/constants/status.dart';
-import '../../../../../core/widgets/bot_avatar.dart';
+import '../../../../../core/widgets/custom_bubble.dart';
 import '../../bloc/chat_bloc.dart';
 import '../typing_indicator.dart';
 
@@ -22,7 +21,7 @@ class ListBottomChatWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const BotAvatar(),
+                  // const BotAvatar(),
                   Expanded(
                     child: TypingIndicator(
                       showIndicator: true,
@@ -39,18 +38,20 @@ class ListBottomChatWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const BotAvatar(),
+                  // const BotAvatar(),
                   // if (!state.isTyping!)
                   Container(
                     constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * .70),
-                    child: Bubble(
-                        radius: const Radius.circular(20.0),
-                        color: Colors.white,
-                        margin: const BubbleEdges.symmetric(horizontal: 0),
+                        maxWidth: MediaQuery.of(context).size.width * .90),
+                    child: CustomBubble(
                         nip: BubbleNip.leftBottom,
-                        child: Text(
+                        message: Text(
                           state.incoming ?? '',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
                           // textAlign: TextAlign.justify,
                           // style: TextStyle(
                           //   color: Theme.of(context).primaryColor,

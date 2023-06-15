@@ -22,8 +22,7 @@ class CategoryItemWidget extends StatelessWidget {
     }
     return Container(
       width: 100,
-      height: 133,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,

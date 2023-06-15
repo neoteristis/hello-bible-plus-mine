@@ -42,7 +42,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
         ),
         if (categories != null && categories.isNotEmpty)
           SizedBox(
-            height: 110,
+            height: 140,
             child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
                 width: 8,

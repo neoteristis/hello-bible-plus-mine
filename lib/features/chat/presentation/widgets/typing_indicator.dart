@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/color_constants.dart';
+import '../../../../core/widgets/custom_bubble.dart';
 
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
@@ -226,13 +226,9 @@ class StatusBubble extends StatelessWidget {
         flashingCircleBrightColor: flashingCircleBrightColor,
       );
     }
-    return Bubble(
-      radius: const Radius.circular(20.0),
-      color: Colors.white,
-      padding: const BubbleEdges.all(10),
-      alignment: Alignment.topLeft,
+    return CustomBubble(
       nip: BubbleNip.leftBottom,
-      child: RowFlashingCircle(
+      message: RowFlashingCircle(
         repeatingController: repeatingController,
         dotIntervals: dotIntervals,
         flashingCircleDarkColor: flashingCircleDarkColor,

@@ -19,7 +19,7 @@ dependencies:
   dio: ^5.1.1
   dartz: ^0.10.1
   flutter_dotenv: ^5.0.2
-  bubble: ^1.2.1
+  # bubble: ^1.2.1
   lottie: ^2.3.2
   internet_connection_checker: ^1.0.0+1
   flutter_svg: ^2.0.7
@@ -40,7 +40,7 @@ dependencies:
   path_provider: ^2.0.15
   intl: ^0.17.0
   flutter_stripe: ^9.2.0
-  flutter_native_splash: ^2.3.0
+  # flutter_native_splash: ^2.3.0
   timezone: ^0.9.2
   dots_indicator: ^3.0.0
   image_picker: ^0.8.8
@@ -53,18 +53,18 @@ dev_dependencies:
   build_runner: ^2.3.3
   objectbox_generator: any
 
-flutter_native_splash:
-  # color: "#27352A"
-  # image: assets/images/splash.png
-  background_image: assets/images/splash.png
-  info_plist_files:
-    ["ios/Runner/Info-Debug.plist", "ios/Runner/Info-Release.plist"]
+# flutter_native_splash:
+#   # color: "#27352A"
+#   # image: assets/images/splash.png
+#   # background_image: assets/images/splash.png
+#   info_plist_files:
+#     ["ios/Runner/Info-Debug.plist", "ios/Runner/Info-Release.plist"]
 
-  android_12:
-    image: assets/images/splash.png
-    icon_background_color: "#27352A"
-    # image_dark: assets/logo-development.png
-    # icon_background_color_dark: "#121212"
+#   android_12:
+#     # image: assets/images/splash.png
+#     # icon_background_color: "#27352A"
+#     # image_dark: assets/logo-development.png
+#     # icon_background_color_dark: "#121212"
 
 flutter:
   uses-material-design: true

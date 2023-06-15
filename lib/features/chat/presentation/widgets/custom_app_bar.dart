@@ -36,16 +36,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           //     fit: BoxFit.cover,
           //   ),
           // ),
-          leading: Visibility(
-            child: IconButton(
-              constraints: BoxConstraints(),
-              padding: EdgeInsets.all(0),
-              onPressed: () {},
-              icon: Icon(
-                Icons.arrow_back_ios_rounded,
-              ),
-            ),
-          ),
+          leading: state.conversation != null
+              ? IconButton(
+                  constraints: const BoxConstraints(),
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {
+                    context.read<ChatBloc>().add(ChatConversationCleared());
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios_rounded,
+                  ),
+                )
+              : null,
           iconTheme: const IconThemeData(color: Colors.black),
           automaticallyImplyLeading: false,
           centerTitle: false,
@@ -53,15 +55,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             builder: (context, state) {
               // return const LogoWidget();
               if (state.conversation == null) {
-                return const LogoWithText(
-                  logoSize: Size(24, 24),
-                  textSize: 17.55,
-                  center: false,
+                return const Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: LogoWithText(
+                    logoSize: Size(24, 24),
+                    textSize: 17.55,
+                    center: false,
+                  ),
                 );
               }
               return ListTile(
                 minVerticalPadding: 40,
-                visualDensity: VisualDensity(horizontal: 0, vertical: 0),
+                // visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
                 contentPadding: EdgeInsets.zero,
                 leading: const Logo(
                   size: Size(22, 22),

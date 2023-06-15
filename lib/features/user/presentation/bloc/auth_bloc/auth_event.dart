@@ -13,7 +13,14 @@ class AuthSuccessfullyLogged extends AuthEvent {}
 
 class AuthLogoutSubmitted extends AuthEvent {}
 
-class AuthLoginForwarded extends AuthEvent {}
+class AuthLoginForwarded extends AuthEvent {
+  final String route;
+  const AuthLoginForwarded(
+    this.route,
+  );
+  @override
+  List<Object?> get props => [route];
+}
 
 class AuthEmailChanged extends AuthEvent {
   final String? email;

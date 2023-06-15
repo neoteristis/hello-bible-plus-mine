@@ -29,7 +29,7 @@ class BasePage extends StatelessWidget {
       onPop: onPop,
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - 40,
+          height: MediaQuery.of(context).size.height - 90,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

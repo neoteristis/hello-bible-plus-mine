@@ -90,8 +90,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginForwarded event,
     Emitter<AuthState> emit,
   ) async {
-    await Future.delayed(const Duration(seconds: 5));
-    emit(state.copyWith(route: RouteName.login));
+    await Future.delayed(
+      const Duration(
+        seconds: 3,
+      ),
+    );
+    emit(state.copyWith(route: event.route));
   }
 
   void _onAuthStarted(
@@ -104,9 +108,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (l) => null,
       (r) {
         if (r == null) {
-          add(AuthLoginForwarded());
+          add(const AuthLoginForwarded(RouteName.login));
         } else {
           emit(state.copyWith(authStatus: Status.loaded));
+          add(const AuthLoginForwarded(RouteName.logged));
           // emit(state.copyWith(route: RouteName.logged));
         }
       },

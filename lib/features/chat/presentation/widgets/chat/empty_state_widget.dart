@@ -34,36 +34,46 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> {
         } catch (_) {
           welcomePhrase = 'Bonjour. Comment puis-je vous aider ?';
         }
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  welcomePhrase == null || welcomePhrase == ''
-                      ?
-                      // state.conversation!.category!.welcomePhrase ??
-                      'Bonjour. Comment puis-je vous aider ?'
-                      : welcomePhrase,
-                  // defaultMessage,
-                  // textAlign: TextAlign.center,
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // Spacer(
+            //   flex: 6,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: ListTile(
+                minVerticalPadding: 40,
+                // visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+                contentPadding: EdgeInsets.zero,
+                // leading: const Logo(
+                //   size: Size(22, 22),
+                // ),
+                title: Text(
+                  state.conversation!.category?.name ?? '',
                   style: TextStyle(
-                    // color: Color(0xff9e9cab),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
                     color: Theme.of(context).primaryColor,
-                    // fontSize: 16,
-                    // fontWeight: FontWeight.w500,
-                    // height: 1.5,
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
+                subtitle: Text(
+                  state.conversation!.category?.welcomePhrase ?? '',
+                  softWrap: false,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: Color(
+                      0xFF111827,
+                    ),
+                  ),
                 ),
-                const CustomBottomWidget()
-              ],
+              ),
             ),
-          ),
+          ],
         );
       },
     );

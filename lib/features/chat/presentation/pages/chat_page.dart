@@ -73,7 +73,7 @@ class _ChatPageState extends State<ChatPage> {
         .stream
         .listen(
       (String? payload) {
-        context.go(RouteName.historical);
+        // context.go(RouteName.historical);
         if (payload != null) {
           Logger().w('a new notif selected');
         }
@@ -86,7 +86,7 @@ class _ChatPageState extends State<ChatPage> {
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: Color(0xFFF3F5F7),
+          backgroundColor: const Color(0xFFF3F5F7),
           key: context.read<ChatBloc>().scaffoldKey,
           appBar: const CustomAppBar(),
           drawer: const CustomDrawer(),

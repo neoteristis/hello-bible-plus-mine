@@ -25,12 +25,12 @@ class ContainerCategoriesWidget extends StatelessWidget {
         children: [
           // LastHistoricWidget(),
           CategoriesWidget(),
-          // TextButton(
-          //     onPressed: () {
-          //       getIt<DbService>().deleteToken();
-          //       getIt<DbService>().deleteUser();
-          //     },
-          //     child: Text('deconnexion')),
+          TextButton(
+              onPressed: () {
+                getIt<DbService>().deleteToken();
+                getIt<DbService>().deleteUser();
+              },
+              child: Text('deconnexion')),
           // TextButton(
           //     onPressed: () {
           //       context.go(RouteName.subscribe);
