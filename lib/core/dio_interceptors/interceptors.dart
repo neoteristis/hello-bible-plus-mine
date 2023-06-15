@@ -104,7 +104,7 @@ class AppInterceptors extends Interceptor {
       if (refreshToken != null) {
         try {
           final res = await baseRepo.post(
-            '/auth/token/refresh',
+            '/api/auth/token/refresh',
             body: {
               'refresh_token': refreshToken,
             },

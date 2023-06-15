@@ -46,15 +46,23 @@ class CategoriesWidget extends StatelessWidget {
             );
           case Status.loaded:
             return Center(
-              child: ListView.builder(
+              child: ListView.separated(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemCount: state.categoriesBySection.length,
                 itemBuilder: (context, index) {
                   return CategoriesBySectionWidget(
                     data: state.categoriesBySection[index],
+                    index: index,
                   );
                 },
+                separatorBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Divider(
+                    thickness: 1,
+                    color: Color(0xFFE3E6E8),
+                  ),
+                ),
               ),
             );
           default:

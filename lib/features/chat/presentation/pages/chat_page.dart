@@ -83,20 +83,18 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocBuilder<ChatBloc, ChatState>(
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            key: context.read<ChatBloc>().scaffoldKey,
-            appBar: const CustomAppBar(),
-            drawer: const CustomDrawer(),
-            body: state.conversation == null
-                ? const ContainerCategoriesWidget()
-                : const ChatBody(),
-          );
-        },
-      ),
+    return BlocBuilder<ChatBloc, ChatState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Color(0xFFF3F5F7),
+          key: context.read<ChatBloc>().scaffoldKey,
+          appBar: const CustomAppBar(),
+          drawer: const CustomDrawer(),
+          body: state.conversation == null
+              ? const ContainerCategoriesWidget()
+              : const ChatBody(),
+        );
+      },
     );
   }
 }
