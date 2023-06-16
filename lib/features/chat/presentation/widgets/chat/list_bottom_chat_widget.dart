@@ -16,7 +16,7 @@ class ListBottomChatWidget extends StatelessWidget {
         switch (state.messageStatus) {
           case Status.loading:
             return Padding(
-              padding: const EdgeInsets.only(left: 25.0),
+              padding: const EdgeInsets.only(left: 15.0, bottom: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

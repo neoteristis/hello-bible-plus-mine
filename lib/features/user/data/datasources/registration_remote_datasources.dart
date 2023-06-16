@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
+import '../../../../core/entities/token.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/models/message_response.dart';
 import '../../domain/entities/entities.dart';
@@ -12,6 +13,7 @@ abstract class RegistrationRemoteDatasources {
   Future<UserResponse> login(User user);
   Future<bool> checkEmail(String email);
   Future<User> updateUser(User user);
+  Future<Token> refreshToken(String refresh);
 }
 
 class RegistrationRemoteDatasourcesImp
@@ -104,6 +106,30 @@ class RegistrationRemoteDatasourcesImp
             ? MessageResponse.fromJson(res?.data).message
             : e.toString();
       }
+      throw ServerException(message: message);
+    }
+  }
+
+  @override
+  Future<Token> refreshToken(String refresh) async {
+    try {
+      final res = await baseRepo.post(
+        '/api/auth/token/refresh',
+        body: {
+          'refresh_token': refreshToken,
+        },
+        addToken: false,
+      );
+      return Token.fromJson(res.data);
+    } on DioError catch (e) {
+      Logger().w(e);
+      final res = e.response;
+      String? message;
+
+      message = res?.data != null
+          ? MessageResponse.fromJson(res?.data).message
+          : e.toString();
+
       throw ServerException(message: message);
     }
   }

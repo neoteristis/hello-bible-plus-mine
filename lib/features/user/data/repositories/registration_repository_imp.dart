@@ -4,7 +4,9 @@ import 'package:gpt/core/error/failure.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/repositories/registration_repository.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
+import '../../../../core/entities/token.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
 import '../datasources/datasources.dart';
@@ -45,7 +47,27 @@ class RegistrationRepositoryImp implements RegistrationRepository {
   @override
   Future<Either<Failure, dynamic>> checkAuth() async {
     try {
-      return Right(await local.getToken());
+      final token = await local.getToken();
+      // if (token != null) {
+      //   if (JwtDecoder.isExpired(token)) {
+      //     final String? refreshToken = await local.getRefreshToken();
+      //     if (refreshToken != null) {
+      //       final res = await remote.refreshToken(refreshToken);
+      //       await local.saveToken(res);
+      //     }
+      //   } else {
+      //     final DateTime expirationDate = JwtDecoder.getExpirationDate(token);
+      //     final int diff = expirationDate.difference(DateTime.now()).inHours;
+      //     if (diff < 2) {
+      //       final String? refreshToken = await local.getRefreshToken();
+      //       if (refreshToken != null) {
+      //         final res = await remote.refreshToken(refreshToken);
+      //         await local.saveToken(res);
+      //       }
+      //     }
+      //   }
+      // }
+      return Right(token);
     } catch (e) {
       return const Left(CacheFailure());
     }

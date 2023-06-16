@@ -5,6 +5,8 @@ import 'package:gpt/features/chat/presentation/widgets/category_item_widget.dart
 import '../../domain/entities/entities.dart';
 import 'dart:math' as math;
 
+import 'category_item2.dart';
+
 class CategoriesBySectionWidget extends StatelessWidget {
   const CategoriesBySectionWidget({super.key, this.data, required this.index});
 
@@ -17,18 +19,22 @@ class CategoriesBySectionWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final categories = data?.categories;
+    final sectionName = data?.sectionName;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
+            const SizedBox(
+              width: 20,
+            ),
             iconLeadings[index],
             const SizedBox(
               width: 3,
             ),
             Text(
-              data!.sectionName,
+              sectionName!,
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
@@ -40,31 +46,57 @@ class CategoriesBySectionWidget extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        if (categories != null && categories.isNotEmpty)
+        if (categories != null &&
+            categories.isNotEmpty &&
+            sectionName != 'Posez vos questions')
           SizedBox(
             height: 140,
             child: ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
+              separatorBuilder: (context, index) => const SizedBox(
                 width: 8,
               ),
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
-              itemBuilder: (context, index) => CategoryItemWidget(
-                category: categories[index],
-              ),
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      CategoryItemWidget(
+                        category: categories[index],
+                      )
+                    ],
+                  );
+                }
+                return CategoryItemWidget(
+                  category: categories[index],
+                );
+              },
             ),
           ),
-        // Column(
-        //   children: [
-        //     ...categories
-        //         .map(
-        //           (e) => CategoryItemWidget(
-        //             category: e,
-        //           ),
-        //         )
-        //         .toList()
-        //   ],
-        // ),
+        if (categories != null &&
+            categories.isNotEmpty &&
+            sectionName == 'Posez vos questions')
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  childAspectRatio: 9 / 5,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10),
+              itemCount: categories.length,
+              itemBuilder: (BuildContext ctx, index) {
+                return CategoryItem2(
+                  category: categories[index],
+                );
+              },
+            ),
+          )
       ],
     );
   }

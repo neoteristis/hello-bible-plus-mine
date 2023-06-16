@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
 
 import '../base_repository/base_repository.dart';
@@ -85,9 +86,31 @@ class AppInterceptors extends Interceptor {
   ) async {
     if (options.extra['add_token'] == true) {
       final String? jwt = await db.getToken();
-      Logger().w(jwt);
+
       if (jwt != null) {
-        options.headers['Authorization'] = 'Bearer $jwt';
+        final DateTime expirationDate = JwtDecoder.getExpirationDate(jwt);
+        print(expirationDate);
+        final int diff = expirationDate.difference(DateTime.now()).inMinutes;
+        print(diff);
+        if (JwtDecoder.isExpired(jwt)) {
+          final String? refreshToken = await db.getRefreshToken();
+          if (refreshToken != null) {
+            final res = await baseRepo.post(
+              '/api/auth/token/refresh',
+              body: {
+                'refresh_token': refreshToken,
+              },
+              addToken: false,
+            );
+            if (res.statusCode == 200) {
+              final response = Token.fromJson(res.data);
+              options.headers['Authorization'] = 'Bearer ${response.token}';
+              await db.saveToken(response);
+            }
+          }
+        } else {
+          options.headers['Authorization'] = 'Bearer $jwt';
+        }
       }
     }
     handler.next(options);
@@ -96,50 +119,50 @@ class AppInterceptors extends Interceptor {
   @override
   FutureOr<dynamic> onError(
       DioError err, ErrorInterceptorHandler handler) async {
-    final RequestOptions origin = err.requestOptions;
-    if (err.response?.statusCode == 401 &&
-        err.requestOptions.extra['add_token'] == true) {
-      final String? refreshToken = await db.getRefreshToken();
-      Logger().i(refreshToken);
-      if (refreshToken != null) {
-        try {
-          final res = await baseRepo.post(
-            '/api/auth/token/refresh',
-            body: {
-              'refresh_token': refreshToken,
-            },
-            addToken: false,
-          );
-          if (res.statusCode == 200) {
-            final response = Token.fromJson(res.data);
-            await db.saveToken(response);
-            origin.headers['Authorization'] = 'Bearer ${response.token}';
-            return dio.request(
-              origin.path,
-              data: origin.data,
-              options: Options(
-                method: origin.method,
-                sendTimeout: origin.sendTimeout,
-                receiveTimeout: origin.receiveTimeout,
-                extra: origin.extra,
-                headers: origin.headers,
-                responseType: origin.responseType,
-                contentType: origin.contentType,
-                validateStatus: origin.validateStatus,
-                receiveDataWhenStatusError: origin.receiveDataWhenStatusError,
-                followRedirects: origin.followRedirects,
-                maxRedirects: origin.maxRedirects,
-                requestEncoder: origin.requestEncoder,
-                responseDecoder: origin.responseDecoder,
-                listFormat: origin.listFormat,
-              ),
-            );
-          }
-        } catch (err) {
-          return err;
-        }
-      }
-    }
+    // final RequestOptions origin = err.requestOptions;
+    // if (err.response?.statusCode == 401 &&
+    //     err.requestOptions.extra['add_token'] == true) {
+    //   final String? refreshToken = await db.getRefreshToken();
+    //   Logger().i(refreshToken);
+    //   if (refreshToken != null) {
+    //     try {
+    //       final res = await baseRepo.post(
+    //         '/api/auth/token/refresh',
+    //         body: {
+    //           'refresh_token': refreshToken,
+    //         },
+    //         addToken: false,
+    //       );
+    //       if (res.statusCode == 200) {
+    //         final response = Token.fromJson(res.data);
+    //         await db.saveToken(response);
+    //         origin.headers['Authorization'] = 'Bearer ${response.token}';
+    //         return dio.request(
+    //           origin.path,
+    //           data: origin.data,
+    //           options: Options(
+    //             method: origin.method,
+    //             sendTimeout: origin.sendTimeout,
+    //             receiveTimeout: origin.receiveTimeout,
+    //             extra: origin.extra,
+    //             headers: origin.headers,
+    //             responseType: origin.responseType,
+    //             contentType: origin.contentType,
+    //             validateStatus: origin.validateStatus,
+    //             receiveDataWhenStatusError: origin.receiveDataWhenStatusError,
+    //             followRedirects: origin.followRedirects,
+    //             maxRedirects: origin.maxRedirects,
+    //             requestEncoder: origin.requestEncoder,
+    //             responseDecoder: origin.responseDecoder,
+    //             listFormat: origin.listFormat,
+    //           ),
+    //         );
+    //       }
+    //     } catch (err) {
+    //       return err;
+    //     }
+    //   }
+    // }
     handler.next(err);
   }
 

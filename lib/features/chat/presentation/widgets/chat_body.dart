@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/theme/chat_theme.dart';
-import '../../../../core/widgets/bot_avatar.dart';
+// import '../../../../core/widgets/bot_avatar.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
 import 'chat/bubble_builder.dart';
@@ -46,7 +46,7 @@ class _ChatBodyState extends State<ChatBody> {
             return ui.Chat(
               dateFormat: DateFormat('h:mm a'),
               // dateHeaderThreshold: 100,
-              dateHeaderBuilder: (p0) => SizedBox.shrink(),
+              dateHeaderBuilder: (p0) => const SizedBox.shrink(),
               // showUserAvatars: true,
               // avatarBuilder: (uid) => const BotAvatar(),
               messages: state.messages ?? [],

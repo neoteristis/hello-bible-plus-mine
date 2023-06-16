@@ -9,6 +9,7 @@ abstract class RegistrationLocalDatasources {
   Future saveUser(User user);
   Future saveToken(Token token);
   Future<String?> getToken();
+  Future<String?> getRefreshToken();
   Future<User?> getUser();
   Future deleteAuth();
 }
@@ -31,6 +32,11 @@ class RegistrationLocalDatasourcesImp implements RegistrationLocalDatasources {
   @override
   Future<String?> getToken() async {
     return await db.getToken();
+  }
+
+  @override
+  Future<String?> getRefreshToken() async {
+    return await db.getRefreshToken();
   }
 
   @override

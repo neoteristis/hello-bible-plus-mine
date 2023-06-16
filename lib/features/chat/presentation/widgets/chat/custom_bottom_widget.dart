@@ -49,7 +49,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.only(left: 20),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                   // suffixIcon: Visibility(
                   //   visible: textEditingController!.text.isNotEmpty,
                   //   child: IconButton(

@@ -5,6 +5,10 @@ import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 
+import '../../../../core/db_services/db_services.dart';
+import '../../../../core/helper/unfocus_keyboard.dart';
+import '../../../../injections.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key}) : super(key: key);
 
@@ -41,6 +45,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(0),
                   onPressed: () {
+                    unfocusKeyboard();
                     context.read<ChatBloc>().add(ChatConversationCleared());
                   },
                   icon: const Icon(
@@ -100,8 +105,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           actions: [
             IconButton(
               onPressed: () {
-                // context.read<HistoricalBloc>().add(HistoricalFetched());
-                // context.read<ChatBloc>().add(ChatConversationCleared());
+                getIt<DbService>().deleteToken();
+                getIt<DbService>().deleteUser();
               },
               icon: Visibility(
                 visible: state.conversation == null,

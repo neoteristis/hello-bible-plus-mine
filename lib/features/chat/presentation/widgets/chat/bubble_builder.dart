@@ -40,25 +40,28 @@ Widget bubbleBuilder(
             const SizedBox(
               height: 5,
             ),
-            CustomBubble(
-              color: state.sender!.id == message.author.id
-                  ? Theme.of(context).primaryColor
-                  : Colors.white,
-              nip: state.sender!.id != message.author.id
-                  ? BubbleNip.leftBottom
-                  : BubbleNip.rightBottom,
-              message: message.type == types.MessageType.text
-                  ? Text(
-                      message.text,
-                      style: TextStyle(
-                        color: state.sender!.id != message.author.id
-                            ? Colors.black
-                            : Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )
-                  : child,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: CustomBubble(
+                color: state.sender!.id == message.author.id
+                    ? Theme.of(context).primaryColor
+                    : Colors.white,
+                nip: state.sender!.id != message.author.id
+                    ? BubbleNip.leftBottom
+                    : BubbleNip.rightBottom,
+                message: message.type == types.MessageType.text
+                    ? Text(
+                        message.text,
+                        style: TextStyle(
+                          color: state.sender!.id != message.author.id
+                              ? Colors.black
+                              : Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                    : child,
+              ),
             ),
           ],
         );

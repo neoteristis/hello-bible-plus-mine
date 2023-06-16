@@ -20,6 +20,7 @@ class CategoryItemWidget extends StatelessWidget {
     if (category == null) {
       return const SizedBox.shrink();
     }
+    final logo = category?.logo;
     return Container(
       width: 100,
       padding: const EdgeInsets.all(5),
@@ -53,24 +54,39 @@ class CategoryItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Visibility(
-              visible: category?.logo != null,
-              replacement: SvgPicture.asset(
+            if (logo != null)
+              logo.contains('svg')
+                  ? SvgPicture.network(
+                      logo,
+                      width: 25,
+                      color: const Color(
+                        0xFF101520,
+                      ),
+                    )
+                  : Image.network(
+                      logo,
+                      width: 25,
+                      color: const Color(
+                        0xFF101520,
+                      ),
+                    ),
+            if (logo == null)
+              SvgPicture.asset(
                 'assets/icons/ichthys.svg',
                 width: 25,
-                color: Colors.blueGrey,
+                color: const Color(
+                  0xFF101520,
+                ),
               ),
-              child: Image.network(
-                category?.logo ?? '',
-                width: 25,
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 category?.name ?? '',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 10,
                   color: Color(
@@ -79,22 +95,21 @@ class CategoryItemWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Text(
-                    category?.welcomePhrase ?? '',
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    // overflow: TextOverflow.ellipsis,
-                    // maxLines: 3,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 10,
-                      color: Color(
-                        0xFF101520,
-                      ),
+            SizedBox(
+              height: 45,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Text(
+                  category?.welcomePhrase ?? '',
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 10,
+                    color: Color(
+                      0xFF101520,
                     ),
                   ),
                 ),
