@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/widgets/custom_bubble.dart';
@@ -47,9 +48,10 @@ class ListBottomChatWidget extends StatelessWidget {
                         nip: BubbleNip.leftBottom,
                         message: Text(
                           state.incoming ?? '',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12,
+                            fontSize: 13.sp,
+                            height: 1.4,
                             fontWeight: FontWeight.w400,
                           ),
                           // textAlign: TextAlign.justify,

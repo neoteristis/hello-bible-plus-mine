@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'logo.dart';
 
@@ -43,7 +44,7 @@ class LogoWithText extends StatelessWidget {
             //     ),
             style: TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: textSize ?? 31,
+              fontSize: textSize?.sp ?? 31.sp,
               color: Color(
                 0xFF0C0C0C,
               ),
@@ -53,7 +54,7 @@ class LogoWithText extends StatelessWidget {
                 text: 'Bible +',
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
-                  fontSize: textSize ?? 31,
+                  fontSize: textSize?.sp ?? 31.sp,
                   wordSpacing: -2.5,
                   color: Color(
                     0xFF0C0C0C,

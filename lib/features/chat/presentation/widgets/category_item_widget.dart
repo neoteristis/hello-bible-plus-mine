@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../core/constants/color_constants.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../domain/entities/entities.dart';
 import '../bloc/chat_bloc.dart';
@@ -22,13 +22,11 @@ class CategoryItemWidget extends StatelessWidget {
     }
     final logo = category?.logo;
     return Container(
-      width: 100,
+      width: 100.sp,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-
-        // color: category?.colorTheme?.withOpacity(1) ?? ColorConstants.primary,
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF202040).withOpacity(0.08),
@@ -58,14 +56,14 @@ class CategoryItemWidget extends StatelessWidget {
               logo.contains('svg')
                   ? SvgPicture.network(
                       logo,
-                      width: 25,
+                      width: 25.sp,
                       color: const Color(
                         0xFF101520,
                       ),
                     )
                   : Image.network(
                       logo,
-                      width: 25,
+                      width: 25.sp,
                       color: const Color(
                         0xFF101520,
                       ),
@@ -73,7 +71,7 @@ class CategoryItemWidget extends StatelessWidget {
             if (logo == null)
               SvgPicture.asset(
                 'assets/icons/ichthys.svg',
-                width: 25,
+                width: 25.sp,
                 color: const Color(
                   0xFF101520,
                 ),
@@ -86,17 +84,17 @@ class CategoryItemWidget extends StatelessWidget {
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 10,
-                  color: Color(
+                  fontSize: 10.sp,
+                  color: const Color(
                     0xFF101520,
                   ),
                 ),
               ),
             ),
             SizedBox(
-              height: 45,
+              height: 45.sp,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 child: Text(
@@ -104,11 +102,11 @@ class CategoryItemWidget extends StatelessWidget {
                   textAlign: TextAlign.center,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: const TextStyle(
+                  maxLines: 2,
+                  style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 10,
-                    color: Color(
+                    fontSize: 10.sp,
+                    color: const Color(
                       0xFF101520,
                     ),
                   ),

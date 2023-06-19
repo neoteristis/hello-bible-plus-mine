@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
@@ -67,7 +68,7 @@ class CategoriesWidget extends StatelessWidget {
                             prefixIcon: const Icon(Icons.search),
                             hintText: 'Chercher dans la bible',
                             hintStyle: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: const Color(0xFF223159).withOpacity(.7),
                             ),
                             border: OutlineInputBorder(
@@ -216,19 +217,19 @@ class BottomContainer extends StatelessWidget {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: Color(0xFF101520),
+                      fontSize: 12.sp,
+                      color: const Color(0xFF101520),
                     ),
                   ),
                   Text(
                     subtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Color(0xFF24282E),
-                      fontSize: 12,
+                    style: TextStyle(
+                      color: const Color(0xFF24282E),
+                      fontSize: 12.sp,
                     ),
                   ),
                 ],

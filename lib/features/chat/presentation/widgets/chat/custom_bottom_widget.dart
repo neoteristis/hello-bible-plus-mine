@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../bloc/chat_bloc.dart';
@@ -49,49 +50,21 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                  // suffixIcon: Visibility(
-                  //   visible: textEditingController!.text.isNotEmpty,
-                  //   child: IconButton(
-                  //     onPressed: () {
-                  //       unfocusKeyboard();
-                  //       context.read<ChatBloc>().add(
-                  //             ChatMessageSent(
-                  //               textEditingController!.text,
-                  //             ),
-                  //           );
-
-                  //       textEditingController!.clear();
-                  //     },
-                  //     icon: BlocBuilder<ChatBloc, ChatState>(
-                  //       builder: (context, state) {
-                  //         return Visibility(
-                  //           visible: !state.isTyping!,
-                  //           // add here the widget to show while typing
-                  //           replacement: const SizedBox.shrink(),
-                  //           child: Icon(
-                  //             Icons.send_rounded,
-                  //             color: Theme.of(context).primaryColor,
-                  //           ),
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
                   hintText: 'Ecrivez votre message',
                   hintStyle: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF223159).withOpacity(.7),
+                    fontSize: 14.sp,
+                    color: const Color(0xFF223159).withOpacity(.7),
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24)),
+                    borderRadius: BorderRadius.all(Radius.circular(24)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2),
+                        color: Theme.of(context).primaryColor, width: 2.w),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24)),
+                    borderRadius: BorderRadius.all(Radius.circular(24)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2),
+                        color: Theme.of(context).primaryColor, width: 2.w),
                   ),
                 ),
               ),
@@ -114,15 +87,15 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                 },
                 icon: BlocBuilder<ChatBloc, ChatState>(
                   builder: (context, state) {
-                    return const Visibility(
+                    return Visibility(
                       visible: true,
                       // visible: !state.isTyping!,
                       // add here the widget to show while typing
-                      replacement: SizedBox.shrink(),
+                      replacement: const SizedBox.shrink(),
                       child: Icon(
                         Icons.send_rounded,
                         color: Colors.white,
-                        size: 16,
+                        size: 16.w,
                       ),
                     );
                   },

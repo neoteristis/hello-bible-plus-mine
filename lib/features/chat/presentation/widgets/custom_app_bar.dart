@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
@@ -83,9 +84,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 title: Text(
                   state.conversation!.category?.name ?? 'chargement ...',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: Color(
                       0xFF111827,
                     ),
@@ -96,9 +97,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   softWrap: false,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: Color(
                       0xFF111827,
                     ),
@@ -130,20 +131,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               },
               icon: Visibility(
                 visible: state.conversation == null,
-                replacement: const Icon(Icons.more_vert),
+                replacement: IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    onPressed: () {
+                      getIt<DbService>().deleteToken();
+                      getIt<DbService>().deleteUser();
+                    }),
                 child: SvgPicture.asset(
                   'assets/icons/more_vert.svg',
                   width: 20,
                   height: 20,
                   colorFilter: ColorFilter.mode(
-                      context
-                              .read<ChatBloc>()
-                              .scaffoldKey
-                              .currentState!
-                              .isEndDrawerOpen
-                          ? Theme.of(context).primaryColor
-                          : Colors.black,
-                      BlendMode.srcIn),
+                    context
+                            .read<ChatBloc>()
+                            .scaffoldKey
+                            .currentState!
+                            .isEndDrawerOpen
+                        ? Theme.of(context).primaryColor
+                        : Colors.black,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),

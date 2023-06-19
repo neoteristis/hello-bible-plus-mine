@@ -1,10 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/constants/color_constants.dart';
-import '../../../../core/widgets/logo_widget.dart';
-import '../bloc/chat_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/custom_app_bar.dart';
 
@@ -34,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
                 if (index == 0) {
                   return Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       drawerTiles[index],
@@ -44,8 +39,8 @@ class CustomDrawer extends StatelessWidget {
                 return drawerTiles[index];
               },
               separatorBuilder: (ctx, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
+                return const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 15.0,
                   ),
                   child: CustomDivider(),
@@ -87,9 +82,10 @@ class DrawerTile extends StatelessWidget {
             ),
             label: Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w600,
+                fontSize: 14.sp,
               ),
             ),
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/features/chat/presentation/widgets/category_item_widget.dart';
 
 import '../../domain/entities/entities.dart';
@@ -20,6 +20,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
     }
     final categories = data?.categories;
     final sectionName = data?.sectionName;
+    final sectionId = data?.id;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +38,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               sectionName!,
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: const Color(0xFF223159).withOpacity(.9),
               ),
             ),
@@ -48,9 +49,9 @@ class CategoriesBySectionWidget extends StatelessWidget {
         ),
         if (categories != null &&
             categories.isNotEmpty &&
-            sectionName != 'Posez vos questions')
+            sectionId != '646b6b8e70c60193c897fc3d')
           SizedBox(
-            height: 140,
+            height: 140.sp,
             child: ListView.separated(
               separatorBuilder: (context, index) => const SizedBox(
                 width: 8,
@@ -67,6 +68,17 @@ class CategoriesBySectionWidget extends StatelessWidget {
                       CategoryItemWidget(
                         category: categories[index],
                       )
+                    ],
+                  );
+                } else if (index == categories.length - 1) {
+                  return Row(
+                    children: [
+                      CategoryItemWidget(
+                        category: categories[index],
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
                     ],
                   );
                 }
@@ -86,7 +98,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
-                  childAspectRatio: 9 / 5,
+                  childAspectRatio: 9 / 6,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10),
               itemCount: categories.length,
