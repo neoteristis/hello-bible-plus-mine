@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,6 +6,7 @@ import '../../../../core/constants/color_constants.dart';
 import '../../../../core/widgets/logo_widget.dart';
 import '../bloc/chat_bloc.dart';
 import '../widgets/categories_widget.dart';
+import '../widgets/custom_app_bar.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -13,101 +15,153 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Row(
-          children: [
-            Container(
-              height: double.infinity,
-              decoration: const BoxDecoration(color: ColorConstants.background),
-              width: MediaQuery.of(context).size.width * 0.85,
-              child: Column(
-                children: [
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                      dividerTheme:
-                          const DividerThemeData(color: Colors.transparent),
-                    ),
-                    child: DrawerHeader(
-                      padding: EdgeInsets.zero,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          image: const DecorationImage(
-                              image: AssetImage(
-                                'assets/images/bible.webp',
-                              ),
-                              fit: BoxFit.cover)),
-                      child: Stack(
-                        children: [
-                          const Center(
-                            child: LogoWidget(size: 40),
-                          ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.close_rounded,
-                                color: ColorConstants.secondary,
-                                size: 25,
-                              ),
-                              onPressed: () {
-                                context
-                                    .read<ChatBloc>()
-                                    .scaffoldKey
-                                    .currentState
-                                    ?.closeDrawer();
-                              },
-                            ),
-                          )
-                        ],
+    return Scaffold(
+      appBar: const CustomAppBar(
+        elevation: 0.2,
+      ),
+      backgroundColor: Colors.transparent,
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: double.infinity,
+            decoration: const BoxDecoration(color: Colors.white),
+            width: MediaQuery.of(context).size.width * 0.85,
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (ctx, index) {
+                if (index == 0) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
                       ),
-                    ),
+                      drawerTiles[index],
+                    ],
+                  );
+                }
+                return drawerTiles[index];
+              },
+              separatorBuilder: (ctx, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
                   ),
-                  const CategoriesWidget(),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(5),
-                  //       color: Colors.white,
-                  //       // boxShadow: [
-                  //       //   BoxShadow(
-                  //       //     color: const Color(0xFF202040).withOpacity(0.08),
-                  //       //     offset: const Offset(0, 8),
-                  //       //     blurRadius: 16,
-                  //       //     spreadRadius: 0,
-                  //       //   ),
-                  //       // ],
-                  //     ),
-                  //     child: TextButton.icon(
-                  //       onPressed: () {
-                  //         Navigator.of(context).push(
-                  //           MaterialPageRoute(
-                  //             builder: (context) => const DonationPage(),
-                  //           ),
-                  //         );
-                  //       },
-                  //       icon: Icon(
-                  //         Icons.favorite_border_rounded,
-                  //         color: Theme.of(context).primaryColor,
-                  //       ),
-                  //       label: Text(
-                  //         'Faire un don',
-                  //         style: TextStyle(
-                  //             color: Theme.of(context).primaryColor,
-                  //             fontSize: 15),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
+                  child: CustomDivider(),
+                );
+              },
+              itemCount: drawerTiles.length,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+
+class DrawerTile extends StatelessWidget {
+  const DrawerTile({
+    super.key,
+    required this.label,
+    required this.icon,
+  });
+
+  final String label;
+  final Widget icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+          ),
+          child: TextButton.icon(
+            onPressed: () {},
+            icon: CircleAvatar(
+              backgroundColor: const Color(0xFF4F7CF6).withOpacity(0.08),
+              radius: 15,
+              child: icon,
+            ),
+            label: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+const drawerTiles = [
+  DrawerTile(
+    label: 'Mon Profil',
+    icon: Icon(
+      Icons.person,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+  DrawerTile(
+    label: 'Nous contacter',
+    icon: Icon(
+      Icons.mail,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+  DrawerTile(
+    label: 'Choisir abonnement',
+    icon: Icon(
+      Icons.favorite,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+  DrawerTile(
+    label: 'Gérer les notifications',
+    icon: Icon(
+      Icons.notifications,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+  DrawerTile(
+    label: 'Aide',
+    icon: Icon(
+      Icons.help,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+  DrawerTile(
+    label: 'A propos',
+    icon: Icon(
+      Icons.info,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+  DrawerTile(
+    label: 'Lisez notre CGU',
+    icon: Icon(
+      Icons.list_alt,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+  DrawerTile(
+    label: 'Notez l\'application',
+    icon: Icon(
+      Icons.star,
+      size: 20,
+      color: Colors.black,
+    ),
+  ),
+];

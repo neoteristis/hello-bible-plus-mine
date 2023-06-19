@@ -76,28 +76,28 @@ class BasePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         body,
-                        // TextButton(
-                        //   onPressed: () {
-                        //     if (goBackSocialConnect ?? true) {
-                        //       context.go(RouteName.registration);
-                        //     } else {
-                        //       context.go(RouteName.email);
-                        //     }
-                        //   },
-                        //   style: TextButton.styleFrom(
-                        //     padding: EdgeInsets.zero,
-                        //     minimumSize: Size.zero,
-                        //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        //     textStyle: Theme.of(context).textTheme.labelLarge,
-                        //   ),
-                        //   child: Text(
-                        //     goBackSocialConnect ?? true
-                        //         ? 'Ou continuer avec les réseaux sociaux'
-                        //         : 'Ou continuer avec mon adresse email',
-                        //     textAlign: TextAlign.center,
-                        //     style: Theme.of(context).textTheme.labelLarge,
-                        //   ),
-                        // ),
+                        TextButton(
+                          onPressed: () {
+                            if (goBackSocialConnect ?? true) {
+                              context.go(RouteName.registration);
+                            } else {
+                              context.go(RouteName.email);
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            textStyle: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          child: Text(
+                            goBackSocialConnect ?? true
+                                ? 'Ou continuer avec les réseaux sociaux'
+                                : 'Ou continuer avec mon adresse email',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ),
                         TermsUse(),
                       ],
                     ),

@@ -9,9 +9,11 @@ class CategoryItem2 extends StatelessWidget {
   const CategoryItem2({
     super.key,
     required this.category,
+    required this.image,
   });
 
   final Category category;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,12 @@ class CategoryItem2 extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: Colors.black,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(image),
+              opacity: 0.8,
+            ),
             borderRadius: BorderRadius.circular(10)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

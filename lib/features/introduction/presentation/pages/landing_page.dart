@@ -92,7 +92,7 @@ class LandingPage extends StatelessWidget {
                           context
                               .read<IntroductionBloc>()
                               .add(IntroductionTerminated());
-                          context.go(RouteName.email);
+                          context.go(RouteName.registration);
                         } else {
                           context
                               .read<IntroductionBloc>()

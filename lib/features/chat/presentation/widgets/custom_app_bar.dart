@@ -10,7 +10,12 @@ import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../injections.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+  const CustomAppBar({
+    Key? key,
+    this.elevation,
+  }) : super(key: key);
+
+  final double? elevation;
 
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
@@ -25,7 +30,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           backgroundColor: Colors.white,
           foregroundColor: Colors.white,
           surfaceTintColor: Colors.white,
-          elevation: 11,
+          elevation: elevation ?? 11,
           titleSpacing: 0,
           shadowColor: Colors.black.withOpacity(0.4),
           // elevation: 0,
@@ -77,7 +82,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   size: Size(22, 22),
                 ),
                 title: Text(
-                  state.conversation!.category?.name ?? '',
+                  state.conversation!.category?.name ?? 'chargement ...',
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
@@ -105,8 +110,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           actions: [
             IconButton(
               onPressed: () {
-                getIt<DbService>().deleteToken();
-                getIt<DbService>().deleteUser();
+                // context.read<ChatBloc>().scaffoldKey.currentState.openEndDrawer();
+                if (context
+                    .read<ChatBloc>()
+                    .scaffoldKey
+                    .currentState!
+                    .isEndDrawerOpen) {
+                  // Scaffold.of(context).closeEndDrawer();
+                  context
+                      .read<ChatBloc>()
+                      .scaffoldKey
+                      .currentState
+                      ?.closeEndDrawer();
+                } else {
+                  Scaffold.of(context).openEndDrawer();
+                }
+                // getIt<DbService>().deleteToken();
+                // getIt<DbService>().deleteUser();
               },
               icon: Visibility(
                 visible: state.conversation == null,
@@ -115,8 +135,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   'assets/icons/more_vert.svg',
                   width: 20,
                   height: 20,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(
+                      context
+                              .read<ChatBloc>()
+                              .scaffoldKey
+                              .currentState!
+                              .isEndDrawerOpen
+                          ? Theme.of(context).primaryColor
+                          : Colors.black,
+                      BlendMode.srcIn),
                 ),
               ),
             ),

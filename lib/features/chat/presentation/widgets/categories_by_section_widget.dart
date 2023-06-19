@@ -93,6 +93,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               itemBuilder: (BuildContext ctx, index) {
                 return CategoryItem2(
                   category: categories[index],
+                  image: images[index],
                 );
               },
             ),
@@ -101,6 +102,13 @@ class CategoriesBySectionWidget extends StatelessWidget {
     );
   }
 }
+
+const images = [
+  'assets/images/pray.jpg',
+  'assets/images/pray_3.jpg',
+  'assets/images/pray_2.webp',
+  'assets/images/pray_4.jpg',
+];
 
 final double iconSize = 16;
 

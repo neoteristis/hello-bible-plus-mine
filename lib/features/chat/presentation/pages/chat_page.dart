@@ -87,7 +87,7 @@ class _ChatPageState extends State<ChatPage> {
           backgroundColor: const Color(0xFFF3F5F7),
           key: context.read<ChatBloc>().scaffoldKey,
           appBar: const CustomAppBar(),
-          drawer: const CustomDrawer(),
+          endDrawer: const CustomDrawer(),
           body: state.conversation == null
               ? const ContainerCategoriesWidget()
               : const ChatBody(),

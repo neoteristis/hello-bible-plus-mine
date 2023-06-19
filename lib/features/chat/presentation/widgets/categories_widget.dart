@@ -129,7 +129,10 @@ class CategoriesWidget extends StatelessWidget {
                             BottomContainer(
                               title: ' ⚡ Payez selon votre usage',
                               subtitle: 'Aucune obligation de montant,...',
-                            )
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
                           ],
                         ),
                       ),

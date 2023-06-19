@@ -61,6 +61,7 @@ class EmailInputPage extends StatelessWidget {
                           AuthEmailChanged(value),
                         );
                     },
+                    keyboardType: TextInputType.emailAddress,
                     onFieldSubmitted: (_) => onSubmit(context),
                     label: 'Renseigner mon email',
                     decoration: InputDecoration(

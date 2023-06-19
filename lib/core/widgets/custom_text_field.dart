@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.onFieldSubmitted,
     this.focusNode,
+    this.keyboardType,
   });
 
   final String label;
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
   final ValueSetter<String>? onChanged;
   final ValueSetter<String>? onFieldSubmitted;
   final FocusNode? focusNode;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           decoration: decoration,
           autofocus: true,
+          keyboardType: keyboardType,
           onChanged: onChanged,
           onTapOutside: (event) => unfocusKeyboard(),
           onFieldSubmitted: onFieldSubmitted,
