@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
-import 'package:gpt/features/user/domain/usecases/registration_usecase.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
@@ -15,7 +14,6 @@ import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../../data/models/email_input.dart';
 import '../../../data/models/first_name_input.dart';
-import '../../../domain/usecases/pick_picture_usecase.dart';
 import '../../../domain/usecases/usecases.dart';
 
 part 'registration_event.dart';

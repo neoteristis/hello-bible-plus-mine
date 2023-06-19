@@ -12,4 +12,5 @@ abstract class RegistrationRepository {
   Future<Either<Failure, bool>> checkEmail(String email);
   Future<Either<Failure, User>> updateUser(User user);
   Future<Either<Failure, XFile?>> getPicture(ImageSource source);
+  Future<Either<Failure, User>> signInWithApple();
 }
