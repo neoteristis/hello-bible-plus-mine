@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../domain/entities/entities.dart';
@@ -30,26 +31,27 @@ class CategoryItem2 extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Colors.black,
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(image),
-              opacity: 0.8,
-            ),
-            borderRadius: BorderRadius.circular(10)),
+          color: Colors.black,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(image),
+            opacity: 0.8,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           // crossAxisAlignment: CrossAxis,
           children: [
             Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                padding: const EdgeInsets.symmetric(horizontal: 36.0),
                 child: Text(
                   category.name ?? '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
@@ -64,8 +66,8 @@ class CategoryItem2 extends StatelessWidget {
                   category.welcomePhrase ?? '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 10,
+                  style: TextStyle(
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
                   ),

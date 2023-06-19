@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import '../../../../../core/widgets/custom_bubble.dart';
 import '../../bloc/chat_bloc.dart';
@@ -13,6 +14,7 @@ Widget bubbleBuilder(
 }) =>
     BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
+        ScreenUtil.init(context, designSize: const Size(360, 690));
         return Column(
           crossAxisAlignment: state.sender!.id == message.author.id
               ? CrossAxisAlignment.end
@@ -27,14 +29,14 @@ Widget bubbleBuilder(
                   DateFormat('h:mm a').format(
                     DateTime.fromMicrosecondsSinceEpoch(message.createdAt),
                   ),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 8,
+                    fontSize: 8.sp,
                     color: Color(0xFF101520),
                   ),
                 ),
                 if (state.sender!.id == message.author.id)
-                  const Icon(Icons.check, size: 12, color: Color(0xFF101520)),
+                  Icon(Icons.check, size: 12.sp, color: Color(0xFF101520)),
               ],
             ),
             const SizedBox(
@@ -52,11 +54,13 @@ Widget bubbleBuilder(
                 message: message.type == types.MessageType.text
                     ? Text(
                         message.text,
+                        // textScaleFactor: 1.2,
                         style: TextStyle(
                           color: state.sender!.id != message.author.id
                               ? Colors.black
                               : Colors.white,
-                          fontSize: 12,
+                          fontSize: 13.sp,
+                          height: 1.4,
                           fontWeight: FontWeight.w400,
                         ),
                       )

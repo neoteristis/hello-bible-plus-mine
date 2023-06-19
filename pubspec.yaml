@@ -1,6 +1,6 @@
 name: gpt
-description: A new Flutter project.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+description: Hello bible plus is an application of chat with an AI trained to help Christian people in their journey.
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -45,6 +45,7 @@ dependencies:
   dots_indicator: ^3.0.0
   image_picker: ^0.8.8
   jwt_decoder: ^2.0.1
+  flutter_screenutil: ^5.8.4
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/theme/theme.dart';
 
 import 'core/bloc/obscure_text/obscure_text_cubit.dart';
@@ -54,16 +55,37 @@ class App extends StatelessWidget {
             builder: (context, authState) {
               final route = authState.route;
               // const route = RouteName.login;
-              return MaterialApp.router(
-                title: 'hello bible +',
-                theme: state.theme ?? theme(null),
-                debugShowCheckedModeBanner: false,
-                // home: const ChatPage(),
-                // home: const RegistrationPage(),
-                routeInformationParser: routers[route]?.routeInformationParser,
-                routerDelegate: routers[route]?.routerDelegate,
-                routeInformationProvider:
-                    routers[route]?.routeInformationProvider,
+              return ScreenUtilInit(
+                designSize: const Size(375, 812),
+                minTextAdapt: true,
+                splitScreenMode: true,
+
+                builder: (context, child) {
+                  return MaterialApp.router(
+                    title: 'hello bible +',
+                    theme: state.theme ?? theme(null),
+                    debugShowCheckedModeBanner: false,
+                    // home: const ChatPage(),
+                    // home: const RegistrationPage(),
+                    routeInformationParser:
+                        routers[route]?.routeInformationParser,
+                    routerDelegate: routers[route]?.routerDelegate,
+                    routeInformationProvider:
+                        routers[route]?.routeInformationProvider,
+                  );
+                },
+                // child: MaterialApp.router(
+                //   title: 'hello bible +',
+                //   theme: state.theme ?? theme(null),
+                //   debugShowCheckedModeBanner: false,
+                //   // home: const ChatPage(),
+                //   // home: const RegistrationPage(),
+                //   routeInformationParser:
+                //       routers[route]?.routeInformationParser,
+                //   routerDelegate: routers[route]?.routerDelegate,
+                //   routeInformationProvider:
+                //       routers[route]?.routeInformationProvider,
+                // ),
               );
             },
           );
