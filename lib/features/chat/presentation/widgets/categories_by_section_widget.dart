@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/features/chat/presentation/widgets/category_item_widget.dart';
 
@@ -21,6 +20,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
     }
     final categories = data?.categories;
     final sectionName = data?.sectionName;
+    final sectionId = data?.id;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +49,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
         ),
         if (categories != null &&
             categories.isNotEmpty &&
-            sectionName != 'Posez vos questions')
+            sectionId != '646b6b8e70c60193c897fc3d')
           SizedBox(
             height: 140.sp,
             child: ListView.separated(

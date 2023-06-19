@@ -131,7 +131,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               },
               icon: Visibility(
                 visible: state.conversation == null,
-                replacement: const Icon(Icons.more_vert),
+                replacement: IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    onPressed: () {
+                      getIt<DbService>().deleteToken();
+                      getIt<DbService>().deleteUser();
+                    }),
                 child: SvgPicture.asset(
                   'assets/icons/more_vert.svg',
                   width: 20,
