@@ -211,6 +211,8 @@ void usecase() {
   getIt.registerLazySingleton(() => LoginUsecase(getIt()));
 
   getIt.registerLazySingleton(() => SignInWithAppleUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => SignInWithGoogleUsecase(getIt()));
 }
 
 void bloc() {
@@ -272,7 +274,12 @@ void bloc() {
 
   getIt.registerFactory(() => ObscureTextCubit());
 
-  getIt.registerFactory(() => SocialConnectBloc(signInWithApple: getIt()));
+  getIt.registerFactory(
+    () => SocialConnectBloc(
+      signInWithApple: getIt(),
+      signInWithGoogle: getIt(),
+    ),
+  );
 }
 
 @pragma('vm:entry-point')

@@ -1,13 +1,12 @@
 import 'package:dartz/dartz.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:gpt/core/error/failure.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/repositories/registration_repository.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../../../../core/entities/token.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
 import '../datasources/datasources.dart';
@@ -157,6 +156,42 @@ class RegistrationRepositoryImp implements RegistrationRepository {
             email: credential.email,
             lastName: credential.familyName,
             firstName: credential.givenName,
+          ),
+        );
+        final token = res.token;
+        final userRes = res.user;
+        if (token != null && userRes != null) {
+          local.saveToken(token);
+          local.saveUser(userRes);
+        } else {
+          return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
+        }
+
+        return Right(userRes);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    }
+    return const Left(NoConnexionFailure());
+  }
+
+  @override
+  Future<Either<Failure, User>> signInWithGoogle() async {
+    if (await network.isConnected) {
+      try {
+        GoogleSignIn _googleSignIn = GoogleSignIn(
+          scopes: [
+            'email',
+            'https://www.googleapis.com/auth/contacts.readonly',
+          ],
+        );
+        final account = await _googleSignIn.signIn();
+        print(account);
+        final res = await remote.socialConnect(
+          User(
+            email: account?.email,
+            lastName: account?.displayName,
+            firstName: account?.displayName,
           ),
         );
         final token = res.token;

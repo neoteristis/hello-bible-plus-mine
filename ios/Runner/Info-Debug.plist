@@ -43,6 +43,18 @@
 		<string>${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+					<string>com.googleusercontent.apps.994190058581-dfqg6r9qac823ivv8gut94bs2t6ojpq9</string>
+				</array>
+			</dict>
+		</array>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>
