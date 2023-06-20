@@ -7,6 +7,8 @@ import 'package:gpt/features/user/domain/repositories/registration_repository.da
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import 'package:logger/logger.dart';
+
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
 import '../datasources/datasources.dart';

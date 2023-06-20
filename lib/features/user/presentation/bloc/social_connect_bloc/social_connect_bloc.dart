@@ -44,6 +44,7 @@ class SocialConnectBloc extends Bloc<SocialConnectEvent, SocialConnectState> {
         (l) => emit(
           state.copyWith(
             status: Status.failed,
+            failure: l,
           ),
         ),
         (r) => emit(
@@ -72,6 +73,7 @@ class SocialConnectBloc extends Bloc<SocialConnectEvent, SocialConnectState> {
         (l) => emit(
           state.copyWith(
             status: Status.failed,
+            failure: l,
           ),
         ),
         (r) => emit(

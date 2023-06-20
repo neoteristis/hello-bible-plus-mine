@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'sse_message.dart';
 
-class SseEventSink extends EventSink<String> {
+class SseEventSink implements EventSink<String> {
   final EventSink<SseMessage> _eventSink;
 
   String? _id;

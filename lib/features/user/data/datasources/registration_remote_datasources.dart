@@ -142,11 +142,13 @@ class RegistrationRemoteDatasourcesImp
           await baseRepo.post(ApiConstants.registration(), body: user.toJson());
       return UserResponse.fromJson(res.data);
     } on DioError catch (e) {
-      Logger().w(e);
+      // Logger().w(e);
+
       final res = e.response;
       final message = res?.data != null
           ? MessageResponse.fromJson(res?.data).message
           : e.toString();
+      // Logger().w(message);
       throw ServerException(message: message);
     }
   }
