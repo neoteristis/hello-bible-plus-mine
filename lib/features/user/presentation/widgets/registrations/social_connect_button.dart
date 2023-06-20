@@ -9,6 +9,7 @@ class SocialConnectButton extends StatelessWidget {
     this.icon,
     this.label,
     required this.onPressed,
+    this.controller,
     this.child,
   });
 
@@ -17,6 +18,7 @@ class SocialConnectButton extends StatelessWidget {
   final String? label;
   final VoidCallback onPressed;
   final Widget? child;
+  final RoundedLoadingButtonController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class SocialConnectButton extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 15.0),
         child: RoundedLoadingButton(
           color: color,
-          controller: RoundedLoadingButtonController(),
+          controller: controller ?? RoundedLoadingButtonController(),
           onPressed: onPressed,
           borderRadius: 10,
           child: child ??

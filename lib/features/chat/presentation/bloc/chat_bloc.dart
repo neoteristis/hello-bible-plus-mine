@@ -29,7 +29,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
-  late StreamSubscription<SseMessage>? streamSubscription;
+  late StreamSubscription<String?> streamSubscription;
   ChatBloc({
     required this.fetchCategoriesBySection,
     required this.fetchCategories,
@@ -191,7 +191,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           );
           if (trunck == endMessageMarker) {
             debugPrint(messageJoined);
-            streamSubscription?.cancel();
+            // streamSubscription.cancel();
             state.focusNode?.requestFocus();
             add(ChatMessageJoined(newMessage: messageJoined.trim()));
           }

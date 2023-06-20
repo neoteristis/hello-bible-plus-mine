@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/status.dart';
+import '../../../../core/helper/show_error_dialog.dart';
+import '../../../chat/presentation/bloc/chat_bloc.dart';
+import '../bloc/auth_bloc/auth_bloc.dart';
+import '../bloc/social_connect_bloc/social_connect_bloc.dart';
 import '../widgets/registrations/registrations.dart';
 import 'dart:io' show Platform;
 
@@ -9,14 +15,32 @@ class RegistrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      goBackSocialConnect: false,
-      body: Column(
-        children: [
-          if (Platform.isIOS) AppleConnectButton(),
-          GoogleConnectButton(),
-          FacebookConnectButton(),
-        ],
+    return BlocListener<SocialConnectBloc, SocialConnectState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        switch (state.status) {
+          case Status.loaded:
+            context
+              ..read<AuthBloc>().add(AuthSuccessfullyLogged())
+              ..read<ChatBloc>().add(
+                ChatCategoriesBySectionFetched(),
+              );
+            break;
+          case Status.failed:
+            showErrorDialog(context, state.failure?.message);
+            break;
+          default:
+        }
+      },
+      child: BasePage(
+        goBackSocialConnect: false,
+        body: Column(
+          children: [
+            if (Platform.isIOS) const AppleConnectButton(),
+            const GoogleConnectButton(),
+            const FacebookConnectButton(),
+          ],
+        ),
       ),
     );
   }

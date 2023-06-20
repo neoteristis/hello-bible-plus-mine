@@ -15,6 +15,7 @@ import 'package:gpt/features/introduction/presentation/bloc/introduction_bloc.da
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:gpt/features/user/data/datasources/datasources.dart';
 import 'package:gpt/features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
+import 'package:gpt/features/user/presentation/bloc/social_connect_bloc/social_connect_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -208,6 +209,10 @@ void usecase() {
   getIt.registerLazySingleton(() => UpdateUserUsecase(getIt()));
 
   getIt.registerLazySingleton(() => LoginUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => SignInWithAppleUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => SignInWithGoogleUsecase(getIt()));
 }
 
 void bloc() {
@@ -268,6 +273,13 @@ void bloc() {
   );
 
   getIt.registerFactory(() => ObscureTextCubit());
+
+  getIt.registerFactory(
+    () => SocialConnectBloc(
+      signInWithApple: getIt(),
+      signInWithGoogle: getIt(),
+    ),
+  );
 }
 
 @pragma('vm:entry-point')

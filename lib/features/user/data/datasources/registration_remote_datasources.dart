@@ -14,6 +14,7 @@ abstract class RegistrationRemoteDatasources {
   Future<bool> checkEmail(String email);
   Future<User> updateUser(User user);
   Future<Token> refreshToken(String refresh);
+  Future<UserResponse> socialConnect(User user);
 }
 
 class RegistrationRemoteDatasourcesImp
@@ -130,6 +131,24 @@ class RegistrationRemoteDatasourcesImp
           ? MessageResponse.fromJson(res?.data).message
           : e.toString();
 
+      throw ServerException(message: message);
+    }
+  }
+
+  @override
+  Future<UserResponse> socialConnect(User user) async {
+    try {
+      final res =
+          await baseRepo.post(ApiConstants.registration(), body: user.toJson());
+      return UserResponse.fromJson(res.data);
+    } on DioError catch (e) {
+      // Logger().w(e);
+
+      final res = e.response;
+      final message = res?.data != null
+          ? MessageResponse.fromJson(res?.data).message
+          : e.toString();
+      // Logger().w(message);
       throw ServerException(message: message);
     }
   }

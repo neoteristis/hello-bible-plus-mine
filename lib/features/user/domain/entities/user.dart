@@ -5,6 +5,7 @@ class User extends Equatable {
   final int? idInt;
   final String? lastName;
   final String? firstName;
+  final String? username;
   final String? email;
   final String? validationCode;
   final String? country;
@@ -22,6 +23,7 @@ class User extends Equatable {
     this.country,
     this.deviceToken,
     this.password,
+    this.username,
     this.photo,
   });
   @override
@@ -36,6 +38,7 @@ class User extends Equatable {
         deviceToken,
         password,
         photo,
+        username,
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -46,7 +49,20 @@ class User extends Equatable {
       email: json['email'],
       country: json['country'],
       photo: json['photo'],
+      username: json['username'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': lastName,
+      'firstname': firstName,
+      'email': email,
+      'username': username,
+      // 'code': validationCode,
+      'country': 'Madagascar',
+      // 'deviceToken': deviceToken,
+    };
   }
 
   Map<String, dynamic> toJson_1() {
