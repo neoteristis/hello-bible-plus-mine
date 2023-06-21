@@ -41,3 +41,5 @@ class AuthPasswordChanged extends AuthEvent {
 }
 
 class AuthSubmitted extends AuthEvent {}
+
+class AuthRegistrationPageWent extends AuthEvent {}

@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:gpt/core/models/required_input.dart';
 
 import '../../../../core/constants/status.dart';
+import '../../../../core/routes/route_name.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/icon_text_row_recognizer.dart';
 import '../../../chat/presentation/bloc/chat_bloc.dart';
@@ -50,6 +51,15 @@ class NameAndPictureInputPage extends StatelessWidget {
           listener: (context, state) {
             if (state.pickPictureStatus == Status.failed) {
               showErrorDialog(context, state.failure?.message);
+            }
+          },
+        ),
+        BlocListener<AuthBloc, AuthState>(
+          listenWhen: (previous, current) => previous.goto != current.goto,
+          listener: (context, state) {
+            if (state.goto == GoTo.registration) {
+              // go to the first page after logout
+              context.go(RouteName.registration);
             }
           },
         ),
@@ -146,9 +156,10 @@ class NameAndPictureInputPage extends StatelessWidget {
                 builder: (context, state) {
                   return CustomTextField(
                     label: '',
+                    textCapitalization: TextCapitalization.words,
                     onFieldSubmitted: (_) => onSumbit(context),
                     decoration: InputDecoration(
-                      hintText: 'nom et prénom',
+                      hintText: 'Nom et Prénom',
                       errorText: state.name.isNotValid
                           ? state.name.displayError?.text
                           : null,

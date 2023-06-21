@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.focusNode,
     this.keyboardType,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   final String label;
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
   final ValueSetter<String>? onFieldSubmitted;
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
+  final TextCapitalization? textCapitalization;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class CustomTextField extends StatelessWidget {
           focusNode: focusNode,
           obscureText: obscureText ?? false,
           controller: controller,
+          textCapitalization: textCapitalization ?? TextCapitalization.none,
           decoration: decoration,
           autofocus: true,
           keyboardType: keyboardType,

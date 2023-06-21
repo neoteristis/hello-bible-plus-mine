@@ -29,6 +29,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEmailChanged>(_onAuthEmailChanged);
     on<AuthPasswordChanged>(_onAuthPasswordChanged);
     on<AuthSubmitted>(_onAuthSubmitted);
+    on<AuthRegistrationPageWent>(_onAuthRegistrationPageWent);
+  }
+
+  void _onAuthRegistrationPageWent(
+    AuthRegistrationPageWent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(state.copyWith(goto: GoTo.init));
+    await Future.delayed(const Duration(milliseconds: 10));
+    emit(state.copyWith(
+      goto: GoTo.registration,
+    ));
   }
 
   void _onAuthSubmitted(
@@ -130,6 +142,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     final res = await deleteAuth(NoParams());
-    res.fold((l) => null, (r) => emit(state.copyWith(route: RouteName.login)));
+    res.fold(
+      (l) => null,
+      (r) {
+        emit(
+          state.copyWith(
+            route: RouteName.login,
+          ),
+        );
+        add(AuthRegistrationPageWent());
+      },
+    );
   }
 }

@@ -10,6 +10,7 @@ class AuthState extends Equatable {
     this.loginBtnController,
     this.passwordError,
     this.failure,
+    this.goto = GoTo.init,
   });
 
   final String? route;
@@ -20,6 +21,7 @@ class AuthState extends Equatable {
   final RoundedLoadingButtonController? loginBtnController;
   final String? passwordError;
   final Failure? failure;
+  final GoTo? goto;
 
   @override
   List<Object?> get props => [
@@ -31,6 +33,7 @@ class AuthState extends Equatable {
         loginBtnController,
         passwordError,
         failure,
+        goto,
       ];
 
   AuthState copyWith({
@@ -43,6 +46,7 @@ class AuthState extends Equatable {
     String? passwordError,
     bool clearPasswordError = false,
     Failure? failure,
+    GoTo? goto,
   }) {
     return AuthState(
       route: route ?? this.route,
@@ -54,6 +58,7 @@ class AuthState extends Equatable {
       passwordError:
           clearPasswordError ? null : passwordError ?? this.passwordError,
       failure: failure ?? this.failure,
+      goto: goto ?? this.goto,
     );
   }
 }
