@@ -12,6 +12,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return MultiBlocListener(
       listeners: [
         // BlocListener<ChatBloc, ChatState>(
@@ -35,16 +36,18 @@ class SplashScreen extends StatelessWidget {
           },
         ),
       ],
-      child: const Scaffold(
-        backgroundColor: Color(0xFF2EB67D),
+      child: Scaffold(
+        backgroundColor: !isLight
+            ? const Color(0xFF2EB67D)
+            : Theme.of(context).scaffoldBackgroundColor,
         body: Stack(
           children: [
             Center(
               child: LogoWithText(
-                logoColor: Colors.white,
+                logoColor: !isLight ? Colors.white : Color(0xFF2EB67D),
               ),
             ),
-            Positioned(
+            const Positioned(
               bottom: 0,
               left: 0,
               right: 0,

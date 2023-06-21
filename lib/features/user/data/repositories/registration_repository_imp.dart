@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -33,8 +34,15 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         final token = res.token;
         final userRes = res.user;
         if (token != null && userRes != null) {
-          local.saveToken(token);
-          local.saveUser(userRes);
+          await local.saveToken(token);
+          await local.saveUser(userRes);
+          try {
+            remote.sendFirebaseToken();
+          } catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
         } else {
           return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
         }
@@ -130,8 +138,15 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         final token = res.token;
         final userRes = res.user;
         if (token != null && userRes != null) {
-          local.saveToken(token);
-          local.saveUser(userRes);
+          await local.saveToken(token);
+          await local.saveUser(userRes);
+          try {
+            remote.sendFirebaseToken();
+          } catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
         } else {
           return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
         }
@@ -164,8 +179,15 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         final token = res.token;
         final userRes = res.user;
         if (token != null && userRes != null) {
-          local.saveToken(token);
-          local.saveUser(userRes);
+          await local.saveToken(token);
+          await local.saveUser(userRes);
+          try {
+            remote.sendFirebaseToken();
+          } catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
         } else {
           return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
         }
@@ -200,8 +222,15 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         final token = res.token;
         final userRes = res.user;
         if (token != null && userRes != null) {
-          local.saveToken(token);
-          local.saveUser(userRes);
+          await local.saveToken(token);
+          await local.saveUser(userRes);
+          try {
+            remote.sendFirebaseToken();
+          } catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
         } else {
           return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
         }

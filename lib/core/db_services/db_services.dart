@@ -58,7 +58,6 @@ class DbServiceImp implements DbService {
 
   @override
   Future saveUser(User user) async {
-    Logger().d('saving this user : $user');
     final userModel = UserBox.fromEntity(user);
 
     final findUserQuery =

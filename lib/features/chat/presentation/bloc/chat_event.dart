@@ -104,3 +104,13 @@ class ChatConversationInited extends ChatEvent {
   @override
   List<Object> get props => [historical];
 }
+
+class ChatConversationFromNotificationInited extends ChatEvent {
+  final String conversationId;
+  const ChatConversationFromNotificationInited(
+    this.conversationId,
+  );
+
+  @override
+  List<Object> get props => [conversationId];
+}

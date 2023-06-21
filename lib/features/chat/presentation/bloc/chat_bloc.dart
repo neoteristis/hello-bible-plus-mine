@@ -29,6 +29,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
+  final GetConversationByIdUsecase getConversationById;
   // late StreamSubscription<String?> streamSubscription;
   ChatBloc({
     required this.fetchCategoriesBySection,
@@ -36,6 +37,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.changeConversation,
     required this.sendMessage,
     required this.getResponseMessages,
+    required this.getConversationById,
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
@@ -55,9 +57,55 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatIncomingMessageLoaded>(_onChatIncomingMessageLoaded);
     on<ChatFocusNodeDisposed>(_onChatFocusNodeDisposed);
     on<ChatConversationInited>(_onChatConversationInited);
+    on<ChatConversationFromNotificationInited>(
+        _onChatConversationFromNotificationInited);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatConversationFromNotificationInited(
+    ChatConversationFromNotificationInited event,
+    Emitter<ChatState> emit,
+  ) async {
+    state.textEditingController?.clear();
+    emit(
+      state.copyWith(
+        conversationStatus: Status.loading,
+        conversation: const Conversation(),
+        messages: [],
+        clearNewMessage: true,
+      ),
+    );
+    final res = await getConversationById(event.conversationId);
+
+    return res.fold(
+      (l) => Logger().w(l),
+      (conversation) {
+        state.focusNode?.requestFocus();
+        emit(
+          state.copyWith(
+            conversation: conversation,
+            theme: theme(conversation.category?.colorTheme),
+            conversationStatus: Status.loaded,
+          ),
+        );
+        final messages = conversation.messages;
+        if (messages != null) {
+          for (final message in messages) {
+            final author =
+                message.role == Role.user ? state.sender : state.receiver;
+            final text = types.TextMessage(
+              author: author!,
+              createdAt: message.createdAt?.millisecondsSinceEpoch,
+              id: _randomString(),
+              text: message.content ?? '',
+            );
+            add(ChatMessageAdded(textMessage: text));
+          }
+        }
+      },
+    );
+  }
 
   void _onChatConversationInited(
     ChatConversationInited event,
@@ -262,14 +310,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         conversation: const Conversation(),
       ),
     );
-    print(1);
     final res =
         await changeConversation(PChangeConversation(category: event.category));
 
-    print(2);
     res.fold(
       (l) {
-        print(3);
         emit(
           state.copyWith(
             conversationStatus: Status.failed,
@@ -279,7 +324,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
       },
       (conversation) {
-        print(4);
         state.focusNode?.requestFocus();
         emit(
           state.copyWith(

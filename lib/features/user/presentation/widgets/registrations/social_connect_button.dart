@@ -11,10 +11,12 @@ class SocialConnectButton extends StatelessWidget {
     required this.onPressed,
     this.controller,
     this.child,
+    this.labelColor,
   });
 
   final Color? color;
   final Widget? icon;
+  final Color? labelColor;
   final String? label;
   final VoidCallback onPressed;
   final Widget? child;
@@ -45,7 +47,7 @@ class SocialConnectButton extends StatelessWidget {
                       child: Text(
                         label!,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white,
+                            color: labelColor ?? Colors.white,
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
                       ),

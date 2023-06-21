@@ -10,11 +10,11 @@ class CategoryItem2 extends StatelessWidget {
   const CategoryItem2({
     super.key,
     required this.category,
-    required this.image,
+    this.image,
   });
 
   final Category category;
-  final String image;
+  final String? image;
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +31,15 @@ class CategoryItem2 extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.black,
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(image),
-            opacity: 0.8,
-          ),
+          color: category.logo != null ? Colors.black : Colors.green,
+          image: category.logo != null
+              ? DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(category.logo!),
+                  // AssetImage(image),
+                  opacity: 0.8,
+                )
+              : null,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(

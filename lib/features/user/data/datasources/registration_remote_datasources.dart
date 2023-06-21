@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
@@ -15,6 +17,7 @@ abstract class RegistrationRemoteDatasources {
   Future<User> updateUser(User user);
   Future<Token> refreshToken(String refresh);
   Future<UserResponse> socialConnect(User user);
+  Future sendFirebaseToken();
 }
 
 class RegistrationRemoteDatasourcesImp
@@ -151,5 +154,11 @@ class RegistrationRemoteDatasourcesImp
       // Logger().w(message);
       throw ServerException(message: message);
     }
+  }
+
+  @override
+  Future sendFirebaseToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    await setToken(token);
   }
 }

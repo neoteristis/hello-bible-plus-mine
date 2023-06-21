@@ -40,14 +40,17 @@ class _ChatPageState extends State<ChatPage> {
     tokenStream.listen(setToken);
 
     FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic');
+    // FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic_test');
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      Logger().w('this has been taped : $message');
-      getIt<StreamController<String?>>(instanceName: 'select_nofitication')
-          .add(message.messageId);
-    });
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) {
+        Logger().w('this has been taped : $message');
+        getIt<StreamController<String?>>(instanceName: 'select_nofitication')
+            .add(message.messageId);
+      },
+    );
     _configureSelectNotificationSubject();
     _actOnNewNotificationComing();
     super.initState();
@@ -60,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
         .listen(
       (RemoteMessage? message) {
         if (message != null) {
-          Logger().w('a new notif coming : $message');
+          Logger().w('a new notif coming : ${message.data}');
         }
       },
     );
@@ -73,7 +76,11 @@ class _ChatPageState extends State<ChatPage> {
       (String? payload) {
         // context.go(RouteName.historical);
         if (payload != null) {
-          Logger().w('a new notif selected');
+          context.read<ChatBloc>().add(ChatConversationFromNotificationInited(
+              payload.substring(1, payload.length - 1)));
+
+          Logger().i(payload);
+          Logger().w('a new notif selected : $payload');
         }
       },
     );
@@ -97,13 +104,12 @@ class _ChatPageState extends State<ChatPage> {
   }
 }
 
-void setToken(String? token) async {
-  Log.info(token);
-  final user = await getIt<DbServiceImp>().getUser();
+Future setToken(String? token) async {
+  final user = await getIt<DbService>().getUser();
   final id = user?.idString;
   if (id != null) {
     await getIt<BaseRepository>().patch(
-      '${ApiConstants.registration}/$id',
+      ApiConstants.registration(),
       body: {
         'deviceToken': token,
       },

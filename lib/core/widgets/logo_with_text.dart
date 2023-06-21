@@ -45,9 +45,7 @@ class LogoWithText extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: textSize?.sp ?? 31.sp,
-              color: Color(
-                0xFF0C0C0C,
-              ),
+              color: Theme.of(context).colorScheme.tertiary,
             ),
             children: [
               TextSpan(
@@ -56,9 +54,7 @@ class LogoWithText extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                   fontSize: textSize?.sp ?? 31.sp,
                   wordSpacing: -2.5,
-                  color: Color(
-                    0xFF0C0C0C,
-                  ),
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               )
             ],

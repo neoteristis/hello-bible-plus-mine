@@ -15,6 +15,6 @@ abstract class ChatRepository {
   Future<Either<Failure, dynamic>> getResponseMessages(String idConversation);
   Future<Either<Failure, List<HistoricalConversation>>> fetchHistorical(
       PHistorical param);
-  // Future<Either<Failure, Conversation>> getConversationById(
-  //     String conversationId);
+  Future<Either<Failure, Conversation>> getConversationById(
+      String conversationId);
 }

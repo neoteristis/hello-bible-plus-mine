@@ -26,8 +26,10 @@ Widget bubbleBuilder(
                   : MainAxisAlignment.start,
               children: [
                 Text(
-                  DateFormat('h:mm a').format(
-                    DateTime.fromMicrosecondsSinceEpoch(message.createdAt),
+                  DateFormat('hh:mm a').format(
+                    DateTime.fromMicrosecondsSinceEpoch(message.createdAt,
+                            isUtc: false)
+                        .toLocal(),
                   ),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,

@@ -215,6 +215,8 @@ void usecase() {
   getIt.registerLazySingleton(() => SignInWithGoogleUsecase(getIt()));
 
   getIt.registerLazySingleton(() => SignInWithFacebookUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => GetConversationByIdUsecase(getIt()));
 }
 
 void bloc() {
@@ -225,6 +227,7 @@ void bloc() {
       sendMessage: getIt(),
       getResponseMessages: getIt(),
       fetchCategoriesBySection: getIt(),
+      getConversationById: getIt(),
       // tts: getIt(),
     ),
   );
@@ -392,6 +395,7 @@ void showFlutterNotification(RemoteMessage message) {
           presentSound: true,
         ),
       ),
+      payload: message.data['idConversation'],
     );
   }
 }

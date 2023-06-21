@@ -132,25 +132,18 @@ class ChatRepositoryImp implements ChatRepository {
     }
   }
 
-  // @override
-  // Future<Either<Failure, Conversation>> getConversationById(String conversationId)async  {
-  //    if (await networkInfo.isConnected) {
-  //     try {
-  //       final user = await local.getUser();
-  //       final uid = user?.idString;
-  //       if (uid != null) {
-  //         final res = await remote.changeConversation(
-  //             cat: param.category,
-  //             uid: uid,
-  //             conversationId: param.conversationId);
-  //         return Right(res);
-  //       }
-  //       return const Left(ServerFailure(info: 'Utilisateur introuvalbe'));
-  //     } on ServerException catch (e) {
-  //       return Left(ServerFailure(info: e.message));
-  //     }
-  //   } else {
-  //     return const Left(NoConnexionFailure());
-  //   }
-  // }
+  @override
+  Future<Either<Failure, Conversation>> getConversationById(
+      String conversationId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final conversation = await remote.getConversationById(conversationId);
+        return Right(conversation);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
 }

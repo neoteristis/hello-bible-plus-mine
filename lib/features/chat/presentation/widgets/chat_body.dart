@@ -44,7 +44,7 @@ class _ChatBodyState extends State<ChatBody> {
             );
           case Status.loaded:
             return ui.Chat(
-              dateFormat: DateFormat('h:mm a'),
+              // dateFormat: DateFormat('h:mm a'),
               // dateHeaderThreshold: 100,
               dateHeaderBuilder: (p0) => const SizedBox.shrink(),
               // showUserAvatars: true,

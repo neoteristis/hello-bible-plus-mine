@@ -69,6 +69,7 @@ class App extends StatelessWidget {
                   return MaterialApp.router(
                     title: 'hello bible +',
                     theme: theme(null),
+                    darkTheme: dark,
                     debugShowCheckedModeBanner: false,
                     // home: const ChatPage(),
                     // home: const RegistrationPage(),

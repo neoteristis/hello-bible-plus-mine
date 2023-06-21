@@ -27,17 +27,18 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.dark;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: const Color(0xFF223159).withOpacity(.6),
-          ),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: isLight
+                    ? Theme.of(context).colorScheme.onSurface.withOpacity(.6)
+                    : Theme.of(context).textTheme.bodyLarge?.color,
+              ),
         ),
         const SizedBox(
           height: 8,

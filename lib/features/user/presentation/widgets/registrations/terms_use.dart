@@ -7,6 +7,11 @@ class TermsUse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = Theme.of(context).textTheme.bodyLarge?.copyWith(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        );
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 70.0, vertical: 15),
       child: RichText(
@@ -14,29 +19,24 @@ class TermsUse extends StatelessWidget {
         text: TextSpan(
           text: 'En continuant, vous accepter nos ',
           style: TextStyle(
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             fontSize: 12,
-            color: Color(0xFF223159).withOpacity(.6),
+            color: Theme.of(context)
+                .colorScheme
+                .onBackground
+                .withOpacity(!isLight ? .6 : 1),
           ),
           children: [
             TextSpan(
               text: 'Conditions d\'Utilisations ',
-              style: TextStyle(
-                color: Color(0xFF24282E),
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
+              style: style,
             ),
             TextSpan(
               text: 'et notre ',
             ),
             TextSpan(
               text: 'Notice Protection de vos informations personnelles',
-              style: TextStyle(
-                color: Color(0xFF24282E),
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
+              style: style,
             ),
           ],
         ),

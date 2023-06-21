@@ -20,11 +20,6 @@ class LandingPage extends StatelessWidget {
     return ScaffoldWithBackground(
       body: Stack(
         children: [
-          const Positioned(
-            bottom: 10,
-            left: 10,
-            child: BackgroundImageFull(),
-          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,7 +138,10 @@ class PageViewChild extends StatelessWidget {
               ...images
                   .map(
                     (e) => Center(
-                      child: SvgPicture.asset(e),
+                      child: SvgPicture.asset(
+                        e,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                   )
                   .toList(),

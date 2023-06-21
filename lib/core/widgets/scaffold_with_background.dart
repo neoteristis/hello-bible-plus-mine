@@ -17,7 +17,7 @@ class ScaffoldWithBackground extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         extendBody: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: true,
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -29,19 +29,19 @@ class ScaffoldWithBackground extends StatelessWidget {
             visible: onPop != null,
             child: GestureDetector(
               onTap: onPop,
-              child: const Row(
+              child: Row(
                 children: [
                   Icon(
                     Icons.arrow_back_ios,
                     size: 20,
-                    color: Color(0xFF24282E),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   Text(
                     'Retour',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 17,
-                      color: Color(0xFF24282E),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                 ],

@@ -78,15 +78,19 @@ class BlackRoundedLoadingButton implements CustomButtonWidget {
   }) {
     return RoundedLoadingButton(
       controller: controller ?? RoundedLoadingButtonController(),
-      color: const Color(0xFF24282E),
+      color: Theme.of(context).colorScheme.onSurface,
       width: width ?? MediaQuery.of(context).size.width * .85,
       height: height ?? 50,
       animateOnTap: animateOnTap ?? false,
       borderRadius: borderRadius ?? 35,
       onPressed: onPressed,
-      child: Text(label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14)),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+      ),
     );
   }
 }

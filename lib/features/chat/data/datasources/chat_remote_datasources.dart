@@ -20,6 +20,7 @@ abstract class ChatRemoteDatasources {
   Future<List<CategoriesBySection>> fetchCategoriesBySection();
   Future<List<HistoricalConversation>> fetchHistoricalConversation(
       PHistorical param);
+  Future<Conversation> getConversationById(String conversationId);
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -130,6 +131,19 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
       return (res.data as List)
           .map((m) => HistoricalConversation.fromJson(m))
           .toList();
+    } catch (e) {
+      print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<Conversation> getConversationById(String conversationId) async {
+    try {
+      final res = await baseRepo
+          .get(ApiConstants.conversation(conversationId: conversationId));
+
+      return Conversation.fromJson(res.data);
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());

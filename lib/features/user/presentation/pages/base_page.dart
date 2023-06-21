@@ -55,6 +55,9 @@ class BasePage extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Text(
                           title ??
                               'Continuez pour créer votre compte ou se connecter',

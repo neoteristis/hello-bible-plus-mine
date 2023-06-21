@@ -16,12 +16,13 @@ class AppleConnectButton extends StatelessWidget {
           previous.appleBtnController != current.appleBtnController,
       builder: (context, state) {
         return SocialConnectButton(
-          color: const Color(0xFF050708),
+          color: Theme.of(context).colorScheme.onPrimary,
           label: 'Continuer avec Apple',
           controller: state.appleBtnController,
-          icon: const Icon(
+          labelColor: Theme.of(context).colorScheme.tertiary,
+          icon: Icon(
             Icons.apple,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.tertiary,
           ),
           onPressed: () {
             context
