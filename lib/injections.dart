@@ -213,6 +213,8 @@ void usecase() {
   getIt.registerLazySingleton(() => SignInWithAppleUsecase(getIt()));
 
   getIt.registerLazySingleton(() => SignInWithGoogleUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => SignInWithFacebookUsecase(getIt()));
 }
 
 void bloc() {
@@ -278,6 +280,7 @@ void bloc() {
     () => SocialConnectBloc(
       signInWithApple: getIt(),
       signInWithGoogle: getIt(),
+      signInWithFacebook: getIt(),
     ),
   );
 }

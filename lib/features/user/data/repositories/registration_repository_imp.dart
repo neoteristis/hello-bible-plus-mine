@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:gpt/core/error/failure.dart';
@@ -206,6 +207,47 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         }
 
         return Right(userRes);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    }
+    return const Left(NoConnexionFailure());
+  }
+
+  @override
+  Future<Either<Failure, User>> signInWithFacebook() async {
+    if (await network.isConnected) {
+      try {
+        LoginResult res;
+        try {
+          res = await FacebookAuth.instance.login();
+        } catch (_) {
+          return const Left(ServerFailure());
+        }
+        if (res.status == LoginStatus.success) {
+          final userData = await FacebookAuth.instance.getUserData(
+              fields: 'last_name,first_name,name,email,picture.width(200)');
+          print(userData);
+          //   final result = await remote.socialConnect(
+          //   User(
+          //     email: userData.e,
+          //     lastName: account?.displayName,
+          //     firstName: account?.displayName,
+          //   ),
+          // );
+          // final token = res.token;
+          // final userRes = res.user;
+          // if (token != null && userRes != null) {
+          //   local.saveToken(token);
+          //   local.saveUser(userRes);
+          // } else {
+          //   return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
+          // }
+
+          return const Right(User());
+        } else {
+          return const Left(ServerFailure());
+        }
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }

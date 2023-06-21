@@ -14,4 +14,5 @@ abstract class RegistrationRepository {
   Future<Either<Failure, XFile?>> getPicture(ImageSource source);
   Future<Either<Failure, User>> signInWithApple();
   Future<Either<Failure, User>> signInWithGoogle();
+  Future<Either<Failure, User>> signInWithFacebook();
 }

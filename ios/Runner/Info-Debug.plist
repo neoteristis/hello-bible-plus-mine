@@ -51,10 +51,22 @@
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+                    <string>fb3435933933327393</string>
 					<string>com.googleusercontent.apps.994190058581-dfqg6r9qac823ivv8gut94bs2t6ojpq9</string>
 				</array>
 			</dict>
 		</array>
+        <key>FacebookAppID</key>
+        <string>3435933933327393</string>
+        <key>FacebookClientToken</key>
+        <string>1e8cc9e11856af6c88dbc17495c58867</string>
+        <key>FacebookDisplayName</key>
+        <string>HelloBible+</string>
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+          <string>fbapi</string>
+          <string>fb-messenger-share-api</string>
+        </array>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>

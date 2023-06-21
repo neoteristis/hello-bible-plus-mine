@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/social_connect_bloc/social_connect_bloc.dart';
 import 'social_connect_button.dart';
 
 class FacebookConnectButton extends StatelessWidget {
@@ -9,14 +11,25 @@ class FacebookConnectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SocialConnectButton(
-      color: Color(0xFF1877F2),
-      label: 'Continuer avec Facebook',
-      icon: Icon(
-        Icons.facebook_rounded,
-        color: Colors.white,
-      ),
-      onPressed: () {},
+    return BlocBuilder<SocialConnectBloc, SocialConnectState>(
+      buildWhen: (previous, current) =>
+          previous.fbBtnController != current.fbBtnController,
+      builder: (context, state) {
+        return SocialConnectButton(
+          controller: state.fbBtnController,
+          color: const Color(0xFF1877F2),
+          label: 'Continuer avec Facebook',
+          icon: const Icon(
+            Icons.facebook_rounded,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            context
+                .read<SocialConnectBloc>()
+                .add(SocialConnectFacebookSubmitted());
+          },
+        );
+      },
     );
   }
 }

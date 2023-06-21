@@ -10,3 +10,5 @@ abstract class SocialConnectEvent extends Equatable {
 class SocialConnectAppleSubmitted extends SocialConnectEvent {}
 
 class SocialConnectGoogleSubmitted extends SocialConnectEvent {}
+
+class SocialConnectFacebookSubmitted extends SocialConnectEvent {}
