@@ -7,3 +7,4 @@ export 'pick_picture_usecase.dart';
 export 'login_usecase.dart';
 export 'sign_in_with_apple.dart';
 export 'sign_in_with_google.dart';
+export 'sign_in_with_facebook.dart';

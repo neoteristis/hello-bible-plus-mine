@@ -29,7 +29,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
-  late StreamSubscription<String?> streamSubscription;
+  // late StreamSubscription<String?> streamSubscription;
   ChatBloc({
     required this.fetchCategoriesBySection,
     required this.fetchCategories,
@@ -168,7 +168,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             ), (rs) async {
       String messageJoined = '';
       try {
-        streamSubscription = rs.data?.stream
+        // streamSubscription =
+        rs.data?.stream
             .transform(unit8Transformer)
             .transform(const Utf8Decoder())
             .transform(const LineSplitter())

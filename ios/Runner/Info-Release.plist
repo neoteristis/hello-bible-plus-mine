@@ -39,18 +39,30 @@
 		<array>
 			<string>_dartobservatory._tcp</string>
 		</array>
-		<key>CFBundleURLTypes</key>
-		<array>
-			<dict>
-				<key>CFBundleTypeRole</key>
-				<string>Editor</string>
-				<key>CFBundleURLSchemes</key>
-				<array>
-					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-					<string>com.googleusercontent.apps.994190058581-dfqg6r9qac823ivv8gut94bs2t6ojpq9</string>
-				</array>
-			</dict>
-		</array>
+        <key>CFBundleURLTypes</key>
+        <array>
+            <dict>
+                <key>CFBundleTypeRole</key>
+                <string>Editor</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+                    <string>fb756192206289016</string>
+                    <string>com.googleusercontent.apps.994190058581-dfqg6r9qac823ivv8gut94bs2t6ojpq9</string>
+                </array>
+            </dict>
+        </array>
+        <key>FacebookAppID</key>
+        <string>756192206289016</string>
+        <key>FacebookClientToken</key>
+        <string>240acc55d8d7ec9552b2acff8fa142e2</string>
+        <key>FacebookDisplayName</key>
+        <string>HelloBible+</string>
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+          <string>fbapi</string>
+          <string>fb-messenger-share-api</string>
+        </array>
 		<key>NSLocalNetworkUsageDescription</key>
 		<string>${PRODUCT_NAME} uses the local network to discover Cast-enabled devices on your WiFi network.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>

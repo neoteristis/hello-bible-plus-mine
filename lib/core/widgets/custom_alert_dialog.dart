@@ -8,12 +8,16 @@ class CustomAlertDialog extends StatelessWidget {
     this.actions,
     this.onClose,
     this.content,
+    this.width,
+    this.height,
   });
 
   // final Widget content;
   final List<Widget>? actions;
   final VoidCallback? onClose;
   final Widget? content;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +27,8 @@ class CustomAlertDialog extends StatelessWidget {
       actions: actions,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.30,
-        width: 500,
+        height: height ?? MediaQuery.of(context).size.height * 0.30,
+        width: width ?? 500,
         child: Stack(
           children: [
             Padding(

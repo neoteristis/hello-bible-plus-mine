@@ -13,9 +13,11 @@ part 'social_connect_state.dart';
 class SocialConnectBloc extends Bloc<SocialConnectEvent, SocialConnectState> {
   final SignInWithAppleUsecase signInWithApple;
   final SignInWithGoogleUsecase signInWithGoogle;
+  final SignInWithFacebookUsecase signInWithFacebook;
   SocialConnectBloc({
     required this.signInWithApple,
     required this.signInWithGoogle,
+    required this.signInWithFacebook,
   }) : super(
           SocialConnectState(
             appleBtnController: RoundedLoadingButtonController(),
@@ -25,6 +27,36 @@ class SocialConnectBloc extends Bloc<SocialConnectEvent, SocialConnectState> {
         ) {
     on<SocialConnectAppleSubmitted>(_onSocialConnectAppleSubmitted);
     on<SocialConnectGoogleSubmitted>(_onSocialConnectGoogleSubmitted);
+    on<SocialConnectFacebookSubmitted>(_onSocialConnectFacebookSubmitted);
+  }
+
+  void _onSocialConnectFacebookSubmitted(
+    SocialConnectFacebookSubmitted event,
+    Emitter<SocialConnectState> emit,
+  ) async {
+    if (state.status != Status.loading) {
+      emit(
+        state.copyWith(
+          status: Status.loading,
+        ),
+      );
+      state.fbBtnController?.start();
+      final res = await signInWithFacebook(NoParams());
+      state.fbBtnController?.stop();
+      return res.fold(
+        (l) => emit(
+          state.copyWith(
+            status: Status.failed,
+            failure: l,
+          ),
+        ),
+        (r) => emit(
+          state.copyWith(
+            status: Status.loaded,
+          ),
+        ),
+      );
+    }
   }
 
   void _onSocialConnectGoogleSubmitted(

@@ -35,28 +35,6 @@ final _routerForLogin = GoRouter(
         path: RouteName.home,
         builder: (context, state) => const LandingPage(),
         routes: [
-          // GoRoute(
-          //   path: 'email',
-          //   builder: (context, state) => const EmailInputPage(),
-          //   routes: [
-          //     GoRoute(
-          //       path: 'password',
-          //       builder: (context, state) => const PasswordInputPage(),
-          //     ),
-          //     GoRoute(
-          //       path: 'newPassword',
-          //       builder: (context, state) => const CreatePasswordInputPage(),
-          //     ),
-          //     GoRoute(
-          //       path: 'namePicture',
-          //       builder: (context, state) => const NameAndPictureInputPage(),
-          //     ),
-          //   ],
-          // ),
-          // GoRoute(
-          //   path: 'subscription',
-          //   builder: (context, state) => const SubscriptionPage(),
-          // ),
           GoRoute(
             path: 'registration',
             builder: (context, state) => const RegistrationPage(),

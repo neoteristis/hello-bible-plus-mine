@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gpt/core/theme/theme.dart';
 
 import 'core/bloc/obscure_text/obscure_text_cubit.dart';
@@ -51,13 +52,13 @@ class App extends StatelessWidget {
           create: (context) => getIt<SocialConnectBloc>(),
         ),
       ],
-      child: BlocBuilder<ChatBloc, ChatState>(
-        buildWhen: (previous, current) => previous.theme != current.theme,
+      child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return BlocBuilder<AuthBloc, AuthState>(
             buildWhen: (previous, current) => previous.route != current.route,
             builder: (context, authState) {
               final route = authState.route;
+
               // const route = RouteName.login;
               return ScreenUtilInit(
                 designSize: const Size(375, 812),
@@ -67,7 +68,7 @@ class App extends StatelessWidget {
                 builder: (context, child) {
                   return MaterialApp.router(
                     title: 'hello bible +',
-                    theme: state.theme ?? theme(null),
+                    theme: theme(null),
                     debugShowCheckedModeBanner: false,
                     // home: const ChatPage(),
                     // home: const RegistrationPage(),
