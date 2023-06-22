@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
+import '../../../../core/theme/theme.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
 import 'categories_by_section_widget.dart';
@@ -46,6 +47,10 @@ class CategoriesWidget extends StatelessWidget {
               ),
             );
           case Status.loaded:
+            final hintColor = Theme.of(context)
+                .colorScheme
+                .onBackground
+                .withOpacity(isLight(context) ? 1 : .7);
             return ListView.separated(
               // reverse: true,
               itemCount: state.categoriesBySection.length,
@@ -63,13 +68,18 @@ class CategoriesWidget extends StatelessWidget {
                           textCapitalization: TextCapitalization.sentences,
                           cursorColor: Theme.of(context).primaryColor,
                           decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Theme.of(context).colorScheme.onPrimary,
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 20),
-                            prefixIcon: const Icon(Icons.search),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: hintColor,
+                            ),
                             hintText: 'Chercher dans la bible',
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
-                              color: const Color(0xFF223159).withOpacity(.7),
+                              color: hintColor,
                             ),
                             border: OutlineInputBorder(
                               borderRadius:
@@ -166,10 +176,11 @@ class CustomDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
       child: Divider(
         thickness: 1,
-        color: Color(0xFFE3E6E8),
+
+        // color: Color(0xFFE3E6E8),
       ),
     );
   }
@@ -187,12 +198,13 @@ class BottomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final contentColor = Theme.of(context).colorScheme.secondary;
     return Container(
       padding: const EdgeInsets.all(12.0),
       margin: const EdgeInsets.only(bottom: 15.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF202040).withOpacity(0.08),
@@ -220,7 +232,7 @@ class BottomContainer extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12.sp,
-                      color: const Color(0xFF101520),
+                      color: contentColor,
                     ),
                   ),
                   Text(
@@ -228,16 +240,16 @@ class BottomContainer extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: const Color(0xFF24282E),
+                      color: contentColor,
                       fontSize: 12.sp,
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
-              color: Color(0xFF24282E),
+              color: contentColor,
               size: 18,
             ),
           ],

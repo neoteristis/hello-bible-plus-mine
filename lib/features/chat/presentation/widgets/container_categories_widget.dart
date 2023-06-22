@@ -15,35 +15,8 @@ class ContainerCategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(
-          // top: 20,
-          // left: 20.0,
-          // bottom: 20,
-          ),
-      child: Center(
-        child: CategoriesWidget(),
-      ),
-      // child: Column(
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   // mainAxisAlignment: MainAxisAlignment.center,
-      //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   children: [
-      //     // LastHistoricWidget(),
-      //     Expanded(child: CategoriesWidget()),
-      //     // TextButton(
-      //     //     onPressed: () {
-      //     //       getIt<DbService>().deleteToken();
-      //     //       getIt<DbService>().deleteUser();
-      //     //     },
-      //     //     child: Text('deconnexion')),
-      //     // TextButton(
-      //     //     onPressed: () {
-      //     //       context.go(RouteName.subscribe);
-      //     //     },
-      //     //     child: Text('subscribe'))
-      //   ],
-      // ),
+    return const Center(
+      child: CategoriesWidget(),
     );
   }
 }

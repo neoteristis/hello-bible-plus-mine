@@ -7,6 +7,7 @@ import 'package:gpt/core/theme/theme.dart';
 import 'core/bloc/obscure_text/obscure_text_cubit.dart';
 import 'core/routes/route_name.dart';
 import 'core/routes/router.dart';
+import 'core/theme/bloc/theme_bloc.dart';
 import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
@@ -24,6 +25,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => getIt<ThemeBloc>()..add(ThemeStarted(context)),
+        ),
         BlocProvider(
           create: (context) => getIt<ChatBloc>(),
         ),
@@ -53,24 +57,28 @@ class App extends StatelessWidget {
         ),
       ],
       child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          return BlocBuilder<AuthBloc, AuthState>(
-            buildWhen: (previous, current) => previous.route != current.route,
-            builder: (context, authState) {
-              final route = authState.route;
+        buildWhen: (previous, current) => previous.route != current.route,
+        builder: (context, authState) {
+          final route = authState.route;
 
-              // const route = RouteName.login;
-              return ScreenUtilInit(
-                designSize: const Size(375, 812),
-                minTextAdapt: true,
-                splitScreenMode: true,
+          // const route = RouteName.login;
+          return ScreenUtilInit(
+            designSize: const Size(375, 812),
+            minTextAdapt: true,
+            splitScreenMode: true,
 
-                builder: (context, child) {
+            builder: (context, child) {
+              return BlocBuilder<ThemeBloc, ThemeState>(
+                buildWhen: (previous, current) =>
+                    previous.themeMode != current.themeMode,
+                builder: (context, state) {
                   return MaterialApp.router(
                     title: 'hello bible +',
-                    theme: theme(null),
+                    theme: light,
                     darkTheme: dark,
+
                     debugShowCheckedModeBanner: false,
+                    themeMode: state.themeMode,
                     // home: const ChatPage(),
                     // home: const RegistrationPage(),
                     routeInformationParser:
@@ -80,20 +88,20 @@ class App extends StatelessWidget {
                         routers[route]?.routeInformationProvider,
                   );
                 },
-                // child: MaterialApp.router(
-                //   title: 'hello bible +',
-                //   theme: state.theme ?? theme(null),
-                //   debugShowCheckedModeBanner: false,
-                //   // home: const ChatPage(),
-                //   // home: const RegistrationPage(),
-                //   routeInformationParser:
-                //       routers[route]?.routeInformationParser,
-                //   routerDelegate: routers[route]?.routerDelegate,
-                //   routeInformationProvider:
-                //       routers[route]?.routeInformationProvider,
-                // ),
               );
             },
+            // child: MaterialApp.router(
+            //   title: 'hello bible +',
+            //   theme: state.theme ?? theme(null),
+            //   debugShowCheckedModeBanner: false,
+            //   // home: const ChatPage(),
+            //   // home: const RegistrationPage(),
+            //   routeInformationParser:
+            //       routers[route]?.routeInformationParser,
+            //   routerDelegate: routers[route]?.routerDelegate,
+            //   routeInformationProvider:
+            //       routers[route]?.routeInformationProvider,
+            // ),
           );
         },
       ),

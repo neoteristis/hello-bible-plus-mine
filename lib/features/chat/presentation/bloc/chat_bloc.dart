@@ -15,7 +15,6 @@ import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/sse/sse.dart';
-import '../../../../core/theme/theme.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/usecases.dart';
@@ -85,7 +84,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(
           state.copyWith(
             conversation: conversation,
-            theme: theme(conversation.category?.colorTheme),
+            // theme: theme(conversation.category?.colorTheme),
             conversationStatus: Status.loaded,
           ),
         );
@@ -138,7 +137,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(
       state.copyWith(
         conversation: conversation,
-        theme: theme(conversation.category?.colorTheme),
+        // theme: theme(conversation.category?.colorTheme),
         conversationStatus: Status.loaded,
       ),
     );
@@ -328,7 +327,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(
           state.copyWith(
             conversation: conversation,
-            theme: theme(event.category.colorTheme),
+            // theme: theme(event.category.colorTheme),
             conversationStatus: Status.loaded,
             //TODO check this
             messages: [],

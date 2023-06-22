@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/helper/unfocus_keyboard.dart';
+import '../../../../../core/theme/theme.dart';
 import '../../bloc/chat_bloc.dart';
 
 class CustomBottomWidget extends StatefulWidget {
@@ -30,6 +31,10 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final hintColor = Theme.of(context)
+        .colorScheme
+        .onBackground
+        .withOpacity(isLight(context) ? 1 : .7);
     return BlocSelector<ChatBloc, ChatState, FocusNode>(
       selector: (state) {
         return state.focusNode!;
@@ -49,12 +54,12 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                 cursorColor: Theme.of(context).primaryColor,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(context).colorScheme.onPrimary,
                   contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
                   hintText: 'Ecrivez votre message',
                   hintStyle: TextStyle(
                     fontSize: 14.sp,
-                    color: const Color(0xFF223159).withOpacity(.7),
+                    color: hintColor,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -94,7 +99,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                       replacement: const SizedBox.shrink(),
                       child: Icon(
                         Icons.send_rounded,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         size: 16.w,
                       ),
                     );

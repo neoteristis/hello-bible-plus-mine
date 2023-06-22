@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/chat_bloc.dart';
-import 'custom_bottom_widget.dart';
 
 class EmptyStateWidget extends StatefulWidget {
   const EmptyStateWidget({super.key});
@@ -63,12 +62,10 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> {
                   softWrap: false,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
-                    color: Color(
-                      0xFF111827,
-                    ),
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
               ),

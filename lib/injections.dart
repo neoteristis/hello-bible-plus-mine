@@ -28,6 +28,7 @@ import 'core/db_services/db_services.dart';
 import 'core/dio_interceptors/interceptors.dart';
 import 'core/helper/log.dart';
 import 'core/network/network_info.dart';
+import 'core/theme/bloc/theme_bloc.dart';
 import 'features/chat/data/datasources/chat_local_datasources.dart';
 import 'features/chat/data/datasources/chat_remote_datasources.dart';
 import 'features/chat/data/repositories/chat_repository_imp.dart';
@@ -284,6 +285,12 @@ void bloc() {
       signInWithApple: getIt(),
       signInWithGoogle: getIt(),
       signInWithFacebook: getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => ThemeBloc(
+      sharedPreferences: getIt(),
     ),
   );
 }

@@ -90,8 +90,12 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
+        final isLight = Theme.of(context).brightness == Brightness.dark;
+        final backGroundColor = isLight
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Theme.of(context).colorScheme.background;
         return Scaffold(
-          backgroundColor: const Color(0xFFF3F5F7),
+          backgroundColor: backGroundColor,
           key: context.read<ChatBloc>().scaffoldKey,
           appBar: const CustomAppBar(),
           endDrawer: const CustomDrawer(),

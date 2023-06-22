@@ -73,6 +73,7 @@ class CustomBubble extends StatelessWidget {
             offset: const Offset(0, 4), // offset in x and y direction
           ),
         ],
+        border: Border.all(color: Color(0xFF232628), width: 1),
         color: color,
         borderRadius: borderRadius,
       ),

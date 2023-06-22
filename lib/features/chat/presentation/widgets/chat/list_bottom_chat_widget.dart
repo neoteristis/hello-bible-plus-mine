@@ -25,8 +25,10 @@ class ListBottomChatWidget extends StatelessWidget {
                   // const BotAvatar(),
                   Expanded(
                     child: TypingIndicator(
+                      bubbleColor: Colors.transparent,
                       showIndicator: true,
-                      flashingCircleDarkColor: Theme.of(context).primaryColor,
+                      flashingCircleDarkColor:
+                          Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ],
@@ -45,11 +47,12 @@ class ListBottomChatWidget extends StatelessWidget {
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * .90),
                     child: CustomBubble(
+                        color: Theme.of(context).colorScheme.onPrimary,
                         nip: BubbleNip.leftBottom,
                         message: Text(
                           state.incoming ?? '',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Theme.of(context).colorScheme.secondary,
                             fontSize: 13.sp,
                             height: 1.4,
                             fontWeight: FontWeight.w400,

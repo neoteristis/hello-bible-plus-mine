@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import '../../../../core/routes/route_name.dart';
+import '../../../../core/theme/bloc/theme_bloc.dart';
 import '../../../../core/widgets/custom_alert_dialog.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/custom_app_bar.dart';
@@ -17,6 +18,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final drawerTiles = getDrawerTiles(context);
     return Scaffold(
       appBar: const CustomAppBar(
         elevation: 0.2,
@@ -28,7 +30,9 @@ class CustomDrawer extends StatelessWidget {
         children: [
           Container(
             height: double.infinity,
-            decoration: const BoxDecoration(color: Colors.white),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
             width: MediaQuery.of(context).size.width * 0.85,
             child: Column(
               children: [
@@ -96,23 +100,6 @@ class CustomDrawer extends StatelessWidget {
                                 context.go(RouteName.home);
                               },
                             ),
-                            // GestureDetector(
-                            //     onTap: () {
-                            //       context.pop();
-                            //     },
-                            //     child: const Text('annuler')),
-                            // const SizedBox(
-                            //   width: 5,
-                            // ),
-                            // GestureDetector(
-                            //   child: const Text('ok'),
-                            //   onTap: () {
-                            //     context
-                            //         .read<AuthBloc>()
-                            //         .add(AuthLogoutSubmitted());
-                            //     // ..go(RouteName.registration);
-                            //   },
-                            // ),
                           ],
                         ),
                       );
@@ -159,7 +146,7 @@ class DrawerTile extends StatelessWidget {
             label: Text(
               label,
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.w600,
                 fontSize: 14.sp,
               ),
@@ -173,84 +160,107 @@ class DrawerTile extends StatelessWidget {
   }
 }
 
-final drawerTiles = [
-  const DrawerTile(
-    label: 'Mon Profil',
-    icon: Icon(
-      Icons.person,
-      size: 20,
-      color: Colors.black,
-    ),
-  ),
-  const DrawerTile(
-    label: 'Nous contacter',
-    icon: Icon(
-      Icons.mail,
-      size: 20,
-      color: Colors.black,
-    ),
-  ),
-  const DrawerTile(
-    label: 'Choisir abonnement',
-    icon: Icon(
-      Icons.favorite,
-      size: 20,
-      color: Colors.black,
-    ),
-  ),
-  const DrawerTile(
-    label: 'Gérer les notifications',
-    icon: Icon(
-      Icons.notifications,
-      size: 20,
-      color: Colors.black,
-    ),
-  ),
-  DrawerTile(
-    label: 'Mode Sombre',
-    icon: const Icon(
-      Icons.contrast,
-      size: 20,
-      color: Colors.black,
-    ),
-    trailing: Transform.scale(
-      scale: 0.8,
-      child: CupertinoSwitch(
-        value: true,
-        onChanged: (_) {},
+List<Widget> getDrawerTiles(BuildContext context) => [
+      const DrawerTile(
+        label: 'Mon Profil',
+        icon: IconDrawerTiles(
+          Icons.person,
+        ),
       ),
-    ),
-  ),
-  const DrawerTile(
-    label: 'Aide',
-    icon: Icon(
-      Icons.help,
+      const DrawerTile(
+        label: 'Nous contacter',
+        icon: IconDrawerTiles(
+          Icons.mail,
+        ),
+      ),
+      const DrawerTile(
+        label: 'Choisir abonnement',
+        icon: IconDrawerTiles(
+          Icons.favorite,
+        ),
+      ),
+      const DrawerTile(
+        label: 'Gérer les notifications',
+        icon: IconDrawerTiles(
+          Icons.notifications,
+        ),
+      ),
+      DrawerTile(
+        label: 'Mode Sombre',
+        icon: const IconDrawerTiles(
+          Icons.contrast,
+        ),
+        trailing: Transform.scale(
+          scale: 0.8,
+          child: BlocBuilder<ThemeBloc, ThemeState>(
+            buildWhen: (previous, current) =>
+                previous.themeMode != current.themeMode,
+            builder: (context, state) {
+              bool? value;
+              switch (state.themeMode) {
+                case ThemeMode.dark:
+                  value = true;
+                  break;
+                case ThemeMode.light:
+                  value = false;
+                  break;
+                default:
+                  if (Theme.of(context).brightness == Brightness.dark) {
+                    value = false;
+                  } else {
+                    value = true;
+                  }
+              }
+              return CupertinoSwitch(
+                value: value,
+                onChanged: (_) {
+                  context.read<ThemeBloc>().add(ThemeChanged(context));
+                },
+              );
+            },
+          ),
+        ),
+      ),
+      const DrawerTile(
+        label: 'Aide',
+        icon: IconDrawerTiles(
+          Icons.help,
+        ),
+      ),
+      const DrawerTile(
+        label: 'A propos',
+        icon: IconDrawerTiles(
+          Icons.info,
+        ),
+      ),
+      const DrawerTile(
+        label: 'Lisez notre CGU',
+        icon: IconDrawerTiles(
+          Icons.list_alt,
+        ),
+      ),
+      const DrawerTile(
+        label: 'Notez l\'application',
+        icon: IconDrawerTiles(
+          Icons.star,
+        ),
+      ),
+    ];
+
+class IconDrawerTiles extends StatelessWidget {
+  const IconDrawerTiles(
+    this.icon, {
+    super.key,
+  });
+
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      icon,
       size: 20,
-      color: Colors.black,
-    ),
-  ),
-  const DrawerTile(
-    label: 'A propos',
-    icon: Icon(
-      Icons.info,
-      size: 20,
-      color: Colors.black,
-    ),
-  ),
-  const DrawerTile(
-    label: 'Lisez notre CGU',
-    icon: Icon(
-      Icons.list_alt,
-      size: 20,
-      color: Colors.black,
-    ),
-  ),
-  const DrawerTile(
-    label: 'Notez l\'application',
-    icon: Icon(
-      Icons.star,
-      size: 20,
-      color: Colors.black,
-    ),
-  ),
-];
+      color: Theme.of(context).colorScheme.tertiary,
+    );
+  }
+}

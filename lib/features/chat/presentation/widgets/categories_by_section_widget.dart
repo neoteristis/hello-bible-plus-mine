@@ -30,7 +30,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
             const SizedBox(
               width: 20,
             ),
-            iconLeadings[index],
+            iconLeadings(context)[index],
             const SizedBox(
               width: 3,
             ),
@@ -39,7 +39,8 @@ class CategoriesBySectionWidget extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 14.sp,
-                color: const Color(0xFF223159).withOpacity(.9),
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(.9),
               ),
             ),
           ],
@@ -124,19 +125,22 @@ class CategoriesBySectionWidget extends StatelessWidget {
 
 final double iconSize = 16;
 
-List<Widget> iconLeadings = [
-  Icon(
-    Icons.square_rounded,
-    size: iconSize,
-  ),
-  Icon(
-    Icons.circle,
-    size: iconSize,
-  ),
-  Transform.rotate(
-      angle: math.pi / 4,
-      child: Icon(
+List<Widget> iconLeadings(BuildContext context) => [
+      Icon(
         Icons.square_rounded,
         size: iconSize,
-      )),
-];
+        color: Theme.of(context).primaryColor,
+      ),
+      Icon(
+        Icons.circle,
+        size: iconSize,
+        color: Theme.of(context).primaryColor,
+      ),
+      Transform.rotate(
+          angle: math.pi / 4,
+          child: Icon(
+            Icons.square_rounded,
+            size: iconSize,
+            color: Theme.of(context).primaryColor,
+          )),
+    ];

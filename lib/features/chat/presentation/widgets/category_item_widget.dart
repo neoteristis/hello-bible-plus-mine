@@ -21,12 +21,13 @@ class CategoryItemWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final logo = category?.logo;
+    final contentColor = Theme.of(context).colorScheme.secondary;
     return Container(
       width: 100.sp,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF202040).withOpacity(0.08),
@@ -57,24 +58,18 @@ class CategoryItemWidget extends StatelessWidget {
                   ? SvgPicture.network(
                       logo,
                       width: 25.sp,
-                      color: const Color(
-                        0xFF101520,
-                      ),
+                      color: contentColor,
                     )
                   : Image.network(
                       logo,
                       width: 25.sp,
-                      color: const Color(
-                        0xFF101520,
-                      ),
+                      color: contentColor,
                     ),
             if (logo == null)
               SvgPicture.asset(
                 'assets/icons/ichthys.svg',
                 width: 25.sp,
-                color: const Color(
-                  0xFF101520,
-                ),
+                color: contentColor,
               ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -87,9 +82,7 @@ class CategoryItemWidget extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 10.sp,
-                  color: const Color(
-                    0xFF101520,
-                  ),
+                  color: contentColor,
                 ),
               ),
             ),
@@ -106,9 +99,7 @@ class CategoryItemWidget extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 10.sp,
-                    color: const Color(
-                      0xFF101520,
-                    ),
+                    color: contentColor,
                   ),
                 ),
               ),

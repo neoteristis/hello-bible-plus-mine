@@ -28,24 +28,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           previous.conversation != current.conversation,
       builder: (context, state) {
         return AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
           foregroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           elevation: elevation ?? 11,
           titleSpacing: 0,
           shadowColor: Colors.black.withOpacity(0.4),
-          // elevation: 0,
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.vertical(
-          //     bottom: Radius.elliptical(MediaQuery.of(context).size.width, 56.0),
-          //   ),
-          // ),
-          // flexibleSpace: FlexibleSpaceBar(
-          //   background: Image.asset(
-          //     'assets/images/bible.webp',
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
           leading: state.conversation != null
               ? IconButton(
                   constraints: const BoxConstraints(),
@@ -59,7 +47,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 )
               : null,
-          iconTheme: const IconThemeData(color: Colors.black),
+          iconTheme:
+              IconThemeData(color: Theme.of(context).colorScheme.tertiary),
           automaticallyImplyLeading: false,
           centerTitle: false,
           title: BlocBuilder<ChatBloc, ChatState>(
@@ -75,36 +64,63 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 );
               }
-              return ListTile(
-                minVerticalPadding: 40,
-                // visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
-                contentPadding: EdgeInsets.zero,
-                leading: const Logo(
-                  size: Size(22, 22),
-                ),
-                title: Text(
-                  state.conversation!.category?.name ?? 'chargement ...',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
-                    color: Color(
-                      0xFF111827,
-                    ),
+              return Row(
+                // minVerticalPadding: 40,
+                // contentPadding: EdgeInsets.zero,
+                children: [
+                  const Logo(
+                    size: Size(22, 22),
                   ),
-                ),
-                subtitle: Text(
-                  state.conversation!.category?.welcomePhrase ?? '',
-                  softWrap: false,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 10.sp,
-                    color: Color(
-                      0xFF111827,
-                    ),
+                  const SizedBox(
+                    width: 15,
                   ),
-                ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.conversation!.category?.name ?? 'chargement ...',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                      Text(
+                        state.conversation!.category?.welcomePhrase ?? '',
+                        softWrap: false,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 10.sp,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+                // leading: const Logo(
+                //   size: Size(22, 22),
+                // ),
+                // title: Text(
+                //   state.conversation!.category?.name ?? 'chargement ...',
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w500,
+                //     fontSize: 14.sp,
+                //     color: Theme.of(context).colorScheme.tertiary,
+                //   ),
+                // ),
+                // subtitle: Text(
+                //   state.conversation!.category?.welcomePhrase ?? '',
+                //   softWrap: false,
+                //   maxLines: 1,
+                //   overflow: TextOverflow.ellipsis,
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.w400,
+                //     fontSize: 10.sp,
+                //     color: Theme.of(context).colorScheme.tertiary,
+                //   ),
+                // ),
               );
             },
           ),
@@ -144,7 +160,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             .currentState!
                             .isEndDrawerOpen
                         ? Theme.of(context).primaryColor
-                        : Colors.black,
+                        : Theme.of(context).colorScheme.tertiary,
                     BlendMode.srcIn,
                   ),
                 ),

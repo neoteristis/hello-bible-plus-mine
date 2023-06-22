@@ -15,6 +15,10 @@ Widget bubbleBuilder(
     BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         ScreenUtil.init(context, designSize: const Size(360, 690));
+        final senderContainer = Theme.of(context).primaryColor;
+        final receiverContainer = Theme.of(context).colorScheme.onPrimary;
+        final receiverContent = Theme.of(context).colorScheme.secondary;
+        final senderContent = Theme.of(context).colorScheme.onPrimary;
         return Column(
           crossAxisAlignment: state.sender!.id == message.author.id
               ? CrossAxisAlignment.end
@@ -29,16 +33,21 @@ Widget bubbleBuilder(
                   DateFormat('hh:mm a').format(
                     DateTime.fromMicrosecondsSinceEpoch(message.createdAt,
                             isUtc: false)
+                        // .toString(),
                         .toLocal(),
                   ),
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 8.sp,
-                    color: Color(0xFF101520),
+                    color: receiverContent,
                   ),
                 ),
                 if (state.sender!.id == message.author.id)
-                  Icon(Icons.check, size: 12.sp, color: Color(0xFF101520)),
+                  Icon(
+                    Icons.check,
+                    size: 12.sp,
+                    color: receiverContent,
+                  ),
               ],
             ),
             const SizedBox(
@@ -48,8 +57,8 @@ Widget bubbleBuilder(
               padding: const EdgeInsets.only(bottom: 5.0),
               child: CustomBubble(
                 color: state.sender!.id == message.author.id
-                    ? Theme.of(context).primaryColor
-                    : Colors.white,
+                    ? senderContainer
+                    : receiverContainer,
                 nip: state.sender!.id != message.author.id
                     ? BubbleNip.leftBottom
                     : BubbleNip.rightBottom,
@@ -59,8 +68,8 @@ Widget bubbleBuilder(
                         // textScaleFactor: 1.2,
                         style: TextStyle(
                           color: state.sender!.id != message.author.id
-                              ? Colors.black
-                              : Colors.white,
+                              ? receiverContent
+                              : senderContent,
                           fontSize: 13.sp,
                           height: 1.4,
                           fontWeight: FontWeight.w400,
@@ -71,26 +80,5 @@ Widget bubbleBuilder(
             ),
           ],
         );
-        // return Bubble(
-        //   radius: const Radius.circular(20.0),
-        //   color: Colors.white,
-        //   margin: nextMessageInGroup
-        //       ? const BubbleEdges.symmetric(horizontal: 6)
-        //       : null,
-        //   nip: nextMessageInGroup
-        //       ? BubbleNip.no
-        //       : state.sender!.id != message.author.id
-        //           ? BubbleNip.leftBottom
-        //           : BubbleNip.rightBottom,
-        //   child: message.type == types.MessageType.text
-        //       ? Text(
-        //           message.text,
-        //           // textAlign: TextAlign.justify,
-        //           style: const TextStyle(
-        //             color: Colors.black,
-        //           ),
-        //         )
-        //       : child,
-        // );
       },
     );
