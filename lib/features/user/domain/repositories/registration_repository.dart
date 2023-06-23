@@ -15,4 +15,5 @@ abstract class RegistrationRepository {
   Future<Either<Failure, User>> signInWithApple();
   Future<Either<Failure, User>> signInWithGoogle();
   Future<Either<Failure, User>> signInWithFacebook();
+  Future<Either<Failure, User>> getUser();
 }

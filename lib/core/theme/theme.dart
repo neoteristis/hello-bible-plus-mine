@@ -14,6 +14,7 @@ ThemeData light = ThemeData(
   iconTheme: const IconThemeData(color: primaryColor),
   inputDecorationTheme: InputDecorationTheme(
     prefixIconColor: const Color(0xFF223159),
+    suffixIconColor: const Color(0xFF223159),
     border: OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.circular(20),
@@ -132,12 +133,16 @@ ThemeData dark = ThemeData(
       fontSize: 14,
       color: Colors.white,
     ),
+    headlineMedium: const TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 31,
+    ),
     titleMedium: TextStyle(
       color: Colors.white,
     ),
   ),
   colorScheme: ColorScheme(
-    brightness: Brightness.light,
+    brightness: Brightness.dark,
     primary: Colors.white,
     onPrimary: Color(0xFF0D0D0D),
     secondary: Color(0xFFEFEFEF),

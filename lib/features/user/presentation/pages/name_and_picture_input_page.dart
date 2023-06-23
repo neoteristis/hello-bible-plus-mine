@@ -159,6 +159,9 @@ class NameAndPictureInputPage extends StatelessWidget {
                     textCapitalization: TextCapitalization.words,
                     onFieldSubmitted: (_) => onSumbit(context),
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.onBackground,
+                      hintStyle: TextStyle(color: Color(0xFF223159)),
                       hintText: 'Nom et Prénom',
                       errorText: state.name.isNotValid
                           ? state.name.displayError?.text

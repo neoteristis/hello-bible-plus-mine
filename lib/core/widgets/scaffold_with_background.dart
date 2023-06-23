@@ -7,15 +7,24 @@ class ScaffoldWithBackground extends StatelessWidget {
     super.key,
     required this.body,
     this.onPop,
+    this.title = 'Retour',
+    this.addBackgroundImage = true,
+    this.actions,
+    this.persistentFooterButtons,
   });
 
   final Widget body;
   final VoidCallback? onPop;
+  final String? title;
+  final bool? addBackgroundImage;
+  final List<Widget>? actions;
 
+  final List<Widget>? persistentFooterButtons;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        persistentFooterButtons: persistentFooterButtons,
         extendBody: true,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         extendBodyBehindAppBar: true,
@@ -37,9 +46,9 @@ class ScaffoldWithBackground extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                   Text(
-                    'Retour',
+                    title ?? 'Retour',
                     style: TextStyle(
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       fontSize: 17,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
@@ -48,14 +57,16 @@ class ScaffoldWithBackground extends StatelessWidget {
               ),
             ),
           ),
+          actions: actions,
         ),
         body: Stack(
           children: [
-            const Positioned(
-              bottom: 10,
-              left: 10,
-              child: BackgroundImageFull(),
-            ),
+            if (addBackgroundImage ?? true)
+              const Positioned(
+                bottom: 10,
+                left: 10,
+                child: BackgroundImageFull(),
+              ),
             body,
           ],
         ),

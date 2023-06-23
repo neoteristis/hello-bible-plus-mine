@@ -27,7 +27,8 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLight = Theme.of(context).brightness == Brightness.dark;
+    final isLight =
+        Theme.of(context).colorScheme.brightness == Brightness.light;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +45,7 @@ class CustomTextField extends StatelessWidget {
           height: 8,
         ),
         TextFormField(
+          cursorColor: Colors.black,
           focusNode: focusNode,
           obscureText: obscureText ?? false,
           controller: controller,
@@ -54,11 +56,13 @@ class CustomTextField extends StatelessWidget {
           onChanged: onChanged,
           onTapOutside: (event) => unfocusKeyboard(),
           onFieldSubmitted: onFieldSubmitted,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
-            color: Color(0xFF223159).withOpacity(.9),
-          ),
+          style: TextStyle(color: Color(0xFF000000)),
+
+          // style: TextStyle(
+          //   fontWeight: FontWeight.w500,
+          //   fontSize: 14,
+          //   color: Color(0xFF223159).withOpacity(.9),
+          // ),
         ),
       ],
     );

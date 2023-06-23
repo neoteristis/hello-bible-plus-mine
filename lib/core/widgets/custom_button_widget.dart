@@ -30,6 +30,8 @@ abstract class CustomButtonWidget {
     double? height,
     required String label,
     double? borderRadius,
+    Color? labelColor,
+    Color? color,
   });
 }
 
@@ -44,6 +46,8 @@ class WhiteRoundedLoadingButton implements CustomButtonWidget {
     double? height,
     required String label,
     double? borderRadius,
+    Color? labelColor,
+    Color? color,
   }) {
     return RoundedLoadingButton(
       controller: controller ?? RoundedLoadingButtonController(),
@@ -75,10 +79,12 @@ class BlackRoundedLoadingButton implements CustomButtonWidget {
     double? height,
     required String label,
     double? borderRadius,
+    Color? labelColor,
+    Color? color,
   }) {
     return RoundedLoadingButton(
       controller: controller ?? RoundedLoadingButtonController(),
-      color: Theme.of(context).colorScheme.onSurface,
+      color: color ?? Theme.of(context).colorScheme.onSurface,
       width: width ?? MediaQuery.of(context).size.width * .85,
       height: height ?? 50,
       animateOnTap: animateOnTap ?? false,
@@ -87,7 +93,7 @@ class BlackRoundedLoadingButton implements CustomButtonWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: labelColor ?? Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.w600,
             ),
       ),
@@ -119,6 +125,8 @@ class BlueRoundedLoadingButton implements CustomButtonWidget {
     double? height,
     required String label,
     double? borderRadius,
+    Color? labelColor,
+    Color? color,
   }) {
     return RoundedLoadingButton(
       controller: controller ?? RoundedLoadingButtonController(),
@@ -147,6 +155,8 @@ class OrangeRoundedLoadingButton implements CustomButtonWidget {
     double? height,
     required String label,
     double? borderRadius,
+    Color? labelColor,
+    Color? color,
   }) {
     return RoundedLoadingButton(
       controller: controller ?? RoundedLoadingButtonController(),

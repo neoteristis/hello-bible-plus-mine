@@ -29,6 +29,8 @@ class ApiConstants {
     return '$route/users/$uid';
   }
 
+  static String me = '$route/me';
+
   static const String categoriesBySection = '$route/categories_by_section';
   static String historical(PHistorical params) {
     final String api = ApiConstants.conversation();

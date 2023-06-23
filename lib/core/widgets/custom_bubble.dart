@@ -62,6 +62,8 @@ class CustomBubble extends StatelessWidget {
           ),
         );
     }
+    final isLight =
+        Theme.of(context).colorScheme.brightness == Brightness.light;
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -73,7 +75,8 @@ class CustomBubble extends StatelessWidget {
             offset: const Offset(0, 4), // offset in x and y direction
           ),
         ],
-        border: Border.all(color: Color(0xFF232628), width: 1),
+        border:
+            !isLight ? Border.all(color: Color(0xFF232628), width: 1) : null,
         color: color,
         borderRadius: borderRadius,
       ),

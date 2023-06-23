@@ -16,8 +16,8 @@ class ListBottomChatWidget extends StatelessWidget {
       builder: (context, state) {
         switch (state.messageStatus) {
           case Status.loading:
-            return Padding(
-              padding: const EdgeInsets.only(left: 15.0, bottom: 0),
+            return const Padding(
+              padding: EdgeInsets.only(left: 15.0, bottom: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,10 +25,8 @@ class ListBottomChatWidget extends StatelessWidget {
                   // const BotAvatar(),
                   Expanded(
                     child: TypingIndicator(
-                      bubbleColor: Colors.transparent,
                       showIndicator: true,
-                      flashingCircleDarkColor:
-                          Theme.of(context).colorScheme.onPrimary,
+                      flashingCircleDarkColor: Colors.black,
                     ),
                   ),
                 ],

@@ -217,6 +217,7 @@ class RegistrationRepositoryImp implements RegistrationRepository {
             email: account?.email,
             lastName: account?.displayName,
             firstName: account?.displayName,
+            photo: account?.photoUrl,
           ),
         );
         final token = res.token;
@@ -277,6 +278,25 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         } else {
           return const Left(ServerFailure());
         }
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    }
+    return const Left(NoConnexionFailure());
+  }
+
+  @override
+  Future<Either<Failure, User>> getUser() async {
+    if (await network.isConnected) {
+      try {
+        final user = await remote.getUser();
+        if (user != null) {
+          await local.saveUser(user);
+        } else {
+          return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
+        }
+
+        return Right(user);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }

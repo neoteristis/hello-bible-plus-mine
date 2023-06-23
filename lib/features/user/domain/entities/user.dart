@@ -12,6 +12,8 @@ class User extends Equatable {
   final String? deviceToken;
   final String? password;
   final String? photo;
+  final String? phone;
+  final DateTime? createdAt;
 
   const User({
     this.idString,
@@ -25,6 +27,8 @@ class User extends Equatable {
     this.password,
     this.username,
     this.photo,
+    this.phone,
+    this.createdAt,
   });
   @override
   List<Object?> get props => [
@@ -39,18 +43,22 @@ class User extends Equatable {
         password,
         photo,
         username,
+        phone,
+        createdAt,
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      idString: json['_id'],
-      lastName: json['name'],
-      firstName: json['firstname'],
-      email: json['email'],
-      country: json['country'],
-      photo: json['photo'],
-      username: json['username'],
-    );
+        idString: json['_id'],
+        lastName: json['name'],
+        firstName: json['firstname'],
+        email: json['email'],
+        country: json['country'],
+        photo: json['photo'],
+        username: json['username'],
+        createdAt: json['updatedAt'] != null
+            ? DateTime.parse(json['updatedAt']).toLocal()
+            : null);
   }
 
   Map<String, dynamic> toJson() {

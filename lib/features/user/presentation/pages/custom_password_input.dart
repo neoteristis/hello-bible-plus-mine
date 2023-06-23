@@ -33,6 +33,8 @@ class CustomPasswordInput extends StatelessWidget {
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: '• • • • • • • • • • • • • • • •',
+            filled: true,
+            fillColor: const Color(0xFFF3F5F7),
             hintStyle: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 14,
@@ -48,9 +50,13 @@ class CustomPasswordInput extends StatelessWidget {
               icon: IconButton(
                 icon: Visibility(
                   visible: state.isObscurePsd,
-                  replacement: const Icon(Icons.visibility_off_outlined),
+                  replacement: const Icon(
+                    Icons.visibility_off_outlined,
+                    color: Colors.grey,
+                  ),
                   child: const Icon(
                     Icons.remove_red_eye_outlined,
+                    color: Colors.grey,
                   ),
                 ),
                 onPressed: () =>

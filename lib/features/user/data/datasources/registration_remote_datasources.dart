@@ -18,6 +18,7 @@ abstract class RegistrationRemoteDatasources {
   Future<Token> refreshToken(String refresh);
   Future<UserResponse> socialConnect(User user);
   Future sendFirebaseToken();
+  Future<User> getUser();
 }
 
 class RegistrationRemoteDatasourcesImp
@@ -68,7 +69,6 @@ class RegistrationRemoteDatasourcesImp
       final body = user.toJson_2();
       final photo = user.photo;
       if (photo != null) {
-        print(photo);
         body['profile'] = await MultipartFile.fromFile(
           photo,
         );
@@ -141,8 +141,17 @@ class RegistrationRemoteDatasourcesImp
   @override
   Future<UserResponse> socialConnect(User user) async {
     try {
+      final body = user.toJson();
+      final photo = user.photo;
+      if (photo != null) {
+        body['profile'] = await MultipartFile.fromFile(
+          photo,
+        );
+      }
+      final FormData formData = FormData.fromMap(body);
+
       final res =
-          await baseRepo.post(ApiConstants.registration(), body: user.toJson());
+          await baseRepo.post(ApiConstants.registration(), body: formData);
       return UserResponse.fromJson(res.data);
     } on DioError catch (e) {
       // Logger().w(e);
@@ -160,5 +169,22 @@ class RegistrationRemoteDatasourcesImp
   Future sendFirebaseToken() async {
     final token = await FirebaseMessaging.instance.getToken();
     await setToken(token);
+  }
+
+  @override
+  Future<User> getUser() async {
+    try {
+      final res = await baseRepo.get(ApiConstants.me);
+      return User.fromJson(res.data);
+    } on DioError catch (e) {
+      // Logger().w(e);
+
+      final res = e.response;
+      final message = res?.data != null
+          ? MessageResponse.fromJson(res?.data).message
+          : e.toString();
+      // Logger().w(message);
+      throw ServerException(message: message);
+    }
   }
 }

@@ -171,12 +171,15 @@ class CategoriesWidget extends StatelessWidget {
 class CustomDivider extends StatelessWidget {
   const CustomDivider({
     super.key,
+    this.padding,
   });
+
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+    return Padding(
+      padding: padding ?? EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
       child: Divider(
         thickness: 1,
 

@@ -7,6 +7,7 @@ import '../../features/user/presentation/pages/create_password_input_page.dart';
 import '../../features/user/presentation/pages/email_input_page.dart';
 import '../../features/user/presentation/pages/name_and_picture_input_page.dart';
 import '../../features/user/presentation/pages/passwod_input_page.dart';
+import '../../features/user/presentation/pages/profile/profile_page.dart';
 import '../../features/user/presentation/pages/registration_page.dart';
 import '../../features/introduction/presentation/pages/landing_page.dart';
 import '../../splash_screen.dart';
@@ -73,17 +74,22 @@ final _routerForLogged = GoRouter(
   initialLocation: RouteName.home,
   routes: [
     GoRoute(
-        path: RouteName.home,
-        builder: (context, state) => const ChatPage(),
-        routes: [
-          GoRoute(
-            path: 'historical',
-            builder: (context, state) => const HistoricalPage(),
-          ),
-          GoRoute(
-            path: 'subscribe',
-            builder: (context, state) => const SubscriptionPage(),
-          ),
-        ]),
+      path: RouteName.home,
+      builder: (context, state) => const ChatPage(),
+      routes: [
+        GoRoute(
+          path: 'historical',
+          builder: (context, state) => const HistoricalPage(),
+        ),
+        GoRoute(
+          path: 'subscribe',
+          builder: (context, state) => const SubscriptionPage(),
+        ),
+        GoRoute(
+          path: 'profile',
+          builder: (context, state) => const ProfilePage(),
+        ),
+      ],
+    ),
   ],
 );

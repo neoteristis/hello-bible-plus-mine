@@ -44,6 +44,7 @@ import 'features/user/data/repositories/registration_repository_imp.dart';
 import 'features/user/domain/repositories/registration_repository.dart';
 import 'features/user/domain/usecases/usecases.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'objectbox.g.dart';
 
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -218,6 +219,8 @@ void usecase() {
   getIt.registerLazySingleton(() => SignInWithFacebookUsecase(getIt()));
 
   getIt.registerLazySingleton(() => GetConversationByIdUsecase(getIt()));
+
+  getIt.registerLazySingleton(() => GetProfileUsecase(getIt()));
 }
 
 void bloc() {
@@ -291,6 +294,12 @@ void bloc() {
   getIt.registerFactory(
     () => ThemeBloc(
       sharedPreferences: getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => ProfileBloc(
+      getProfile: getIt(),
     ),
   );
 }

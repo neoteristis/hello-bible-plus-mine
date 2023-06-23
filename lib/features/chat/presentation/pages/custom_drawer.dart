@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:gpt/features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import '../../../../core/routes/route_name.dart';
 import '../../../../core/theme/bloc/theme_bloc.dart';
 import '../../../../core/widgets/custom_alert_dialog.dart';
@@ -122,11 +123,13 @@ class DrawerTile extends StatelessWidget {
     required this.label,
     required this.icon,
     this.trailing,
+    this.onPressed,
   });
 
   final String label;
   final Widget icon;
   final Widget? trailing;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +140,7 @@ class DrawerTile extends StatelessWidget {
             horizontal: 10.0,
           ),
           child: TextButton.icon(
-            onPressed: () {},
+            onPressed: onPressed,
             icon: CircleAvatar(
               backgroundColor: const Color(0xFF4F7CF6).withOpacity(0.08),
               radius: 15,
@@ -148,7 +151,7 @@ class DrawerTile extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.w600,
-                fontSize: 14.sp,
+                fontSize: 14,
               ),
             ),
           ),
@@ -161,11 +164,14 @@ class DrawerTile extends StatelessWidget {
 }
 
 List<Widget> getDrawerTiles(BuildContext context) => [
-      const DrawerTile(
+      DrawerTile(
         label: 'Mon Profil',
-        icon: IconDrawerTiles(
+        icon: const IconDrawerTiles(
           Icons.person,
         ),
+        onPressed: () {
+          context.go(RouteName.profile);
+        },
       ),
       const DrawerTile(
         label: 'Nous contacter',
