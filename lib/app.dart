@@ -12,6 +12,7 @@ import 'features/chat/presentation/bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import 'features/introduction/presentation/bloc/introduction_bloc.dart';
+import 'features/notification/presentation/bloc/notification_bloc.dart';
 import 'features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
@@ -27,7 +28,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<ThemeBloc>()..add(ThemeStarted(context)),
+          create: (context) => getIt<ThemeBloc>()..add(ThemeStarted()),
         ),
         BlocProvider(
           create: (context) => getIt<ChatBloc>(),
@@ -59,6 +60,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<ProfileBloc>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<NotificationBloc>(),
+        ),
       ],
       child: BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) => previous.route != current.route,
@@ -80,11 +84,8 @@ class App extends StatelessWidget {
                     title: 'hello bible +',
                     theme: light,
                     darkTheme: dark,
-
                     debugShowCheckedModeBanner: false,
                     themeMode: state.themeMode,
-                    // home: const ChatPage(),
-                    // home: const RegistrationPage(),
                     routeInformationParser:
                         routers[route]?.routeInformationParser,
                     routerDelegate: routers[route]?.routerDelegate,

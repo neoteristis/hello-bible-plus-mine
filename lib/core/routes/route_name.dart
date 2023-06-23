@@ -14,6 +14,7 @@ class RouteName {
   static const String subscribe = '/subscribe';
   static const String subscription = '/registration/subscription';
   static const String profile = '/profile';
+  static const String manageNotif = '/manageNotif';
 }
 
 enum GoTo {

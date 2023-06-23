@@ -12,6 +12,7 @@ import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:gpt/features/introduction/presentation/bloc/introduction_bloc.dart';
+import 'package:gpt/features/notification/data/repositories/notification_repository_imp.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:gpt/features/user/data/datasources/datasources.dart';
 import 'package:gpt/features/user/presentation/bloc/registration_bloc/registration_bloc.dart';
@@ -35,6 +36,11 @@ import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/usecases.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
+import 'features/notification/data/datasources/notification_remote_datasource.dart';
+import 'features/notification/domain/repositories/notification_repository.dart';
+import 'features/notification/domain/usecases/fetch_notification_values_by_category_usecase.dart';
+import 'features/notification/domain/usecases/usecases.dart';
+import 'features/notification/presentation/bloc/notification_bloc.dart';
 import 'features/subscription/data/datasources/subscription_remote_datasources.dart';
 import 'features/subscription/data/repositories/subscription_repository_imp.dart';
 import 'features/subscription/domain/repositories/subscription_repository.dart';
@@ -146,6 +152,8 @@ void dataSource() {
 
   getIt.registerLazySingleton<SubscriptionRemoteDatasources>(
       () => SubscriptionRemoteDatasourcesImp(getIt()));
+  getIt.registerLazySingleton<NotificationRemoteDatasource>(
+      () => NotificationRemoteDatasourceImp(getIt()));
 }
 
 void repository() {
@@ -169,6 +177,13 @@ void repository() {
       remote: getIt(),
       networkInfo: getIt(),
       registrationLocal: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepositoryImp(
+      networkInfo: getIt(),
+      remote: getIt(),
     ),
   );
 }
@@ -221,6 +236,17 @@ void usecase() {
   getIt.registerLazySingleton(() => GetConversationByIdUsecase(getIt()));
 
   getIt.registerLazySingleton(() => GetProfileUsecase(getIt()));
+
+  getIt.registerLazySingleton(
+    () => FetchNotificationValuesByCatecoryUsecase(
+      getIt(),
+    ),
+  );
+  getIt.registerLazySingleton(
+    () => SwitchNotificationValueUsecase(
+      getIt(),
+    ),
+  );
 }
 
 void bloc() {
@@ -300,6 +326,13 @@ void bloc() {
   getIt.registerFactory(
     () => ProfileBloc(
       getProfile: getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => NotificationBloc(
+      fetchNotifCategory: getIt(),
+      switchNotification: getIt(),
     ),
   );
 }
