@@ -25,7 +25,6 @@ class NotifByCategory extends Equatable {
   }
 
   factory NotifByCategory.fromJson(Map<String, dynamic> json) {
-    print(json['value']);
     return NotifByCategory(
       value: json['value'],
       category: Category.fromJson(json['category']),

@@ -23,7 +23,7 @@ class DateInformation extends StatelessWidget {
             label,
             style: TextStyle(
               color: Theme.of(context).colorScheme.tertiary,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
               fontSize: 14,
             ),
           ),

@@ -8,6 +8,7 @@ import '../../../../core/constants/status.dart';
 import '../../../chat/presentation/bloc/chat_bloc.dart';
 import '../bloc/notification_bloc.dart';
 import '../widgets/category_notif_manage_item.dart';
+import '../widgets/custom_list_tile.dart';
 
 class ManageNotificationsPage extends StatefulWidget {
   const ManageNotificationsPage({super.key});

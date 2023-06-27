@@ -11,6 +11,8 @@ ThemeData light = ThemeData(
   primaryColor:
       // color ??
       primaryColor,
+  dialogBackgroundColor: Colors.white,
+  dialogTheme: DialogTheme(backgroundColor: Colors.white),
   iconTheme: const IconThemeData(color: primaryColor),
   inputDecorationTheme: InputDecorationTheme(
     prefixIconColor: const Color(0xFF223159),
