@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gpt/core/widgets/custom_network_image.dart';
 
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../domain/entities/entities.dart';
@@ -54,17 +55,10 @@ class CategoryItemWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (logo != null)
-              logo.contains('svg')
-                  ? SvgPicture.network(
-                      logo,
-                      width: 25.sp,
-                      color: contentColor,
-                    )
-                  : Image.network(
-                      logo,
-                      width: 25.sp,
-                      color: contentColor,
-                    ),
+              CustomNetworkImage(
+                logo,
+                color: contentColor,
+              ),
             if (logo == null)
               SvgPicture.asset(
                 'assets/icons/ichthys.svg',

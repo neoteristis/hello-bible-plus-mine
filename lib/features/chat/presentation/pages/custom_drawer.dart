@@ -185,11 +185,14 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.favorite,
         ),
       ),
-      const DrawerTile(
+      DrawerTile(
         label: 'Gérer les notifications',
-        icon: IconDrawerTiles(
+        icon: const IconDrawerTiles(
           Icons.notifications,
         ),
+        onPressed: () {
+          context.go(RouteName.manageNotif);
+        },
       ),
       DrawerTile(
         label: 'Mode Sombre',

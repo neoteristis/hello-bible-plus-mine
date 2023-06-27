@@ -6,3 +6,15 @@ abstract class NotificationEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class NotificationValuesByCategoryGotten extends NotificationEvent {}
+
+class NotificationValueSwitched extends NotificationEvent {
+  final NotifByCategory notif;
+  const NotificationValueSwitched(
+    this.notif,
+  );
+
+  @override
+  List<Object> get props => [notif];
+}

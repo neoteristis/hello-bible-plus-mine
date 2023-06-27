@@ -16,17 +16,15 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   }
 
   void _onThemeStarted(
-    ThemeStarted event,
+    ThemeStarted _,
     Emitter<ThemeState> emit,
-  ) async {
-    // final context = event.context;
+  ) {
     ThemeMode? themeMode;
     final isLight = sharedPreferences.getBool(brightness);
     if (isLight != null) {
       themeMode = isLight ? ThemeMode.light : ThemeMode.dark;
       emit(state.copyWith(themeMode: themeMode));
     }
-    // final brightness = Theme.of(context).brightness;
   }
 
   void _onThemeChanged(
@@ -43,7 +41,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       final isLight = Theme.of(context).brightness == Brightness.dark;
       themeMode = isLight ? ThemeMode.dark : ThemeMode.light;
     }
-    print(themeMode);
     await sharedPreferences.setBool(brightness, themeMode == ThemeMode.light);
     emit(state.copyWith(themeMode: themeMode));
   }

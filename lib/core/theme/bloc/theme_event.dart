@@ -7,15 +7,7 @@ abstract class ThemeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ThemeStarted extends ThemeEvent {
-  final BuildContext context;
-  const ThemeStarted(
-    this.context,
-  );
-
-  @override
-  List<Object> get props => [context];
-}
+class ThemeStarted extends ThemeEvent {}
 
 class ThemeChanged extends ThemeEvent {
   final BuildContext context;
