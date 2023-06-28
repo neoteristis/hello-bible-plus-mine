@@ -66,7 +66,7 @@ class EmailInputPage extends StatelessWidget {
                     label: 'Renseigner mon email',
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFFF3F5F7),
+                      fillColor: const Color(0xFFF3F5F7),
                       hintText: 'exemple@mondomaine.fr',
                       errorMaxLines: 2,
                       hintStyle: TextStyle(color: Color(0xFF223159)),

@@ -4,7 +4,7 @@ import 'package:gpt/core/helper/unfocus_keyboard.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
-    required this.label,
+    this.label,
     this.controller,
     this.decoration,
     this.obscureText,
@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
   });
 
-  final String label;
+  final String? label;
   final TextEditingController? controller;
   final InputDecoration? decoration;
   final bool? obscureText;
@@ -33,17 +33,19 @@ class CustomTextField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: isLight
-                    ? Theme.of(context).colorScheme.onSurface.withOpacity(.6)
-                    : Theme.of(context).textTheme.bodyLarge?.color,
-              ),
-        ),
-        const SizedBox(
-          height: 8,
-        ),
+        if (label != null)
+          Text(
+            label!,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: isLight
+                      ? Theme.of(context).colorScheme.onSurface.withOpacity(.6)
+                      : Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+          ),
+        if (label != null)
+          const SizedBox(
+            height: 8,
+          ),
         TextFormField(
           cursorColor: Colors.black,
           focusNode: focusNode,
@@ -56,7 +58,7 @@ class CustomTextField extends StatelessWidget {
           onChanged: onChanged,
           onTapOutside: (event) => unfocusKeyboard(),
           onFieldSubmitted: onFieldSubmitted,
-          style: TextStyle(color: Color(0xFF000000)),
+          style: const TextStyle(color: Color(0xFF000000)),
 
           // style: TextStyle(
           //   fontWeight: FontWeight.w500,

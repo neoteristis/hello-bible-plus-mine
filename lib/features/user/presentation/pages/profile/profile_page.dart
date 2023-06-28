@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/widgets/scaffold_with_background.dart';
 import '../../bloc/profile_bloc/profile_bloc.dart';
+import '../../widgets/profile/profiles.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -33,9 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
         CustomButtonWidget(ButtonType.black).build(
           context: context,
           onPressed: () {},
-          color: Color(0xFF24282E),
+          color: const Color(0xFF24282E),
           label: 'Mettre à jour Abonnement',
-          labelColor: Color(0xFFEFBB56),
+          labelColor: const Color(0xFFEFBB56),
         ),
       ],
       onPop: () {
@@ -46,7 +48,11 @@ class _ProfilePageState extends State<ProfilePage> {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context
+                ..go(RouteName.editProfil)
+                ..read<ProfileBloc>().add(ProfileUpdateStarted());
+            },
             child: const Row(
               children: [
                 Text('Modifier'),
@@ -57,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-        )
+        ),
       ],
       body: BlocBuilder<ProfileBloc, ProfileState>(
         buildWhen: (previous, current) => previous.status != current.status,
@@ -73,40 +79,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 builder: (context, state) {
                   final user = state.user;
                   final createdAt = user?.createdAt;
+                  if (user == null) {
+                    return const Center(
+                      child: Text(
+                        'Profile introuvable',
+                      ),
+                    );
+                  }
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: ListView(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      physics: const BouncingScrollPhysics(),
                       children: [
                         const SizedBox(
                           height: 20,
                         ),
-                        Center(
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 70,
-                                backgroundImage: NetworkImage(state
-                                        .user?.photo ??
-                                    'https://ui-avatars.com/api/?name=${state.user?.lastName ?? 'A+N'}'),
-                              ),
-                              const Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: CircleAvatar(
-                                  // radius: 20,
-                                  backgroundColor: Color(0xFF007AFF),
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                    // size: 1,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        UserProfilePictureWidget(),
                         const SizedBox(
                           height: 20,
                         ),
@@ -116,7 +104,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: Theme.of(context)
                                 .textTheme
                                 .labelLarge
-                                // ?.copyWith(fontSize: 16),
                                 ?.copyWith(fontSize: 16.sp),
                           ),
                         ),
@@ -132,26 +119,24 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
-                                  // ?.copyWith(
-                                  //     fontWeight: FontWeight.w600,
-                                  //     fontSize: 14),
                                   ?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14.sp),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp,
+                                  ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             UserInformationWidget(
                               label: 'Email :',
-                              value: user?.email,
+                              value: user.email,
                             ),
-                            if (user?.phone != null)
+                            if (user.phone != null)
                               UserInformationWidget(
                                 label: 'Téléphone :',
-                                value: user?.phone,
+                                value: user.phone,
                               ),
-                            if (user?.phone == null)
+                            if (user.phone == null)
                               const UserInformationWidget(
                                 label: 'Téléphone :',
                                 value: '0345665445',
@@ -172,44 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         const CustomDivider(
                           padding: EdgeInsets.symmetric(vertical: 8.0),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Abonnement',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  // ?.copyWith(
-                                  //     fontWeight: FontWeight.w600,
-                                  //     fontSize: 14),
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14.sp),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const UserInformationWidget(
-                              label: 'Statut abonnement :',
-                              value: 'Actif',
-                            ),
-                            const UserInformationWidget(
-                              label: 'Date abonnement :',
-                              value: '27/05/2023',
-                            ),
-                            const UserInformationWidget(
-                              label: 'Type abonnement :',
-                              value: 'Premium Annuel',
-                              addBackground: true,
-                            ),
-                            const UserInformationWidget(
-                              label: 'Renouvellement :',
-                              value: '27/05/2023',
-                            ),
-                          ],
-                        ),
+                        const UserSubscriptionPlansWidget(),
                       ],
                     ),
                   );
@@ -225,50 +173,6 @@ class _ProfilePageState extends State<ProfilePage> {
               return const SizedBox.shrink();
           }
         },
-      ),
-    );
-  }
-}
-
-class UserInformationWidget extends StatelessWidget {
-  const UserInformationWidget({
-    super.key,
-    this.label,
-    this.value,
-    this.addBackground = false,
-  });
-
-  final String? label;
-  final String? value;
-  final bool? addBackground;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
-        children: [
-          Text(label ?? ''),
-          const Spacer(),
-          Container(
-            padding: addBackground! ? const EdgeInsets.all(5) : null,
-            decoration: addBackground!
-                ? BoxDecoration(
-                    color: const Color(0xFFFEE269),
-                    borderRadius: BorderRadius.circular(5),
-                  )
-                : null,
-            child: Text(
-              value ?? '',
-              style: addBackground!
-                  ? const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    )
-                  : null,
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -8,6 +8,7 @@ import '../../features/user/presentation/pages/create_password_input_page.dart';
 import '../../features/user/presentation/pages/email_input_page.dart';
 import '../../features/user/presentation/pages/name_and_picture_input_page.dart';
 import '../../features/user/presentation/pages/passwod_input_page.dart';
+import '../../features/user/presentation/pages/profile/edit_profile_page.dart';
 import '../../features/user/presentation/pages/profile/profile_page.dart';
 import '../../features/user/presentation/pages/registration_page.dart';
 import '../../features/introduction/presentation/pages/landing_page.dart';
@@ -87,9 +88,14 @@ final _routerForLogged = GoRouter(
           builder: (context, state) => const SubscriptionPage(),
         ),
         GoRoute(
-          path: 'profile',
-          builder: (context, state) => const ProfilePage(),
-        ),
+            path: 'profile',
+            builder: (context, state) => const ProfilePage(),
+            routes: [
+              GoRoute(
+                path: 'edit-profile',
+                builder: (context, state) => const EditProfilePage(),
+              ),
+            ]),
         GoRoute(
           path: 'manageNotif',
           builder: (context, state) => const ManageNotificationsPage(),

@@ -5,6 +5,7 @@ import '../constants/color_constants.dart';
 const primaryColor = Color(0xFF22B573);
 
 ThemeData light = ThemeData(
+  bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.white),
   fontFamily: 'SfProText',
   dividerColor: const Color(0xFFE3E6E8),
   dividerTheme: const DividerThemeData(color: Color(0xFFE3E6E8)),
@@ -12,7 +13,7 @@ ThemeData light = ThemeData(
       // color ??
       primaryColor,
   dialogBackgroundColor: Colors.white,
-  dialogTheme: DialogTheme(backgroundColor: Colors.white),
+  dialogTheme: const DialogTheme(backgroundColor: Colors.white),
   iconTheme: const IconThemeData(color: primaryColor),
   inputDecorationTheme: InputDecorationTheme(
     prefixIconColor: const Color(0xFF223159),
@@ -34,6 +35,7 @@ ThemeData light = ThemeData(
   ),
   // scaffoldBackgroundColor: ColorConstants.background,
   useMaterial3: true,
+
   textTheme: TextTheme(
     bodyLarge: TextStyle(
       color: const Color(0xFF223159).withOpacity(.6),

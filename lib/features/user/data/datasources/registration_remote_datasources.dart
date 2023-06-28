@@ -69,6 +69,7 @@ class RegistrationRemoteDatasourcesImp
     try {
       final body = user.toJson_2();
       final photo = user.photo;
+      print(photo);
       if (photo != null) {
         body['profile'] = await MultipartFile.fromFile(
           photo,

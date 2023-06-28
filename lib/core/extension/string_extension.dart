@@ -12,6 +12,14 @@ extension StringExtension on String {
   /// Checks if string is email.
   bool get isEmail => hasMatch(this,
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+
+  /// Checks if string is phone number.
+  bool get isPhoneNumber {
+    if (length > 16 || length < 9) {
+      return false;
+    }
+    return hasMatch(this, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
+  }
 }
 
 bool hasMatch(String? value, String pattern) {

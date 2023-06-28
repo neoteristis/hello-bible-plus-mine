@@ -326,6 +326,8 @@ void bloc() {
   getIt.registerFactory(
     () => ProfileBloc(
       getProfile: getIt(),
+      updateUser: getIt(),
+      pickPicture: getIt(),
     ),
   );
 

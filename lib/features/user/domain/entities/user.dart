@@ -54,7 +54,7 @@ class User extends Equatable {
         firstName: json['firstname'],
         email: json['email'],
         country: json['country'],
-        photo: json['photo'],
+        photo: json['profile'],
         username: json['username'],
         createdAt: json['updatedAt'] != null
             ? DateTime.parse(json['updatedAt']).toLocal()
@@ -97,15 +97,13 @@ class User extends Equatable {
   }
 
   Map<String, dynamic> toJson_2() {
-    return {
-      'name': lastName,
-      // 'photo': photo,
-      // 'firstname': firstName,
-      // 'email': email,
-      // 'code': validationCode,
-      // 'country': country,
-      // 'deviceToken': deviceToken,
-      // 'password': password,
-    };
+    final Map<String, dynamic> map = {};
+    if (lastName != null) {
+      map['name'] = lastName;
+    }
+    if (email != null) {
+      map['email'] = email;
+    }
+    return map;
   }
 }

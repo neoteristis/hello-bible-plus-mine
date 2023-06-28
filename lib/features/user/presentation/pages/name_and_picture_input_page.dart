@@ -161,7 +161,7 @@ class NameAndPictureInputPage extends StatelessWidget {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Theme.of(context).colorScheme.onBackground,
-                      hintStyle: TextStyle(color: Color(0xFF223159)),
+                      hintStyle: const TextStyle(color: Color(0xFF223159)),
                       hintText: 'Nom et Prénom',
                       errorText: state.name.isNotValid
                           ? state.name.displayError?.text
@@ -193,7 +193,7 @@ class NameAndPictureInputPage extends StatelessWidget {
             ],
           ),
         ),
-        body: SizedBox.shrink(),
+        body: const SizedBox.shrink(),
       ),
     );
   }
