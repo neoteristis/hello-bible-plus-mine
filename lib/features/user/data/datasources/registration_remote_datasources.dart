@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
 import 'package:logger/logger.dart';
 
@@ -17,7 +18,7 @@ abstract class RegistrationRemoteDatasources {
   Future<User> updateUser(User user);
   Future<Token> refreshToken(String refresh);
   Future<UserResponse> socialConnect(User user);
-  Future sendFirebaseToken();
+  Future sendFirebaseToken(User user);
   Future<User> getUser();
 }
 
@@ -165,9 +166,20 @@ class RegistrationRemoteDatasourcesImp
   }
 
   @override
-  Future sendFirebaseToken() async {
+  Future sendFirebaseToken(User user) async {
     final token = await FirebaseMessaging.instance.getToken();
     await setToken(token);
+    final uid = user.idString;
+    if (uid != null) {
+      try {
+        FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic');
+        FirebaseMessaging.instance.subscribeToTopic(uid);
+      } catch (e) {
+        if (kDebugMode) {
+          print(e.toString());
+        }
+      }
+    }
   }
 
   @override

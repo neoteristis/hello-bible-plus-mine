@@ -13,6 +13,7 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
+import '../../domain/entities/user_response.dart';
 import '../datasources/datasources.dart';
 
 class RegistrationRepositoryImp implements RegistrationRepository {
@@ -31,23 +32,9 @@ class RegistrationRepositoryImp implements RegistrationRepository {
     if (await network.isConnected) {
       try {
         final res = await remote.registration(user);
-        final token = res.token;
         final userRes = res.user;
-        if (token != null && userRes != null) {
-          await local.saveToken(token);
-          await local.saveUser(userRes);
-          try {
-            remote.sendFirebaseToken();
-          } catch (e) {
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        } else {
-          return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
-        }
-
-        return Right(userRes);
+        await saveUserResponseAndRegisterFCM(res);
+        return Right(userRes!);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }
@@ -59,25 +46,10 @@ class RegistrationRepositoryImp implements RegistrationRepository {
   Future<Either<Failure, dynamic>> checkAuth() async {
     try {
       final token = await local.getToken();
-      // if (token != null) {
-      //   if (JwtDecoder.isExpired(token)) {
-      //     final String? refreshToken = await local.getRefreshToken();
-      //     if (refreshToken != null) {
-      //       final res = await remote.refreshToken(refreshToken);
-      //       await local.saveToken(res);
-      //     }
-      //   } else {
-      //     final DateTime expirationDate = JwtDecoder.getExpirationDate(token);
-      //     final int diff = expirationDate.difference(DateTime.now()).inHours;
-      //     if (diff < 2) {
-      //       final String? refreshToken = await local.getRefreshToken();
-      //       if (refreshToken != null) {
-      //         final res = await remote.refreshToken(refreshToken);
-      //         await local.saveToken(res);
-      //       }
-      //     }
-      //   }
-      // }
+      final user = await local.getUser();
+      if (user == null || token == null) {
+        return const Right(null);
+      }
       return Right(token);
     } catch (e) {
       return const Left(CacheFailure());
@@ -135,23 +107,10 @@ class RegistrationRepositoryImp implements RegistrationRepository {
     if (await network.isConnected) {
       try {
         final res = await remote.login(user);
-        final token = res.token;
         final userRes = res.user;
-        if (token != null && userRes != null) {
-          await local.saveToken(token);
-          await local.saveUser(userRes);
-          try {
-            remote.sendFirebaseToken();
-          } catch (e) {
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        } else {
-          return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
-        }
+        await saveUserResponseAndRegisterFCM(res);
 
-        return Right(userRes);
+        return Right(userRes!);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }
@@ -176,23 +135,10 @@ class RegistrationRepositoryImp implements RegistrationRepository {
             firstName: credential.givenName,
           ),
         );
-        final token = res.token;
         final userRes = res.user;
-        if (token != null && userRes != null) {
-          await local.saveToken(token);
-          await local.saveUser(userRes);
-          try {
-            remote.sendFirebaseToken();
-          } catch (e) {
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        } else {
-          return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
-        }
+        await saveUserResponseAndRegisterFCM(res);
 
-        return Right(userRes);
+        return Right(userRes!);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }
@@ -220,23 +166,10 @@ class RegistrationRepositoryImp implements RegistrationRepository {
             photo: account?.photoUrl,
           ),
         );
-        final token = res.token;
         final userRes = res.user;
-        if (token != null && userRes != null) {
-          await local.saveToken(token);
-          await local.saveUser(userRes);
-          try {
-            remote.sendFirebaseToken();
-          } catch (e) {
-            if (kDebugMode) {
-              print(e);
-            }
-          }
-        } else {
-          return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
-        }
+        await saveUserResponseAndRegisterFCM(res);
 
-        return Right(userRes);
+        return Right(userRes!);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }
@@ -290,11 +223,7 @@ class RegistrationRepositoryImp implements RegistrationRepository {
     if (await network.isConnected) {
       try {
         final user = await remote.getUser();
-        if (user != null) {
-          await local.saveUser(user);
-        } else {
-          return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
-        }
+        await local.saveUser(user);
 
         return Right(user);
       } on ServerException catch (e) {
@@ -302,5 +231,23 @@ class RegistrationRepositoryImp implements RegistrationRepository {
       }
     }
     return const Left(NoConnexionFailure());
+  }
+
+  Future saveUserResponseAndRegisterFCM(UserResponse res) async {
+    final token = res.token;
+    final userRes = res.user;
+    if (token != null && userRes != null) {
+      await local.saveToken(token);
+      await local.saveUser(userRes);
+      try {
+        remote.sendFirebaseToken(userRes);
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    } else {
+      throw const Left(ServerFailure(info: 'Une erreur s\'est produite'));
+    }
   }
 }

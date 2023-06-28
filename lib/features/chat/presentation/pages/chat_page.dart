@@ -7,7 +7,6 @@ import 'package:gpt/core/base_repository/base_repository.dart';
 import 'package:gpt/core/constants/api_constants.dart';
 import 'package:logger/logger.dart';
 import '../../../../core/db_services/db_services.dart';
-import '../../../../core/helper/log.dart';
 import '../../../../injections.dart';
 import '../bloc/chat_bloc.dart';
 import '../widgets/chat_body.dart';
@@ -39,7 +38,6 @@ class _ChatPageState extends State<ChatPage> {
     tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     tokenStream.listen(setToken);
 
-    FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic');
     // FirebaseMessaging.instance.subscribeToTopic('hello_bible_topic_test');
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
