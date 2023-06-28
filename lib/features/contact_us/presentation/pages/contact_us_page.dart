@@ -39,6 +39,8 @@ class ContactUsPage extends StatelessWidget {
               label: 'Objet',
               decoration: const InputDecoration(
                 hintText: 'Saisissez votre objet',
+                filled: true,
+                fillColor: const Color(0xFFF3F5F7),
               ),
               onFieldSubmitted: (_) {
                 unfocusKeyboard();
@@ -56,6 +58,8 @@ class ContactUsPage extends StatelessWidget {
                 label: 'Pièces jointes',
                 decoration: InputDecoration(
                   hintText: 'Ajoutez des fichiers',
+                  filled: true,
+                  fillColor: const Color(0xFFF3F5F7),
                   prefixIcon: Icon(
                     Icons.attach_file,
                   ),
@@ -118,6 +122,8 @@ class ContactUsPage extends StatelessWidget {
               label: 'Message',
               decoration: const InputDecoration(
                 hintText: 'Saisissez votre message',
+                filled: true,
+                fillColor: const Color(0xFFF3F5F7),
               ),
               maxLines: 4,
             ),
