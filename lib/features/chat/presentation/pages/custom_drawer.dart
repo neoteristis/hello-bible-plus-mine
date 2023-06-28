@@ -183,11 +183,14 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           context.go(RouteName.profile);
         },
       ),
-      const DrawerTile(
+      DrawerTile(
         label: 'Nous contacter',
-        icon: IconDrawerTiles(
+        icon: const IconDrawerTiles(
           Icons.mail,
         ),
+        onPressed: () {
+          context.go(RouteName.contactUs);
+        },
       ),
       const DrawerTile(
         label: 'Choisir abonnement',

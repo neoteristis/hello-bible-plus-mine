@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/chat/presentation/pages/chat_page.dart';
 import '../../features/chat/presentation/pages/historical_page.dart';
+import '../../features/contact_us/presentation/pages/contact_us_page.dart';
 import '../../features/notification/presentation/pages/manage_notifications_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/user/presentation/pages/create_password_input_page.dart';
@@ -99,6 +100,10 @@ final _routerForLogged = GoRouter(
         GoRoute(
           path: 'manageNotif',
           builder: (context, state) => const ManageNotificationsPage(),
+        ),
+        GoRoute(
+          path: 'contact-us',
+          builder: (context, state) => const ContactUsPage(),
         ),
       ],
     ),

@@ -13,6 +13,9 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
+    this.maxLines = 1,
+    this.enabled = true,
+    this.autofocus = true,
   });
 
   final String? label;
@@ -24,6 +27,9 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final TextCapitalization? textCapitalization;
+  final int? maxLines;
+  final bool? enabled;
+  final bool? autofocus;
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +59,14 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           textCapitalization: textCapitalization ?? TextCapitalization.none,
           decoration: decoration,
-          autofocus: true,
+          autofocus: autofocus ?? true,
           keyboardType: keyboardType,
           onChanged: onChanged,
           onTapOutside: (event) => unfocusKeyboard(),
           onFieldSubmitted: onFieldSubmitted,
           style: const TextStyle(color: Color(0xFF000000)),
+          maxLines: maxLines,
+          enabled: enabled,
 
           // style: TextStyle(
           //   fontWeight: FontWeight.w500,

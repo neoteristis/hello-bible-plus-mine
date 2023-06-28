@@ -36,6 +36,7 @@ import 'features/chat/data/repositories/chat_repository_imp.dart';
 import 'features/chat/domain/usecases/usecases.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
+import 'features/contact_us/presentation/bloc/contact_us_bloc.dart';
 import 'features/notification/data/datasources/notification_remote_datasource.dart';
 import 'features/notification/domain/repositories/notification_repository.dart';
 import 'features/notification/domain/usecases/fetch_notification_values_by_category_usecase.dart';
@@ -336,6 +337,10 @@ void bloc() {
       fetchNotifCategory: getIt(),
       switchNotification: getIt(),
     ),
+  );
+
+  getIt.registerFactory(
+    () => ContactUsBloc(),
   );
 }
 
