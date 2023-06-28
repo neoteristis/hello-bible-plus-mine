@@ -18,11 +18,13 @@ class CustomNetworkImage extends StatelessWidget {
         ? SvgPicture.network(
             url,
             width: 25.sp,
+            // width: 25,
             color: color,
           )
         : Image.network(
             url,
             width: 25.sp,
+            // width: 25,
             color: color,
           );
   }

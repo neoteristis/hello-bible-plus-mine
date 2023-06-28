@@ -24,7 +24,7 @@ class CategoryItemWidget extends StatelessWidget {
     final logo = category?.logo;
     final contentColor = Theme.of(context).colorScheme.secondary;
     return Container(
-      width: 100.sp,
+      // width: 100.sp,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -51,7 +51,7 @@ class CategoryItemWidget extends StatelessWidget {
         splashColor: Theme.of(context).primaryColor,
         highlightColor: Colors.black.withOpacity(.5),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (logo != null)
@@ -63,10 +63,11 @@ class CategoryItemWidget extends StatelessWidget {
               SvgPicture.asset(
                 'assets/icons/ichthys.svg',
                 width: 25.sp,
+                // width: 25,
                 color: contentColor,
               ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 category?.name ?? '',
                 textAlign: TextAlign.center,
@@ -75,29 +76,34 @@ class CategoryItemWidget extends StatelessWidget {
                 maxLines: 3,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 10.sp,
+                  fontSize: 11.sp,
+                  // fontSize: 11,
                   color: contentColor,
                 ),
               ),
             ),
             SizedBox(
-              height: 45.sp,
+              height: 50.sp,
+              // height: 45,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                  category?.welcomePhrase ?? '',
-                  textAlign: TextAlign.center,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 10.sp,
-                    color: contentColor,
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: Center(
+                  child: Text(
+                    category?.welcomePhrase ?? '',
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 11.sp,
+                      // fontSize: 11,
+                      color: contentColor,
+                    ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

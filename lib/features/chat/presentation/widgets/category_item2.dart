@@ -18,6 +18,7 @@ class CategoryItem2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final contentColor = Theme.of(context).colorScheme.secondary;
     return InkWell(
       onTap: () {
         context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
@@ -29,22 +30,24 @@ class CategoryItem2 extends StatelessWidget {
             );
       },
       child: Container(
-        alignment: Alignment.center,
+        // alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: category.logo != null ? Colors.black : Colors.green,
-          image: category.logo != null
-              ? DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(category.logo!),
-                  // AssetImage(image),
-                  opacity: 0.8,
-                )
-              : null,
+          color: Theme.of(context).colorScheme.onPrimary,
+          // color: Theme.of(context).primaryColor,
+          // color: category.logo != null ? Colors.black : Colors.green,
+          // image: category.logo != null
+          //     ? DecorationImage(
+          //         fit: BoxFit.cover,
+          //         image: NetworkImage(category.logo!),
+          //         // AssetImage(image),
+          //         opacity: 0.8,
+          //       )
+          //     : null,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxis,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
               child: Padding(
@@ -54,25 +57,37 @@ class CategoryItem2 extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 14.sp,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    fontSize: 14.sp,
+                    // fontSize: 14,
+                    color: contentColor,
                   ),
+                  // style: TextStyle(
+                  //   fontSize: 14.sp,
+                  //   fontWeight: FontWeight.w700,
+                  //   color: Colors.white,
+                  // ),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
                   category.welcomePhrase ?? '',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                  // style: TextStyle(
+                  //   fontSize: 11.sp,
+                  //   fontWeight: FontWeight.w500,
+                  //   color: Colors.white,
+                  // ),
                   style: TextStyle(
-                    fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    fontSize: 11.sp,
+                    // fontSize: 11,
+                    color: contentColor,
                   ),
                   textAlign: TextAlign.center,
                 ),

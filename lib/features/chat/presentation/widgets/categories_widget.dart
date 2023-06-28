@@ -79,6 +79,7 @@ class CategoriesWidget extends StatelessWidget {
                             hintText: 'Chercher dans la bible',
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
+                              // fontSize: 14,
                               color: hintColor,
                             ),
                             border: OutlineInputBorder(
@@ -236,6 +237,7 @@ class BottomContainer extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12.sp,
+                      // fontSize: 12,
                       color: contentColor,
                     ),
                   ),
@@ -246,6 +248,7 @@ class BottomContainer extends StatelessWidget {
                     style: TextStyle(
                       color: contentColor,
                       fontSize: 12.sp,
+                      // fontSize: 12,
                     ),
                   ),
                 ],

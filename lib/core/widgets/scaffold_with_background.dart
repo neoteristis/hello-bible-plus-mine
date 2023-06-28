@@ -25,9 +25,9 @@ class ScaffoldWithBackground extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         persistentFooterButtons: persistentFooterButtons,
-        extendBody: true,
+        // extendBody: true,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        extendBodyBehindAppBar: true,
+        // extendBodyBehindAppBar: true,
         // resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,

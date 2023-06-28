@@ -9,6 +9,7 @@ import 'package:gpt/features/user/presentation/bloc/profile_bloc/profile_bloc.da
 import '../../../../core/routes/route_name.dart';
 import '../../../../core/theme/bloc/theme_bloc.dart';
 import '../../../../core/widgets/custom_alert_dialog.dart';
+import '../bloc/chat_bloc.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/custom_app_bar.dart';
 
@@ -29,6 +30,17 @@ class CustomDrawer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                context
+                    .read<ChatBloc>()
+                    .scaffoldKey
+                    .currentState
+                    ?.closeEndDrawer();
+              },
+            ),
+          ),
           Container(
             height: double.infinity,
             decoration: BoxDecoration(
@@ -214,10 +226,11 @@ List<Widget> getDrawerTiles(BuildContext context) => [
                   value = false;
                   break;
                 default:
-                  if (Theme.of(context).brightness == Brightness.dark) {
-                    value = false;
-                  } else {
+                  if (Theme.of(context).colorScheme.brightness ==
+                      Brightness.dark) {
                     value = true;
+                  } else {
+                    value = false;
                   }
               }
               return CupertinoSwitch(

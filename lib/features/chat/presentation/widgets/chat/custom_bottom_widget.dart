@@ -55,21 +55,28 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Theme.of(context).colorScheme.onPrimary,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                  // contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
                   hintText: 'Ecrivez votre message',
                   hintStyle: TextStyle(
                     fontSize: 14.sp,
+                    // fontSize: 14,
                     color: hintColor,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(24)),
                     borderSide: BorderSide(
                         color: Theme.of(context).primaryColor, width: 2.w),
+                    // color: Theme.of(context).primaryColor,
+                    // width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(24)),
                     borderSide: BorderSide(
                         color: Theme.of(context).primaryColor, width: 2.w),
+
+                    // color: Theme.of(context).primaryColor,
+                    // width: 2),
                   ),
                 ),
               ),
@@ -101,6 +108,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                         Icons.send_rounded,
                         color: Theme.of(context).colorScheme.onPrimary,
                         size: 16.w,
+                        // size: 16,
                       ),
                     );
                   },

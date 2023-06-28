@@ -14,7 +14,7 @@ Widget bubbleBuilder(
 }) =>
     BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
-        ScreenUtil.init(context, designSize: const Size(360, 690));
+        // ScreenUtil.init(context, designSize: const Size(360, 690));
         final senderContainer = Theme.of(context).primaryColor;
         final receiverContainer = Theme.of(context).colorScheme.onPrimary;
         final receiverContent = Theme.of(context).colorScheme.secondary;
@@ -39,6 +39,7 @@ Widget bubbleBuilder(
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 8.sp,
+                    // fontSize: 8,
                     color: receiverContent,
                   ),
                 ),
@@ -46,6 +47,7 @@ Widget bubbleBuilder(
                   Icon(
                     Icons.check,
                     size: 12.sp,
+                    // size: 12,
                     color: receiverContent,
                   ),
               ],
@@ -71,6 +73,7 @@ Widget bubbleBuilder(
                               ? receiverContent
                               : senderContent,
                           fontSize: 13.sp,
+                          // fontSize: 13,
                           height: 1.4,
                           fontWeight: FontWeight.w400,
                         ),

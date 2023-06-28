@@ -39,6 +39,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 14.sp,
+                // fontSize: 14,
                 color:
                     Theme.of(context).colorScheme.onBackground.withOpacity(.9),
               ),
@@ -51,38 +52,46 @@ class CategoriesBySectionWidget extends StatelessWidget {
         if (categories != null &&
             categories.isNotEmpty &&
             sectionId != '646b6b8e70c60193c897fc3d')
-          SizedBox(
-            height: 140.sp,
-            child: ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(
-                width: 8,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: GridView.builder(
+              // separatorBuilder: (context, index) => const SizedBox(
+              //   width: 8,
+              // ),
+              // scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 6 / 7,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
               ),
-              scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Row(
-                    children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      CategoryItemWidget(
-                        category: categories[index],
-                      )
-                    ],
-                  );
-                } else if (index == categories.length - 1) {
-                  return Row(
-                    children: [
-                      CategoryItemWidget(
-                        category: categories[index],
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  );
-                }
+                // if (index == 0) {
+                //   return Row(
+                //     children: [
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       CategoryItemWidget(
+                //         category: categories[index],
+                //       )
+                //     ],
+                //   );
+                // } else if (index == categories.length - 1) {
+                //   return Row(
+                //     children: [
+                //       CategoryItemWidget(
+                //         category: categories[index],
+                //       ),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //     ],
+                //   );
+                // }
                 return CategoryItemWidget(
                   category: categories[index],
                 );
@@ -91,7 +100,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
           ),
         if (categories != null &&
             categories.isNotEmpty &&
-            sectionName == 'Posez vos questions')
+            sectionId == '646b6b8e70c60193c897fc3d')
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: GridView.builder(
@@ -99,7 +108,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
-                  childAspectRatio: 9 / 6,
+                  childAspectRatio: 10 / 6,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10),
               itemCount: categories.length,

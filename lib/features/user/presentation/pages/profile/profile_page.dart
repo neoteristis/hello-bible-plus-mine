@@ -116,6 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: Theme.of(context)
                                 .textTheme
                                 .labelLarge
+                                // ?.copyWith(fontSize: 16),
                                 ?.copyWith(fontSize: 16.sp),
                           ),
                         ),
@@ -131,6 +132,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
+                                  // ?.copyWith(
+                                  //     fontWeight: FontWeight.w600,
+                                  //     fontSize: 14),
                                   ?.copyWith(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14.sp),
@@ -148,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 value: user?.phone,
                               ),
                             if (user?.phone == null)
-                              UserInformationWidget(
+                              const UserInformationWidget(
                                 label: 'Téléphone :',
                                 value: '0345665445',
                               ),
@@ -159,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     .format(createdAt.toLocal()),
                               ),
                             if (createdAt == null)
-                              UserInformationWidget(
+                              const UserInformationWidget(
                                 label: 'Date de création :',
                                 value: '02/12/2023',
                               ),
@@ -177,6 +181,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
+                                  // ?.copyWith(
+                                  //     fontWeight: FontWeight.w600,
+                                  //     fontSize: 14),
                                   ?.copyWith(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14.sp),
@@ -254,7 +261,7 @@ class UserInformationWidget extends StatelessWidget {
             child: Text(
               value ?? '',
               style: addBackground!
-                  ? TextStyle(
+                  ? const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                     )
