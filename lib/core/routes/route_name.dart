@@ -17,6 +17,9 @@ class RouteName {
   static const String editProfil = '/profile/edit-profile';
   static const String manageNotif = '/manageNotif';
   static const String contactUs = '/contact-us';
+  static const String about = '/about';
+  static const String help = '/help';
+  static const String conditions = '/usage-general-conditions';
 }
 
 enum GoTo {

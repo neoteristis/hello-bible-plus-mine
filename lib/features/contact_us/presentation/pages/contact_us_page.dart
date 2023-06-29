@@ -40,7 +40,7 @@ class ContactUsPage extends StatelessWidget {
               decoration: const InputDecoration(
                 hintText: 'Saisissez votre objet',
                 filled: true,
-                fillColor: const Color(0xFFF3F5F7),
+                fillColor: Color(0xFFF3F5F7),
               ),
               onFieldSubmitted: (_) {
                 unfocusKeyboard();

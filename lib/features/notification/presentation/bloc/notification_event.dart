@@ -18,3 +18,13 @@ class NotificationValueSwitched extends NotificationEvent {
   @override
   List<Object> get props => [notif];
 }
+
+class NotificationTimeSelected extends NotificationEvent {
+  final BuildContext context;
+  const NotificationTimeSelected({
+    required this.context,
+  });
+
+  @override
+  List<Object> get props => [context];
+}

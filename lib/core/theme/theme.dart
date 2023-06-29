@@ -12,6 +12,64 @@ ThemeData light = ThemeData(
   primaryColor:
       // color ??
       primaryColor,
+  timePickerTheme: const TimePickerThemeData(
+    dayPeriodShape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.zero,
+      side: BorderSide.none,
+    ),
+    helpTextStyle: TextStyle(color: Colors.black),
+    backgroundColor: Colors.white,
+    dialTextStyle: TextStyle(color: Colors.black),
+    hourMinuteShape: RoundedRectangleBorder(
+      side: BorderSide(),
+      borderRadius: BorderRadius.all(
+        Radius.circular(4.0),
+      ),
+    ),
+    // hourMinuteColor: Colors.grey,
+    // hourMinuteTextStyle: MaterialStateTextStyle.resolveWith(
+    //   (states) => states.contains(MaterialState.selected)
+    //       ? const TextStyle(
+    //           color: Colors.black,
+    //           fontSize: 50,
+
+    //         )
+    //       : const TextStyle(
+    //           color: Colors.black,
+    //           fontSize: 50,
+    //         ),
+    // ),
+    hourMinuteColor: Colors.grey,
+
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.black),
+      helperStyle: TextStyle(color: Colors.black),
+      filled: true,
+      fillColor: Colors.grey,
+
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+          borderSide: BorderSide(color: Colors.black)),
+
+      // border: MaterialStateOutlineInputBorder.resolveWith(
+      //   (states) => states.contains(MaterialState.selected)
+      //       ? OutlineInputBorder(
+      //           borderRadius: BorderRadius.all(
+      //             Radius.circular(20),
+      //           ),
+      //           borderSide: BorderSide(color: Colors.black))
+      //       : OutlineInputBorder(
+      //           borderRadius: BorderRadius.all(
+      //             Radius.circular(20),
+      //           ),
+      //           borderSide: BorderSide.none,
+      //         ),
+      // ),
+      contentPadding: EdgeInsets.all(0),
+    ),
+  ),
   dialogBackgroundColor: Colors.white,
   dialogTheme: const DialogTheme(backgroundColor: Colors.white),
   iconTheme: const IconThemeData(color: primaryColor),
@@ -46,6 +104,9 @@ ThemeData light = ThemeData(
     //   fontWeight: FontWeight.w600,
     //   fontSize: 14,
     // ),
+    titleMedium: const TextStyle(
+      color: Colors.black, // <-- TextFormField input color
+    ),
     headlineLarge: const TextStyle(
       fontWeight: FontWeight.w800,
       fontSize: 20,

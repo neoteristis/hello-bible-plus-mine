@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 
 import '../../../../core/constants/status.dart';
 import '../bloc/subscription_bloc.dart';
+import '../pages/subscription_page.dart';
 
 class SubscriptionsListWidget extends StatelessWidget {
   const SubscriptionsListWidget({
@@ -16,7 +18,7 @@ class SubscriptionsListWidget extends StatelessWidget {
         switch (state.status) {
           case Status.loading:
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CustomProgressIndicator(),
             );
           case Status.loaded:
             final subscriptions = state.subscriptions;
@@ -32,11 +34,10 @@ class SubscriptionsListWidget extends StatelessWidget {
                                 .read<SubscriptionBloc>()
                                 .add(SubscriptionPaymentDataRequested(sub));
                           },
-                          child: ListTile(
-                            title: Text(
-                              '${sub.unitAmount} ${sub.currency} per ${sub.intervalCount} ${sub.interval}',
-                            ),
-                          ),
+                          child: SubscriptionItem(
+                              interval: sub.interval!,
+                              annualInterval:
+                                  '${sub.unitAmount} ${sub.currency}/${sub.intervalCount} ${sub.interval}'),
                         ))
                     .toList(),
               ],

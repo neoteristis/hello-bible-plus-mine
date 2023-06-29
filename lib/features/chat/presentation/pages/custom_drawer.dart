@@ -184,19 +184,13 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: 'Nous contacter',
+        label: 'Mon abonnement',
         icon: const IconDrawerTiles(
-          Icons.mail,
-        ),
-        onPressed: () {
-          context.go(RouteName.contactUs);
-        },
-      ),
-      const DrawerTile(
-        label: 'Choisir abonnement',
-        icon: IconDrawerTiles(
           Icons.favorite,
         ),
+        onPressed: () {
+          context.go(RouteName.subscribe);
+        },
       ),
       DrawerTile(
         label: 'Gérer les notifications',
@@ -244,23 +238,41 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           ),
         ),
       ),
-      const DrawerTile(
+      DrawerTile(
+        label: 'Nous contacter',
+        icon: const IconDrawerTiles(
+          Icons.mail,
+        ),
+        onPressed: () {
+          context.go(RouteName.contactUs);
+        },
+      ),
+      DrawerTile(
         label: 'Aide',
-        icon: IconDrawerTiles(
+        icon: const IconDrawerTiles(
           Icons.help,
         ),
+        onPressed: () {
+          context.go(RouteName.help);
+        },
       ),
-      const DrawerTile(
+      DrawerTile(
         label: 'A propos',
-        icon: IconDrawerTiles(
+        icon: const IconDrawerTiles(
           Icons.info,
         ),
+        onPressed: () {
+          context.go(RouteName.about);
+        },
       ),
-      const DrawerTile(
+      DrawerTile(
         label: 'Lisez notre CGU',
-        icon: IconDrawerTiles(
+        icon: const IconDrawerTiles(
           Icons.list_alt,
         ),
+        onPressed: () {
+          context.go(RouteName.conditions);
+        },
       ),
       const DrawerTile(
         label: 'Notez l\'application',

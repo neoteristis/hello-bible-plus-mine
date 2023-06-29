@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:gpt/core/usecase/usecase.dart';
 import 'package:gpt/features/notification/domain/usecases/switch_notification_value_usecase.dart';
 
@@ -20,6 +21,18 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<NotificationValuesByCategoryGotten>(
         _onNotificationValuesByCategoryGotten);
     on<NotificationValueSwitched>(_onNotificationValueSwitched);
+    on<NotificationTimeSelected>(_onNotificationTimeSelected);
+    on<NotificationTimeSelected>(_onNotificationTimeSelected);
+  }
+
+  void _onNotificationTimeSelected(
+    NotificationTimeSelected event,
+    Emitter<NotificationState> emit,
+  ) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: event.context,
+      initialTime: TimeOfDay.now(),
+    );
   }
 
   void _onNotificationValueSwitched(

@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import '../../features/chat/presentation/pages/chat_page.dart';
 import '../../features/chat/presentation/pages/historical_page.dart';
 import '../../features/contact_us/presentation/pages/contact_us_page.dart';
+import '../../features/more/presentation/pages/about_page.dart';
+import '../../features/more/presentation/pages/help_page.dart';
+import '../../features/more/presentation/pages/usage_general_condition_page.dart';
 import '../../features/notification/presentation/pages/manage_notifications_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/user/presentation/pages/create_password_input_page.dart';
@@ -89,14 +92,15 @@ final _routerForLogged = GoRouter(
           builder: (context, state) => const SubscriptionPage(),
         ),
         GoRoute(
-            path: 'profile',
-            builder: (context, state) => const ProfilePage(),
-            routes: [
-              GoRoute(
-                path: 'edit-profile',
-                builder: (context, state) => const EditProfilePage(),
-              ),
-            ]),
+          path: 'profile',
+          builder: (context, state) => const ProfilePage(),
+          routes: [
+            GoRoute(
+              path: 'edit-profile',
+              builder: (context, state) => const EditProfilePage(),
+            ),
+          ],
+        ),
         GoRoute(
           path: 'manageNotif',
           builder: (context, state) => const ManageNotificationsPage(),
@@ -104,6 +108,18 @@ final _routerForLogged = GoRouter(
         GoRoute(
           path: 'contact-us',
           builder: (context, state) => const ContactUsPage(),
+        ),
+        GoRoute(
+          path: 'about',
+          builder: (context, state) => const AboutPage(),
+        ),
+        GoRoute(
+          path: 'help',
+          builder: (context, state) => const HelpPage(),
+        ),
+        GoRoute(
+          path: 'usage-general-conditions',
+          builder: (context, state) => const UsageGeneralConditionPage(),
         ),
       ],
     ),

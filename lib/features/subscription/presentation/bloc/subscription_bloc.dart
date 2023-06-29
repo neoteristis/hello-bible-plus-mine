@@ -162,7 +162,7 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   ) async {
     final res = await confirmPaymentSheet(NoParams());
     return res.fold(
-      (l) => emit(state.copyWith(failure: l, status: Status.failed)),
+      (l) => emit(state.copyWith(failure: l)),
       (r) => Logger().i('sucess confirm'),
     );
   }
@@ -175,7 +175,7 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
     if (paymentData != null) {
       final res = await initPaymentSheet(paymentData);
       return res.fold(
-        (l) => emit(state.copyWith(failure: l, status: Status.failed)),
+        (l) => emit(state.copyWith(failure: l)),
         (r) => add(
           SubscriptionPaymentSheetPresented(),
         ),
@@ -192,7 +192,7 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
       (l) => emit(
         state.copyWith(
           failure: l,
-          status: Status.failed,
+          // status: Status.failed,
         ),
       ),
       // (r) => print('success'),
@@ -206,21 +206,21 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   ) async {
     emit(
       state.copyWith(
-        status: Status.loading,
+        paymentDataStatus: Status.loading,
       ),
     );
     final res = await paymentIntent(event.subsriptionType);
     return res.fold(
       (l) => emit(
         state.copyWith(
-          status: Status.failed,
+          paymentDataStatus: Status.failed,
         ),
       ),
       (paymentData) {
         emit(
           state.copyWith(
             paymentData: paymentData,
-            // status: Status.loaded,
+            paymentDataStatus: Status.loaded,
           ),
         );
         add(SubscriptionPaymentSheetInited());

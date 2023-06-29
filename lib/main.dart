@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'injections.dart';
+import 'dart:io';
 
 void main() async {
   // final WidgetsBinding widgetsBinding =
@@ -18,6 +19,16 @@ void main() async {
   //     systemNavigationBarIconBrightness: Brightness.dark,
   //   ),
   // );
+  HttpOverrides.global = MyHttpOverrides();
   await init();
   runApp(const App());
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }
