@@ -40,6 +40,13 @@ class AuthPasswordChanged extends AuthEvent {
   List<Object?> get props => [password];
 }
 
-class AuthSubmitted extends AuthEvent {}
+class AuthSubmitted extends AuthEvent {
+  final BuildContext context;
+  const AuthSubmitted(
+    this.context,
+  );
+  @override
+  List<Object?> get props => [context];
+}
 
 class AuthRegistrationPageWent extends AuthEvent {}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/features/user/presentation/bloc/social_connect_bloc/social_connect_bloc.dart';
+import 'package:gpt/l10n/function.dart';
 
 import 'social_connect_button.dart';
 
@@ -17,7 +18,7 @@ class AppleConnectButton extends StatelessWidget {
       builder: (context, state) {
         return SocialConnectButton(
           color: Theme.of(context).colorScheme.onPrimary,
-          label: 'Continuer avec Apple',
+          label: dict(context).continueWithApple,
           controller: state.appleBtnController,
           labelColor: Theme.of(context).colorScheme.tertiary,
           icon: Icon(

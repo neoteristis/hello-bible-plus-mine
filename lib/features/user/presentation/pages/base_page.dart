@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/logo.dart';
+import 'package:gpt/l10n/function.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
 import '../widgets/registrations/registrations.dart';
 
@@ -42,25 +43,25 @@ class BasePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: const Center(
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Center(
                             child: Logo(
                               size: Size(54, 54),
                             ),
                           ),
                         ),
                         Text(
-                          titleLarge ?? 'Bonjour ! \nbienvenue sur HelloBible+',
+                          titleLarge ??
+                              dict(context).goodmorningAndWelcomeToHelloBible,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
-                          title ??
-                              'Continuez pour créer votre compte ou se connecter',
+                          title ?? dict(context).continueToCreateYourAccount,
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -95,8 +96,8 @@ class BasePage extends StatelessWidget {
                           ),
                           child: Text(
                             goBackSocialConnect ?? true
-                                ? 'Ou continuer avec les réseaux sociaux'
-                                : 'Ou continuer avec mon adresse email',
+                                ? dict(context).orContinueWithSocialNetworks
+                                : dict(context).orContinueWithMyEmailAddress,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),

@@ -1,15 +1,14 @@
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/routes/route_name.dart';
 
-import '../../../../core/widgets/background_image_full.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/custom_dots_indicator.dart';
 import '../../../../core/widgets/logo_with_text.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
+import '../../../../l10n/function.dart';
 import '../bloc/introduction_bloc.dart';
 
 class LandingPage extends StatelessWidget {
@@ -39,26 +38,24 @@ class LandingPage extends StatelessWidget {
                       onPageChanged: (value) => context
                           .read<IntroductionBloc>()
                           .add(IntroductionPageChanged(value)),
-                      children: const [
+                      children: [
                         PageViewChild(
-                          images: ['assets/images/landing_1.svg'],
-                          title: 'Vivre la Parole de Dieu',
-                          body:
-                              'Un outil simple et efficace pour vous aider à vivre la Parole de Dieu',
+                          images: const ['assets/images/landing_1.svg'],
+                          title: dict(context).liveTheWordOfGod,
+                          body: dict(context).simpleAndEffectiveTool,
                         ),
                         PageViewChild(
-                          images: [
+                          images: const [
                             'assets/images/landing_2.svg',
                             'assets/images/landing_2_a.svg'
                           ],
-                          title: 'Des réponses à vos questions spirituelles',
-                          body:
-                              'Trouvez des réponses à vos questions grâce à notre outil de discussion et un accompagnement',
+                          title: dict(context).answersToYourSpiritualQuestions,
+                          body: dict(context).findAnswersToYourQuestions,
                         ),
                         PageViewChild(
-                          images: ['assets/images/landing_3.svg'],
-                          title: 'Apprendre facilement',
-                          body: 'Apprenez chaque jour la Bible via notre quizz',
+                          images: const ['assets/images/landing_3.svg'],
+                          title: dict(context).learnEasily,
+                          body: dict(context).learnTheBibleEveryDay,
                         ),
                       ],
                     );
@@ -94,7 +91,9 @@ class LandingPage extends StatelessWidget {
                               .add(IntroductionContinueSubmitted());
                         }
                       },
-                      label: state.currentPage == 2 ? 'Commencer' : 'Continuer',
+                      label: state.currentPage == 2
+                          ? dict(context).begin
+                          : dict(context).keepup,
                     ),
                   );
                 },

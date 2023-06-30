@@ -7,6 +7,7 @@ import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 import 'package:intl/intl.dart';
 import '../../../../../core/helper/show_error_dialog.dart';
 import '../../../../../core/models/required_input.dart';
+import '../../../../../l10n/function.dart';
 import '../../../data/models/email_input.dart';
 import '../../../data/models/number_input.dart';
 
@@ -31,7 +32,7 @@ class EditProfilePage extends StatelessWidget {
               case Status.loaded:
                 showErrorDialog(
                   context,
-                  'Mise à jour succès',
+                  dict(context).successfulUpdate,
                 );
                 break;
               case Status.failed:
@@ -52,7 +53,7 @@ class EditProfilePage extends StatelessWidget {
               case Status.loaded:
                 showErrorDialog(
                   context,
-                  'Mise à jour succès',
+                  dict(context).successfulUpdate,
                 );
                 break;
               case Status.failed:
@@ -79,7 +80,7 @@ class EditProfilePage extends StatelessWidget {
                 onPressed: () {
                   context.read<ProfileBloc>().add(ProfileUpdated());
                 },
-                label: 'Mettre à jour mon profil',
+                label: dict(context).updateMyProfile,
               );
             },
           )
@@ -87,7 +88,7 @@ class EditProfilePage extends StatelessWidget {
         onPop: () {
           context.pop();
         },
-        title: 'Modifier mon compte',
+        title: dict(context).modifyMyAccount,
         body: BlocBuilder<ProfileBloc, ProfileState>(
           buildWhen: (previous, current) => previous.status != current.status,
           builder: (context, state) {
@@ -130,7 +131,7 @@ class EditProfilePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Informations générales',
+                                dict(context).generalInformations,
                                 textAlign: TextAlign.start,
                                 style: Theme.of(context)
                                     .textTheme
@@ -142,23 +143,23 @@ class EditProfilePage extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                              const UserInformationWidget(
-                                label: 'Email :',
+                              UserInformationWidget(
+                                label: dict(context).email,
                               ),
                               const ProfileEmailInput(),
-                              const UserInformationWidget(
-                                label: 'Téléphone :',
+                              UserInformationWidget(
+                                label: dict(context).phone,
                               ),
                               const ProfilePhoneInput(),
                               if (createdAt != null)
                                 UserInformationWidget(
-                                  label: 'Date de création :',
+                                  label: dict(context).creationDate,
                                   value: DateFormat('dd/MM/yyyy')
                                       .format(createdAt.toLocal()),
                                 ),
                               if (createdAt == null)
-                                const UserInformationWidget(
-                                  label: 'Date de création :',
+                                UserInformationWidget(
+                                  label: dict(context).creationDate,
                                   value: '02/12/2023',
                                 ),
                             ],
@@ -215,7 +216,8 @@ class ProfileNameInput extends StatelessWidget {
                 },
                 icon: const Icon(Icons.cancel),
               ),
-              errorText: name.isNotValid ? name.displayError?.text : null),
+              errorText:
+                  name.isNotValid ? name.displayError?.text(context) : null),
           onChanged: (value) => context.read<ProfileBloc>().add(
                 ProfileNameChanged(value),
               ),
@@ -249,7 +251,8 @@ class ProfileEmailInput extends StatelessWidget {
               },
               icon: const Icon(Icons.cancel),
             ),
-            errorText: email.isNotValid ? email.displayError?.text : null,
+            errorText:
+                email.isNotValid ? email.displayError?.text(context) : null,
           ),
           onChanged: (value) {
             context.read<ProfileBloc>().add(ProfileEmailChanged(value));
@@ -283,7 +286,8 @@ class ProfilePhoneInput extends StatelessWidget {
               },
               icon: const Icon(Icons.cancel),
             ),
-            errorText: phone.isNotValid ? phone.displayError?.text : null,
+            errorText:
+                phone.isNotValid ? phone.displayError?.text(context) : null,
           ),
           onChanged: (value) {
             context.read<ProfileBloc>().add(ProfilePhoneChanged(value));

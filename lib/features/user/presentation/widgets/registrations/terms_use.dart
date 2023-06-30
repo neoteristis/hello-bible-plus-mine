@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpt/l10n/function.dart';
 
 class TermsUse extends StatelessWidget {
   const TermsUse({
@@ -17,7 +18,7 @@ class TermsUse extends StatelessWidget {
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
-          text: 'En continuant, vous accepter nos ',
+          text: dict(context).byContinuingYouAgreeToOur,
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 12,
@@ -28,14 +29,14 @@ class TermsUse extends StatelessWidget {
           ),
           children: [
             TextSpan(
-              text: 'Conditions d\'Utilisations ',
+              text: dict(context).termsOfUse,
               style: style,
             ),
             TextSpan(
-              text: 'et notre ',
+              text: dict(context).andOur,
             ),
             TextSpan(
-              text: 'Notice Protection de vos informations personnelles',
+              text: dict(context).privacyNotice,
               style: style,
             ),
           ],

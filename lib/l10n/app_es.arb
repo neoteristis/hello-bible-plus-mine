@@ -1,0 +1,17 @@
+{
+    "searchInBible": "Buscar en la biblia",
+    "myProfile" : "Mi perfil",
+    "mySubscription" : "Mi suscripción",
+    "manageNotifications" : "Administrar notificaciones",
+    "darkMode": "Modo oscuro",
+    "contactUs": "Contáctenos",
+    "help": "Ayudante",
+    "about": "A proposito",
+    "readOurConditions": "Lea nuestros TOS",
+    "rateApp": "Califica la aplicación",
+    "logout": "Desconectar",
+    "askConfirmationLogout": "¿Confirmar cerrar sesión?",
+    "ok": "Sì",
+    "writeYourMessage": "Escribe tu mensaje",
+    "loading": "cargando ..."
+}

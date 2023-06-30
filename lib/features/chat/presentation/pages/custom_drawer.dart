@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/routes/route_name.dart';
 import '../../../../core/theme/bloc/theme_bloc.dart';
 import '../../../../core/widgets/custom_alert_dialog.dart';
@@ -90,12 +91,13 @@ class CustomDrawer extends StatelessWidget {
                           height: 100,
                           // shape: RoundedRectangleBorder(
                           //     borderRadius: BorderRadius.circular(5)),
-                          content: const Center(
+                          content: Center(
                             // padding: EdgeInsets.only(top: 20.0),
                             child: Padding(
-                              padding: EdgeInsets.only(top: 20.0),
+                              padding: const EdgeInsets.only(top: 20.0),
                               child: Text(
-                                'Voulez vraiment vous déconnecter ?',
+                                AppLocalizations.of(context)!
+                                    .askConfirmationLogout,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -103,7 +105,7 @@ class CustomDrawer extends StatelessWidget {
                           actions: [
                             CustomButtonWidget(ButtonType.black).build(
                               context: context,
-                              label: 'ok',
+                              label: AppLocalizations.of(context)!.ok,
                               onPressed: () {
                                 context
                                     .read<AuthBloc>()
@@ -115,7 +117,7 @@ class CustomDrawer extends StatelessWidget {
                         ),
                       );
                     },
-                    label: 'Se déconnecter',
+                    label: AppLocalizations.of(context)!.logout,
                   ),
                 ),
               ],
@@ -175,7 +177,7 @@ class DrawerTile extends StatelessWidget {
 
 List<Widget> getDrawerTiles(BuildContext context) => [
       DrawerTile(
-        label: 'Mon Profil',
+        label: AppLocalizations.of(context)!.myProfile,
         icon: const IconDrawerTiles(
           Icons.person,
         ),
@@ -184,7 +186,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: 'Mon abonnement',
+        label: AppLocalizations.of(context)!.mySubscription,
         icon: const IconDrawerTiles(
           Icons.favorite,
         ),
@@ -193,7 +195,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: 'Gérer les notifications',
+        label: AppLocalizations.of(context)!.manageNotifications,
         icon: const IconDrawerTiles(
           Icons.notifications,
         ),
@@ -202,7 +204,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: 'Mode Sombre',
+        label: AppLocalizations.of(context)!.darkMode,
         icon: const IconDrawerTiles(
           Icons.contrast,
         ),
@@ -239,7 +241,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
       ),
       DrawerTile(
-        label: 'Nous contacter',
+        label: AppLocalizations.of(context)!.contactUs,
         icon: const IconDrawerTiles(
           Icons.mail,
         ),
@@ -248,7 +250,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: 'Aide',
+        label: AppLocalizations.of(context)!.help,
         icon: const IconDrawerTiles(
           Icons.help,
         ),
@@ -257,7 +259,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: 'A propos',
+        label: AppLocalizations.of(context)!.about,
         icon: const IconDrawerTiles(
           Icons.info,
         ),
@@ -266,7 +268,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: 'Lisez notre CGU',
+        label: AppLocalizations.of(context)!.readOurConditions,
         icon: const IconDrawerTiles(
           Icons.list_alt,
         ),
@@ -274,9 +276,9 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           context.go(RouteName.conditions);
         },
       ),
-      const DrawerTile(
-        label: 'Notez l\'application',
-        icon: IconDrawerTiles(
+      DrawerTile(
+        label: AppLocalizations.of(context)!.rateApp,
+        icon: const IconDrawerTiles(
           Icons.star,
         ),
       ),

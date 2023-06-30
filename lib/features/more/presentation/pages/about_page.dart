@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/l10n/function.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
 
 class AboutPage extends StatelessWidget {
@@ -12,28 +13,28 @@ class AboutPage extends StatelessWidget {
       onPop: () {
         context.pop();
       },
-      title: 'A propos',
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+      title: dict(context).about,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomText('HelloBible+'),
-            CustomText('Version : 1.0'),
+            const CustomText('HelloBible+'),
+            CustomText('${dict(context).version} : 1.0'),
             CustomText(
-              'HelloBible+ est une application mobile pour lorem ipsum dolor sit amet consectetur. Adipiscing proin in porttitor morbi mattis tellus. Posuere egestas sem gravida hendrerit turpis aliquam. Convallis velit dapibus dictum lacinia.',
+              dict(context).appliDescription,
             ),
             TextValue(
-              label: 'Développeur',
-              value: 'Développeur Madagascar',
+              label: dict(context).developer,
+              value: 'MyAgency team',
             ),
             TextValue(
-              label: 'Contact',
-              value: 'E-mail : hellobible@hellobible.mg',
+              label: dict(context).contact,
+              value: 'E-mail : contact@myagency.mg',
             ),
             TextValue(
-              label: 'Siteweb',
-              value: 'https://www.hellobible.com',
+              label: dict(context).website,
+              value: 'https://www.hellobible.app/',
             ),
           ],
         ),

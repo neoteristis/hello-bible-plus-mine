@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/features/contact_us/presentation/bloc/contact_us_bloc.dart';
@@ -93,6 +95,9 @@ class App extends StatelessWidget {
                     routerDelegate: routers[route]?.routerDelegate,
                     routeInformationProvider:
                         routers[route]?.routeInformationProvider,
+                    localizationsDelegates:
+                        AppLocalizations.localizationsDelegates,
+                    supportedLocales: AppLocalizations.supportedLocales,
                   );
                 },
               );

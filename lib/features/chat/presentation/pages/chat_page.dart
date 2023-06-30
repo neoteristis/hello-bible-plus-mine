@@ -21,7 +21,7 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   @override
   void initState() {
     FirebaseMessaging.instance.getInitialMessage().then(
@@ -52,6 +52,11 @@ class _ChatPageState extends State<ChatPage> {
     _configureSelectNotificationSubject();
     _actOnNewNotificationComing();
     super.initState();
+  }
+
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    print('didlanguagechanged');
   }
 
   void _actOnNewNotificationComing() {

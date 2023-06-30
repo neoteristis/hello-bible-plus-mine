@@ -7,6 +7,7 @@ import 'package:gpt/features/contact_us/presentation/bloc/contact_us_bloc.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
+import '../../../../l10n/function.dart';
 
 class ContactUsPage extends StatelessWidget {
   const ContactUsPage({super.key});
@@ -20,13 +21,13 @@ class ContactUsPage extends StatelessWidget {
         CustomButtonWidget(ButtonType.black).build(
           context: context,
           onPressed: () {},
-          label: 'Envoyer',
+          label: dict(context).send,
         ),
       ],
       onPop: () {
         context.pop();
       },
-      title: 'Nous-contacter',
+      title: dict(context).contactUs,
       body: Padding(
         padding: const EdgeInsets.only(
           top: 30.0,
@@ -36,11 +37,11 @@ class ContactUsPage extends StatelessWidget {
         child: ListView(
           children: [
             CustomTextField(
-              label: 'Objet',
-              decoration: const InputDecoration(
-                hintText: 'Saisissez votre objet',
+              label: dict(context).object,
+              decoration: InputDecoration(
+                hintText: dict(context).enterYourSubject,
                 filled: true,
-                fillColor: Color(0xFFF3F5F7),
+                fillColor: const Color(0xFFF3F5F7),
               ),
               onFieldSubmitted: (_) {
                 unfocusKeyboard();
@@ -54,13 +55,13 @@ class ContactUsPage extends StatelessWidget {
               onTap: () {
                 context.read<ContactUsBloc>().add(ContactUsFilePicked());
               },
-              child: const CustomTextField(
-                label: 'Pièces jointes',
+              child: CustomTextField(
+                label: dict(context).attachments,
                 decoration: InputDecoration(
-                  hintText: 'Ajoutez des fichiers',
+                  hintText: dict(context).addFiles,
                   filled: true,
                   fillColor: const Color(0xFFF3F5F7),
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.attach_file,
                   ),
                 ),
@@ -119,9 +120,9 @@ class ContactUsPage extends StatelessWidget {
                 unfocusKeyboard();
               },
               focusNode: _messageFocusNode,
-              label: 'Message',
-              decoration: const InputDecoration(
-                hintText: 'Saisissez votre message',
+              label: dict(context).message,
+              decoration: InputDecoration(
+                hintText: dict(context).enterYourMessage,
                 filled: true,
                 fillColor: const Color(0xFFF3F5F7),
               ),

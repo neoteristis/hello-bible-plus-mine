@@ -18,7 +18,7 @@ class EmailRegistrationInput extends StatelessWidget {
             labelText: 'Email',
             errorMaxLines: 2,
             errorText: state.registrationInputs.email.isNotValid
-                ? state.registrationInputs.email.displayError?.text
+                ? state.registrationInputs.email.displayError?.text(context)
                 : null,
           ),
           onChanged: (email) => context

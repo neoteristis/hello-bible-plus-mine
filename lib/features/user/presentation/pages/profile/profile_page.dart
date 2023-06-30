@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
-import 'package:gpt/features/user/domain/entities/user.dart';
+import 'package:gpt/l10n/function.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/constants/status.dart';
@@ -36,14 +36,14 @@ class _ProfilePageState extends State<ProfilePage> {
           context: context,
           onPressed: () {},
           color: const Color(0xFF24282E),
-          label: 'Mettre à jour Abonnement',
+          label: dict(context).updateSubscription,
           labelColor: const Color(0xFFEFBB56),
         ),
       ],
       onPop: () {
         context.pop();
       },
-      title: 'Mon compte',
+      title: dict(context).myAccount,
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -53,13 +53,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 ..go(RouteName.editProfil)
                 ..read<ProfileBloc>().add(ProfileUpdateStarted());
             },
-            child: const Row(
+            child: Row(
               children: [
-                Text('Modifier'),
-                SizedBox(
+                Text(dict(context).edit),
+                const SizedBox(
                   width: 3,
                 ),
-                Icon(Icons.settings),
+                const Icon(Icons.settings),
               ],
             ),
           ),
@@ -114,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Informations générales',
+                              dict(context).generalInformations,
                               textAlign: TextAlign.start,
                               style: Theme.of(context)
                                   .textTheme
@@ -128,28 +128,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 5,
                             ),
                             UserInformationWidget(
-                              label: 'Email :',
+                              label: dict(context).email,
                               value: user.email,
                             ),
                             if (user.phone != null)
                               UserInformationWidget(
-                                label: 'Téléphone :',
+                                label: dict(context).phone,
                                 value: user.phone,
                               ),
                             if (user.phone == null)
-                              const UserInformationWidget(
-                                label: 'Téléphone :',
+                              UserInformationWidget(
+                                label: dict(context).phone,
                                 value: '0345665445',
                               ),
                             if (createdAt != null)
                               UserInformationWidget(
-                                label: 'Date de création :',
+                                label: dict(context).creationDate,
                                 value: DateFormat('dd/MM/yyyy')
                                     .format(createdAt.toLocal()),
                               ),
                             if (createdAt == null)
-                              const UserInformationWidget(
-                                label: 'Date de création :',
+                              UserInformationWidget(
+                                label: dict(context).creationDate,
                                 value: '02/12/2023',
                               ),
                           ],

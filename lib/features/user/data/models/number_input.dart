@@ -1,6 +1,7 @@
 import 'package:gpt/core/extension/string_extension.dart';
 
 import '../../../../core/helper/formz.dart';
+import '../../../../l10n/function.dart';
 
 enum NumberValidationError { invalid }
 
@@ -20,12 +21,12 @@ class NumberInput extends FormzInput<String, NumberValidationError> {
 }
 
 extension PNVDExtension on NumberValidationError {
-  String get text {
+  String text(context) {
     switch (this) {
       // case NumberValidationError.empty:
       //   return 'Veuillez entrer votre adresse email';
       case NumberValidationError.invalid:
-        return 'Veuillez entrer un valide numéro de téléphone';
+        return dict(context).pleaseEnterAValidPhone;
     }
   }
 }

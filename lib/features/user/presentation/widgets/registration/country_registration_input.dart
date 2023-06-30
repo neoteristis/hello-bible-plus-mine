@@ -46,7 +46,7 @@ class _CountryRegistrationInputState extends State<CountryRegistrationInput> {
               hintStyle:
                   TextStyle(fontSize: 12, color: Theme.of(context).hintColor),
               errorText: state.registrationInputs.country.isNotValid
-                  ? state.registrationInputs.country.displayError?.text
+                  ? state.registrationInputs.country.displayError?.text(context)
                   : null,
             ),
           ),

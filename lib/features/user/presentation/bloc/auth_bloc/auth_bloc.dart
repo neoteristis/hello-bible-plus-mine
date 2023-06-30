@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/usecases/check_auth_usecase.dart';
 import 'package:gpt/features/user/domain/usecases/usecases.dart';
@@ -9,6 +10,7 @@ import '../../../../../core/error/failure.dart';
 import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/usecase/usecase.dart';
 import '../../../../../core/widgets/rounded_loading_button.dart';
+import '../../../../../l10n/function.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -51,7 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (password == null) {
       return emit(
         state.copyWith(
-          passwordError: 'Ce champ est requis',
+          passwordError: dict(event.context).thisFieldIsRequired,
         ),
       );
     }

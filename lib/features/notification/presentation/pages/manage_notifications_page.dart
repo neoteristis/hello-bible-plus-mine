@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 
+import '../../../../l10n/function.dart';
 import '../widgets/notif_manage_item_widget.dart';
 
 class ManageNotificationsPage extends StatefulWidget {
@@ -27,9 +28,9 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
       onPop: () {
         context.pop();
       },
-      title: 'Gérer les notifications',
-      body: const Padding(
-        padding: EdgeInsets.only(
+      title: dict(context).manageNotifications,
+      body: Padding(
+        padding: const EdgeInsets.only(
           left: 15.0,
           right: 15,
           // top: 20,
@@ -38,25 +39,25 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
           children: [
             NotifManageItem(
               switchValue: true,
-              logo: Icon(
+              logo: const Icon(
                 Icons.book,
                 color: Colors.white,
               ),
-              title: 'Verset du jour',
+              title: dict(context).verseOfTheDay,
               hour: '08:00',
             ),
-            CustomDivider(
+            const CustomDivider(
               padding: EdgeInsets.symmetric(
                 vertical: 8.0,
               ),
             ),
             NotifManageItem(
               switchValue: true,
-              logo: Icon(
+              logo: const Icon(
                 Icons.favorite,
                 color: Colors.white,
               ),
-              title: 'Mot d\'encouragement',
+              title: dict(context).wordOfEncouragement,
               hour: '10:00',
             ),
           ],

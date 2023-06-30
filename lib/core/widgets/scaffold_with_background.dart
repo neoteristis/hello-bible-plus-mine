@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/function.dart';
 import 'background_image_full.dart';
 
 class ScaffoldWithBackground extends StatelessWidget {
@@ -7,7 +8,7 @@ class ScaffoldWithBackground extends StatelessWidget {
     super.key,
     required this.body,
     this.onPop,
-    this.title = 'Retour',
+    this.title,
     this.addBackgroundImage = true,
     this.actions,
     this.persistentFooterButtons,
@@ -46,7 +47,7 @@ class ScaffoldWithBackground extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                   Text(
-                    title ?? 'Retour',
+                    title ?? dict(context).goback,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 17,

@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:gpt/core/extension/string_extension.dart';
+import 'package:gpt/l10n/function.dart';
 
 import '../../../../core/helper/formz.dart';
 
@@ -22,12 +24,12 @@ class EmailInput extends FormzInput<String, EmailValidationError> {
 }
 
 extension EVDExtension on EmailValidationError {
-  String get text {
+  String text(BuildContext context) {
     switch (this) {
       case EmailValidationError.empty:
-        return 'Veuillez entrer votre adresse email';
+        return dict(context).pleaseEnterYourEmailAddress;
       case EmailValidationError.invalid:
-        return 'Veuillez entrer un valide adresse email ';
+        return dict(context).pleaseEnterAValidEmailAddress;
     }
   }
 }

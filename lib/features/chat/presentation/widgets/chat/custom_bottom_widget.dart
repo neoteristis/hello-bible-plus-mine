@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
 import '../../bloc/chat_bloc.dart';
@@ -56,22 +56,22 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                   filled: true,
                   fillColor: Theme.of(context).colorScheme.onPrimary,
                   // contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                  hintText: 'Ecrivez votre message',
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                  hintText: AppLocalizations.of(context)!.writeYourMessage,
                   hintStyle: TextStyle(
                     fontSize: 14.sp,
                     // fontSize: 14,
                     color: hintColor,
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24)),
+                    borderRadius: const BorderRadius.all(Radius.circular(24)),
                     borderSide: BorderSide(
                         color: Theme.of(context).primaryColor, width: 2.w),
                     // color: Theme.of(context).primaryColor,
                     // width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24)),
+                    borderRadius: const BorderRadius.all(Radius.circular(24)),
                     borderSide: BorderSide(
                         color: Theme.of(context).primaryColor, width: 2.w),
 

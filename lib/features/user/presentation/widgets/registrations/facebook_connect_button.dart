@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../l10n/function.dart';
 import '../../bloc/social_connect_bloc/social_connect_bloc.dart';
 import 'social_connect_button.dart';
 
@@ -18,7 +19,7 @@ class FacebookConnectButton extends StatelessWidget {
         return SocialConnectButton(
           controller: state.fbBtnController,
           color: const Color(0xFF1877F2),
-          label: 'Continuer avec Facebook',
+          label: dict(context).continueWithFacebook,
           icon: const Icon(
             Icons.facebook_rounded,
             color: Colors.white,

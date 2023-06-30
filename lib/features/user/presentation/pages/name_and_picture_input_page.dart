@@ -15,6 +15,7 @@ import '../../../../core/constants/status.dart';
 import '../../../../core/routes/route_name.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/icon_text_row_recognizer.dart';
+import '../../../../l10n/function.dart';
 import '../../../chat/presentation/bloc/chat_bloc.dart';
 import '../bloc/registration_bloc/registration_bloc.dart';
 import 'base_page.dart';
@@ -65,9 +66,8 @@ class NameAndPictureInputPage extends StatelessWidget {
         ),
       ],
       child: BasePage(
-        titleLarge: 'Vous y êtes presque !\nConfigurer votre profil',
-        title:
-            'Veuillez entrer votre nom et prénom et un photo de profil (optionnel) pour finaliser la création de votre compte',
+        titleLarge: dict(context).youAreAlmostThere,
+        title: dict(context).pleaseEnterYourFirstAndLastName,
         onPop: () => context.pop(),
         bodyLarge: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -83,14 +83,14 @@ class NameAndPictureInputPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           IconTextRowRecognizer(
-                            label: 'Camera',
+                            label: dict(context).camera,
                             icon: Icon(
                               Icons.camera,
                               color: Theme.of(context).primaryColor,
                             ),
                             onTap: () {
                               context.read<RegistrationBloc>().add(
-                                    RegistrationPicturePicked(
+                                    const RegistrationPicturePicked(
                                       source: ImageSource.camera,
                                     ),
                                   );
@@ -98,7 +98,7 @@ class NameAndPictureInputPage extends StatelessWidget {
                             },
                           ),
                           IconTextRowRecognizer(
-                            label: 'Files',
+                            label: dict(context).files,
                             icon: Icon(
                               Icons.folder,
                               color: Theme.of(context).primaryColor,
@@ -160,11 +160,11 @@ class NameAndPictureInputPage extends StatelessWidget {
                     onFieldSubmitted: (_) => onSumbit(context),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Theme.of(context).colorScheme.onBackground,
+                      fillColor: const Color(0xFFF3F5F7),
                       hintStyle: const TextStyle(color: Color(0xFF223159)),
-                      hintText: 'Nom et Prénom',
+                      hintText: dict(context).nameAndFirstname,
                       errorText: state.name.isNotValid
-                          ? state.name.displayError?.text
+                          ? state.name.displayError?.text(context)
                           : null,
                     ),
                     onChanged: (value) => context
@@ -185,7 +185,7 @@ class NameAndPictureInputPage extends StatelessWidget {
                       context: context,
                       controller: state.updateUserBtnController,
                       onPressed: () => onSumbit(context),
-                      label: 'Terminer',
+                      label: dict(context).finish,
                     ),
                   );
                 },
