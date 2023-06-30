@@ -6,6 +6,7 @@ import 'package:gpt/features/notification/domain/usecases/switch_notification_va
 
 import '../../../../core/constants/status.dart';
 import '../../domain/entities/notif_by_category.dart';
+import '../../domain/entities/notification.dart';
 import '../../domain/usecases/fetch_notification_values_by_category_usecase.dart';
 
 part 'notification_event.dart';

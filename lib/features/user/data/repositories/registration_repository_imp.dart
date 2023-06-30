@@ -13,6 +13,7 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
+import '../../../../firebase_options.dart';
 import '../../domain/entities/user_response.dart';
 import '../datasources/datasources.dart';
 
@@ -151,10 +152,7 @@ class RegistrationRepositoryImp implements RegistrationRepository {
     if (await network.isConnected) {
       try {
         GoogleSignIn _googleSignIn = GoogleSignIn(
-          scopes: [
-            'email',
-            'https://www.googleapis.com/auth/contacts.readonly',
-          ],
+          clientId: DefaultFirebaseOptions.currentPlatform.iosClientId,
         );
         final account = await _googleSignIn.signIn();
         print(account);

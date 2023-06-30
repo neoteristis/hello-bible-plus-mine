@@ -7,6 +7,7 @@ import '../../features/more/presentation/pages/about_page.dart';
 import '../../features/more/presentation/pages/help_page.dart';
 import '../../features/more/presentation/pages/usage_general_condition_page.dart';
 import '../../features/notification/presentation/pages/manage_notifications_page.dart';
+import '../../features/notification/presentation/pages/notifications_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/user/presentation/pages/create_password_input_page.dart';
 import '../../features/user/presentation/pages/email_input_page.dart';
@@ -102,8 +103,14 @@ final _routerForLogged = GoRouter(
           ],
         ),
         GoRoute(
-          path: 'manageNotif',
-          builder: (context, state) => const ManageNotificationsPage(),
+          path: 'notif',
+          builder: (context, state) => const NotificationsPage(),
+          routes: [
+            GoRoute(
+              path: 'manageNotif',
+              builder: (context, state) => const ManageNotificationsPage(),
+            ),
+          ],
         ),
         GoRoute(
           path: 'contact-us',

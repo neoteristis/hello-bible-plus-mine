@@ -23,8 +23,9 @@ class LandingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 100.0),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * .025),
                 child: LogoWithText(),
               ),
               Expanded(
@@ -47,13 +48,13 @@ class LandingPage extends StatelessWidget {
                         PageViewChild(
                           images: const [
                             'assets/images/landing_2.svg',
-                            'assets/images/landing_2_a.svg'
                           ],
                           title: dict(context).answersToYourSpiritualQuestions,
                           body: dict(context).findAnswersToYourQuestions,
                         ),
                         PageViewChild(
                           images: const ['assets/images/landing_3.svg'],
+                          extendImage: false,
                           title: dict(context).learnEasily,
                           body: dict(context).learnTheBibleEveryDay,
                         ),
@@ -112,54 +113,48 @@ class PageViewChild extends StatelessWidget {
     required this.images,
     required this.title,
     required this.body,
+    this.extendImage = true,
   });
 
   final List<String> images;
   final String title;
   final String body;
+  final bool? extendImage;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         bottom: 10,
-        left: 20,
-        right: 20,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Spacer(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...images
-                  .map(
-                    (e) => Center(
-                      child: SvgPicture.asset(
-                        e,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ],
+          const Spacer(),
+          SvgPicture.asset(
+            images.first,
+            // width: extendImage! ? MediaQuery.of(context).size.width : null,
+            color: Theme.of(context).colorScheme.secondary,
           ),
-          Spacer(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineLarge),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(body,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge),
-            ],
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 40,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(title,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge),
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(body,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge),
+              ],
+            ),
           ),
         ],
       ),

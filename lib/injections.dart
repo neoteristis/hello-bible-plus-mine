@@ -52,6 +52,7 @@ import 'features/user/domain/repositories/registration_repository.dart';
 import 'features/user/domain/usecases/usecases.dart';
 import 'features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'firebase_options.dart';
 import 'objectbox.g.dart';
 
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -346,7 +347,9 @@ void bloc() {
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await setupFlutterNotifications();
   // showFlutterNotification(message);
   // If you're going to use other Firebase services in the background, such as Firestore,
