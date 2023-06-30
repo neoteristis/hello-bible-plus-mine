@@ -57,7 +57,15 @@ class RegistrationValidationCodeChanged extends RegistrationEvent {
   List<Object?> get props => [code];
 }
 
-class RegistrationSubmitted extends RegistrationEvent {}
+class RegistrationSubmitted extends RegistrationEvent {
+  final BuildContext context;
+  const RegistrationSubmitted(
+    this.context,
+  );
+
+  @override
+  List<Object?> get props => [context];
+}
 
 class RegistrationTopicSubscribed extends RegistrationEvent {
   final User user;

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/core/widgets/rounded_loading_button.dart';
 
+import '../../../../l10n/function.dart';
 import 'base_page.dart';
 
 class InputBasePage extends StatelessWidget {
@@ -40,7 +41,7 @@ class InputBasePage extends StatelessWidget {
               controller: buttonController,
               context: context,
               onPressed: onContinue,
-              label: 'Continuer',
+              label: dict(context).keepup,
             ),
             SizedBox(
               height: 15,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gpt/l10n/function.dart';
 
 import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../bloc/social_connect_bloc/social_connect_bloc.dart';
@@ -45,7 +46,7 @@ class GoogleConnectButton extends StatelessWidget {
               ),
             ),
           ),
-          label: 'Continuer avec Google',
+          label: dict(context).continueWithGoogle,
         );
       },
     );

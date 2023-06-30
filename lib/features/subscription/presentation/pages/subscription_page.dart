@@ -5,6 +5,7 @@ import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.da
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/logo.dart';
+import '../../../../l10n/function.dart';
 import '../../../user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import '../widgets/widgets.dart';
 
@@ -33,7 +34,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       onPop: () {
         context.pop();
       },
-      title: 'S\'abonner',
+      title: dict(context).subscribe,
       body: BlocBuilder<SubscriptionBloc, SubscriptionState>(
         buildWhen: (previous, current) =>
             previous.paymentDataStatus != current.paymentDataStatus,
@@ -53,7 +54,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   horizontal: 20,
                   vertical: 30,
                 ),
-                // height: MediaQuery.of(context).size.height * 0.75,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(
@@ -130,11 +130,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     //   annualInterval: '363,5 \$',
                     //   unitAmount: '6,99\$',
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Text(
-                      '* Renouvellement automatique après la fin de l\'abonnement.\nSans engagement, annulable à tout moment.',
+                      dict(context)
+                          .automaticRenewalAfterTheEndOfTheSubscription,
                       textAlign: TextAlign.center,
                     )
                   ],

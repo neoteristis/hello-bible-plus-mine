@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../../../l10n/function.dart';
 import 'custom_list_tile.dart';
 import 'date_information.dart';
 
@@ -35,13 +36,14 @@ class NotifManageItem extends StatelessWidget {
             ),
           ),
           switchValue: switchValue,
-          description: 'Gérer vos notifications sur ${title.toLowerCase()}',
+          description:
+              '${dict(context).handleYourNotifOn}${title.toLowerCase()}',
           onChanged: (value) {},
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(
-            'Rétablir par défaut',
+            dict(context).resetToDefault,
             style: TextStyle(
               color: Theme.of(context).colorScheme.tertiary,
               fontWeight: FontWeight.w600,
@@ -66,13 +68,13 @@ class NotifManageItem extends StatelessWidget {
               context: context,
               initialTime: TimeOfDay.now(),
               initialEntryMode: TimePickerEntryMode.input,
-              cancelText: 'Annuler',
-              hourLabelText: 'Heure',
-              helpText: 'Choisissez l\'heure',
+              cancelText: dict(context).cancel,
+              hourLabelText: dict(context).hour,
+              helpText: dict(context).chooseHour,
             );
           },
           child: DateInformation(
-            label: 'Heure',
+            label: dict(context).hour,
             info: hour,
           ),
         ),

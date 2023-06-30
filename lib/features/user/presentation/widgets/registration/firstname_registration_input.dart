@@ -19,7 +19,7 @@ class FirstnameRegistrationInput extends StatelessWidget {
             labelText: 'Prénom',
             errorMaxLines: 2,
             errorText: state.registrationInputs.firstname.isNotValid
-                ? state.registrationInputs.firstname.displayError?.text
+                ? state.registrationInputs.firstname.displayError?.text(context)
                 : null,
           ),
           onChanged: (firstname) => context

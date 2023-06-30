@@ -5,10 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
-
-import '../../../../core/db_services/db_services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
-import '../../../../injections.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -78,7 +76,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        state.conversation!.category?.name ?? 'chargement ...',
+                        state.conversation!.category?.name ??
+                            AppLocalizations.of(context)!.loading,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14.sp,

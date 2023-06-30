@@ -5,6 +5,7 @@ import 'package:gpt/core/helper/show_error_dialog.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:gpt/l10n/function.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/routes/route_name.dart';
@@ -52,13 +53,13 @@ class PasswordInputPage extends StatelessWidget {
             previous.loginBtnController != current.loginBtnController,
         builder: (context, state) {
           return InputBasePage(
-            title: 'Continuer pour se connecter à votre compte',
+            title: dict(context).continueForLoginToYourAccount,
             field: BlocBuilder<AuthBloc, AuthState>(
               buildWhen: (previous, current) =>
                   previous.passwordError != current.passwordError,
               builder: (context, state) {
                 return CustomPasswordInput(
-                  label: 'Saisir mon mot de passe',
+                  label: dict(context).enterMyPassword,
                   onChanged: (password) => context
                       .read<AuthBloc>()
                       .add(AuthPasswordChanged(password)),
@@ -82,5 +83,5 @@ class PasswordInputPage extends StatelessWidget {
 
 void onSubmit(BuildContext context) {
   unfocusKeyboard();
-  context.read<AuthBloc>().add(AuthSubmitted());
+  context.read<AuthBloc>().add(AuthSubmitted(context));
 }

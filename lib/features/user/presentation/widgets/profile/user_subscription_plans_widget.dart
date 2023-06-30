@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gpt/l10n/function.dart';
 
 import 'user_information_widget.dart';
 
@@ -14,7 +15,7 @@ class UserSubscriptionPlansWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Abonnement',
+          dict(context).subscription,
           textAlign: TextAlign.start,
           style: Theme.of(context)
               .textTheme
@@ -27,21 +28,21 @@ class UserSubscriptionPlansWidget extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        const UserInformationWidget(
-          label: 'Statut abonnement :',
+        UserInformationWidget(
+          label: dict(context).subscriptionStatus,
           value: 'Actif',
         ),
-        const UserInformationWidget(
-          label: 'Date abonnement :',
+        UserInformationWidget(
+          label: dict(context).subscriptionDate,
           value: '27/05/2023',
         ),
-        const UserInformationWidget(
-          label: 'Type abonnement :',
+        UserInformationWidget(
+          label: dict(context).subscriptionType,
           value: 'Premium Annuel',
           addBackground: true,
         ),
-        const UserInformationWidget(
-          label: 'Renouvellement :',
+        UserInformationWidget(
+          label: dict(context).renewal,
           value: '27/05/2023',
         ),
       ],

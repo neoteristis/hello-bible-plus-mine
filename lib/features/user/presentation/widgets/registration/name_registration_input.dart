@@ -18,7 +18,7 @@ class NameRegistrationInput extends StatelessWidget {
             labelText: 'Nom',
             errorMaxLines: 2,
             errorText: state.registrationInputs.name.isNotValid
-                ? state.registrationInputs.name.displayError?.text
+                ? state.registrationInputs.name.displayError?.text(context)
                 : null,
           ),
           onChanged: (username) => context

@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
+import 'package:gpt/l10n/function.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
@@ -287,7 +289,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     if (confirmPassword != password) {
       return emit(
         state.copyWith(
-          confirmPassordError: 'Mot de passe non confirmé',
+          confirmPassordError: dict(event.context).passwordNotConfirmed,
         ),
       );
     }

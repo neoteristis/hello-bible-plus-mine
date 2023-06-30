@@ -8,6 +8,7 @@ import '../../../../core/theme/theme.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
 import 'categories_by_section_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({
@@ -76,7 +77,8 @@ class CategoriesWidget extends StatelessWidget {
                               Icons.search,
                               color: hintColor,
                             ),
-                            hintText: 'Chercher dans la bible',
+                            hintText:
+                                AppLocalizations.of(context)!.searchInBible,
                             hintStyle: TextStyle(
                               fontSize: 14.sp,
                               // fontSize: 14,

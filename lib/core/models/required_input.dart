@@ -1,4 +1,7 @@
 // Define input validation errors
+import 'package:flutter/material.dart';
+
+import '../../l10n/function.dart';
 import '../helper/formz.dart';
 
 enum RequiredInputError { empty }
@@ -19,10 +22,10 @@ class RequiredInput extends FormzInput<String, RequiredInputError> {
 }
 
 extension RIExtension on RequiredInputError {
-  String get text {
+  String text(BuildContext context) {
     switch (this) {
       case RequiredInputError.empty:
-        return 'Ce champ est requis';
+        return dict(context).thisFieldIsRequired;
     }
   }
 }

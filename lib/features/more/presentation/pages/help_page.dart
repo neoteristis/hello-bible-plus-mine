@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
+import '../../../../l10n/function.dart';
 
 class HelpPage extends StatelessWidget {
   const HelpPage({super.key});
@@ -12,7 +13,7 @@ class HelpPage extends StatelessWidget {
       onPop: () {
         context.pop();
       },
-      title: 'Foire Aux Questions',
+      title: dict(context).frequentlyAskedQuestions,
       body: Container(),
     );
   }

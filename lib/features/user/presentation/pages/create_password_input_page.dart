@@ -6,6 +6,7 @@ import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/core/models/required_input.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/routes/route_name.dart';
+import '../../../../l10n/function.dart';
 import '../bloc/registration_bloc/registration_bloc.dart';
 import 'custom_password_input.dart';
 import 'input_base_page.dart';
@@ -34,7 +35,7 @@ class CreatePasswordInputPage extends StatelessWidget {
           current.registrationBtnController,
       builder: (context, state) {
         return InputBasePage(
-          title: 'Continuer pour créer votre compte',
+          title: dict(context).continueForCreateYourAccount,
           field: Column(
             children: [
               BlocBuilder<RegistrationBloc, RegistrationState>(
@@ -42,12 +43,12 @@ class CreatePasswordInputPage extends StatelessWidget {
                     previous.password != current.password,
                 builder: (context, state) {
                   return CustomPasswordInput(
-                    label: 'Créer mon mot de passe',
+                    label: dict(context).createMyPassword,
                     onChanged: (value) => context.read<RegistrationBloc>().add(
                           RegistrationPasswordChanged(value),
                         ),
                     errorText: state.password.isNotValid
-                        ? state.password.displayError?.text
+                        ? state.password.displayError?.text(context)
                         : null,
                     onFieldSubmitted: (_) {
                       unfocusKeyboard();
@@ -66,7 +67,7 @@ class CreatePasswordInputPage extends StatelessWidget {
                 builder: (context, state) {
                   return CustomPasswordInput(
                     focusNode: _confirmPsdFocusNode,
-                    label: 'Confirmer le nouveau mot de passe',
+                    label: dict(context).confirmTheNewPassword,
                     onChanged: (value) => context.read<RegistrationBloc>().add(
                           RegistrationConfirmPasswordChanged(value),
                         ),
@@ -87,5 +88,5 @@ class CreatePasswordInputPage extends StatelessWidget {
 
 void onSubmit(BuildContext context) {
   unfocusKeyboard();
-  context.read<RegistrationBloc>().add(RegistrationSubmitted());
+  context.read<RegistrationBloc>().add(RegistrationSubmitted(context));
 }

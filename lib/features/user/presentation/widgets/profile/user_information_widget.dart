@@ -18,7 +18,7 @@ class UserInformationWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
         children: [
-          Text(label ?? ''),
+          if (label != null) Text('$label :'),
           const Spacer(),
           Container(
             padding: addBackground! ? const EdgeInsets.all(5) : null,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/l10n/function.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../core/constants/status.dart';
@@ -25,7 +26,7 @@ class UserProfilePictureWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconTextRowRecognizer(
-                  label: 'Camera',
+                  label: dict(context).camera,
                   icon: Icon(
                     Icons.camera,
                     color: Theme.of(context).primaryColor,
@@ -40,7 +41,7 @@ class UserProfilePictureWidget extends StatelessWidget {
                   },
                 ),
                 IconTextRowRecognizer(
-                  label: 'Files',
+                  label: dict(context).files,
                   icon: Icon(
                     Icons.folder,
                     color: Theme.of(context).primaryColor,
@@ -64,9 +65,9 @@ class UserProfilePictureWidget extends StatelessWidget {
           builder: (context, state) {
             switch (state.updatePictureStatus) {
               case Status.loading:
-                return const CircleAvatar(
+                return CircleAvatar(
                   radius: 70,
-                  child: Text('chargement...'),
+                  child: Text(dict(context).loading),
                 );
               default:
                 return Stack(
