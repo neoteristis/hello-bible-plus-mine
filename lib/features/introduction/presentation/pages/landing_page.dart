@@ -25,7 +25,8 @@ class LandingPage extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * .015),
+                  top: MediaQuery.of(context).size.height * .015,
+                ),
                 child: const LogoWithText(),
               ),
               Expanded(
@@ -123,10 +124,9 @@ class PageViewChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 10,
-      ),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -134,14 +134,14 @@ class PageViewChild extends StatelessWidget {
           SvgPicture.asset(
             images.first,
             // width: extendImage! ? MediaQuery.of(context).size.width : null,
-
+            height: height * 0.4,
             color: Theme.of(context).colorScheme.secondary,
           ),
           // const Spacer(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 40,
+                horizontal: 28,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -151,14 +151,11 @@ class PageViewChild extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
                   Text(
                     body,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
+                    maxLines: 3,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
