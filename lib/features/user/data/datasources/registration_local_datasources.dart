@@ -56,7 +56,7 @@ class RegistrationLocalDatasourcesImp implements RegistrationLocalDatasources {
       final XFile? image = await ImagePicker().pickImage(source: source);
       return image;
     } catch (e) {
-      return null;
+      return Future.value(null);
     }
   }
 }
