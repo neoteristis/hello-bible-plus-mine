@@ -29,9 +29,9 @@ class CategoriesWidget extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    state.failure?.message ?? 'Une erreur s\'est produite',
-                    style: const TextStyle(color: ColorConstants.danger),
+                  const Text(
+                    'Une erreur s\'est produite',
+                    style: TextStyle(color: ColorConstants.danger),
                   ),
                   TextButton.icon(
                     onPressed: () {

@@ -145,15 +145,17 @@ class RegistrationRemoteDatasourcesImp
   Future<UserResponse> socialConnect(User user) async {
     try {
       final body = user.toJson();
+      print(body);
       // final photo = user.photo;
       // if (photo != null) {
       //   body['profile'] = await MultipartFile.fromFile(
       //     photo,
       //   );
       // }
-      // final FormData formData = FormData.fromMap(body);
+      final FormData formData = FormData.fromMap(body);
 
-      final res = await baseRepo.post(ApiConstants.registration(), body: body);
+      final res =
+          await baseRepo.post(ApiConstants.registration(), body: formData);
       return UserResponse.fromJson(res.data);
     } on DioError catch (e) {
       // Logger().w(e);
