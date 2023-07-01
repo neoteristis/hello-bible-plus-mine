@@ -77,6 +77,15 @@ class RegistrationTopicSubscribed extends RegistrationEvent {
   List<Object?> get props => [user];
 }
 
+class TakeImage extends RegistrationEvent {
+  final ImageSource source;
+  const TakeImage(
+    this.source,
+  );
+  @override
+  List<Object?> get props => [source];
+}
+
 class RegistrationEmailChecked extends RegistrationEvent {
   const RegistrationEmailChecked();
 

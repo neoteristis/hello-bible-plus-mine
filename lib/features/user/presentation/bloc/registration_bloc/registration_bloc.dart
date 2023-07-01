@@ -56,6 +56,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         _onRegistrationConfirmPasswordChanged);
     on<RegistrationUserUpdated>(_onRegistrationUserUpdated);
     on<RegistrationPicturePicked>(_onRegistrationPicturePicked);
+    on<TakeImage>(_onTakeImage);
   }
 
   void _onRegistrationPicturePicked(
@@ -69,7 +70,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         emit(state.copyWith(
           pickPictureStatus: Status.loading,
         ));
-        _takeImage(event.source, emit);
+        add(TakeImage(event.source));
       }
     } else if (event.source == ImageSource.gallery) {
       await _requestPhotoPermission();
@@ -78,7 +79,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         emit(state.copyWith(
           pickPictureStatus: Status.loading,
         ));
-        _takeImage(event.source, emit);
+        add(TakeImage(event.source));
       }
     }
   }
@@ -97,10 +98,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     }
   }
 
-  Future<void> _takeImage(
-      ImageSource source, Emitter<RegistrationState> emit) async {
-    final res = await pickPicture(source).whenComplete(() => null);
-    res.fold(
+  void _onTakeImage(
+    TakeImage event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    final res = await pickPicture(event.source);
+    return res.fold(
       (l) => emit(
         state.copyWith(
           pickPictureStatus: Status.failed,
