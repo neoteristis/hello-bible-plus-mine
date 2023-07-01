@@ -9,6 +9,7 @@ abstract class BaseRepository {
     Map<String, String>? headers,
     Encoding? encoding,
     bool? addToken,
+    Map<String, dynamic>? queryParameters,
   });
 
   Future<Response> get(

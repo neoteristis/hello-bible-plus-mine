@@ -23,10 +23,12 @@ class BaseRepositoryImp implements BaseRepository {
     Map<String, String>? headers,
     Encoding? encoding,
     bool? addToken,
+    Map<String, dynamic>? queryParameters,
   }) async {
     return await dio.post(
       url!,
       data: body,
+      queryParameters: queryParameters,
       options: Options(
         headers: headers ?? this.headers,
         extra: {'add_token': addToken ?? true},

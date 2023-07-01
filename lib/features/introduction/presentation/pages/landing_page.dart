@@ -25,8 +25,8 @@ class LandingPage extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * .025),
-                child: LogoWithText(),
+                    top: MediaQuery.of(context).size.height * .015),
+                child: const LogoWithText(),
               ),
               Expanded(
                 child: BlocBuilder<IntroductionBloc, IntroductionState>(

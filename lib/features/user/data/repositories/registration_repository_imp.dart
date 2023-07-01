@@ -129,13 +129,17 @@ class RegistrationRepositoryImp implements RegistrationRepository {
             AppleIDAuthorizationScopes.fullName,
           ],
         );
-        final res = await remote.socialConnect(
-          User(
-            email: credential.email,
-            lastName: credential.familyName,
-            firstName: credential.givenName,
-          ),
-        );
+        print(credential);
+        final queryParams = <String, String>{
+          'code': credential.authorizationCode,
+          if (credential.givenName != null) 'firstName': credential.givenName!,
+          if (credential.familyName != null) 'lastName': credential.familyName!,
+          // 'useBundleId': 'true',
+          // if (credential.state != null) 'state': credential.state!,
+        };
+        print('1');
+        final res = await remote.appleConnect(queryParams);
+        print('ouuuuuuuura');
         final userRes = res.user;
         await saveUserResponseAndRegisterFCM(res);
 
@@ -155,6 +159,7 @@ class RegistrationRepositoryImp implements RegistrationRepository {
           clientId: DefaultFirebaseOptions.currentPlatform.iosClientId,
         );
         final account = await _googleSignIn.signIn();
+
         print(account);
         final res = await remote.socialConnect(
           User(

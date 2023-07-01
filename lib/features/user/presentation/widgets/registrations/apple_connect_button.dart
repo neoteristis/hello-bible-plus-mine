@@ -21,6 +21,7 @@ class AppleConnectButton extends StatelessWidget {
           label: dict(context).continueWithApple,
           controller: state.appleBtnController,
           labelColor: Theme.of(context).colorScheme.tertiary,
+          valueColor: Theme.of(context).colorScheme.tertiary,
           icon: Icon(
             Icons.apple,
             color: Theme.of(context).colorScheme.tertiary,

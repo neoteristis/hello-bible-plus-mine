@@ -18,6 +18,7 @@ abstract class RegistrationRemoteDatasources {
   Future<User> updateUser(User user);
   Future<Token> refreshToken(String refresh);
   Future<UserResponse> socialConnect(User user);
+  Future<UserResponse> appleConnect(Map<String, String> queryParams);
   Future sendFirebaseToken(User user);
   Future<User> getUser();
 }
@@ -196,6 +197,28 @@ class RegistrationRemoteDatasourcesImp
           ? MessageResponse.fromJson(res?.data).message
           : e.toString();
       // Logger().w(message);
+      throw ServerException(message: message);
+    }
+  }
+
+  @override
+  Future<UserResponse> appleConnect(Map<String, String> queryParams) async {
+    try {
+      final res = await baseRepo.post(
+        '/api/sign_in_with_apple',
+        queryParameters: queryParams,
+        addToken: false,
+      );
+      return UserResponse.fromJson(res.data);
+    } on DioError catch (e) {
+      Logger().w(e.error);
+      final res = e.response;
+      String? message;
+
+      message = res?.data != null
+          ? MessageResponse.fromJson(res?.data).message
+          : e.toString();
+
       throw ServerException(message: message);
     }
   }
