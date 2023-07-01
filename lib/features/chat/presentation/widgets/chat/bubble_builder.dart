@@ -72,7 +72,7 @@ Widget bubbleBuilder(
                           color: state.sender!.id != message.author.id
                               ? receiverContent
                               : senderContent,
-                          fontSize: 13.sp,
+                          fontSize: 15.sp,
                           // fontSize: 13,
                           height: 1.4,
                           fontWeight: FontWeight.w400,

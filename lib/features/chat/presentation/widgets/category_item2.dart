@@ -85,7 +85,7 @@ class CategoryItem2 extends StatelessWidget {
                   // ),
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 11.sp,
+                    fontSize: 12.sp,
                     // fontSize: 11,
                     color: contentColor,
                   ),

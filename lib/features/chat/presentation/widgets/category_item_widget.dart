@@ -76,7 +76,7 @@ class CategoryItemWidget extends StatelessWidget {
                 maxLines: 3,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 11.sp,
+                  fontSize: 13.sp,
                   // fontSize: 11,
                   color: contentColor,
                 ),
@@ -96,7 +96,7 @@ class CategoryItemWidget extends StatelessWidget {
                     maxLines: 3,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: 11.sp,
+                      fontSize: 12.sp,
                       // fontSize: 11,
                       color: contentColor,
                     ),

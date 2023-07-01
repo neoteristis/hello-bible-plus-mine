@@ -130,28 +130,33 @@ class PageViewChild extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Spacer(),
+          // const Spacer(),
           SvgPicture.asset(
             images.first,
             // width: extendImage! ? MediaQuery.of(context).size.width : null,
+
             color: Theme.of(context).colorScheme.secondary,
           ),
-          const Spacer(),
+          // const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 40,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(title,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineLarge),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
                 const SizedBox(
                   height: 8,
                 ),
                 Text(body,
                     textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 5,
                     style: Theme.of(context).textTheme.bodyLarge),
               ],
             ),

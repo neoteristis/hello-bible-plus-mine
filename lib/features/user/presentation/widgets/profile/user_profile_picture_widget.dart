@@ -82,7 +82,7 @@ class UserProfilePictureWidget extends StatelessWidget {
                           backgroundImage: NetworkImage(
                             user?.photo != null
                                 ? '${dotenv.env['BASE_URL']!}/${user?.photo}'
-                                : 'https://ui-avatars.com/api/?name=${user?.lastName ?? 'A+N'}',
+                                : 'https://ui-avatars.com/api/?name=${user?.lastName ?? 'A+N'}&format=png',
                           ),
                         );
                       },
