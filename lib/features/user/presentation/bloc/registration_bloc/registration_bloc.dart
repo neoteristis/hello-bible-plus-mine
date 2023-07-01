@@ -6,6 +6,7 @@ import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/l10n/function.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/error/failure.dart';
@@ -19,6 +20,7 @@ import '../../../data/models/first_name_input.dart';
 import '../../../domain/usecases/usecases.dart';
 
 part 'registration_event.dart';
+
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
@@ -26,6 +28,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final CheckEmailUsecase checkEmail;
   final UpdateUserUsecase updateUser;
   final PickPictureUsecase pickPicture;
+
   RegistrationBloc({
     required this.registration,
     required this.checkEmail,
@@ -59,8 +62,44 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationPicturePicked event,
     Emitter<RegistrationState> emit,
   ) async {
-    emit(state.copyWith(pickPictureStatus: Status.loading));
-    final res = await pickPicture(event.source);
+    if (event.source == ImageSource.camera) {
+      await _requestCameraPermission();
+      final status = await Permission.camera.status;
+      if (status.isGranted) {
+        emit(state.copyWith(
+          pickPictureStatus: Status.loading,
+        ));
+        _takeImage(event.source, emit);
+      }
+    } else if (event.source == ImageSource.gallery) {
+      await _requestPhotoPermission();
+      final status = await Permission.photos.status;
+      if (status.isGranted) {
+        emit(state.copyWith(
+          pickPictureStatus: Status.loading,
+        ));
+        _takeImage(event.source, emit);
+      }
+    }
+  }
+
+  Future<void> _requestCameraPermission() async {
+    final status = await Permission.camera.status;
+    if (status.isDenied) {
+      await Permission.camera.request();
+    }
+  }
+
+  Future<void> _requestPhotoPermission() async {
+    final status = await Permission.photos.status;
+    if (status.isDenied) {
+      await Permission.photos.request();
+    }
+  }
+
+  Future<void> _takeImage(
+      ImageSource source, Emitter<RegistrationState> emit) async {
+    final res = await pickPicture(source).whenComplete(() => null);
     res.fold(
       (l) => emit(
         state.copyWith(
