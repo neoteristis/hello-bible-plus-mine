@@ -55,7 +55,6 @@ class _ChatBodyState extends State<ChatBody> {
               },
               bubbleBuilder: bubbleBuilder,
               emptyState: const EmptyStateWidget(),
-
               theme: chatTheme(context),
               user: state.sender!,
               listBottomWidget: const ListBottomChatWidget(),

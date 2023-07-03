@@ -1,17 +1,41 @@
 import 'package:flutter/material.dart';
 
-import '../constants/color_constants.dart';
-
 const primaryColor = Color(0xFF22B573);
+
+final bodyLarge = TextStyle(
+  color: const Color(0xFF223159).withOpacity(.6),
+  fontSize: 16,
+);
+
+const titleMedium = TextStyle(
+  color: Colors.black, // <-- TextFormField input color
+);
+const headlineLarge = TextStyle(
+  fontWeight: FontWeight.w800,
+  fontSize: 20,
+  color: Color(0xFF101520),
+);
+const headlineMedium = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 31,
+  color: Color(
+    0xFF0C0C0C,
+  ),
+);
+const labelLarge = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 14,
+  color: Color(
+    0xFF223159,
+  ),
+);
 
 ThemeData light = ThemeData(
   bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.white),
   fontFamily: 'SfProText',
   dividerColor: const Color(0xFFE3E6E8),
   dividerTheme: const DividerThemeData(color: Color(0xFFE3E6E8)),
-  primaryColor:
-      // color ??
-      primaryColor,
+  primaryColor: primaryColor,
   timePickerTheme: const TimePickerThemeData(
     dayPeriodShape: RoundedRectangleBorder(
       borderRadius: BorderRadius.zero,
@@ -26,47 +50,17 @@ ThemeData light = ThemeData(
         Radius.circular(4.0),
       ),
     ),
-    // hourMinuteColor: Colors.grey,
-    // hourMinuteTextStyle: MaterialStateTextStyle.resolveWith(
-    //   (states) => states.contains(MaterialState.selected)
-    //       ? const TextStyle(
-    //           color: Colors.black,
-    //           fontSize: 50,
-
-    //         )
-    //       : const TextStyle(
-    //           color: Colors.black,
-    //           fontSize: 50,
-    //         ),
-    // ),
     hourMinuteColor: Colors.grey,
-
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: TextStyle(color: Colors.black),
       helperStyle: TextStyle(color: Colors.black),
       filled: true,
       fillColor: Colors.grey,
-
       focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
           borderSide: BorderSide(color: Colors.black)),
-
-      // border: MaterialStateOutlineInputBorder.resolveWith(
-      //   (states) => states.contains(MaterialState.selected)
-      //       ? OutlineInputBorder(
-      //           borderRadius: BorderRadius.all(
-      //             Radius.circular(20),
-      //           ),
-      //           borderSide: BorderSide(color: Colors.black))
-      //       : OutlineInputBorder(
-      //           borderRadius: BorderRadius.all(
-      //             Radius.circular(20),
-      //           ),
-      //           borderSide: BorderSide.none,
-      //         ),
-      // ),
       contentPadding: EdgeInsets.all(0),
     ),
   ),
@@ -95,41 +89,27 @@ ThemeData light = ThemeData(
   useMaterial3: true,
 
   textTheme: TextTheme(
-    bodyLarge: TextStyle(
+    bodyLarge: bodyLarge.copyWith(
       color: const Color(0xFF223159).withOpacity(.6),
-      fontSize: 16,
     ),
-    // bodyMedium: TextStyle(
-    //   color: Colors.white,
-    //   fontWeight: FontWeight.w600,
-    //   fontSize: 14,
-    // ),
-    titleMedium: const TextStyle(
+    titleMedium: titleMedium.copyWith(
       color: Colors.black, // <-- TextFormField input color
     ),
-    headlineLarge: const TextStyle(
-      fontWeight: FontWeight.w800,
-      fontSize: 20,
-      color: Color(0xFF101520),
+    headlineLarge: headlineLarge.copyWith(
+      color: const Color(0xFF101520),
     ),
-    headlineMedium: const TextStyle(
-      fontWeight: FontWeight.w500,
-      fontSize: 31,
-      color: Color(
+    headlineMedium: headlineMedium.copyWith(
+      color: const Color(
         0xFF0C0C0C,
       ),
     ),
-    labelLarge: const TextStyle(
-      fontWeight: FontWeight.w600,
-      fontSize: 14,
-      color: Color(
+    labelLarge: labelLarge.copyWith(
+      color: const Color(
         0xFF223159,
       ),
     ),
   ),
-  // 0xFF050708
   scaffoldBackgroundColor: Colors.white,
-  // dividerColor: const Color(0xFFE3E6E8),
   colorScheme: ColorScheme(
     brightness: Brightness.light,
     primary: primaryColor,
@@ -147,16 +127,15 @@ ThemeData light = ThemeData(
 );
 
 ThemeData dark = ThemeData(
-  primaryColor:
-      // color ??
-      primaryColor,
+  primaryColor: primaryColor,
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.black, //<-- SEE HERE
   ),
-  dialogBackgroundColor: Color(0xFF101520),
-  dialogTheme: DialogTheme(
-      backgroundColor: Color(0xFF101520),
-      contentTextStyle: TextStyle(color: Colors.white)),
+  dialogBackgroundColor: const Color(0xFF101520),
+  dialogTheme: const DialogTheme(
+    backgroundColor: Color(0xFF101520),
+    contentTextStyle: TextStyle(color: Colors.white),
+  ),
   dividerColor: const Color(0xFF22272A),
   dividerTheme: const DividerThemeData(color: Color(0xFF22272A)),
   scaffoldBackgroundColor: const Color(0xFF101520),
@@ -178,39 +157,26 @@ ThemeData dark = ThemeData(
     filled: true,
     fillColor: const Color(0xFF0D0D0D),
   ),
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(
-      color: Color(0xFFB6B6B6),
-      fontSize: 16,
+  textTheme: TextTheme(
+    bodyLarge: bodyLarge.copyWith(
+      color: const Color(0xFFB6B6B6),
     ),
-    // bodyMedium: TextStyle(
-    //   color: Colors.white,
-    //   fontWeight: FontWeight.w600,
-    //   fontSize: 14,
-    // ),
-    headlineLarge: TextStyle(
-      fontWeight: FontWeight.w800,
-      fontSize: 20,
-      color: Color(0xFFEFEFEF),
+    headlineLarge: headlineLarge.copyWith(
+      color: const Color(0xFFEFEFEF),
     ),
-    labelLarge: TextStyle(
-      fontWeight: FontWeight.w600,
-      fontSize: 14,
+    labelLarge: labelLarge.copyWith(
       color: Colors.white,
     ),
-    headlineMedium: const TextStyle(
-      fontWeight: FontWeight.w500,
-      fontSize: 31,
-    ),
-    titleMedium: TextStyle(
+    headlineMedium: headlineMedium.copyWith(),
+    titleMedium: titleMedium.copyWith(
       color: Colors.white,
     ),
   ),
   colorScheme: ColorScheme(
     brightness: Brightness.dark,
     primary: Colors.white,
-    onPrimary: Color(0xFF0D0D0D),
-    secondary: Color(0xFFEFEFEF),
+    onPrimary: const Color(0xFF0D0D0D),
+    secondary: const Color(0xFFEFEFEF),
     onSecondary: const Color(0xFFB6B6B6).withOpacity(0.6),
     tertiary: Colors.white,
     error: Colors.red,

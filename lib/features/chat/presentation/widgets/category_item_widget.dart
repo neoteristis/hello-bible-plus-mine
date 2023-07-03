@@ -56,7 +56,7 @@ class CategoryItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             if (logo != null)
@@ -73,7 +73,7 @@ class CategoryItemWidget extends StatelessWidget {
                   color: contentColor,
                 ),
               ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             Expanded(

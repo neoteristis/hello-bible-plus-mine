@@ -53,7 +53,6 @@ class CategoriesWidget extends StatelessWidget {
                 .onBackground
                 .withOpacity(isLight(context) ? 1 : .7);
             return ListView.separated(
-              // reverse: true,
               itemCount: state.categoriesBySection.length,
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -230,7 +229,7 @@ class BottomContainer extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
                     title,

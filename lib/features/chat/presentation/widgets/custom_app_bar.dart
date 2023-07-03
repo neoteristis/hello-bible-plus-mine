@@ -63,8 +63,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 );
               }
               return Row(
-                // minVerticalPadding: 40,
-                // contentPadding: EdgeInsets.zero,
                 children: [
                   const Logo(
                     size: Size(22, 22),
@@ -72,32 +70,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   const SizedBox(
                     width: 15,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        state.conversation!.category?.name ??
-                            AppLocalizations.of(context)!.loading,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          // fontSize: 14,
-                          color: Theme.of(context).colorScheme.tertiary,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          state.conversation!.category?.name ??
+                              AppLocalizations.of(context)!.loading,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            // fontSize: 14,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
                         ),
-                      ),
-                      Text(
-                        state.conversation!.category?.welcomePhrase ?? '',
-                        softWrap: false,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 11.sp,
-                          // fontSize: 11,
-                          color: Theme.of(context).colorScheme.tertiary,
+                        Text(
+                          state.conversation!.category?.welcomePhrase ?? '',
+                          softWrap: false,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 11.sp,
+                            // fontSize: 11,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 ],
                 // leading: const Logo(

@@ -108,7 +108,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
-                  childAspectRatio: 10 / 7,
+                  childAspectRatio: 11 / 7,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10),
               itemCount: categories.length,
@@ -119,7 +119,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
       ],
     );
   }
