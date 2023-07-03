@@ -67,18 +67,22 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       await _requestCameraPermission();
       final status = await Permission.camera.status;
       if (status.isGranted) {
-        emit(state.copyWith(
-          pickPictureStatus: Status.loading,
-        ));
+        emit(
+          state.copyWith(
+            pickPictureStatus: Status.loading,
+          ),
+        );
         add(TakeImage(event.source));
       }
     } else if (event.source == ImageSource.gallery) {
       await _requestPhotoPermission();
       final status = await Permission.photos.status;
       if (status.isGranted) {
-        emit(state.copyWith(
-          pickPictureStatus: Status.loading,
-        ));
+        emit(
+          state.copyWith(
+            pickPictureStatus: Status.loading,
+          ),
+        );
         add(TakeImage(event.source));
       }
     }

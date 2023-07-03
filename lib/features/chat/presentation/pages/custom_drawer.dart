@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/routes/route_name.dart';
 import '../../../../core/theme/bloc/theme_bloc.dart';
 import '../../../../core/widgets/custom_alert_dialog.dart';
+import '../../../../l10n/function.dart';
 import '../bloc/chat_bloc.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/custom_app_bar.dart';
@@ -177,25 +179,21 @@ class DrawerTile extends StatelessWidget {
 
 List<Widget> getDrawerTiles(BuildContext context) => [
       DrawerTile(
-        label: AppLocalizations.of(context)!.myProfile,
-        icon: const IconDrawerTiles(
-          Icons.person,
-        ),
+        label: dict(context).myProfile,
+        icon: const IconDrawerFromAsset('assets/icons/profil.svg'),
         onPressed: () {
           context.go(RouteName.profile);
         },
       ),
       DrawerTile(
-        label: AppLocalizations.of(context)!.mySubscription,
-        icon: const IconDrawerTiles(
-          Icons.favorite,
-        ),
+        label: dict(context).mySubscription,
+        icon: const IconDrawerFromAsset('assets/icons/subscription.svg'),
         onPressed: () {
           context.go(RouteName.subscribe);
         },
       ),
       DrawerTile(
-        label: AppLocalizations.of(context)!.manageNotifications,
+        label: dict(context).manageNotifications,
         icon: const IconDrawerTiles(
           Icons.notifications,
         ),
@@ -205,9 +203,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
       ),
       DrawerTile(
         label: AppLocalizations.of(context)!.darkMode,
-        icon: const IconDrawerTiles(
-          Icons.contrast,
-        ),
+        icon: const IconDrawerFromAsset('assets/icons/brightness.svg'),
         trailing: Transform.scale(
           scale: 0.8,
           child: BlocBuilder<ThemeBloc, ThemeState>(
@@ -241,7 +237,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
       ),
       DrawerTile(
-        label: AppLocalizations.of(context)!.contactUs,
+        label: dict(context).contactUs,
         icon: const IconDrawerTiles(
           Icons.mail,
         ),
@@ -250,7 +246,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: AppLocalizations.of(context)!.help,
+        label: dict(context).help,
         icon: const IconDrawerTiles(
           Icons.help,
         ),
@@ -259,7 +255,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: AppLocalizations.of(context)!.about,
+        label: dict(context).about,
         icon: const IconDrawerTiles(
           Icons.info,
         ),
@@ -268,16 +264,14 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         },
       ),
       DrawerTile(
-        label: AppLocalizations.of(context)!.readOurConditions,
-        icon: const IconDrawerTiles(
-          Icons.list_alt,
-        ),
+        label: dict(context).readOurConditions,
+        icon: const IconDrawerFromAsset('assets/icons/cgu.svg'),
         onPressed: () {
           context.go(RouteName.conditions);
         },
       ),
       DrawerTile(
-        label: AppLocalizations.of(context)!.rateApp,
+        label: dict(context).rateApp,
         icon: const IconDrawerTiles(
           Icons.star,
         ),
@@ -297,6 +291,23 @@ class IconDrawerTiles extends StatelessWidget {
     return Icon(
       icon,
       size: 20,
+      color: Theme.of(context).colorScheme.tertiary,
+    );
+  }
+}
+
+class IconDrawerFromAsset extends StatelessWidget {
+  const IconDrawerFromAsset(
+    this.path, {
+    super.key,
+  });
+
+  final String path;
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      path,
       color: Theme.of(context).colorScheme.tertiary,
     );
   }
