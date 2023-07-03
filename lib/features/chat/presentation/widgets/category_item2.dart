@@ -33,6 +33,8 @@ class CategoryItem2 extends StatelessWidget {
         // alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
+          border: Border.fromBorderSide(
+              BorderSide(color: Theme.of(context).dividerColor)),
           // color: Theme.of(context).primaryColor,
           // color: category.logo != null ? Colors.black : Colors.green,
           // image: category.logo != null

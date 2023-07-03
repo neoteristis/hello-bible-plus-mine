@@ -29,6 +29,8 @@ class CategoryItemWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).colorScheme.onPrimary,
+        border: Border.fromBorderSide(
+            BorderSide(color: Theme.of(context).dividerColor)),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF202040).withOpacity(0.08),
