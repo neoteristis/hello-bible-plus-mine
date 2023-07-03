@@ -76,14 +76,14 @@ class CategoryItemWidget extends StatelessWidget {
                 maxLines: 3,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 13.sp,
+                  fontSize: 11.sp,
                   // fontSize: 11,
                   color: contentColor,
                 ),
               ),
             ),
             SizedBox(
-              height: 50.sp,
+              // height: 50.sp,
               // height: 45,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
@@ -96,7 +96,7 @@ class CategoryItemWidget extends StatelessWidget {
                     maxLines: 3,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       // fontSize: 11,
                       color: contentColor,
                     ),

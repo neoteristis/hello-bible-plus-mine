@@ -209,6 +209,18 @@ class RegistrationRepositoryImp implements RegistrationRepository {
           // } else {
           //   return const Left(ServerFailure(info: 'Une erreur s\'est produite'));
           // }
+          // final res = await remote.socialConnect(
+          //   User(
+          //     email: userData?.,
+          //     lastName: account?.displayName,
+          //     firstName: account?.displayName,
+          //     photo: account?.photoUrl,
+          //   ),
+          // );
+          // final userRes = res.user;
+          // await saveUserResponseAndRegisterFCM(res);
+
+          // return Right(userRes!);
 
           return const Right(User());
         } else {
