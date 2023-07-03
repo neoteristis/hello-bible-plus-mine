@@ -31,6 +31,7 @@ class CategoryItem2 extends StatelessWidget {
       },
       child: Container(
         // alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
           border: Border.fromBorderSide(
@@ -48,56 +49,60 @@ class CategoryItem2 extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 36.0),
-                child: Text(
-                  category.name ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14.sp,
-                    // fontSize: 14,
-                    color: contentColor,
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 36.0),
+                  child: Text(
+                    category.name ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14.sp,
+                      // fontSize: 14,
+                      color: contentColor,
+                    ),
+                    // style: TextStyle(
+                    //   fontSize: 14.sp,
+                    //   fontWeight: FontWeight.w700,
+                    //   color: Colors.white,
+                    // ),
+                    textAlign: TextAlign.center,
                   ),
-                  // style: TextStyle(
-                  //   fontSize: 14.sp,
-                  //   fontWeight: FontWeight.w700,
-                  //   color: Colors.white,
-                  // ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  category.welcomePhrase ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  // style: TextStyle(
-                  //   fontSize: 11.sp,
-                  //   fontWeight: FontWeight.w500,
-                  //   color: Colors.white,
-                  // ),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 11.sp,
-                    // fontSize: 11,
-                    color: contentColor,
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                    category.welcomePhrase ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    // style: TextStyle(
+                    //   fontSize: 11.sp,
+                    //   fontWeight: FontWeight.w500,
+                    //   color: Colors.white,
+                    // ),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 11.sp,
+                      // fontSize: 11,
+                      color: contentColor,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),
+            // const SizedBox(
+            //   height: 3,
+            // ),
           ],
         ),
       ),
