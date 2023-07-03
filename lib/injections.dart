@@ -57,8 +57,8 @@ import 'features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'firebase_options.dart';
 import 'objectbox.g.dart';
 
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+// import 'package:timezone/data/latest_all.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
 
 final getIt = GetIt.instance;
 

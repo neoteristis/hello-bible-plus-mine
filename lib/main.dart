@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'injections.dart';
-import 'dart:io';
 
 void main() async {
   // final WidgetsBinding widgetsBinding =
