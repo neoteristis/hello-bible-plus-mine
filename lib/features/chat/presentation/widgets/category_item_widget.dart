@@ -103,7 +103,7 @@ class CategoryItemWidget extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                padding: const EdgeInsets.symmetric(horizontal: 0.0),
                 child: Text(
                   category?.welcomePhrase ?? '',
                   textAlign: TextAlign.center,
