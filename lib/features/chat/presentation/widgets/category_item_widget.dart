@@ -51,55 +51,68 @@ class CategoryItemWidget extends StatelessWidget {
         splashColor: Theme.of(context).primaryColor,
         highlightColor: Colors.black.withOpacity(.5),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 8,
+            ),
             if (logo != null)
               CustomNetworkImage(
                 logo,
                 color: contentColor,
               ),
             if (logo == null)
-              SvgPicture.asset(
-                'assets/icons/ichthys.svg',
-                width: 25.sp,
-                // width: 25,
-                color: contentColor,
-              ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                category?.name ?? '',
-                textAlign: TextAlign.center,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 11.sp,
-                  // fontSize: 11,
+              Expanded(
+                child: SvgPicture.asset(
+                  'assets/icons/ichthys.svg',
+                  width: 25.sp,
+                  // width: 25,
                   color: contentColor,
                 ),
               ),
-            ),
             SizedBox(
-              // height: 50.sp,
-              // height: 45,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: Center(
+              height: 4,
+            ),
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 17),
                   child: Text(
-                    category?.welcomePhrase ?? '',
+                    category?.name ?? '',
                     textAlign: TextAlign.center,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
+                    maxLines: 2,
                     style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                       fontSize: 11.sp,
                       // fontSize: 11,
                       color: contentColor,
                     ),
+                  ),
+                ),
+              ),
+            ),
+            // SizedBox(
+            //   height: 4,
+            // ),
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: Text(
+                  category?.welcomePhrase ?? '',
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 11.sp,
+                    // fontSize: 11,
+                    color: contentColor,
                   ),
                 ),
               ),

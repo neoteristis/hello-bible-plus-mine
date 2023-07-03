@@ -71,6 +71,9 @@ class CategoryItem2 extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 5,
+            ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),

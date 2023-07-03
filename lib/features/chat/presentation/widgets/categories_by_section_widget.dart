@@ -63,7 +63,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                childAspectRatio: 6 / 7,
+                childAspectRatio: 6 / 8,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
