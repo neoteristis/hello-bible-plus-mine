@@ -130,7 +130,7 @@ class PageViewChild extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          // const Spacer(),
+          const Spacer(),
           SvgPicture.asset(
             images.first,
             // width: extendImage! ? MediaQuery.of(context).size.width : null,
