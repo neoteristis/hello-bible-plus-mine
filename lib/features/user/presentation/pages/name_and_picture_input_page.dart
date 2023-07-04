@@ -72,6 +72,7 @@ class NameAndPictureInputPage extends StatelessWidget {
         bodyLarge: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               GestureDetector(
                 onTap: () {
@@ -105,7 +106,7 @@ class NameAndPictureInputPage extends StatelessWidget {
                             ),
                             onTap: () {
                               context.read<RegistrationBloc>().add(
-                                    RegistrationPicturePicked(
+                                    const RegistrationPicturePicked(
                                       source: ImageSource.gallery,
                                     ),
                                   );
@@ -173,7 +174,7 @@ class NameAndPictureInputPage extends StatelessWidget {
                   );
                 },
               ),
-              const Spacer(),
+              // const Spacer(),
               BlocBuilder<RegistrationBloc, RegistrationState>(
                 buildWhen: (previous, current) =>
                     previous.updateUserBtnController !=

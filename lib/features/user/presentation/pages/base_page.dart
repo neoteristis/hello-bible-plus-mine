@@ -29,8 +29,9 @@ class BasePage extends StatelessWidget {
     return ScaffoldWithBackground(
       onPop: onPop,
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - 90,
+          height: MediaQuery.of(context).size.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -102,7 +103,9 @@ class BasePage extends StatelessWidget {
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
-                        TermsUse(),
+                        const Expanded(
+                          child: TermsUse(),
+                        ),
                       ],
                     ),
               ),
