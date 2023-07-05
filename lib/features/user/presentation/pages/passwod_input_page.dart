@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/helper/show_error_dialog.dart';
+import 'package:gpt/core/helper/show_dialog.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -32,7 +32,7 @@ class PasswordInputPage extends StatelessWidget {
                   );
                 break;
               case Status.failed:
-                showErrorDialog(context, state.failure?.message);
+                CustomDialog.error(context, state.failure?.message);
                 break;
               default:
             }

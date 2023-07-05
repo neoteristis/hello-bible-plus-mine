@@ -44,4 +44,19 @@ class NotificationRepositoryImp implements NotificationRepository {
       return const Left(NoConnexionFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, dynamic>> changeNotifTime(
+      NotifByCategory notif) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.changeNotifTime(notif);
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
 }

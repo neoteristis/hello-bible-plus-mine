@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/helper/show_error_dialog.dart';
+import 'package:gpt/core/helper/show_dialog.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/core/models/required_input.dart';
 import '../../../../core/constants/status.dart';
@@ -25,7 +25,7 @@ class CreatePasswordInputPage extends StatelessWidget {
             context.go(RouteName.namePicture);
             break;
           case Status.failed:
-            showErrorDialog(context, state.failure?.message);
+            CustomDialog.error(context, state.failure?.message);
             break;
           default:
         }

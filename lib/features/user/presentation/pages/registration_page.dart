@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/status.dart';
-import '../../../../core/helper/show_error_dialog.dart';
+import '../../../../core/helper/show_dialog.dart';
 import '../../../chat/presentation/bloc/chat_bloc.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/social_connect_bloc/social_connect_bloc.dart';
@@ -27,7 +27,7 @@ class RegistrationPage extends StatelessWidget {
               );
             break;
           case Status.failed:
-            showErrorDialog(context, state.failure?.message);
+            CustomDialog.error(context, state.failure?.message);
             break;
           default:
         }

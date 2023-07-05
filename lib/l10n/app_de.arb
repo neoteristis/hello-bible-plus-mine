@@ -89,5 +89,8 @@
 "hour": "Stunde",
 "handleYourNotifOn": "Verwalte deine Benachrichtigungen auf ",
 "cancel": "Abbrechen",
-"chooseHour": "Uhrzeit eingeben"
+"chooseHour": "Uhrzeit eingeben",
+"changeNotSupported": "Änderung nicht unterstützt",
+"modificationTakenIntoAccount": "Änderung berücksichtigt",
+"anErrorHasOccurred": "Ein Fehler ist aufgetreten"
 }

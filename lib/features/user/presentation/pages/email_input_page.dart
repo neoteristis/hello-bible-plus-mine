@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/helper/show_error_dialog.dart';
+import 'package:gpt/core/helper/show_dialog.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 
 import 'package:gpt/features/user/data/models/email_input.dart';
@@ -38,7 +38,7 @@ class EmailInputPage extends StatelessWidget {
               previous.emailCheckStatus != current.emailCheckStatus,
           listener: (context, state) {
             if (state.emailCheckStatus == Status.failed) {
-              showErrorDialog(context, state.failure?.message);
+              CustomDialog.error(context, state.failure?.message);
             }
           },
         ),

@@ -89,5 +89,8 @@
   "resetToDefault": "Rétablir par défaut",
   "handleYourNotifOn": "Gérer vos notifications sur ",
   "cancel": "Annuler",
-  "chooseHour": "Choisissez l'heure"
+  "chooseHour": "Choisissez l'heure",
+  "changeNotSupported": "Modificaton non prise en compte",
+  "modificationTakenIntoAccount": "Modification réussie",
+  "anErrorHasOccurred": "Une erreur s'est produite"
 }

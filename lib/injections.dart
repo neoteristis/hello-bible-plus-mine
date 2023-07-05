@@ -254,17 +254,11 @@ void usecase() {
   getIt.registerLazySingleton(() => GetProfileUsecase(getIt()));
 
   getIt.registerLazySingleton(
-    () => FetchNotificationValuesByCatecoryUsecase(
-      getIt(),
-    ),
-  );
-  getIt.registerLazySingleton(
-    () => SwitchNotificationValueUsecase(
-      getIt(),
-    ),
-  );
+      () => FetchNotificationValuesByCatecoryUsecase(getIt()));
+  getIt.registerLazySingleton(() => SwitchNotificationValueUsecase(getIt()));
 
   getIt.registerLazySingleton(() => GetSuggestionsMessageUsecase(getIt()));
+  getIt.registerLazySingleton(() => ChangeNotifTimeUsecase(getIt()));
 }
 
 void bloc() {
@@ -362,7 +356,10 @@ void bloc() {
   );
 
   getIt.registerFactory(
-    () => ManageNotifBloc(),
+    () => ManageNotifBloc(
+      switchNotifValue: getIt(),
+      changeNotifTime: getIt(),
+    ),
   );
 }
 

@@ -38,11 +38,9 @@ class NotifByCategory extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJsonTime() {
     return {
-      'value': value,
-      'iconPath': iconPath,
-      'title': title,
+      'type': title == 'Verset du jour' ? 'dailyVerse' : 'encouraging',
       'time': time,
     };
   }

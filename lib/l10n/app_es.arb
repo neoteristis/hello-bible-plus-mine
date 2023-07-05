@@ -89,5 +89,8 @@
     "hour": "Hora",
     "handleYourNotifOn": "Administra tus notificaciones en ",
     "cancel": "Cancelar",
-    "chooseHour": "Ingrese la hora"
+    "chooseHour": "Ingrese la hora",
+    "changeNotSupported": "Cambio no soportado",
+    "modificationTakenIntoAccount": "Modificación tomada en cuenta",
+    "anErrorHasOccurred": "Ha ocurrido un error"
 }

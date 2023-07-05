@@ -89,5 +89,8 @@
     "hour": "시간",
     "handleYourNotifOn": "알림 관리: ",
     "cancel": "취소",
-    "chooseHour": "시간 입력"
+    "chooseHour": "시간 입력",
+    "changeNotSupported": "변경이 지원되지 않습니다",
+    "modificationTakenIntoAccount": "수정이 반영되었습니다",
+    "anErrorHasOccurred": "오류가 발생했습니다"
 }

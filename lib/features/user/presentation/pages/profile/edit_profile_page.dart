@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 import 'package:intl/intl.dart';
-import '../../../../../core/helper/show_error_dialog.dart';
+import '../../../../../core/helper/show_dialog.dart';
 import '../../../../../core/models/required_input.dart';
 import '../../../../../l10n/function.dart';
 import '../../../data/models/email_input.dart';
@@ -30,13 +30,13 @@ class EditProfilePage extends StatelessWidget {
           listener: (context, state) {
             switch (state.updateStatus) {
               case Status.loaded:
-                showErrorDialog(
+                CustomDialog.success(
                   context,
                   dict(context).successfulUpdate,
                 );
                 break;
               case Status.failed:
-                showErrorDialog(
+                CustomDialog.error(
                   context,
                   state.failure?.message,
                 );
@@ -51,13 +51,13 @@ class EditProfilePage extends StatelessWidget {
           listener: (context, state) {
             switch (state.updatePictureStatus) {
               case Status.loaded:
-                showErrorDialog(
+                CustomDialog.success(
                   context,
                   dict(context).successfulUpdate,
                 );
                 break;
               case Status.failed:
-                showErrorDialog(
+                CustomDialog.error(
                   context,
                   state.failure?.message,
                 );

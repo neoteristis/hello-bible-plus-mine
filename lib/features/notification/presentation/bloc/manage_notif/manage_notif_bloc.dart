@@ -3,15 +3,21 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gpt/core/extension/time_of_day_extension.dart';
 
+import '../../../../../core/constants/status.dart';
 import '../../../../../l10n/function.dart';
 import '../../../domain/entities/notif_by_category.dart';
+import '../../../domain/usecases/usecases.dart';
 
 part 'manage_notif_event.dart';
 part 'manage_notif_state.dart';
 
 class ManageNotifBloc extends Bloc<ManageNotifEvent, ManageNotifState> {
-  ManageNotifBloc()
-      : super(
+  final SwitchNotificationValueUsecase switchNotifValue;
+  final ChangeNotifTimeUsecase changeNotifTime;
+  ManageNotifBloc({
+    required this.switchNotifValue,
+    required this.changeNotifTime,
+  }) : super(
           ManageNotifState(
             notifByCategory: notifCats,
           ),
@@ -44,6 +50,22 @@ class ManageNotifBloc extends Bloc<ManageNotifEvent, ManageNotifState> {
                 time: heure.toFormattedString(),
               ),
             ),
+          configureNotifStatus: Status.loading,
+        ),
+      );
+      final res = await changeNotifTime(
+        state.notifByCategory![index],
+      );
+      return res.fold(
+        (l) => emit(
+          state.copyWith(
+            configureNotifStatus: Status.failed,
+          ),
+        ),
+        (r) => emit(
+          state.copyWith(
+            configureNotifStatus: Status.loaded,
+          ),
         ),
       );
     }

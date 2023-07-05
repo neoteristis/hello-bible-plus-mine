@@ -52,116 +52,122 @@ class CategoriesWidget extends StatelessWidget {
                 .colorScheme
                 .onBackground
                 .withOpacity(isLight(context) ? 1 : .7);
-            return ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              itemCount: state.categoriesBySection.length,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Column(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: TextField(
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.sentences,
-                          cursorColor: Theme.of(context).primaryColor,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Theme.of(context).colorScheme.onPrimary,
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 20),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: hintColor,
-                            ),
-                            hintText:
-                                AppLocalizations.of(context)!.searchInBible,
-                            hintStyle: TextStyle(
-                              fontSize: 14.sp,
-                              // fontSize: 14,
-                              color: hintColor,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(24)),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(24)),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(24)),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<ChatBloc>().add(ChatCategoriesFetched());
+              },
+              child: ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemCount: state.categoriesBySection.length,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: TextField(
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.sentences,
+                            cursorColor: Theme.of(context).primaryColor,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: hintColor,
+                              ),
+                              hintText:
+                                  AppLocalizations.of(context)!.searchInBible,
+                              hintStyle: TextStyle(
+                                fontSize: 14.sp,
+                                // fontSize: 14,
+                                color: hintColor,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(24)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(24)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(24)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      CategoriesBySectionWidget(
-                        data: state.categoriesBySection[index],
-                        index: index,
-                      ),
-                    ],
-                  );
-                } else if (index == state.categoriesBySection.length - 1) {
-                  return Column(
-                    children: [
-                      CategoriesBySectionWidget(
-                        data: state.categoriesBySection[index],
-                        index: index,
-                      ),
-                      const CustomDivider(),
-                      SizedBox(
-                        height: 90,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: const [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            BottomContainer(
-                              title: 'Comment utiliser cet outil ?',
-                              subtitle: 'HelloBible+ se base sur la nouve...',
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            BottomContainer(
-                              title: ' ⚡ Payez selon votre usage',
-                              subtitle: 'Aucune obligation de montant,...',
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                          ],
+                        const SizedBox(
+                          height: 25,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                    ],
+                        CategoriesBySectionWidget(
+                          data: state.categoriesBySection[index],
+                          index: index,
+                        ),
+                      ],
+                    );
+                  } else if (index == state.categoriesBySection.length - 1) {
+                    return Column(
+                      children: [
+                        CategoriesBySectionWidget(
+                          data: state.categoriesBySection[index],
+                          index: index,
+                        ),
+                        const CustomDivider(),
+                        SizedBox(
+                          height: 90,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: const [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              BottomContainer(
+                                title: 'Comment utiliser cet outil ?',
+                                subtitle: 'HelloBible+ se base sur la nouve...',
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              BottomContainer(
+                                title: ' ⚡ Payez selon votre usage',
+                                subtitle: 'Aucune obligation de montant,...',
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    );
+                  }
+                  return CategoriesBySectionWidget(
+                    data: state.categoriesBySection[index],
+                    index: index,
                   );
-                }
-                return CategoriesBySectionWidget(
-                  data: state.categoriesBySection[index],
-                  index: index,
-                );
-              },
-              separatorBuilder: (context, index) => const CustomDivider(),
+                },
+                separatorBuilder: (context, index) => const CustomDivider(),
+              ),
             );
           default:
             return Container();

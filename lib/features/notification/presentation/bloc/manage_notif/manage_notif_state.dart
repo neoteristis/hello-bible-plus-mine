@@ -3,20 +3,25 @@ part of 'manage_notif_bloc.dart';
 class ManageNotifState extends Equatable {
   const ManageNotifState({
     this.notifByCategory = const [],
+    this.configureNotifStatus = Status.init,
   });
 
   final List<NotifByCategory>? notifByCategory;
+  final Status? configureNotifStatus;
 
   @override
   List<Object?> get props => [
         notifByCategory,
+        configureNotifStatus,
       ];
 
   ManageNotifState copyWith({
     List<NotifByCategory>? notifByCategory,
+    Status? configureNotifStatus,
   }) {
     return ManageNotifState(
       notifByCategory: notifByCategory ?? this.notifByCategory,
+      configureNotifStatus: configureNotifStatus ?? this.configureNotifStatus,
     );
   }
 }
