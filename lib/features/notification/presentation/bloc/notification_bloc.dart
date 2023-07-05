@@ -21,55 +21,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }) : super(const NotificationState()) {
     on<NotificationValuesByCategoryGotten>(
         _onNotificationValuesByCategoryGotten);
-    on<NotificationValueSwitched>(_onNotificationValueSwitched);
-    on<NotificationTimeSelected>(_onNotificationTimeSelected);
-    on<NotificationTimeSelected>(_onNotificationTimeSelected);
-  }
-
-  void _onNotificationTimeSelected(
-    NotificationTimeSelected event,
-    Emitter<NotificationState> emit,
-  ) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: event.context,
-      initialTime: TimeOfDay.now(),
-    );
-  }
-
-  void _onNotificationValueSwitched(
-    NotificationValueSwitched event,
-    Emitter<NotificationState> emit,
-  ) async {
-    final notifCats = state.notifCats;
-    final index = notifCats?.indexWhere(
-        (element) => element.category.id == event.notif.category.id);
-    if (index != null) {
-      print(index);
-      emit(
-        state.copyWith(
-          notifCats: List.of(notifCats!)
-            ..removeAt(index)
-            ..insert(
-              index,
-              event.notif,
-            ),
-        ),
-      );
-      final res = await switchNotification(event.notif);
-      return res.fold(
-        (l) => emit(
-          state.copyWith(
-            notifCats: List.of(notifCats!)
-              ..removeAt(index)
-              ..insert(
-                index,
-                event.notif.copyWith(value: !event.notif.value!),
-              ),
-          ),
-        ),
-        (r) => null,
-      );
-    }
   }
 
   void _onNotificationValuesByCategoryGotten(

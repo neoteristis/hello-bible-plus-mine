@@ -19,6 +19,9 @@ class ApiConstants {
       '$route/messages/$conversationId';
   static String answer(String conversationId) =>
       '$route/messages/$conversationId';
+
+  static String suggestions(String conversationId) =>
+      '$route/conversations/generate_question/$conversationId';
   // Add more API strings here
 
   // new api

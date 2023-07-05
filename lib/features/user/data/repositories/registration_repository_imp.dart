@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -137,15 +139,31 @@ class RegistrationRepositoryImp implements RegistrationRepository {
           // 'useBundleId': 'true',
           // if (credential.state != null) 'state': credential.state!,
         };
-        print('1');
+        // final signInWithAppleEndpoint = Uri(
+        //   scheme: 'https',
+        //   host: 'good-clever-spectrum.glitch.me',
+        //   path: '/sign_in_with_apple',
+        //   queryParameters: <String, String>{
+        //     'code': credential.authorizationCode,
+        //     if (credential.givenName != null)
+        //       'firstName': credential.givenName!,
+        //     if (credential.familyName != null)
+        //       'lastName': credential.familyName!,
+        //     'useBundleId': !kIsWeb && (Platform.isIOS || Platform.isMacOS)
+        //         ? 'true'
+        //         : 'false',
+        //     if (credential.state != null) 'state': credential.state!,
+        //   },
+        // );
         final res = await remote.appleConnect(queryParams);
-        print('ouuuuuuuura');
         final userRes = res.user;
         await saveUserResponseAndRegisterFCM(res);
 
         return Right(userRes!);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
+      } catch (e) {
+        return const Left(ServerFailure(info: 'Connexion canceled'));
       }
     }
     return const Left(NoConnexionFailure());
@@ -175,6 +193,8 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         return Right(userRes!);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
+      } catch (e) {
+        return const Left(ServerFailure(info: 'Connexion canceled'));
       }
     }
     return const Left(NoConnexionFailure());
@@ -228,6 +248,8 @@ class RegistrationRepositoryImp implements RegistrationRepository {
         }
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
+      } catch (e) {
+        return const Left(ServerFailure(info: 'Connexion canceled'));
       }
     }
     return const Left(NoConnexionFailure());

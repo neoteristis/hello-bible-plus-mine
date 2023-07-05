@@ -53,6 +53,7 @@ class CategoriesWidget extends StatelessWidget {
                 .onBackground
                 .withOpacity(isLight(context) ? 1 : .7);
             return ListView.separated(
+              physics: const BouncingScrollPhysics(),
               itemCount: state.categoriesBySection.length,
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -149,7 +150,7 @@ class CategoriesWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                     ],
@@ -160,7 +161,7 @@ class CategoriesWidget extends StatelessWidget {
                   index: index,
                 );
               },
-              separatorBuilder: (context, index) => CustomDivider(),
+              separatorBuilder: (context, index) => const CustomDivider(),
             );
           default:
             return Container();
@@ -185,8 +186,6 @@ class CustomDivider extends StatelessWidget {
           padding ?? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
       child: const Divider(
         thickness: 1,
-
-        // color: Color(0xFFE3E6E8),
       ),
     );
   }
@@ -238,7 +237,6 @@ class BottomContainer extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12.sp,
-                      // fontSize: 12,
                       color: contentColor,
                     ),
                   ),
@@ -249,7 +247,6 @@ class BottomContainer extends StatelessWidget {
                     style: TextStyle(
                       color: contentColor,
                       fontSize: 12.sp,
-                      // fontSize: 12,
                     ),
                   ),
                 ],

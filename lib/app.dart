@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/features/contact_us/presentation/bloc/contact_us_bloc.dart';
+import 'package:gpt/features/notification/presentation/bloc/manage_notif/manage_notif_bloc.dart';
 
 import 'core/bloc/obscure_text/obscure_text_cubit.dart';
 import 'core/routes/router.dart';
@@ -66,6 +67,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<ContactUsBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<ManageNotifBloc>(),
         ),
       ],
       child: BlocBuilder<AuthBloc, AuthState>(

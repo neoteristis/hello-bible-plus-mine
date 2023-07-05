@@ -43,6 +43,7 @@ import 'features/notification/data/datasources/notification_remote_datasource.da
 import 'features/notification/domain/repositories/notification_repository.dart';
 import 'features/notification/domain/usecases/fetch_notification_values_by_category_usecase.dart';
 import 'features/notification/domain/usecases/usecases.dart';
+import 'features/notification/presentation/bloc/manage_notif/manage_notif_bloc.dart';
 import 'features/notification/presentation/bloc/notification_bloc.dart';
 import 'features/subscription/data/datasources/subscription_remote_datasources.dart';
 import 'features/subscription/data/repositories/subscription_repository_imp.dart';
@@ -262,6 +263,8 @@ void usecase() {
       getIt(),
     ),
   );
+
+  getIt.registerLazySingleton(() => GetSuggestionsMessageUsecase(getIt()));
 }
 
 void bloc() {
@@ -273,6 +276,7 @@ void bloc() {
       getResponseMessages: getIt(),
       fetchCategoriesBySection: getIt(),
       getConversationById: getIt(),
+      getSuggestionMessages: getIt(),
       // tts: getIt(),
     ),
   );
@@ -355,6 +359,10 @@ void bloc() {
 
   getIt.registerFactory(
     () => ContactUsBloc(),
+  );
+
+  getIt.registerFactory(
+    () => ManageNotifBloc(),
   );
 }
 

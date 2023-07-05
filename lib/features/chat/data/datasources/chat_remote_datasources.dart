@@ -21,6 +21,7 @@ abstract class ChatRemoteDatasources {
   Future<List<HistoricalConversation>> fetchHistoricalConversation(
       PHistorical param);
   Future<Conversation> getConversationById(String conversationId);
+  Future<List<String>> getSuggestions(MessageParam param);
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -146,6 +147,24 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
       return Conversation.fromJson(res.data);
     } catch (e) {
       print(e.toString());
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<List<String>> getSuggestions(MessageParam param) async {
+    try {
+      final res = await baseRepo.post(
+        ApiConstants.suggestions(param.conversation!.id!),
+        body: param.toJson(),
+      );
+      final data = res.data['data'] as List;
+      if (data.isEmpty) {
+        return [];
+      }
+      return data.map((m) => m.toString()).toList();
+      // return [];
+    } catch (e) {
       throw ServerException(message: e.toString());
     }
   }

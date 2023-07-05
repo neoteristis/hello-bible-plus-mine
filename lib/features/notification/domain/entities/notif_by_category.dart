@@ -1,43 +1,100 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../chat/domain/entities/category.dart';
-
 class NotifByCategory extends Equatable {
+  final String? id;
   final bool? value;
-  final Category category;
-
+  final String? iconPath;
+  final String? title;
+  final String? time;
   const NotifByCategory({
+    this.id,
     this.value,
-    required this.category,
+    this.iconPath,
+    this.title,
+    this.time,
   });
-
   @override
   List<Object?> get props => [
+        id,
         value,
-        category,
+        iconPath,
+        title,
+        time,
       ];
+
+  NotifByCategory copyWith({
+    String? id,
+    bool? value,
+    String? iconPath,
+    String? title,
+    String? time,
+  }) {
+    return NotifByCategory(
+      id: id ?? this.id,
+      value: value ?? this.value,
+      iconPath: iconPath ?? this.iconPath,
+      title: title ?? this.title,
+      time: time ?? this.time,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'value': value,
-      'category': category.id,
+      'iconPath': iconPath,
+      'title': title,
+      'time': time,
     };
   }
 
-  factory NotifByCategory.fromJson(Map<String, dynamic> json) {
+  factory NotifByCategory.fromJson(Map<String, dynamic> map) {
     return NotifByCategory(
-      value: json['value'],
-      category: Category.fromJson(json['category']),
-    );
-  }
-
-  NotifByCategory copyWith({
-    bool? value,
-    Category? category,
-  }) {
-    return NotifByCategory(
-      value: value ?? this.value,
-      category: category ?? this.category,
+      value: map['value'],
+      iconPath: map['iconPath'],
+      title: map['title'],
+      time: map['time'],
     );
   }
 }
+
+
+
+// class NotifByCategory extends Equatable {
+//   final bool? value;
+//   final Category category;
+
+//   const NotifByCategory({
+//     this.value,
+//     required this.category,
+//   });
+
+//   @override
+//   List<Object?> get props => [
+//         value,
+//         category,
+//       ];
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'value': value,
+//       'category': category.id,
+//     };
+//   }
+
+//   factory NotifByCategory.fromJson(Map<String, dynamic> json) {
+//     return NotifByCategory(
+//       value: json['value'],
+//       category: Category.fromJson(json['category']),
+//     );
+//   }
+
+//   NotifByCategory copyWith({
+//     bool? value,
+//     Category? category,
+//   }) {
+//     return NotifByCategory(
+//       value: value ?? this.value,
+//       category: category ?? this.category,
+//     );
+//   }
+// }

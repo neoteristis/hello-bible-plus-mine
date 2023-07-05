@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/l10n/function.dart';
+import 'package:intl/intl.dart';
 
 import 'user_information_widget.dart';
 
@@ -34,16 +35,22 @@ class UserSubscriptionPlansWidget extends StatelessWidget {
         ),
         UserInformationWidget(
           label: dict(context).subscriptionDate,
-          value: '27/05/2023',
+          value: DateFormat('dd/MM/y').format(DateTime.now()),
         ),
         UserInformationWidget(
           label: dict(context).subscriptionType,
-          value: 'Premium Annuel',
+          value: 'Gratuit',
           addBackground: true,
         ),
         UserInformationWidget(
           label: dict(context).renewal,
-          value: '27/05/2023',
+          value: DateFormat('dd/MM/y').format(
+            DateTime.now().add(
+              const Duration(
+                days: 7,
+              ),
+            ),
+          ),
         ),
       ],
     );

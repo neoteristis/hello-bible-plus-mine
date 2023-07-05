@@ -24,37 +24,37 @@ Widget bubbleBuilder(
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: state.sender!.id == message.author.id
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.start,
-              children: [
-                Text(
-                  DateFormat('hh:mm a').format(
-                    DateTime.fromMicrosecondsSinceEpoch(message.createdAt,
-                            isUtc: false)
-                        // .toString(),
-                        .toLocal(),
-                  ),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 8.sp,
-                    // fontSize: 8,
-                    color: receiverContent,
-                  ),
-                ),
-                if (state.sender!.id == message.author.id)
-                  Icon(
-                    Icons.check,
-                    size: 12.sp,
-                    // size: 12,
-                    color: receiverContent,
-                  ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
+            // Row(
+            //   mainAxisAlignment: state.sender!.id == message.author.id
+            //       ? MainAxisAlignment.end
+            //       : MainAxisAlignment.start,
+            //   children: [
+            //     Text(
+            //       DateFormat('hh:mm a').format(
+            //         DateTime.fromMicrosecondsSinceEpoch(message.createdAt,
+            //                 isUtc: false)
+            //             // .toString(),
+            //             .toLocal(),
+            //       ),
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.w600,
+            //         fontSize: 8.sp,
+            //         // fontSize: 8,
+            //         color: receiverContent,
+            //       ),
+            //     ),
+            //     if (state.sender!.id == message.author.id)
+            //       Icon(
+            //         Icons.check,
+            //         size: 12.sp,
+            //         // size: 12,
+            //         color: receiverContent,
+            //       ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
             Padding(
               padding: const EdgeInsets.only(bottom: 5.0),
               child: CustomBubble(
