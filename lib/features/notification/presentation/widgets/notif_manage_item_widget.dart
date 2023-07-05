@@ -1,21 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../l10n/function.dart';
+import '../../domain/entities/notif_by_category.dart';
 import 'custom_list_tile.dart';
 import 'date_information.dart';
 
 class NotifManageItem extends StatelessWidget {
-  const NotifManageItem({
+  const NotifManageItem(
+    this.notif, {
     super.key,
-    required this.switchValue,
-    required this.logo,
-    required this.title,
-    required this.hour,
+    this.onTap,
   });
-  final bool switchValue;
-  final Widget logo;
-  final String title;
-  final String hour;
+  final NotifByCategory notif;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +23,22 @@ class NotifManageItem extends StatelessWidget {
         CustomListTile(
           leading: CircleAvatar(
             backgroundColor: Theme.of(context).primaryColor,
-            child: logo,
+            child: SvgPicture.asset(
+              notif.iconPath!,
+              color: Colors.white,
+            ),
           ),
           title: Text(
-            title,
+            notif.title!,
             style: TextStyle(
               color: Theme.of(context).colorScheme.tertiary,
               fontWeight: FontWeight.w600,
               fontSize: 16,
             ),
           ),
-          switchValue: switchValue,
+          switchValue: notif.value,
           description:
-              '${dict(context).handleYourNotifOn}${title.toLowerCase()}',
+              '${dict(context).handleYourNotifOn}${notif.title!.toLowerCase()}',
           onChanged: (value) {},
         ),
         ListTile(
@@ -60,22 +61,20 @@ class NotifManageItem extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () async {
-            // context.read<NotificationBloc>().add(
-            //       NotificationTimeSelected(context: context),
-            //     );
-            await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-              initialEntryMode: TimePickerEntryMode.input,
-              cancelText: dict(context).cancel,
-              hourLabelText: dict(context).hour,
-              helpText: dict(context).chooseHour,
-            );
-          },
+          onTap: onTap,
+          // onTap: () async {
+          //   await showTimePicker(
+          //     context: context,
+          //     initialTime: TimeOfDay.now(),
+          //     initialEntryMode: TimePickerEntryMode.input,
+          //     cancelText: dict(context).cancel,
+          //     hourLabelText: dict(context).hour,
+          //     helpText: dict(context).chooseHour,
+          //   );
+          // },
           child: DateInformation(
             label: dict(context).hour,
-            info: hour,
+            info: notif.time,
           ),
         ),
       ],

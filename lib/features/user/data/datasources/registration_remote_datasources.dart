@@ -206,6 +206,8 @@ class RegistrationRemoteDatasourcesImp
   @override
   Future<UserResponse> appleConnect(Map<String, String> queryParams) async {
     try {
+      // final res = await Dio().postUri(uri);
+      // print(res);
       final res = await baseRepo.post(
         '/api/sign_in_with_apple',
         queryParameters: queryParams,
@@ -220,7 +222,6 @@ class RegistrationRemoteDatasourcesImp
       message = res?.data != null
           ? MessageResponse.fromJson(res?.data).message
           : e.toString();
-
       throw ServerException(message: message);
     }
   }

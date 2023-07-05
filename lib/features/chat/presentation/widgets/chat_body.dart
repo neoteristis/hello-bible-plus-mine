@@ -46,9 +46,11 @@ class _ChatBodyState extends State<ChatBody> {
             return ui.Chat(
               // dateFormat: DateFormat('h:mm a'),
               // dateHeaderThreshold: 100,
+
               dateHeaderBuilder: (p0) => const SizedBox.shrink(),
               // showUserAvatars: true,
               // avatarBuilder: (uid) => const BotAvatar(),
+
               messages: state.messages ?? [],
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message.text));

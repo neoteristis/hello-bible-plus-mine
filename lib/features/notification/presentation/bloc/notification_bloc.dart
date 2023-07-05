@@ -40,36 +40,36 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     NotificationValueSwitched event,
     Emitter<NotificationState> emit,
   ) async {
-    final notifCats = state.notifCats;
-    final index = notifCats?.indexWhere(
-        (element) => element.category.id == event.notif.category.id);
-    if (index != null) {
-      print(index);
-      emit(
-        state.copyWith(
-          notifCats: List.of(notifCats!)
-            ..removeAt(index)
-            ..insert(
-              index,
-              event.notif,
-            ),
-        ),
-      );
-      final res = await switchNotification(event.notif);
-      return res.fold(
-        (l) => emit(
-          state.copyWith(
-            notifCats: List.of(notifCats!)
-              ..removeAt(index)
-              ..insert(
-                index,
-                event.notif.copyWith(value: !event.notif.value!),
-              ),
-          ),
-        ),
-        (r) => null,
-      );
-    }
+    // final notifCats = state.notifCats;
+    // final index = notifCats?.indexWhere(
+    //     (element) => element.category.id == event.notif.category.id);
+    // if (index != null) {
+    //   print(index);
+    //   emit(
+    //     state.copyWith(
+    //       notifCats: List.of(notifCats!)
+    //         ..removeAt(index)
+    //         ..insert(
+    //           index,
+    //           event.notif,
+    //         ),
+    //     ),
+    //   );
+    //   final res = await switchNotification(event.notif);
+    //   return res.fold(
+    //     (l) => emit(
+    //       state.copyWith(
+    //         notifCats: List.of(notifCats!)
+    //           ..removeAt(index)
+    //           ..insert(
+    //             index,
+    //             event.notif.copyWith(value: !event.notif.value!),
+    //           ),
+    //       ),
+    //     ),
+    //     (r) => null,
+    //   );
+    // }
   }
 
   void _onNotificationValuesByCategoryGotten(

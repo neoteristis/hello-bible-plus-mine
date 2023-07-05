@@ -15,6 +15,14 @@ class ChatMessageSent extends ChatEvent {
   List<Object> get props => [textMessage];
 }
 
+class ChatSuggestionsRequested extends ChatEvent {
+  // final types.PartialText? message;
+  final MessageParam message;
+  const ChatSuggestionsRequested(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
 class ChatCategoriesFetched extends ChatEvent {}
 
 class ChatCategoriesBySectionFetched extends ChatEvent {}

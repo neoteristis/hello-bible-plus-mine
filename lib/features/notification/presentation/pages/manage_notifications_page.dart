@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
-
+import '../../../../core/extension/time_of_day_extension.dart';
 import '../../../../l10n/function.dart';
+import '../bloc/manage_notif/manage_notif_bloc.dart';
 import '../widgets/notif_manage_item_widget.dart';
 
 class ManageNotificationsPage extends StatefulWidget {
@@ -35,32 +37,59 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
           right: 15,
           // top: 20,
         ),
-        child: Column(
-          children: [
-            NotifManageItem(
-              switchValue: true,
-              logo: const Icon(
-                Icons.book,
-                color: Colors.white,
+        child: BlocBuilder<ManageNotifBloc, ManageNotifState>(
+          buildWhen: (previous, current) =>
+              previous.notifByCategory != current.notifByCategory,
+          builder: (context, state) {
+            final notifByCategory = state.notifByCategory;
+            return ListView.separated(
+              itemBuilder: (context, index) => NotifManageItem(
+                notifByCategory[index],
+                onTap: () {
+                  context.read<ManageNotifBloc>().add(
+                        ManageNotifTimeChanged(
+                          context: context,
+                          id: notifByCategory[index].id!,
+                        ),
+                      );
+                },
               ),
-              title: dict(context).verseOfTheDay,
-              hour: '08:00',
-            ),
-            const CustomDivider(
-              padding: EdgeInsets.symmetric(
-                vertical: 8.0,
+              separatorBuilder: (context, index) => const CustomDivider(
+                padding: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                ),
               ),
-            ),
-            NotifManageItem(
-              switchValue: true,
-              logo: const Icon(
-                Icons.favorite,
-                color: Colors.white,
-              ),
-              title: dict(context).wordOfEncouragement,
-              hour: '10:00',
-            ),
-          ],
+              itemCount: notifByCategory!.length,
+            );
+            // return Column(
+            //   children: [
+            //     ...notifByCategory!.map((e) => ,);
+            //     NotifManageItem(
+            //       switchValue: true,
+            //       logo: const Icon(
+            //         Icons.book,
+            //         color: Colors.white,
+            //       ),
+            //       title: dict(context).verseOfTheDay,
+            //       hour: '08:00',
+            //     ),
+            //     const CustomDivider(
+            //       padding: EdgeInsets.symmetric(
+            //         vertical: 8.0,
+            //       ),
+            //     ),
+            //     NotifManageItem(
+            //       switchValue: true,
+            //       logo: const Icon(
+            //         Icons.favorite,
+            //         color: Colors.white,
+            //       ),
+            //       title: dict(context).wordOfEncouragement,
+            //       hour: '10:00',
+            //     ),
+            //   ],
+            // );
+          },
         ),
       ),
     );

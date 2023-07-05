@@ -162,11 +162,7 @@ class DrawerTile extends StatelessWidget {
             ),
             label: Text(
               label,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.tertiary,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(),
             ),
           ),
         ),

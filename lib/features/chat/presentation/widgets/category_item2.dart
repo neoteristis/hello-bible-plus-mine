@@ -18,7 +18,7 @@ class CategoryItem2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final contentColor = Theme.of(context).colorScheme.secondary;
+    // final contentColor = Theme.of(context).colorScheme.secondary;
     return InkWell(
       onTap: () {
         context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
@@ -31,7 +31,7 @@ class CategoryItem2 extends StatelessWidget {
       },
       child: Container(
         // alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
           border: Border.fromBorderSide(
@@ -60,12 +60,9 @@ class CategoryItem2 extends StatelessWidget {
                     category.name ?? '',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14.sp,
-                      // fontSize: 14,
-                      color: contentColor,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontSize: 14.sp,
+                        ),
                     // style: TextStyle(
                     //   fontSize: 14.sp,
                     //   fontWeight: FontWeight.w700,
@@ -89,12 +86,10 @@ class CategoryItem2 extends StatelessWidget {
                     //   fontWeight: FontWeight.w500,
                     //   color: Colors.white,
                     // ),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 11.sp,
-                      // fontSize: 11,
-                      color: contentColor,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11.sp,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                 ),

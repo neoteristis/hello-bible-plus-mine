@@ -149,7 +149,7 @@ class CategoriesWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                     ],
@@ -160,7 +160,7 @@ class CategoriesWidget extends StatelessWidget {
                   index: index,
                 );
               },
-              separatorBuilder: (context, index) => CustomDivider(),
+              separatorBuilder: (context, index) => const CustomDivider(),
             );
           default:
             return Container();

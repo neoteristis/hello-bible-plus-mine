@@ -17,4 +17,5 @@ abstract class ChatRepository {
       PHistorical param);
   Future<Either<Failure, Conversation>> getConversationById(
       String conversationId);
+  Future<Either<Failure, List<String>>> getSuggestions(MessageParam param);
 }

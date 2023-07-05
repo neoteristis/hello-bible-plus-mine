@@ -30,6 +30,15 @@ const labelLarge = TextStyle(
   ),
 );
 
+const titleSmall = TextStyle(
+  fontWeight: FontWeight.w600,
+);
+
+const labelSmall = TextStyle(
+  fontWeight: FontWeight.w700,
+  fontSize: 11,
+);
+
 ThemeData light = ThemeData(
   bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.white),
   fontFamily: 'SfProText',
@@ -92,6 +101,7 @@ ThemeData light = ThemeData(
     bodyLarge: bodyLarge.copyWith(
       color: const Color(0xFF223159).withOpacity(.6),
     ),
+    // bodyMedium: ,
     titleMedium: titleMedium.copyWith(
       color: Colors.black, // <-- TextFormField input color
     ),
@@ -107,6 +117,12 @@ ThemeData light = ThemeData(
       color: const Color(
         0xFF223159,
       ),
+    ),
+    titleSmall: titleSmall.copyWith(
+      color: const Color(0xFF0C0C0C),
+    ),
+    labelSmall: labelSmall.copyWith(
+      color: const Color(0xFF101520),
     ),
   ),
   scaffoldBackgroundColor: Colors.white,
@@ -170,6 +186,12 @@ ThemeData dark = ThemeData(
     headlineMedium: headlineMedium.copyWith(),
     titleMedium: titleMedium.copyWith(
       color: Colors.white,
+    ),
+    titleSmall: titleSmall.copyWith(
+      color: Colors.white,
+    ),
+    labelSmall: labelSmall.copyWith(
+      color: const Color(0xFFEFEFEF),
     ),
   ),
   colorScheme: ColorScheme(

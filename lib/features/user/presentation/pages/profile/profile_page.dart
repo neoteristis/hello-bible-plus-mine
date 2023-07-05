@@ -34,7 +34,9 @@ class _ProfilePageState extends State<ProfilePage> {
       persistentFooterButtons: [
         CustomButtonWidget(ButtonType.black).build(
           context: context,
-          onPressed: () {},
+          onPressed: () {
+            context.go(RouteName.subscribe);
+          },
           color: const Color(0xFF24282E),
           label: dict(context).updateSubscription,
           labelColor: const Color(0xFFEFBB56),
@@ -136,22 +138,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 label: dict(context).phone,
                                 value: user.phone,
                               ),
-                            if (user.phone == null)
-                              UserInformationWidget(
-                                label: dict(context).phone,
-                                value: '0345665445',
-                              ),
+                            // if (user.phone == null)
+                            //   UserInformationWidget(
+                            //     label: dict(context).phone,
+                            //     value: '0345665445',
+                            //   ),
                             if (createdAt != null)
                               UserInformationWidget(
                                 label: dict(context).creationDate,
                                 value: DateFormat('dd/MM/yyyy')
                                     .format(createdAt.toLocal()),
                               ),
-                            if (createdAt == null)
-                              UserInformationWidget(
-                                label: dict(context).creationDate,
-                                value: '02/12/2023',
-                              ),
+                            // if (createdAt == null)
+                            //   UserInformationWidget(
+                            //     label: dict(context).creationDate,
+                            //     value: '02/12/2023',
+                            //   ),
                           ],
                         ),
                         const CustomDivider(

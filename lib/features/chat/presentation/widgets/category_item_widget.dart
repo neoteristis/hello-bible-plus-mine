@@ -87,12 +87,15 @@ class CategoryItemWidget extends StatelessWidget {
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 11.sp,
-                      // fontSize: 11,
-                      color: contentColor,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontSize: 11.sp,
+                        ),
+                    // style: TextStyle(
+                    //   fontWeight: FontWeight.w700,
+                    //   fontSize: 11.sp,
+                    //   // fontSize: 11,
+                    //   color: contentColor,
+                    // ),
                   ),
                 ),
               ),
@@ -110,12 +113,10 @@ class CategoryItemWidget extends StatelessWidget {
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 11.sp,
-                    // fontSize: 11,
-                    color: contentColor,
-                  ),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11.sp,
+                      ),
                 ),
               ),
             ),

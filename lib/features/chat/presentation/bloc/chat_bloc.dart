@@ -14,6 +14,7 @@ import 'package:logger/logger.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
 import '../../../../core/error/failure.dart';
+import '../../../../core/helper/log.dart';
 import '../../../../core/sse/sse.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../domain/entities/entities.dart';
@@ -29,6 +30,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
   final GetConversationByIdUsecase getConversationById;
+  final GetSuggestionsMessageUsecase getSuggestionMessages;
   // late StreamSubscription<String?> streamSubscription;
   ChatBloc({
     required this.fetchCategoriesBySection,
@@ -37,6 +39,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.sendMessage,
     required this.getResponseMessages,
     required this.getConversationById,
+    required this.getSuggestionMessages,
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
@@ -58,9 +61,29 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatConversationInited>(_onChatConversationInited);
     on<ChatConversationFromNotificationInited>(
         _onChatConversationFromNotificationInited);
+    on<ChatSuggestionsRequested>(_onChatSuggestionsRequested);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatSuggestionsRequested(
+    ChatSuggestionsRequested event,
+    Emitter<ChatState> emit,
+  ) async {
+    emit(state.copyWith(suggestions: []));
+    final res = await getSuggestionMessages(event.message);
+    return res.fold(
+      (l) => Log.info(l),
+      (suggestions) {
+        Log.info(suggestions);
+        emit(
+          state.copyWith(
+            suggestions: suggestions,
+          ),
+        );
+      },
+    );
+  }
 
   void _onChatConversationFromNotificationInited(
     ChatConversationFromNotificationInited event,
@@ -205,58 +228,62 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ) async {
     final res = await getResponseMessages(event.conversationId);
     res.fold(
-        (l) => emit(
-              state.copyWith(
-                messageStatus: Status.failed,
-                failure: ServerFailure(
-                  info: e.toString(),
+      (l) => emit(
+        state.copyWith(
+          messageStatus: Status.failed,
+          failure: ServerFailure(
+            info: e.toString(),
+          ),
+        ),
+      ),
+      (rs) async {
+        String messageJoined = '';
+        try {
+          // streamSubscription =
+          rs.data?.stream
+              .transform(unit8Transformer)
+              .transform(const Utf8Decoder())
+              .transform(const LineSplitter())
+              .transform(const SseTransformer())
+              .listen(
+            (event) async {
+              debugPrint(event.data);
+
+              String trunck = '';
+
+              if (event.data == ' ') {
+                trunck = '\n\n';
+              }
+              if (event.data.length > 1) {
+                trunck = event.data.substring(1);
+              }
+              add(
+                const ChatTypingStatusChanged(
+                  isTyping: true,
                 ),
-              ),
-            ), (rs) async {
-      String messageJoined = '';
-      try {
-        // streamSubscription =
-        rs.data?.stream
-            .transform(unit8Transformer)
-            .transform(const Utf8Decoder())
-            .transform(const LineSplitter())
-            .transform(const SseTransformer())
-            .listen((event) async {
-          debugPrint(event.data);
+              );
+              if (trunck == endMessageMarker) {
+                debugPrint(messageJoined);
+                // streamSubscription.cancel();
+                state.focusNode?.requestFocus();
+                add(ChatMessageJoined(newMessage: messageJoined.trim()));
+              }
+              if (trunck != endMessageMarker) {
+                state.textEditingController?.text =
+                    '${state.textEditingController?.text}$trunck';
 
-          String trunck = '';
-
-          if (event.data == ' ') {
-            trunck = '\n\n';
-          }
-          if (event.data.length > 1) {
-            trunck = event.data.substring(1);
-          }
-          add(
-            const ChatTypingStatusChanged(
-              isTyping: true,
-            ),
+                messageJoined = '$messageJoined$trunck';
+                add(ChatIncomingMessageLoaded(message: messageJoined));
+              }
+            },
           );
-          if (trunck == endMessageMarker) {
-            debugPrint(messageJoined);
-            // streamSubscription.cancel();
-            state.focusNode?.requestFocus();
-            add(ChatMessageJoined(newMessage: messageJoined.trim()));
-          }
-          if (trunck != endMessageMarker) {
-            state.textEditingController?.text =
-                '${state.textEditingController?.text}$trunck';
-
-            messageJoined = '$messageJoined$trunck';
-            add(ChatIncomingMessageLoaded(message: messageJoined));
-          }
-        });
-      } catch (e) {
-        emit(state.copyWith(
-            messageStatus: Status.failed,
-            failure: ServerFailure(info: e.toString())));
-      }
-    });
+        } catch (e) {
+          emit(state.copyWith(
+              messageStatus: Status.failed,
+              failure: ServerFailure(info: e.toString())));
+        }
+      },
+    );
   }
 
   void _onChatTypingStatusChanged(
@@ -295,7 +322,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatConversationCleared event,
     Emitter<ChatState> emit,
   ) {
-    emit(state.copyWith(clearConversation: true));
+    emit(
+      state.copyWith(
+        clearConversation: true,
+        suggestions: [],
+        clearNewMessage: true,
+      ),
+    );
   }
 
   void _onChatConversationChanged(
@@ -307,6 +340,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       state.copyWith(
         conversationStatus: Status.loading,
         conversation: const Conversation(),
+        // suggestions: [],
+        clearNewMessage: true,
+        incoming: '',
       ),
     );
     final res =
@@ -323,7 +359,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
       },
       (conversation) {
-        state.focusNode?.requestFocus();
+        // state.focusNode?.requestFocus();
         emit(
           state.copyWith(
             conversation: conversation,
@@ -333,6 +369,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             messages: [],
           ),
         );
+        final id = conversation.id;
+        if (id != null) {
+          add(
+            ChatMessageAnswerGot(
+              conversationId: id,
+            ),
+          );
+        }
       },
     );
   }
@@ -342,10 +386,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     if (state.streamMessage! &&
-        state.messages!.isNotEmpty &&
+        // state.messages!.isNotEmpty &&
         state.newMessage != null) {
       /*
-        the last message on the screen is still the customMessage build from the textEditingController,
+        the last message on the screen is still the customMessage build from the listbottomWidget,
         then you have to add the actual message here before inserting the new message from the user typing
       */
 
@@ -378,13 +422,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messageStatus: Status.loading,
       ),
     );
-    final res = await sendMessage(
-      MessageParam(
-        content: event.textMessage,
-        conversation: state.conversation,
-        streamMessage: state.streamMessage,
-      ),
+    final messageParams = MessageParam(
+      content: event.textMessage,
+      conversation: state.conversation,
+      streamMessage: state.streamMessage,
     );
+    final res = await sendMessage(messageParams);
+
+    add(ChatSuggestionsRequested(messageParams));
 
     res.fold(
       (l) {

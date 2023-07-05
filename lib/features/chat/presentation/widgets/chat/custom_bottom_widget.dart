@@ -40,82 +40,105 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
         return state.focusNode!;
       },
       builder: (context, state) {
-        return Row(
-          children: [
-            Expanded(
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {});
-                },
-                keyboardType: TextInputType.text,
-                textCapitalization: TextCapitalization.sentences,
-                focusNode: state,
-                controller: textEditingController ?? TextEditingController(),
-                cursorColor: Theme.of(context).primaryColor,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.onPrimary,
-                  // contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                  hintText: AppLocalizations.of(context)!.writeYourMessage,
-                  hintStyle: TextStyle(
-                    fontSize: 14.sp,
-                    // fontSize: 14,
-                    color: hintColor,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2.w),
-                    // color: Theme.of(context).primaryColor,
-                    // width: 2),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2.w),
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.sentences,
+                  focusNode: state,
+                  controller: textEditingController ?? TextEditingController(),
+                  cursorColor: Theme.of(context).primaryColor,
+                  onSubmitted: (_) {
+                    if (textEditingController != null) {
+                      if (textEditingController!.text.isEmpty) {
+                        return;
+                      }
+                      unfocusKeyboard();
+                      context.read<ChatBloc>().add(
+                            ChatMessageSent(
+                              textEditingController!.text,
+                            ),
+                          );
 
-                    // color: Theme.of(context).primaryColor,
-                    // width: 2),
+                      textEditingController!.clear();
+                    }
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Theme.of(context).colorScheme.onPrimary,
+                    // contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                    hintText: AppLocalizations.of(context)!.writeYourMessage,
+                    hintStyle: TextStyle(
+                      fontSize: 14.sp,
+                      // fontSize: 14,
+                      color: hintColor,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(24)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 2.w),
+                      // color: Theme.of(context).primaryColor,
+                      // width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(24)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor, width: 2.w),
+
+                      // color: Theme.of(context).primaryColor,
+                      // width: 2),
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              width: 4,
-            ),
-            CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: IconButton(
-                onPressed: () {
-                  unfocusKeyboard();
-                  context.read<ChatBloc>().add(
-                        ChatMessageSent(
-                          textEditingController!.text,
+              const SizedBox(
+                width: 4,
+              ),
+              CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: IconButton(
+                  onPressed: () {
+                    if (textEditingController != null) {
+                      if (textEditingController!.text.isEmpty) {
+                        return;
+                      }
+                      unfocusKeyboard();
+                      context.read<ChatBloc>().add(
+                            ChatMessageSent(
+                              textEditingController!.text,
+                            ),
+                          );
+
+                      textEditingController!.clear();
+                    }
+                  },
+                  icon: BlocBuilder<ChatBloc, ChatState>(
+                    builder: (context, state) {
+                      return Visibility(
+                        visible: true,
+                        // visible: !state.isTyping!,
+                        // add here the widget to show while typing
+                        replacement: const SizedBox.shrink(),
+                        child: Icon(
+                          Icons.send_rounded,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          size: 16.w,
+                          // size: 16,
                         ),
                       );
-
-                  textEditingController!.clear();
-                },
-                icon: BlocBuilder<ChatBloc, ChatState>(
-                  builder: (context, state) {
-                    return Visibility(
-                      visible: true,
-                      // visible: !state.isTyping!,
-                      // add here the widget to show while typing
-                      replacement: const SizedBox.shrink(),
-                      child: Icon(
-                        Icons.send_rounded,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        size: 16.w,
-                        // size: 16,
-                      ),
-                    );
-                  },
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
