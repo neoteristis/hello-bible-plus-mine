@@ -15,6 +15,8 @@ import 'chat/empty_state_widget.dart';
 import 'chat/list_bottom_chat_widget.dart';
 import 'container_categories_widget.dart';
 
+import 'package:scroll_to_index/scroll_to_index.dart';
+
 class ChatBody extends StatefulWidget {
   const ChatBody({
     super.key,
@@ -31,6 +33,7 @@ class _ChatBodyState extends State<ChatBody> {
   void initState() {
     super.initState();
     textEditingController = TextEditingController();
+    // scrollController?.addListener(() {});
   }
 
   @override
@@ -44,13 +47,12 @@ class _ChatBodyState extends State<ChatBody> {
             );
           case Status.loaded:
             return ui.Chat(
-              scrollController: state.scrollController,
+              // scrollController: scrollController,
               // dateFormat: DateFormat('h:mm a'),
               // dateHeaderThreshold: 100,
               dateHeaderBuilder: (p0) => const SizedBox.shrink(),
               // showUserAvatars: true,
               // avatarBuilder: (uid) => const BotAvatar(),
-
               messages: state.messages ?? [],
               onSendPressed: (message) {
                 context.read<ChatBloc>().add(ChatMessageSent(message.text));

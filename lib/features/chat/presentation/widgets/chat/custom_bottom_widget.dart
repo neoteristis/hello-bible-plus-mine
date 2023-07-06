@@ -55,7 +55,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                   focusNode: state.focusNode,
                   controller: textEditingController ?? TextEditingController(),
                   cursorColor: Theme.of(context).primaryColor,
-                  style: const TextStyle(color: Colors.black),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.tertiary),
                   onSubmitted: (_) {
                     if (textEditingController != null) {
                       if (textEditingController!.text.isEmpty) {

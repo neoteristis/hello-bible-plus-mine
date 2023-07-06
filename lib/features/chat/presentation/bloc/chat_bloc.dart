@@ -240,7 +240,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (rs) async {
         String messageJoined = '';
         try {
-          // streamSubscription =
+          // final position = state.scrollController?.position;
+          // state.scrollController?.attach(position!);
+          // state.scrollController?.detach(position!);
           rs.data?.stream
               .transform(unit8Transformer)
               .transform(const Utf8Decoder())
@@ -248,8 +250,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               .transform(const SseTransformer())
               .listen(
             (event) async {
-              debugPrint(event.data);
-
               String trunck = '';
 
               if (event.data == ' ') {
