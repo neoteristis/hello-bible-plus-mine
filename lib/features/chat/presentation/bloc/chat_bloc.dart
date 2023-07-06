@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:logger/logger.dart';
@@ -42,9 +43,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.getSuggestionMessages,
   }) : super(
           ChatState(
-            textEditingController: TextEditingController(),
-            focusNode: FocusNode(),
-          ),
+              textEditingController: TextEditingController(),
+              focusNode: FocusNode(),
+              scrollController: AutoScrollController()),
         ) {
     on<ChatMessageSent>(_onChatMessageSent);
     on<ChatCategoriesFetched>(_onChatCategoriesFetched);

@@ -35,10 +35,11 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
         .colorScheme
         .onBackground
         .withOpacity(isLight(context) ? 1 : .7);
-    return BlocSelector<ChatBloc, ChatState, FocusNode>(
-      selector: (state) {
-        return state.focusNode!;
-      },
+    return BlocBuilder<ChatBloc, ChatState>(
+      buildWhen: (previous, current) => previous.focusNode != current.focusNode,
+      // selector: (state) {
+      //   return state.focusNode!;
+      // },
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
@@ -51,9 +52,10 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                   },
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.sentences,
-                  focusNode: state,
+                  focusNode: state.focusNode,
                   controller: textEditingController ?? TextEditingController(),
                   cursorColor: Theme.of(context).primaryColor,
+                  style: const TextStyle(color: Colors.black),
                   onSubmitted: (_) {
                     if (textEditingController != null) {
                       if (textEditingController!.text.isEmpty) {
@@ -74,7 +76,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                     fillColor: Theme.of(context).colorScheme.onPrimary,
                     // contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                    hintText: AppLocalizations.of(context)!.writeYourMessage,
+                    // hintText: AppLocalizations.of(context)!.writeYourMessage,
+                    hintText: state.conversation?.category?.placeholder,
                     hintStyle: TextStyle(
                       fontSize: 14.sp,
                       // fontSize: 14,

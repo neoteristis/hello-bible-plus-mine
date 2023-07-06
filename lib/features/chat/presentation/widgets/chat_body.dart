@@ -44,9 +44,9 @@ class _ChatBodyState extends State<ChatBody> {
             );
           case Status.loaded:
             return ui.Chat(
+              scrollController: state.scrollController,
               // dateFormat: DateFormat('h:mm a'),
               // dateHeaderThreshold: 100,
-
               dateHeaderBuilder: (p0) => const SizedBox.shrink(),
               // showUserAvatars: true,
               // avatarBuilder: (uid) => const BotAvatar(),
