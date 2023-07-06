@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import '../../../../../core/widgets/custom_bubble.dart';
 import '../../bloc/chat_bloc.dart';
 
@@ -31,7 +30,7 @@ Widget bubbleBuilder(
             //   children: [
             //     Text(
             //       DateFormat('hh:mm a').format(
-            //         DateTime.fromMicrosecondsSinceEpoch(message.createdAt,
+            //         DateTime.fromMicrosecondsSinceEpoch(message.createdAt!,
             //                 isUtc: false)
             //             // .toString(),
             //             .toLocal(),

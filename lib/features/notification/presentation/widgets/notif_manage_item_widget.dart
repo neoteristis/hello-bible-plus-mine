@@ -5,6 +5,7 @@ import '../../../../l10n/function.dart';
 import '../../domain/entities/notif_by_category.dart';
 import 'custom_list_tile.dart';
 import 'date_information.dart';
+import 'icon_logo_notif_widget.dart';
 
 class NotifManageItem extends StatelessWidget {
   const NotifManageItem(
@@ -21,9 +22,8 @@ class NotifManageItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomListTile(
-          leading: CircleAvatar(
-            backgroundColor: Theme.of(context).primaryColor,
-            child: SvgPicture.asset(
+          leading: IconLogoNotifWidget(
+            icon: SvgPicture.asset(
               notif.iconPath!,
               color: Colors.white,
             ),
@@ -62,16 +62,6 @@ class NotifManageItem extends StatelessWidget {
         ),
         GestureDetector(
           onTap: onTap,
-          // onTap: () async {
-          //   await showTimePicker(
-          //     context: context,
-          //     initialTime: TimeOfDay.now(),
-          //     initialEntryMode: TimePickerEntryMode.input,
-          //     cancelText: dict(context).cancel,
-          //     hourLabelText: dict(context).hour,
-          //     helpText: dict(context).chooseHour,
-          //   );
-          // },
           child: DateInformation(
             label: dict(context).hour,
             info: notif.time,

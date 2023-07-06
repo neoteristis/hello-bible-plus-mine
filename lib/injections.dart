@@ -346,9 +346,9 @@ void bloc() {
 
   getIt.registerFactory(
     () => NotificationBloc(
-      fetchNotifCategory: getIt(),
-      switchNotification: getIt(),
-    ),
+        // fetchNotifCategory: getIt(),
+        // switchNotification: getIt(),
+        ),
   );
 
   getIt.registerFactory(
