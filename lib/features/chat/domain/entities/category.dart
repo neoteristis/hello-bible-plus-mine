@@ -15,6 +15,7 @@ class Category extends Equatable {
     this.colorTheme,
     this.section,
     this.logo,
+    this.placeholder,
   });
 
   final String? id;
@@ -25,6 +26,7 @@ class Category extends Equatable {
   final Color? colorTheme;
   final Section? section;
   final String? logo;
+  final String? placeholder;
 
   factory Category.fromJson(Map<String, dynamic> json) {
     final logo = json['logo'];
@@ -34,8 +36,7 @@ class Category extends Equatable {
         prompt: json['prompt'],
         model: json['model'],
         welcomePhrase: json['welcomePhrase'],
-        // section:
-        //     json['section'] != null ? Section.fromJson(json['section']) : null,
+        placeholder: json['placeholder'],
         colorTheme: json['colorCode'] == null || json['colorCode'] == ''
             ? null
             : (json['colorCode'] as String).hexToColor,
@@ -59,5 +60,6 @@ class Category extends Equatable {
         model,
         welcomePhrase,
         colorTheme,
+        placeholder,
       ];
 }
