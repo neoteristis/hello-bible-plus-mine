@@ -31,6 +31,7 @@ class ChatState extends Equatable {
     this.focusNode,
     this.suggestions = const [],
     this.scrollController,
+    this.isLoading = false,
   });
 
   final List<types.Message>? messages;
@@ -52,6 +53,7 @@ class ChatState extends Equatable {
   final FocusNode? focusNode;
   final List<String>? suggestions;
   final AutoScrollController? scrollController;
+  final bool? isLoading;
 
   @override
   List<Object?> get props => [
@@ -74,6 +76,7 @@ class ChatState extends Equatable {
         focusNode,
         suggestions,
         scrollController,
+        isLoading,
       ];
 
   ChatState copyWith({
@@ -98,6 +101,7 @@ class ChatState extends Equatable {
     FocusNode? focusNode,
     List<String>? suggestions,
     AutoScrollController? scrollController,
+    bool? isLoading,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -121,6 +125,7 @@ class ChatState extends Equatable {
       focusNode: focusNode ?? this.focusNode,
       suggestions: suggestions ?? this.suggestions,
       scrollController: scrollController ?? this.scrollController,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

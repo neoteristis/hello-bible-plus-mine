@@ -122,3 +122,13 @@ class ChatConversationFromNotificationInited extends ChatEvent {
   @override
   List<Object> get props => [conversationId];
 }
+
+class ChatLoadingChanged extends ChatEvent {
+  final bool status;
+  const ChatLoadingChanged(
+    this.status,
+  );
+
+  @override
+  List<Object> get props => [status];
+}

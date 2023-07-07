@@ -63,9 +63,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatConversationFromNotificationInited>(
         _onChatConversationFromNotificationInited);
     on<ChatSuggestionsRequested>(_onChatSuggestionsRequested);
+    on<ChatLoadingChanged>(_onChatLoadingChanged);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatLoadingChanged(
+      ChatLoadingChanged event, Emitter<ChatState> emit) {
+    emit(state.copyWith(isLoading: event.status));
+  }
 
   void _onChatSuggestionsRequested(
     ChatSuggestionsRequested event,
@@ -240,9 +246,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (rs) async {
         String messageJoined = '';
         try {
-          // final position = state.scrollController?.position;
-          // state.scrollController?.attach(position!);
-          // state.scrollController?.detach(position!);
           rs.data?.stream
               .transform(unit8Transformer)
               .transform(const Utf8Decoder())
@@ -251,6 +254,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               .listen(
             (event) async {
               String trunck = '';
+              // debugPrint(event.data);
 
               if (event.data == ' ') {
                 trunck = '\n\n';
@@ -258,6 +262,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               if (event.data.length > 1) {
                 trunck = event.data.substring(1);
               }
+
               add(
                 const ChatTypingStatusChanged(
                   isTyping: true,
@@ -265,11 +270,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               );
               if (trunck == endMessageMarker) {
                 debugPrint(messageJoined);
+                add(const ChatLoadingChanged(false));
+                // add(const ChatTypingStatusChanged(isTyping: false));
                 // streamSubscription.cancel();
                 state.focusNode?.requestFocus();
+                // emit(state.copyWith(isTyping: false));
                 add(ChatMessageJoined(newMessage: messageJoined.trim()));
               }
               if (trunck != endMessageMarker) {
+                add(const ChatLoadingChanged(true));
+                // add(const ChatTypingStatusChanged(isTyping: true));
+                // emit(state.copyWith(isTyping: true));
                 state.textEditingController?.text =
                     '${state.textEditingController?.text}$trunck';
 
@@ -297,6 +308,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messageStatus: event.isTyping ? Status.loaded : Status.init,
       ),
     );
+    // emit(state.copyWith(isTyping: event.isTyping));
   }
 
   void _onChatMessageAdded(

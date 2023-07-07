@@ -72,6 +72,8 @@ class CategoriesWidget extends StatelessWidget {
                             keyboardType: TextInputType.text,
                             textCapitalization: TextCapitalization.sentences,
                             cursorColor: Theme.of(context).primaryColor,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.tertiary),
                             decoration: InputDecoration(
                               filled: true,
                               fillColor:

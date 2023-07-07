@@ -43,6 +43,15 @@ class ListBottomChatWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
+                      // Container(
+                      //   constraints: BoxConstraints(
+                      //       maxWidth: MediaQuery.of(context).size.width * .90),
+                      //   child: TextField(
+                      //     scrollPhysics: NeverScrollableScrollPhysics(),
+                      //     controller: state.textEditingController,
+                      //     maxLines: null,
+                      //   ),
+                      // ),
                       Container(
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * .90),
@@ -66,44 +75,95 @@ class ListBottomChatWidget extends StatelessWidget {
                 ),
                 BlocBuilder<ChatBloc, ChatState>(
                   buildWhen: (previous, current) =>
-                      previous.suggestions != current.suggestions ||
-                      previous.focusNode != current.focusNode,
+                      previous.messageStatus != current.messageStatus,
                   builder: (context, state) {
-                    final suggestions = state.suggestions;
-                    if (suggestions == null ||
-                        suggestions.isEmpty ||
-                        !state.focusNode!.hasFocus) {
-                      return const SizedBox.shrink();
+                    switch (state.messageStatus) {
+                      case Status.loaded:
+                        return BlocBuilder<ChatBloc, ChatState>(
+                          buildWhen: (previous, current) =>
+                              previous.suggestions != current.suggestions ||
+                              previous.focusNode != current.focusNode,
+                          builder: (context, state) {
+                            final suggestions = state.suggestions;
+                            if (suggestions == null ||
+                                suggestions.isEmpty ||
+                                !state.focusNode!.hasFocus) {
+                              return const SizedBox.shrink();
+                            }
+                            return Container(
+                              padding: const EdgeInsets.only(
+                                left: 25,
+                                right: 25,
+                                top: 20,
+                                bottom: 15,
+                              ),
+                              margin: const EdgeInsets.only(top: 15.0),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  ...suggestions.map(
+                                    (e) => SuggestionItem(e),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      default:
+                        return const SizedBox.shrink();
                     }
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              const SizedBox(
-                                width: 24,
-                              ),
-                              ...suggestions.map(
-                                (e) => SuggestionItem(e),
-                              ),
-                              // SuggestionItem('this is a suggestion'),
-                              // SuggestionItem('This is another question long'),
-                              // SuggestionItem(
-                              //     'This is third and last question long'),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    );
                   },
                 ),
+
+                // BlocBuilder<ChatBloc, ChatState>(
+                //   buildWhen: (previous, current) =>
+                //       previous.suggestions != current.suggestions ||
+                //       previous.focusNode != current.focusNode,
+                //   builder: (context, state) {
+                //     final suggestions = state.suggestions;
+                //     if (suggestions == null ||
+                //         suggestions.isEmpty ||
+                //         !state.focusNode!.hasFocus) {
+                //       return const SizedBox.shrink();
+                //     }
+                //     return Column(
+                //       children: [
+                //         const SizedBox(
+                //           height: 15,
+                //         ),
+                //         SingleChildScrollView(
+                //           scrollDirection: Axis.horizontal,
+                //           child: Row(
+                //             children: [
+                //               const SizedBox(
+                //                 width: 24,
+                //               ),
+                //               ...suggestions.map(
+                //                 (e) => SuggestionItem(e),
+                //               ),
+                //               // SuggestionItem('this is a suggestion'),
+                //               // SuggestionItem('This is another question long'),
+                //               // SuggestionItem(
+                //               //     'This is third and last question long'),
+                //             ],
+                //           ),
+                //         ),
+                //         const SizedBox(
+                //           height: 15,
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
               ],
             );
           case Status.failed:
@@ -131,10 +191,7 @@ class SuggestionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final receiverContainer = Theme.of(context).colorScheme.onPrimary;
     final light = isLight(context);
-    final color =
-        Theme.of(context).colorScheme.onBackground.withOpacity(light ? 1 : .7);
     return GestureDetector(
       onTap: () {
         unfocusKeyboard();
@@ -146,31 +203,32 @@ class SuggestionItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF000000)
-                  .withOpacity(0.1), // shadow color with opacity
-              spreadRadius: 0, // spread radius
-              blurRadius: 10, // blur radius
-              offset: const Offset(0, 4), // offset in x and y direction
-            ),
-          ],
-          border: light
-              ? Border.all(color: const Color(0xFF232628), width: 1)
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: const Color(0xFF000000)
+          //         .withOpacity(0.1), // shadow color with opacity
+          //     spreadRadius: 0, // spread radius
+          //     blurRadius: 10, // blur radius
+          //     offset: const Offset(0, 4), // offset in x and y direction
+          //   ),
+          // ],
+          border: !light
+              ? Border.all(color: Theme.of(context).dividerColor, width: 1)
               : Border.all(color: const Color(0xFFF5F5F5), width: 1),
-          color: receiverContainer,
+          color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.only(
           bottom: 10,
           // left: 8,
-          right: 8,
+          // right: 8,
         ),
         child: Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(
-            color: color,
+            color: Theme.of(context).colorScheme.tertiary,
             fontSize: 14.sp,
           ),
         ),

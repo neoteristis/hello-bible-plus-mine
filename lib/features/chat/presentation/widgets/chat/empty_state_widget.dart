@@ -133,10 +133,9 @@ class SuggestionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final receiverContainer = Theme.of(context).colorScheme.onPrimary;
+    // final receiverContainer = Theme.of(context).colorScheme.onPrimary;
     final light = isLight(context);
-    final color =
-        Theme.of(context).colorScheme.onBackground.withOpacity(light ? 1 : .7);
+    final color = Theme.of(context).colorScheme.tertiary;
     return GestureDetector(
       onTap: () {
         unfocusKeyboard();
@@ -147,20 +146,21 @@ class SuggestionItem extends StatelessWidget {
             );
       },
       child: Container(
+        width: double.infinity,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF000000)
-                  .withOpacity(0.1), // shadow color with opacity
-              spreadRadius: 0, // spread radius
-              blurRadius: 10, // blur radius
-              offset: const Offset(0, 4), // offset in x and y direction
-            ),
-          ],
-          border: light
-              ? Border.all(color: const Color(0xFF232628), width: 1)
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: const Color(0xFF000000)
+          //         .withOpacity(0.1), // shadow color with opacity
+          //     spreadRadius: 0, // spread radius
+          //     blurRadius: 10, // blur radius
+          //     offset: const Offset(0, 4), // offset in x and y direction
+          //   ),
+          // ],
+          border: !light
+              ? Border.all(color: Theme.of(context).dividerColor, width: 1)
               : Border.all(color: const Color(0xFFF5F5F5), width: 1),
-          color: receiverContainer,
+          color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.all(10),
@@ -171,6 +171,8 @@ class SuggestionItem extends StatelessWidget {
         ),
         child: Text(
           text,
+          softWrap: true,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: color,
             fontSize: 14.sp,

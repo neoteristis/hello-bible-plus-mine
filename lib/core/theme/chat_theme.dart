@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import '../../features/flutter_chat_lib/flutter_chat_ui.dart';
 
 ChatTheme chatTheme(BuildContext context) => DefaultChatTheme(
       attachmentButtonMargin: const EdgeInsets.all(0),
