@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gpt/features/flutter_chat_lib/src/models/bubble_rtl_alignment.dart';
-import '../../../../../core/constants/status.dart';
+// import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../flutter_chat_lib/src/widgets/typing_indicator.dart';
 import '../../bloc/chat_bloc.dart';
-import 'empty_state_widget.dart';
+// import 'list_bottom_chat_widget.dart';
 
 class CustomBottomWidget extends StatefulWidget {
   const CustomBottomWidget({super.key});
@@ -49,10 +47,12 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
       // },
       builder: (context, state) {
         return Container(
-          // color: Colors.white,
-          padding:
-              const EdgeInsets.only(top: 25, left: 25, right: 25, bottom: 25),
-          // margin: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(
+            top: 25,
+            left: 25,
+            right: 25,
+            bottom: 25,
+          ),
           width: double.infinity,
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
@@ -71,12 +71,12 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
               //         return BlocBuilder<ChatBloc, ChatState>(
               //           buildWhen: (previous, current) =>
               //               previous.suggestions != current.suggestions ||
-              //               previous.focusNode != current.focusNode,
+              //               previous.isLoading != current.isLoading,
               //           builder: (context, state) {
               //             final suggestions = state.suggestions;
               //             if (suggestions == null ||
               //                 suggestions.isEmpty ||
-              //                 !state.focusNode!.hasFocus) {
+              //                 state.isLoading!) {
               //               return const SizedBox.shrink();
               //             }
               //             return Column(
@@ -97,9 +97,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                 children: [
                   Expanded(
                     child: TextField(
-                      onChanged: (value) {
-                        setState(() {});
-                      },
+                      maxLines: null,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.sentences,
                       focusNode: state.focusNode,
@@ -126,34 +124,28 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.onPrimary,
-                        // contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 20),
-                        // hintText: AppLocalizations.of(context)!.writeYourMessage,
                         hintText: state.conversation?.category?.placeholder,
                         hintStyle: TextStyle(
                           fontSize: 14.sp,
-                          // fontSize: 14,
                           color: hintColor,
                         ),
                         border: OutlineInputBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(24)),
                           borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2.w),
-                          // color: Theme.of(context).primaryColor,
-                          // width: 2),
+                            color: Theme.of(context).primaryColor,
+                            width: 2.w,
+                          ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(24)),
                           borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2.w),
-
-                          // color: Theme.of(context).primaryColor,
-                          // width: 2),
+                            color: Theme.of(context).primaryColor,
+                            width: 2.w,
+                          ),
                         ),
                       ),
                     ),
@@ -176,7 +168,6 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                                     textEditingController!.text,
                                   ),
                                 );
-
                             textEditingController!.clear();
                           }
                         },

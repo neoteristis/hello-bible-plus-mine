@@ -26,14 +26,14 @@ class CustomListTile extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
           leading: leading,
           title: title,
-          trailing: Transform.scale(
-            scale: 0.8,
-            origin: const Offset(50, 0),
-            child: CupertinoSwitch(
-              value: switchValue ?? true,
-              onChanged: onChanged,
-            ),
-          ),
+          // trailing: Transform.scale(
+          //   scale: 0.8,
+          //   origin: const Offset(50, 0),
+          //   child: CupertinoSwitch(
+          //     value: switchValue ?? true,
+          //     onChanged: onChanged,
+          //   ),
+          // ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8),

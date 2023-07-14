@@ -26,12 +26,16 @@ class ChatState extends Equatable {
     this.isTyping = false,
     this.newMessage = '',
     this.theme,
-    this.streamMessage = true,
     this.incoming = '',
     this.focusNode,
     this.suggestions = const [],
     this.scrollController,
     this.isLoading = false,
+    this.showSuggestions = false,
+    this.scrollPhysics,
+    this.maintainScroll = false,
+    this.suggestionLoaded = false,
+    // this.chatObserver,
   });
 
   final List<types.Message>? messages;
@@ -48,15 +52,21 @@ class ChatState extends Equatable {
   final bool? isTyping;
   final String? newMessage;
   final ThemeData? theme;
-  final bool? streamMessage;
   final String? incoming;
   final FocusNode? focusNode;
   final List<String>? suggestions;
-  final AutoScrollController? scrollController;
+  final ScrollController? scrollController;
   final bool? isLoading;
+  final bool? showSuggestions;
+  final ScrollPhysics? scrollPhysics;
+  final bool? maintainScroll;
+  final bool? suggestionLoaded;
+  // final ChatScrollObserver? chatObserver;
 
   @override
   List<Object?> get props => [
+        // chatObserver,
+        suggestionLoaded,
         categoriesBySection,
         newMessage,
         messages,
@@ -71,12 +81,14 @@ class ChatState extends Equatable {
         textEditingController,
         isTyping,
         theme,
-        streamMessage,
         incoming,
         focusNode,
         suggestions,
         scrollController,
         isLoading,
+        showSuggestions,
+        scrollPhysics,
+        maintainScroll,
       ];
 
   ChatState copyWith({
@@ -96,12 +108,17 @@ class ChatState extends Equatable {
     String? newMessage,
     bool clearNewMessage = false,
     ThemeData? theme,
-    bool? streamMessage,
     String? incoming,
     FocusNode? focusNode,
     List<String>? suggestions,
-    AutoScrollController? scrollController,
+    ScrollController? scrollController,
     bool? isLoading,
+    bool? showSuggestions,
+    ScrollPhysics? scrollPhysics,
+    bool clearScrollPhysics = false,
+    bool? maintainScroll,
+    bool? suggestionLoaded,
+    // ChatScrollObserver? chatObserver,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
@@ -120,12 +137,17 @@ class ChatState extends Equatable {
       isTyping: isTyping ?? this.isTyping,
       newMessage: clearNewMessage ? null : newMessage ?? this.newMessage,
       theme: theme ?? this.theme,
-      streamMessage: streamMessage ?? this.streamMessage,
       incoming: incoming ?? this.incoming,
       focusNode: focusNode ?? this.focusNode,
       suggestions: suggestions ?? this.suggestions,
       scrollController: scrollController ?? this.scrollController,
       isLoading: isLoading ?? this.isLoading,
+      showSuggestions: showSuggestions ?? this.showSuggestions,
+      scrollPhysics:
+          clearScrollPhysics ? null : scrollPhysics ?? this.scrollPhysics,
+      maintainScroll: maintainScroll ?? this.maintainScroll,
+      suggestionLoaded: suggestionLoaded ?? this.suggestionLoaded,
+      // chatObserver: chatObserver ?? this.chatObserver,
     );
   }
 }

@@ -1,9 +1,10 @@
-import 'dart:math';
+// import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
+// import 'package:scrollview_observer/scrollview_observer.dart';
 // import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../chat_l10n.dart';
@@ -97,7 +98,10 @@ class Chat extends StatefulWidget {
     this.userAgent,
     this.useTopSafeAreaInset,
     this.videoMessageBuilder,
+    // this.chatObserver,
   });
+
+  // final ChatScrollObserver? chatObserver;
 
   /// See [Message.audioMessageBuilder].
   final Widget Function(types.AudioMessage, {required int messageWidth})?
@@ -325,23 +329,23 @@ class Chat extends StatefulWidget {
 /// [Chat] widget state.
 class ChatState extends State<Chat> {
   /// Used to get the correct auto scroll index from [_autoScrollIndexById].
-  static const String _unreadHeaderId = 'unread_header_id';
+  // static const String _unreadHeaderId = 'unread_header_id';
 
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
   PageController? _galleryPageController;
-  bool _hadScrolledToUnreadOnOpen = false;
+  // bool _hadScrolledToUnreadOnOpen = false;
   bool _isImageViewVisible = false;
 
   /// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
-  final Map<String, int> _autoScrollIndexById = {};
-  late final ScrollController _scrollController;
+  // final Map<String, int> _autoScrollIndexById = {};
+  // late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
 
-    _scrollController = widget.scrollController ?? ScrollController();
+    // _scrollController = widget.scrollController ?? ScrollController();
 
     didUpdateWidget(widget);
   }
@@ -555,7 +559,7 @@ class ChatState extends State<Chat> {
   @override
   void dispose() {
     _galleryPageController?.dispose();
-    _scrollController.dispose();
+    // _scrollController.dispose();
     super.dispose();
   }
 
@@ -588,6 +592,7 @@ class ChatState extends State<Chat> {
                                     BoxConstraints constraints,
                                   ) =>
                                       ChatList(
+                                    // chatObserver: widget.chatObserver,
                                     bottomWidget: widget.listBottomWidget,
                                     bubbleRtlAlignment:
                                         widget.bubbleRtlAlignment!,
@@ -604,7 +609,8 @@ class ChatState extends State<Chat> {
                                     onEndReached: widget.onEndReached,
                                     onEndReachedThreshold:
                                         widget.onEndReachedThreshold,
-                                    scrollController: _scrollController,
+                                    scrollController: widget.scrollController ??
+                                        ScrollController(),
                                     scrollPhysics: widget.scrollPhysics,
                                     typingIndicatorOptions:
                                         widget.typingIndicatorOptions,

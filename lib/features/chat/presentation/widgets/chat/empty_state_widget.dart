@@ -1,8 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/status.dart';
+import '../../../../../core/helper/custom_scroll_physics.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
 import '../../../../../core/widgets/custom_bubble.dart';
@@ -37,8 +39,61 @@ class EmptyStateWidget extends StatelessWidget {
           case Status.loaded:
             return ListView(
               reverse: true,
+              physics: const PositionRetainedScrollPhysics(),
               // mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                BlocBuilder<ChatBloc, ChatState>(
+                  buildWhen: (previous, current) =>
+                      previous.messageStatus != current.messageStatus,
+                  builder: (context, state) {
+                    switch (state.messageStatus) {
+                      case Status.loaded:
+                        return BlocBuilder<ChatBloc, ChatState>(
+                          buildWhen: (previous, current) =>
+                              previous.suggestions != current.suggestions ||
+                              previous.isLoading != current.isLoading,
+                          builder: (context, state) {
+                            final suggestions = state.suggestions;
+                            if (suggestions == null ||
+                                suggestions.isEmpty ||
+                                state.isLoading!) {
+                              return const SizedBox.shrink();
+                            }
+                            return FadeIn(
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                  left: 25,
+                                  right: 25,
+                                  top: 20,
+                                  bottom: 15,
+                                ),
+                                margin: const EdgeInsets.only(top: 15.0),
+                                // width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  border: Border(
+                                    top: BorderSide(
+                                      color: Theme.of(context).dividerColor,
+                                    ),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    ...suggestions.map(
+                                      (e) => SuggestionItem(e),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      default:
+                        return const SizedBox.shrink();
+                    }
+                  },
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 24.0, bottom: 10),
                   child: Row(
@@ -66,46 +121,47 @@ class EmptyStateWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                BlocBuilder<ChatBloc, ChatState>(
-                  buildWhen: (previous, current) =>
-                      previous.suggestions != current.suggestions ||
-                      previous.focusNode != current.focusNode,
-                  builder: (context, state) {
-                    final suggestions = state.suggestions;
-                    if (suggestions == null ||
-                        suggestions.isEmpty ||
-                        !state.focusNode!.hasFocus) {
-                      return const SizedBox.shrink();
-                    }
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              const SizedBox(
-                                width: 24,
-                              ),
-                              ...suggestions.map(
-                                (e) => SuggestionItem(e),
-                              ),
-                              // SuggestionItem('this is a suggestion'),
-                              // SuggestionItem('This is another question long'),
-                              // SuggestionItem(
-                              //     'This is third and last question long'),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    );
-                  },
-                ),
+
+                // BlocBuilder<ChatBloc, ChatState>(
+                //   buildWhen: (previous, current) =>
+                //       previous.suggestions != current.suggestions ||
+                //       previous.focusNode != current.focusNode,
+                //   builder: (context, state) {
+                //     final suggestions = state.suggestions;
+                //     if (suggestions == null ||
+                //         suggestions.isEmpty ||
+                //         !state.focusNode!.hasFocus) {
+                //       return const SizedBox.shrink();
+                //     }
+                //     return Column(
+                //       children: [
+                //         const SizedBox(
+                //           height: 15,
+                //         ),
+                //         SingleChildScrollView(
+                //           scrollDirection: Axis.horizontal,
+                //           child: Row(
+                //             children: [
+                //               const SizedBox(
+                //                 width: 24,
+                //               ),
+                //               ...suggestions.map(
+                //                 (e) => SuggestionItem(e),
+                //               ),
+                //               // SuggestionItem('this is a suggestion'),
+                //               // SuggestionItem('This is another question long'),
+                //               // SuggestionItem(
+                //               //     'This is third and last question long'),
+                //             ],
+                //           ),
+                //         ),
+                //         const SizedBox(
+                //           height: 15,
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
               ],
             );
           case Status.failed:

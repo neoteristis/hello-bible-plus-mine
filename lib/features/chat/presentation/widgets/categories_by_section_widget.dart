@@ -30,7 +30,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
             const SizedBox(
               width: 20,
             ),
-            iconLeadings(context)[index],
+            iconLeadings(context)[index < 3 ? index : index % 3],
             const SizedBox(
               width: 5,
             ),
@@ -132,7 +132,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
 //   'assets/images/pray_4.jpg',
 // ];
 
-final double iconSize = 16;
+const double iconSize = 16;
 
 List<Widget> iconLeadings(BuildContext context) => [
       Icon(
@@ -146,10 +146,11 @@ List<Widget> iconLeadings(BuildContext context) => [
         color: Theme.of(context).primaryColor,
       ),
       Transform.rotate(
-          angle: math.pi / 4,
-          child: Icon(
-            Icons.square_rounded,
-            size: iconSize,
-            color: Theme.of(context).primaryColor,
-          )),
+        angle: math.pi / 4,
+        child: Icon(
+          Icons.square_rounded,
+          size: iconSize,
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
     ];

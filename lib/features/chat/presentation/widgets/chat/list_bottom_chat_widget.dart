@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,7 +63,7 @@ class ListBottomChatWidget extends StatelessWidget {
                             state.incoming ?? '',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 15.sp,
+                              fontSize: 16.sp,
                               // fontSize: 13,
                               height: 1.4,
                               fontWeight: FontWeight.w400,
@@ -82,12 +83,14 @@ class ListBottomChatWidget extends StatelessWidget {
                         return BlocBuilder<ChatBloc, ChatState>(
                           buildWhen: (previous, current) =>
                               previous.suggestions != current.suggestions ||
-                              previous.focusNode != current.focusNode,
+                              previous.isLoading != current.isLoading ||
+                              previous.maintainScroll != current.maintainScroll,
                           builder: (context, state) {
                             final suggestions = state.suggestions;
                             if (suggestions == null ||
                                 suggestions.isEmpty ||
-                                !state.focusNode!.hasFocus) {
+                                state.isLoading! ||
+                                state.maintainScroll!) {
                               return const SizedBox.shrink();
                             }
                             return Container(
@@ -98,7 +101,7 @@ class ListBottomChatWidget extends StatelessWidget {
                                 bottom: 15,
                               ),
                               margin: const EdgeInsets.only(top: 15.0),
-                              width: double.infinity,
+                              // width: double.infinity,
                               decoration: BoxDecoration(
                                 color:
                                     Theme.of(context).scaffoldBackgroundColor,
@@ -192,47 +195,53 @@ class SuggestionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final light = isLight(context);
-    return GestureDetector(
-      onTap: () {
-        unfocusKeyboard();
-        context.read<ChatBloc>().add(
-              ChatMessageSent(
-                text,
+    return BlocBuilder<ChatBloc, ChatState>(
+      buildWhen: (previous, current) =>
+          previous.scrollController != current.scrollController,
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: () {
+            unfocusKeyboard();
+            context.read<ChatBloc>().add(
+                  ChatMessageSent(
+                    text,
+                  ),
+                );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: const Color(0xFF000000)
+              //         .withOpacity(0.1), // shadow color with opacity
+              //     spreadRadius: 0, // spread radius
+              //     blurRadius: 10, // blur radius
+              //     offset: const Offset(0, 4), // offset in x and y direction
+              //   ),
+              // ],
+              border: !light
+                  ? Border.all(color: Theme.of(context).dividerColor, width: 1)
+                  : Border.all(color: const Color(0xFFF5F5F5), width: 1),
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.only(
+              bottom: 10,
+              // left: 8,
+              // right: 8,
+            ),
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontSize: 14.sp,
               ),
-            );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: const Color(0xFF000000)
-          //         .withOpacity(0.1), // shadow color with opacity
-          //     spreadRadius: 0, // spread radius
-          //     blurRadius: 10, // blur radius
-          //     offset: const Offset(0, 4), // offset in x and y direction
-          //   ),
-          // ],
-          border: !light
-              ? Border.all(color: Theme.of(context).dividerColor, width: 1)
-              : Border.all(color: const Color(0xFFF5F5F5), width: 1),
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.only(
-          bottom: 10,
-          // left: 8,
-          // right: 8,
-        ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.tertiary,
-            fontSize: 14.sp,
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

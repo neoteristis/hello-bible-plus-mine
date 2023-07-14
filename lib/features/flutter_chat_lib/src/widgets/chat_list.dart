@@ -1,9 +1,10 @@
 import 'package:diffutil_dart/diffutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+// import 'package:scrollview_observer/scrollview_observer.dart';
 
+// import '../../../../core/helper/custom_scroll_physics.dart';
 import '../models/bubble_rtl_alignment.dart';
-import 'state/inherited_chat_theme.dart';
 import 'typing_indicator.dart';
 
 /// Animated list that handles automatic animations and pagination.
@@ -23,7 +24,10 @@ class ChatList extends StatefulWidget {
     this.scrollPhysics,
     this.typingIndicatorOptions,
     required this.useTopSafeAreaInset,
+    // this.chatObserver,
   });
+
+  // final ChatScrollObserver? chatObserver;
 
   /// A custom widget at the bottom of the list.
   final Widget? bottomWidget;
@@ -74,25 +78,27 @@ class ChatList extends StatefulWidget {
 /// [ChatList] widget state.
 class _ChatListState extends State<ChatList>
     with SingleTickerProviderStateMixin {
-  late final Animation<double> _animation = CurvedAnimation(
-    curve: Curves.easeOutQuad,
-    parent: _controller,
-  );
-  late final AnimationController _controller = AnimationController(vsync: this);
+  // late final Animation<double> _animation = CurvedAnimation(
+  //   curve: Curves.easeOutQuad,
+  //   parent: _controller,
+  // );
+  // late final AnimationController _controller = AnimationController(vsync: this);
 
-  bool _indicatorOnScrollStatus = false;
-  bool _isNextPageLoading = false;
+  // bool _indicatorOnScrollStatus = false;
+  // bool _isNextPageLoading = false;
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
 
-  late ScrollController _scrollController;
+  // late ScrollController _scrollController;
   ScrollPhysics? physics;
+  // late ListObserverController observerController;
+  // late ChatScrollObserver chatObserver;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    // _scrollController = ScrollController();
 
     // _scrollController.addListener(
     //   () {
@@ -106,6 +112,25 @@ class _ChatListState extends State<ChatList>
     //     }
     //   },
     // );
+    // _scrollController = ScrollController();
+
+    // /// Initialize ListObserverController
+    // observerController =
+    //     ListObserverController(controller: widget.scrollController)
+    //       ..cacheJumpIndexOffset = false;
+
+    // /// Initialize ChatScrollObserver
+    // chatObserver = ChatScrollObserver(observerController)
+    //   // Greater than this offset will be fixed to the current chat position.
+    //   ..fixedPositionOffset = 9
+    //   ..toRebuildScrollViewCallback = () {
+    //     // Here you can use other way to rebuild the specified listView instead of [setState]
+    //     setState(() {});
+    //   }
+    //   ..standby(
+    //     mode: ChatScrollObserverHandleMode.generative,
+    //     // changeCount: 1,
+    //   );
     didUpdateWidget(widget);
   }
 
@@ -150,13 +175,14 @@ class _ChatListState extends State<ChatList>
   Widget _newMessageBuilder(int index, Animation<double> animation) {
     try {
       final item = _oldData[index];
+      return widget.itemBuilder(item, index);
 
-      return SizeTransition(
-        key: _valueKeyForItem(item),
-        axisAlignment: -1,
-        sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
-        child: widget.itemBuilder(item, index),
-      );
+      // return SizeTransition(
+      //   key: _valueKeyForItem(item),
+      //   axisAlignment: -1,
+      //   sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
+      //   child: widget.itemBuilder(item, index),
+      // );
     } catch (e) {
       return const SizedBox();
     }
@@ -217,6 +243,50 @@ class _ChatListState extends State<ChatList>
     return null;
   }
 
+  // Widget _buildListView() {
+  //   Widget resultWidget = CustomScrollView(
+  //     controller: widget.scrollController,
+  //     // shrinkWrap: chatObserver.isShrinkWrap,
+  //     // keyboardDismissBehavior: widget.keyboardDismissBehavior,
+  //     // scrollBehavior: MyCustomScrollBehavior(),
+  //     // physics:
+  //     //     ChatObserverClampingScrollPhysics(observer: widget.chatObserver!),
+  //     // physics: widget.scrollPhysics,
+  //     reverse: true,
+  //     slivers: [
+  //       if (widget.bottomWidget != null)
+  //         SliverToBoxAdapter(child: widget.bottomWidget),
+  //       SliverPadding(
+  //         padding: const EdgeInsets.only(bottom: 4),
+  //         sliver: SliverAnimatedList(
+  //           findChildIndexCallback: (Key key) {
+  //             if (key is ValueKey<Object>) {
+  //               final newIndex = widget.items.indexWhere(
+  //                 (v) => _valueKeyForItem(v) == key,
+  //               );
+  //               if (newIndex != -1) {
+  //                 return newIndex;
+  //               }
+  //             }
+  //             return null;
+  //           },
+  //           initialItemCount: widget.items.length,
+  //           key: _listKey,
+  //           itemBuilder: (_, index, animation) =>
+  //               _newMessageBuilder(index, animation),
+  //         ),
+  //       ),
+  //     ],
+  //     // ),
+  //   );
+
+  //   resultWidget = ListViewObserver(
+  //     controller: observerController,
+  //     child: resultWidget,
+  //   );
+  //   return resultWidget;
+  // }
+
   @override
   void didUpdateWidget(covariant ChatList oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -226,7 +296,8 @@ class _ChatListState extends State<ChatList>
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
+    widget.scrollController.dispose();
     super.dispose();
   }
 
@@ -251,166 +322,82 @@ class _ChatListState extends State<ChatList>
     //     },
     //   );
     // }
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        if (notification.metrics.pixels > 10.0 && !_indicatorOnScrollStatus) {
-          setState(() {
-            _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
-          });
-        } else if (notification.metrics.pixels == 0.0 &&
-            _indicatorOnScrollStatus) {
-          setState(() {
-            _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
-          });
-        }
+    // return NotificationListener<ScrollNotification>(
+    //   onNotification: (notification) {
+    //     // if (notification.metrics.pixels > 10.0 && !_indicatorOnScrollStatus) {
+    //     //   setState(() {
+    //     //     _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
+    //     //   });
+    //     // } else if (notification.metrics.pixels == 0.0 &&
+    //     //     _indicatorOnScrollStatus) {
+    //     //   setState(() {
+    //     //     _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
+    //     //   });
+    //     // }
 
-        if (widget.onEndReached == null || widget.isLastPage == true) {
-          return false;
-        }
+    //     // if (widget.onEndReached == null || widget.isLastPage == true) {
+    //     //   return false;
+    //     // }
 
-        if (notification.metrics.pixels >=
-            (notification.metrics.maxScrollExtent *
-                (widget.onEndReachedThreshold ?? 0.75))) {
-          if (widget.items.isEmpty || _isNextPageLoading) return false;
+    //     // if (notification.metrics.pixels >=
+    //     //     (notification.metrics.maxScrollExtent *
+    //     //         (widget.onEndReachedThreshold ?? 0.75))) {
+    //     //   if (widget.items.isEmpty || _isNextPageLoading) return false;
 
-          _controller.duration = Duration.zero;
-          _controller.forward();
+    //     //   _controller.duration = Duration.zero;
+    //     //   _controller.forward();
 
-          setState(() {
-            _isNextPageLoading = true;
-          });
+    //     //   setState(() {
+    //     //     _isNextPageLoading = true;
+    //     //   });
 
-          widget.onEndReached!().whenComplete(() {
-            _controller.duration = const Duration(milliseconds: 300);
-            _controller.reverse();
+    //     //   widget.onEndReached!().whenComplete(() {
+    //     //     _controller.duration = const Duration(milliseconds: 300);
+    //     //     _controller.reverse();
 
-            setState(() {
-              _isNextPageLoading = false;
-            });
-          });
-        }
-        // if(widget)
+    //     //     setState(() {
+    //     //       _isNextPageLoading = false;
+    //     //     });
+    //     //   });
+    //     // }
+    //     // if(widget)
 
-        return false;
-      },
-      child: CustomScrollView(
-        // controller: _scrollController,
-        keyboardDismissBehavior: widget.keyboardDismissBehavior,
-        physics: const PositionRetainedScrollPhysics(),
-        reverse: true,
-        slivers: [
-          if (widget.bottomWidget != null)
-            SliverToBoxAdapter(child: widget.bottomWidget),
-          SliverPadding(
-            padding: const EdgeInsets.only(bottom: 4),
-            sliver: SliverToBoxAdapter(
-              child: widget.typingIndicatorOptions?.customTypingIndicator ??
-                  TypingIndicator(
-                    bubbleAlignment: widget.bubbleRtlAlignment,
-                    options: widget.typingIndicatorOptions!,
-                    showIndicator: (widget
-                            .typingIndicatorOptions!.typingUsers.isNotEmpty &&
-                        !_indicatorOnScrollStatus),
-                  ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.only(bottom: 4),
-            sliver: SliverAnimatedList(
-              findChildIndexCallback: (Key key) {
-                if (key is ValueKey<Object>) {
-                  final newIndex = widget.items.indexWhere(
-                    (v) => _valueKeyForItem(v) == key,
-                  );
-                  if (newIndex != -1) {
-                    return newIndex;
-                  }
+    //     return false;
+    //   },
+    //   child:
+    // return ListViewObserver(
+    //   controller: observerController,
+    //   child: _buildListView(),
+    // );
+    return CustomScrollView(
+      controller: widget.scrollController,
+      physics: widget.scrollPhysics,
+      reverse: true,
+      slivers: [
+        if (widget.bottomWidget != null)
+          SliverToBoxAdapter(child: widget.bottomWidget),
+        SliverPadding(
+          padding: const EdgeInsets.only(bottom: 4),
+          sliver: SliverAnimatedList(
+            findChildIndexCallback: (Key key) {
+              if (key is ValueKey<Object>) {
+                final newIndex = widget.items.indexWhere(
+                  (v) => _valueKeyForItem(v) == key,
+                );
+                if (newIndex != -1) {
+                  return newIndex;
                 }
-                return null;
-              },
-              initialItemCount: widget.items.length,
-              key: _listKey,
-              itemBuilder: (_, index, animation) =>
-                  _newMessageBuilder(index, animation),
-            ),
+              }
+              return null;
+            },
+            initialItemCount: widget.items.length,
+            key: _listKey,
+            itemBuilder: (_, index, animation) =>
+                _newMessageBuilder(index, animation),
           ),
-          SliverPadding(
-            padding: EdgeInsets.only(
-              top: 16 +
-                  (widget.useTopSafeAreaInset
-                      ? MediaQuery.of(context).padding.top
-                      : 0),
-            ),
-            sliver: SliverToBoxAdapter(
-              child: SizeTransition(
-                axisAlignment: 1,
-                sizeFactor: _animation,
-                child: Center(
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 32,
-                    width: 32,
-                    child: SizedBox(
-                      height: 16,
-                      width: 16,
-                      child: _isNextPageLoading
-                          ? CircularProgressIndicator(
-                              backgroundColor: Colors.transparent,
-                              strokeWidth: 1.5,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                InheritedChatTheme.of(context)
-                                    .theme
-                                    .primaryColor,
-                              ),
-                            )
-                          : null,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
+      // ),
     );
-  }
-}
-
-class PositionRetainedScrollPhysics extends ScrollPhysics {
-  final bool shouldRetain;
-  const PositionRetainedScrollPhysics({super.parent, this.shouldRetain = true});
-
-  @override
-  PositionRetainedScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return PositionRetainedScrollPhysics(
-      parent: buildParent(ancestor),
-      shouldRetain: shouldRetain,
-    );
-  }
-
-  @override
-  double adjustPositionForNewDimensions({
-    required ScrollMetrics oldPosition,
-    required ScrollMetrics newPosition,
-    required bool isScrolling,
-    required double velocity,
-  }) {
-    final position = super.adjustPositionForNewDimensions(
-      oldPosition: oldPosition,
-      newPosition: newPosition,
-      isScrolling: isScrolling,
-      velocity: velocity,
-    );
-
-    //final diff = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
-    final diff = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
-
-    if (oldPosition.pixels > oldPosition.minScrollExtent &&
-        diff > 0 &&
-        !isScrolling) {
-      return position + diff;
-    } else {
-      return position;
-    }
   }
 }

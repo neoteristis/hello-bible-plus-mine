@@ -1,19 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:gpt/core/helper/unfocus_keyboard.dart';
-
-import '../../../../core/widgets/custom_bubble.dart';
+import 'package:gpt/core/helper/custom_scroll_physics.dart';
+// import 'package:scrollview_observer/scrollview_observer.dart';
+import '../../../../core/helper/log.dart';
 import '../../../flutter_chat_lib/flutter_chat_ui.dart' as ui;
 import 'package:gpt/features/chat/presentation/widgets/chat/custom_bottom_widget.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/constants/status.dart';
-import '../../../../core/helper/log.dart';
 import '../../../../core/theme/chat_theme.dart';
-// import '../../../../core/widgets/bot_avatar.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
 import 'chat/bubble_builder.dart';
@@ -21,205 +15,198 @@ import 'chat/empty_state_widget.dart';
 import 'chat/list_bottom_chat_widget.dart';
 import 'container_categories_widget.dart';
 
-import 'package:scroll_to_index/scroll_to_index.dart';
-
-class ChatBody extends StatefulWidget {
+class ChatBody extends StatelessWidget {
   const ChatBody({
     super.key,
   });
 
   @override
-  State<ChatBody> createState() => _ChatBodyState();
-}
-
-class _ChatBodyState extends State<ChatBody> {
-  late TextEditingController? textEditingController;
-  // late AutoScrollController? _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    textEditingController = TextEditingController();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatBloc, ChatState>(
-      builder: (context, state) {
-        switch (state.conversationStatus) {
-          case Status.loading:
-            return const Center(
-              child: CustomProgressIndicator(),
-            );
-          case Status.loaded:
-            // return Column(
-            //   children: [
-            //     Expanded(
-            //       child: ListView.builder(
-            //         // controller: _scrollController,
-            //         physics: PositionRetainedScrollPhysics(shouldRetain: true),
-            //         shrinkWrap: true,
-            //         reverse: true,
-            //         itemCount: state.messages?.length,
-            //         itemBuilder: (context, index) {
-            //           final message = state.messages?[index];
-            //           if (index == 0) {
-            //             return ListBottomChatWidget();
-            //           }
-            //           return CustomBubble(
-            //             message: Text(
-            //               (message as dynamic).text,
-            //               // textScaleFactor: 1.2,
-            //               style: TextStyle(
-            //                 fontSize: 15,
-            //                 // fontSize: 13,
-            //                 height: 1.4,
-            //                 fontWeight: FontWeight.w400,
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //         // children: [
-            //         //   ListBottomChatWidget(),
-            //         // ],
-            //       ),
-            //     ),
-            //     CustomBottomWidget(),
-            //   ],
-            // );
-            return ui.Chat(
-              // scrollController: _scrollController,
-              // dateFormat: DateFormat('h:mm a'),
-              // dateHeaderThreshold: 100,
-              dateHeaderBuilder: (p0) => const SizedBox.shrink(),
-              // showUserAvatars: true,
-              // avatarBuilder: (uid) => const BotAvatar(),
-              messages: state.messages ?? [],
-              onSendPressed: (message) {
-                context.read<ChatBloc>().add(ChatMessageSent(message.text));
-              },
-              bubbleBuilder: bubbleBuilder,
-              emptyState: const EmptyStateWidget(),
-              theme: chatTheme(context),
-              user: state.sender!,
-              listBottomWidget: const ListBottomChatWidget(),
-              scrollPhysics: const BouncingScrollPhysics(),
-              customBottomWidget: const Visibility(
-                // visible: state.messages!.isNotEmpty,
-                visible: true,
-                // child: Padding(
-                //   padding:
-                //       EdgeInsets.only(left: 15.0, bottom: 20.0, right: 15.0),
-                child: CustomBottomWidget(),
-                // ),
-              ),
-            );
-          case Status.failed:
-            return const ContainerCategoriesWidget();
-          default:
-            return const SizedBox.shrink();
+    return BlocConsumer<ChatBloc, ChatState>(
+      listenWhen: (previous, current) =>
+          previous.isLoading != current.isLoading ||
+          previous.suggestionLoaded != current.suggestionLoaded ||
+          previous.maintainScroll != current.maintainScroll
+      // ||
+      // previous.incoming != current.incoming ||
+      // previous.newMessage != current.newMessage
+      ,
+      listener: (context, state) {
+        if (!state.isLoading! &&
+            state.suggestionLoaded! &&
+            !state.maintainScroll!) {
+          Log.info('good');
+          context.read<ChatBloc>().add(
+                const ChatScrollPhysicsSwitched(
+                  AlwaysScrollableScrollPhysics(),
+                  addTimer: true,
+                ),
+              );
         }
+      },
+      builder: (context, state) {
+        return BlocBuilder<ChatBloc, ChatState>(
+          buildWhen: (previous, current) =>
+              previous.conversationStatus != current.conversationStatus,
+          builder: (context, state) {
+            switch (state.conversationStatus) {
+              case Status.loading:
+                return const Center(
+                  child: CustomProgressIndicator(),
+                );
+              case Status.loaded:
+                return const ChatLoaded();
+              case Status.failed:
+                return const ContainerCategoriesWidget();
+              default:
+                return const SizedBox.shrink();
+            }
+          },
+        );
       },
     );
   }
 }
 
-extension BottomReachExtension on AutoScrollController {
-  void onBottomReach(VoidCallback callback,
-      {double sensitivity = 200.0, Duration? throttleDuration}) {
-    final duration = throttleDuration ?? Duration(milliseconds: 200);
-    Timer? timer;
+class ChatLoaded extends StatefulWidget {
+  const ChatLoaded({
+    super.key,
+  });
 
-    addListener(() {
-      if (timer != null) {
-        return;
-      }
+  @override
+  State<ChatLoaded> createState() => _ChatLoadedState();
+}
 
-      // I used the timer to destroy the timer
-      timer = Timer(duration, () => timer = null);
-
-      // see Esteban Díaz answer
-      final maxScroll = position.maxScrollExtent;
-      final currentScroll = position.pixels;
-      if (maxScroll - currentScroll <= sensitivity) {
-        callback();
-      }
-    });
+class _ChatLoadedState extends State<ChatLoaded> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChatBloc, ChatState>(
+      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+      builder: (context, state) {
+        return NotificationListener<ScrollNotification>(
+          onNotification: (scrollNotification) {
+            if (scrollNotification is ScrollStartNotification &&
+                state.isLoading!) {
+              context.read<ChatBloc>().add(
+                    const ChatMaintainScrollChanged(true),
+                  );
+            } else if (scrollNotification is ScrollEndNotification) {
+              context.read<ChatBloc>().add(
+                    const ChatMaintainScrollChanged(false),
+                  );
+            }
+            // else if (scrollNotification is ScrollUpdateNotification &&
+            //     state.isLoading!) {
+            //   print(2);
+            //   print(3);
+            //   if (scrollNotification.metrics.atEdge) {
+            //     print(4);
+            //     context.read<ChatBloc>().add(
+            //           const ChatMaintainScrollChanged(false),
+            //         );
+            //   } else {
+            //     context.read<ChatBloc>().add(
+            //           const ChatMaintainScrollChanged(true),
+            //         );
+            //   }
+            // }
+            return false;
+          },
+          child: const CustomChat(),
+        );
+      },
+    );
   }
 }
 
-class PositionRetainedScrollPhysics extends ScrollPhysics {
-  final bool shouldRetain;
-  const PositionRetainedScrollPhysics({super.parent, this.shouldRetain = true});
+class CustomChat extends StatefulWidget {
+  const CustomChat({
+    super.key,
+  });
 
   @override
-  PositionRetainedScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return PositionRetainedScrollPhysics(
-      parent: buildParent(ancestor),
-      shouldRetain: shouldRetain,
-    );
+  State<CustomChat> createState() => _CustomChatState();
+}
+
+class _CustomChatState extends State<CustomChat> {
+  // late ScrollController _scrollController;
+  // late ListObserverController observerController;
+  // late ChatScrollObserver chatObserver;
+
+  @override
+  void initState() {
+    super.initState();
+    // _scrollController = ScrollController();
+
+    // /// Initialize ListObserverController
+    // observerController = ListObserverController(controller: _scrollController)
+    //   ..cacheJumpIndexOffset = true;
+
+    // /// Initialize ChatScrollObserver
+    // chatObserver = ChatScrollObserver(observerController)
+    //   // Greater than this offset will be fixed to the current chat position.
+    //   ..fixedPositionOffset = 5
+    //   ..toRebuildScrollViewCallback = () {
+    //     // Here you can use other way to rebuild the specified listView instead of [setState]
+    //     setState(() {});
+    //   }
+    //   ..standby(
+    //     mode: ChatScrollObserverHandleMode.generative,
+    //     // changeCount: 1,
+    //   );
   }
 
   @override
-  double adjustPositionForNewDimensions({
-    required ScrollMetrics oldPosition,
-    required ScrollMetrics newPosition,
-    required bool isScrolling,
-    required double velocity,
-  }) {
-    final position = super.adjustPositionForNewDimensions(
-      oldPosition: oldPosition,
-      newPosition: newPosition,
-      isScrolling: isScrolling,
-      velocity: velocity,
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChatBloc, ChatState>(
+      buildWhen: (previous, current) =>
+          previous.messages != current.messages ||
+          previous.scrollPhysics != current.scrollPhysics,
+      builder: (context, state) {
+        Log.info(state.scrollPhysics);
+        Log.info(state.maintainScroll);
+        return ui.Chat(
+          scrollPhysics: state.scrollPhysics,
+          // chatObserver: chatObserver,
+          // scrollController: _scrollController,
+          dateHeaderBuilder: (p0) => const SizedBox.shrink(),
+          messages: state.messages ?? [],
+          onSendPressed: (message) {
+            // chatObserver.standby();
+            context.read<ChatBloc>().add(ChatMessageSent(message.text));
+          },
+          bubbleBuilder: bubbleBuilder,
+          emptyState: const EmptyStateWidget(),
+          theme: chatTheme(context),
+          user: state.sender!,
+          listBottomWidget: const ListBottomChatWidget(),
+          customBottomWidget: const CustomBottomWidget(),
+        );
+      },
     );
-
-    final diff = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
-
-    if (oldPosition.pixels > oldPosition.minScrollExtent &&
-        diff > 0 &&
-        shouldRetain) {
-      return position + diff;
-    } else {
-      return position;
-    }
   }
 }
 
-// class PositionRetainedScrollPhysics extends ScrollPhysics {
-//   final bool shouldRetain;
-//   const PositionRetainedScrollPhysics({super.parent, this.shouldRetain = true});
+// extension BottomReachExtension on AutoScrollController {
+//   void onBottomReach(VoidCallback callback,
+//       {double sensitivity = 200.0, Duration? throttleDuration}) {
+//     final duration = throttleDuration ?? const Duration(milliseconds: 200);
+//     Timer? timer;
 
-//   @override
-//   PositionRetainedScrollPhysics applyTo(ScrollPhysics? ancestor) {
-//     return PositionRetainedScrollPhysics(
-//       parent: buildParent(ancestor),
-//       shouldRetain: shouldRetain,
-//     );
-//   }
+//     addListener(() {
+//       if (timer != null) {
+//         return;
+//       }
 
-//   @override
-//   double adjustPositionForNewDimensions({
-//     required ScrollMetrics oldPosition,
-//     required ScrollMetrics newPosition,
-//     required bool isScrolling,
-//     required double velocity,
-//   }) {
-//     final position = super.adjustPositionForNewDimensions(
-//       oldPosition: oldPosition,
-//       newPosition: newPosition,
-//       isScrolling: isScrolling,
-//       velocity: velocity,
-//     );
+//       // I used the timer to destroy the timer
+//       timer = Timer(duration, () => timer = null);
 
-//     final diff = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
-
-//     if (oldPosition.pixels > oldPosition.minScrollExtent &&
-//         diff > 0 &&
-//         shouldRetain) {
-//       return position + diff;
-//     } else {
-//       return position;
-//     }
+//       // see Esteban Díaz answer
+//       final maxScroll = position.maxScrollExtent;
+//       final currentScroll = position.pixels;
+//       if (maxScroll - currentScroll <= sensitivity) {
+//         callback();
+//       }
+//     });
 //   }
 // }

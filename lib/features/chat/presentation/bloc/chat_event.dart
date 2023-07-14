@@ -23,8 +23,6 @@ class ChatSuggestionsRequested extends ChatEvent {
   List<Object> get props => [message];
 }
 
-class ChatCategoriesFetched extends ChatEvent {}
-
 class ChatCategoriesBySectionFetched extends ChatEvent {}
 
 class ChatConversationChanged extends ChatEvent {
@@ -131,4 +129,38 @@ class ChatLoadingChanged extends ChatEvent {
 
   @override
   List<Object> get props => [status];
+}
+
+// class ChatFirstLaunchStateChanged extends ChatEvent {
+//   final bool isFirstLaunch;
+//   const ChatFirstLaunchStateChanged({
+//     required this.isFirstLaunch,
+//   });
+
+//   @override
+//   List<Object> get props => [isFirstLaunch];
+// }
+
+class ChatScrollPhysicsSwitched extends ChatEvent {
+  final ScrollPhysics physics;
+  final bool? addTimer;
+  const ChatScrollPhysicsSwitched(this.physics, {this.addTimer});
+
+  @override
+  List<Object?> get props => [
+        physics,
+        addTimer,
+      ];
+}
+
+class ChatMaintainScrollChanged extends ChatEvent {
+  final bool maintainScroll;
+  const ChatMaintainScrollChanged(
+    this.maintainScroll,
+  );
+
+  @override
+  List<Object> get props => [
+        maintainScroll,
+      ];
 }

@@ -30,8 +30,9 @@ class CategoriesBySection extends Equatable {
                 ).toList()
               : []
           : null,
+      // categories: [],
       sectionName: json['sectionName'] ?? '',
-      id: (categories as List).first['section'].first['_id'],
+      id: json['_id'],
     );
   }
 }

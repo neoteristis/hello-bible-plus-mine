@@ -5,6 +5,7 @@ import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/entities/token.dart';
 import '../../../../core/error/exception.dart';
+import '../../../../core/helper/log.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/fetch_historical_usecase.dart';
 
@@ -33,7 +34,11 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   Future<List<Category>> fetchCategories() async {
     try {
       final res = await baseRepo.get(ApiConstants.categories);
-      return (res.data as List).map((m) => Category.fromJson(m)).toList();
+
+      final lists =
+          (res.data as List).map((m) => Category.fromJson(m)).toList();
+
+      return lists;
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());
@@ -92,12 +97,9 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
             'Accept': 'text/event-stream',
             'Cache-Control': 'no-cache',
             'Authorization': 'Bearer ${token.token}',
-            // 'Authorization':
-            //     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NzBiMzRjM2EyNWU1MzNiNjIxMWJjOCIsImNvdW50cnkiOiJNYWRhZ2FzY2FyIiwibmFtZSI6IlJhYXphZmltYWhhdHJhdHJhIiwiZmlyc3RuYW1lIjoiSm9vaGFyeSIsImVtYWlsIjoiam9vaGFyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6InJhYXphZmltYWhhdHJhdHJhMTY4NTEwNzUzMjQ0OCIsInJvbGVzIjpbXSwiaWF0IjoxNjg1MTA3NTMyLCJleHAiOjE2ODUxMTExMzJ9.txaKUroCECANuALLx9KM17iYjWdM2WNGLfCCA1s6QTc'
           },
           responseType: ResponseType.stream,
         ),
-        // responseType: ResponseType.stream,
         addToken: true,
       );
       return res;
@@ -112,10 +114,10 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
     try {
       final res =
           await baseRepo.get(ApiConstants.categoriesBySection, addToken: true);
-
-      return (res.data as List)
+      final lists = (res.data as List)
           .map((m) => CategoriesBySection.fromJson(m))
           .toList();
+      return lists;
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());

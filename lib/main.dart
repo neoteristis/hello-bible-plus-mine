@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:gpt/core/constants/color_constants.dart';
-// import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'app.dart';
 import 'injections.dart';
 
 void main() async {
-  // final WidgetsBinding widgetsBinding =
   WidgetsFlutterBinding.ensureInitialized();
+  await init();
+  runApp(const App());
+}
+  // final WidgetsBinding widgetsBinding =
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // SystemChrome.setSystemUIOverlayStyle(
   //   const SystemUiOverlayStyle(
@@ -19,9 +19,6 @@ void main() async {
   //   ),
   // );
   // HttpOverrides.global = MyHttpOverrides();
-  await init();
-  runApp(const App());
-}
 
 // class MyHttpOverrides extends HttpOverrides {
 //   @override

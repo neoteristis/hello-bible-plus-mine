@@ -35,7 +35,9 @@ class CategoriesWidget extends StatelessWidget {
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      context.read<ChatBloc>().add(ChatCategoriesFetched());
+                      context
+                          .read<ChatBloc>()
+                          .add(ChatCategoriesBySectionFetched());
                     },
                     icon: Icon(Icons.refresh_rounded,
                         color: Theme.of(context).primaryColor),
@@ -54,7 +56,7 @@ class CategoriesWidget extends StatelessWidget {
                 .withOpacity(isLight(context) ? 1 : .7);
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<ChatBloc>().add(ChatCategoriesFetched());
+                context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
               },
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),
@@ -119,7 +121,7 @@ class CategoriesWidget extends StatelessWidget {
                           height: 25,
                         ),
                         CategoriesBySectionWidget(
-                          data: state.categoriesBySection[index],
+                          data: state.categoriesBySection[0],
                           index: index,
                         ),
                       ],
