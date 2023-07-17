@@ -38,7 +38,7 @@ class ChatConversationChanged extends ChatEvent {
 class ChatConversationCleared extends ChatEvent {}
 
 class ChatMessageAdded extends ChatEvent {
-  final types.TextMessage textMessage;
+  final String textMessage;
   const ChatMessageAdded({
     required this.textMessage,
   });
@@ -141,17 +141,17 @@ class ChatLoadingChanged extends ChatEvent {
 //   List<Object> get props => [isFirstLaunch];
 // }
 
-class ChatScrollPhysicsSwitched extends ChatEvent {
-  final ScrollPhysics physics;
-  final bool? addTimer;
-  const ChatScrollPhysicsSwitched(this.physics, {this.addTimer});
+// class ChatScrollPhysicsSwitched extends ChatEvent {
+//   final ScrollPhysics physics;
+//   final bool? addTimer;
+//   const ChatScrollPhysicsSwitched(this.physics, {this.addTimer});
 
-  @override
-  List<Object?> get props => [
-        physics,
-        addTimer,
-      ];
-}
+//   @override
+//   List<Object?> get props => [
+//         physics,
+//         addTimer,
+//       ];
+// }
 
 class ChatMaintainScrollChanged extends ChatEvent {
   final bool maintainScroll;

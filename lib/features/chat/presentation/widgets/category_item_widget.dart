@@ -23,12 +23,17 @@ class CategoryItemWidget extends StatelessWidget {
     }
     final logo = category?.logo;
     final contentColor = Theme.of(context).colorScheme.secondary;
+    final colorTheme = category?.colorTheme;
+    final isLight =
+        Theme.of(context).colorScheme.brightness == Brightness.light;
+    final background = Theme.of(context).colorScheme.onPrimary;
     return Container(
       // width: 100.sp,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: isLight ? colorTheme ?? background : background,
+        // color: Colors.amber,
         border: Border.fromBorderSide(
             BorderSide(color: Theme.of(context).dividerColor)),
         boxShadow: [
@@ -65,17 +70,13 @@ class CategoryItemWidget extends StatelessWidget {
                 color: contentColor,
               ),
             if (logo == null)
-              Expanded(
-                child: SvgPicture.asset(
-                  'assets/icons/ichthys.svg',
-                  width: 25.sp,
-                  // width: 25,
-                  color: contentColor,
-                ),
+              const SizedBox(
+                height: 10,
               ),
-            const SizedBox(
-              height: 4,
-            ),
+            if (logo != null)
+              const SizedBox(
+                height: 4,
+              ),
             Expanded(
               flex: 2,
               child: Center(

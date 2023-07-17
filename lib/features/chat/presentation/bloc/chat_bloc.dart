@@ -1,14 +1,16 @@
+// import 'dart:convert';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-
-import 'dart:async';
 import 'dart:typed_data';
+
+// import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+// import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:logger/logger.dart';
 // import 'package:scrollview_observer/scrollview_observer.dart';
 
@@ -60,147 +62,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatMessageAnswerGot>(_onChatMessageAnswerGot);
     on<ChatIncomingMessageLoaded>(_onChatIncomingMessageLoaded);
     on<ChatFocusNodeDisposed>(_onChatFocusNodeDisposed);
-    on<ChatConversationInited>(_onChatConversationInited);
-    on<ChatConversationFromNotificationInited>(
-        _onChatConversationFromNotificationInited);
+    // on<ChatConversationInited>(_onChatConversationInited);
+    // on<ChatConversationFromNotificationInited>(
+    //     _onChatConversationFromNotificationInited);
     on<ChatSuggestionsRequested>(_onChatSuggestionsRequested);
     on<ChatLoadingChanged>(_onChatLoadingChanged);
-    on<ChatScrollPhysicsSwitched>(_onChatScrollPhysicsSwitched);
-    on<ChatMaintainScrollChanged>(_onChatMaintainScrollChanged);
+    // on<ChatScrollPhysicsSwitched>(_onChatScrollPhysicsSwitched);
+    // on<ChatMaintainScrollChanged>(_onChatMaintainScrollChanged);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void _onChatMaintainScrollChanged(
-    ChatMaintainScrollChanged event,
-    Emitter<ChatState> emit,
-  ) async {
-    final retain = event.maintainScroll;
-
-    if (retain == true) {
-      emit(
-        state.copyWith(
-          maintainScroll: true,
-          clearScrollPhysics: true,
-        ),
-      );
-    } else {
-      if (state.isLoading!) {
-        // emit(
-        //   state.copyWith(
-        //     scrollPhysics: const PositionRetainedScrollPhysics(),
-        //   ),
-        // );
-        await Future.delayed(
-          const Duration(milliseconds: 1000),
-        );
-        emit(
-          state.copyWith(
-            maintainScroll: false,
-          ),
-        );
-      } else {
-        add(
-          ChatIncomingMessageLoaded(
-            message: state.newMessage ?? '',
-          ),
-        );
-        await Future.delayed(
-          const Duration(milliseconds: 300),
-        );
-        emit(
-          state.copyWith(
-            maintainScroll: false,
-          ),
-        );
-      }
-    }
-    // if (retain == false) {
-    //   emit(
-    //     state.copyWith(
-    //       scrollPhysics: const PositionRetainedScrollPhysics(),
-    //     ),
-    //   );
-    //   // await Future.delayed(Duration(milliseconds: 500));
-    //   // if (!state.isLoading!) {
-    //   //   add(
-    //   //     ChatIncomingMessageLoaded(
-    //   //       message: state.newMessage ?? '',
-    //   //     ),
-    //   //   );
-    //   // }
-    // }
-    // if (retain == false) {
-    //   if (!state.isLoading!) {
-    //     add(
-    //       ChatIncomingMessageLoaded(
-    //         message: state.newMessage ?? '',
-    //       ),
-    //     );
-    //   }
-    // }
-    // if (retain == true) {
-    //   await Future.delayed(
-    //     const Duration(
-    //       milliseconds: 200,
-    //     ),
-    //   );
-    //   emit(
-    //     state.copyWith(
-    //       // scrollPhysics: const AlwaysScrollableScrollPhysics(),
-    //       clearScrollPhysics: true,
-    //     ),
-    //   );
-    // } else {
-    //   emit(
-    //     state.copyWith(
-    //       scrollPhysics: const PositionRetainedScrollPhysics(),
-    //     ),
-    //   );
-    //   await Future.delayed(
-    //     const Duration(
-    //       milliseconds: 100,
-    //     ),
-    //   );
-    //   if (!state.isLoading!) {
-    //     // Log.info('eto');
-    //     add(
-    //       ChatIncomingMessageLoaded(
-    //         message: state.newMessage ?? '',
-    //       ),
-    //     );
-    //     await Future.delayed(const Duration(milliseconds: 400));
-    //     emit(
-    //       state.copyWith(
-    //         // scrollPhysics: const AlwaysScrollableScrollPhysics(),
-    //         clearScrollPhysics: true,
-    //       ),
-    //     );
-    //   }
-    // }
-  }
-
-  void _onChatScrollPhysicsSwitched(
-    ChatScrollPhysicsSwitched event,
-    Emitter<ChatState> emit,
-  ) async {
-    if (event.addTimer ?? false) {
-      await Future.delayed(
-        const Duration(
-          milliseconds: 1000,
-        ),
-      );
-    }
-    if (event.physics is AlwaysScrollableScrollPhysics) {
-      print('iiiiiiiiiiiiiiiis');
-      return emit(state.copyWith(clearScrollPhysics: true));
-    }
-    emit(
-      state.copyWith(
-        scrollPhysics: event.physics,
-      ),
-    );
-  }
 
   void _onChatLoadingChanged(
       ChatLoadingChanged event, Emitter<ChatState> emit) {
@@ -221,119 +92,105 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     return res.fold(
       (l) => Log.info(l),
       (suggestions) async {
-        Log.info(suggestions);
-        add(const ChatScrollPhysicsSwitched(AlwaysScrollableScrollPhysics()));
-        // add(const ChatScrollPhysicsSwitched(PositionRetainedScrollPhysics()));
-
-        await Future.delayed(const Duration(milliseconds: 500));
-
         emit(
           state.copyWith(
             suggestions: suggestions,
           ),
         );
-
-        await Future.delayed(const Duration(milliseconds: 500));
-        // add(const ChatScrollPhysicsSwitched(AlwaysScrollableScrollPhysics()));
-        emit(
-          state.copyWith(
-            suggestionLoaded: true,
-          ),
-        );
       },
     );
   }
 
-  void _onChatConversationFromNotificationInited(
-    ChatConversationFromNotificationInited event,
-    Emitter<ChatState> emit,
-  ) async {
-    state.textEditingController?.clear();
-    emit(
-      state.copyWith(
-        conversationStatus: Status.loading,
-        conversation: const Conversation(),
-        messages: [],
-        clearNewMessage: true,
-      ),
-    );
-    final res = await getConversationById(event.conversationId);
+  // void _onChatConversationFromNotificationInited(
+  //   ChatConversationFromNotificationInited event,
+  //   Emitter<ChatState> emit,
+  // ) async {
+  //   // state.textEditingController?.clear();
+  //   // emit(
+  //   //   state.copyWith(
+  //   //     conversationStatus: Status.loading,
+  //   //     conversation: const Conversation(),
+  //   //     messages: [],
+  //   //     clearNewMessage: true,
+  //   //   ),
+  //   // );
+  //   // final res = await getConversationById(event.conversationId);
 
-    return res.fold(
-      (l) => Logger().w(l),
-      (conversation) {
-        state.focusNode?.requestFocus();
-        emit(
-          state.copyWith(
-            conversation: conversation,
-            // theme: theme(conversation.category?.colorTheme),
-            conversationStatus: Status.loaded,
-          ),
-        );
-        final messages = conversation.messages;
-        if (messages != null) {
-          for (final message in messages) {
-            final author =
-                message.role == Role.user ? state.sender : state.receiver;
-            final text = types.TextMessage(
-              author: author!,
-              createdAt: message.createdAt?.millisecondsSinceEpoch,
-              id: _randomString(),
-              text: message.content ?? '',
-            );
-            add(ChatMessageAdded(textMessage: text));
-          }
-        }
-      },
-    );
-  }
+  //   // return res.fold(
+  //   //   (l) => Logger().w(l),
+  //   //   (conversation) {
+  //   //     state.focusNode?.requestFocus();
+  //   //     emit(
+  //   //       state.copyWith(
+  //   //         conversation: conversation,
+  //   //         // theme: theme(conversation.category?.colorTheme),
+  //   //         conversationStatus: Status.loaded,
+  //   //       ),
+  //   //     );
+  //   //     final messages = conversation.messages;
+  //   //     if (messages != null) {
+  //   //       for (final message in messages) {
+  //   //         final author =
+  //   //             message.role == Role.user ? state.sender : state.receiver;
+  //   //         final text = types.TextMessage(
+  //   //           author: author!,
+  //   //           createdAt: message.createdAt?.millisecondsSinceEpoch,
+  //   //           id: _randomString(),
+  //   //           text: message.content ?? '',
+  //   //         );
+  //   //         add(ChatMessageAdded(textMessage: text));
+  //   //       }
+  //   //     }
+  //   //   },
+  //   // );
+  // }
 
-  void _onChatConversationInited(
-    ChatConversationInited event,
-    Emitter<ChatState> emit,
-  ) async {
-    final historical = event.historical;
-    state.textEditingController?.clear();
-    emit(
-      state.copyWith(
-        conversationStatus: Status.loading,
-        conversation: const Conversation(),
-        messages: [],
-        clearNewMessage: true,
-      ),
-    );
-    state.focusNode?.requestFocus();
-    Category? categorySelected;
-    for (final CategoriesBySection catSection in state.categoriesBySection) {
-      if (catSection.categories != null) {
-        for (final Category category in catSection.categories!) {
-          if (category.id == historical.category) {
-            categorySelected = category;
-            break;
-          }
-        }
-      }
-    }
-    final conversation =
-        Conversation(id: historical.idString, category: categorySelected);
-    emit(
-      state.copyWith(
-        conversation: conversation,
-        // theme: theme(conversation.category?.colorTheme),
-        conversationStatus: Status.loaded,
-      ),
-    );
-    for (final message in historical.messages) {
-      final author = message.role == Role.user ? state.sender : state.receiver;
-      final text = types.TextMessage(
-        author: author!,
-        createdAt: message.createdAt?.millisecondsSinceEpoch,
-        id: _randomString(),
-        text: message.content ?? '',
-      );
-      add(ChatMessageAdded(textMessage: text));
-    }
-  }
+  // void _onChatConversationInited(
+  //   ChatConversationInited event,
+  //   Emitter<ChatState> emit,
+  // ) async {
+  //   final historical = event.historical;
+  //   state.textEditingController?.clear();
+  //   emit(
+  //     state.copyWith(
+  //       conversationStatus: Status.loading,
+  //       conversation: const Conversation(),
+  //       messages: [],
+  //       clearNewMessage: true,
+  //     ),
+  //   );
+  //   state.focusNode?.requestFocus();
+  //   Category? categorySelected;
+  //   for (final CategoriesBySection catSection in state.categoriesBySection) {
+  //     if (catSection.categories != null) {
+  //       for (final Category category in catSection.categories!) {
+  //         if (category.id == historical.category) {
+  //           categorySelected = category;
+  //           break;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   final conversation =
+  //       Conversation(id: historical.idString, category: categorySelected);
+  //   emit(
+  //     state.copyWith(
+  //       conversation: conversation,
+  //       // theme: theme(conversation.category?.colorTheme),
+  //       conversationStatus: Status.loaded,
+  //     ),
+  //   );
+  //   for (final message in historical.messages) {
+  //     final author = message.role == Role.user ? state.sender : state.receiver;
+  //     final text = types.TextMessage(
+  //       author: author!,
+  //       createdAt: message.createdAt?.millisecondsSinceEpoch,
+  //       id: _randomString(),
+  //       text: message.content ?? '',
+  //     );
+  //     add(ChatMessageAdded(textMessage: text));
+  //   }
+  // }
 
   void _onChatCategoriesBySectionFetched(
     ChatCategoriesBySectionFetched event,
@@ -440,11 +297,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                     true,
                   ),
                 );
-                add(
-                  const ChatScrollPhysicsSwitched(
-                    PositionRetainedScrollPhysics(),
-                  ),
-                );
+                // add(
+                //   const ChatScrollPhysicsSwitched(
+                //     PositionRetainedScrollPhysics(),
+                //   ),
+                // );
                 state.textEditingController?.text =
                     '${state.textEditingController?.text}$trunck';
 
@@ -452,13 +309,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
                 // maintain the emit of the new stream on the screen here if needed
                 ///we maintain the scroll here for retain the automatic scroll when user scroll as the new message coming force the automatic scroll
-                if (state.maintainScroll == false) {
-                  add(
-                    ChatIncomingMessageLoaded(
-                      message: messageJoined,
-                    ),
-                  );
-                }
+                // if (state.maintainScroll == false) {
+                add(
+                  ChatIncomingMessageLoaded(
+                    message: messageJoined,
+                  ),
+                );
+                // }
               }
             },
           );
@@ -489,9 +346,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) {
     final textAnswer = event.textMessage;
+    final textMessage = TextMessage(
+      content: textAnswer,
+      createdAt: DateTime.now(),
+      role: Role.user,
+    );
     emit(
       state.copyWith(
-        messages: List.of(state.messages!)..insert(0, textAnswer),
+        messages: List.of(state.messages!)..add(textMessage),
         messageStatus: Status.init,
       ),
     );
@@ -528,7 +390,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         conversationStatus: Status.loading,
         // emit an empty conversation to go the chat screen
         conversation: const Conversation(),
-        // suggestions: [],
         clearNewMessage: true,
         incoming: '',
       ),
@@ -578,6 +439,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     // add(const ChatSuggestionViewChanged(false));
+    if (state.scrollController!.hasClients) {
+      state.scrollController?.jumpTo(
+        state.scrollController!.position.maxScrollExtent,
+        // duration: const Duration(milliseconds: 500),
+        // curve: Curves.ease,
+      );
+    }
 
     if (state.newMessage != null) {
       /*
@@ -588,29 +456,27 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       //first clear the text controller
 
       state.textEditingController?.clear();
-      final textAnswer = types.TextMessage(
-        author: state.receiver!,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        id: _randomString(),
-        text: state.newMessage ?? '',
+      final textAnswer = TextMessage(
+        role: Role.system,
+        createdAt: DateTime.now(),
+        content: state.newMessage ?? '',
       );
 
       emit(
         state.copyWith(
-          messages: List.of(state.messages!)..insert(0, textAnswer),
+          messages: List.of(state.messages!)..add(textAnswer),
           messageStatus: Status.init,
         ),
       );
     }
-    final textMessage = types.TextMessage(
-      author: state.sender!,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: _randomString(),
-      text: event.textMessage.trimRight(),
+    final textMessage = TextMessage(
+      role: Role.user,
+      createdAt: DateTime.now(),
+      content: event.textMessage.trimRight(),
     );
     emit(
       state.copyWith(
-        messages: List.of(state.messages!)..insert(0, textMessage),
+        messages: List.of(state.messages!)..add(textMessage),
         messageStatus: Status.loading,
       ),
     );
@@ -618,11 +484,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       content: event.textMessage,
       conversation: state.conversation,
     );
+
+    add(
+      ChatSuggestionsRequested(
+        messageParams,
+      ),
+    );
     final res = await sendMessage(messageParams);
 
-    add(ChatSuggestionsRequested(messageParams));
-
-    res.fold(
+    return res.fold(
       (l) {
         emit(
           state.copyWith(

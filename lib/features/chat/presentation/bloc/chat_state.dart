@@ -3,18 +3,18 @@ part of 'chat_bloc.dart';
 class ChatState extends Equatable {
   const ChatState({
     this.messages = const [],
-    this.sender = const types.User(
-      firstName: 'sender',
-      id: '82091008-a484-4a89-ae75-a22bf8d6f3hgf',
-      // imageUrl:
-      //     'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
-    ),
-    this.receiver = const types.User(
-      firstName: 'receiver',
-      id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
-      // imageUrl:
-      //     'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
-    ),
+    // this.sender = const types.User(
+    //   firstName: 'sender',
+    //   id: '82091008-a484-4a89-ae75-a22bf8d6f3hgf',
+    //   // imageUrl:
+    //   //     'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
+    // ),
+    // this.receiver = const types.User(
+    //   firstName: 'receiver',
+    //   id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
+    //   // imageUrl:
+    //   //     'https://images.typeform.com/images/Va5mZpFZ4y2b/choice/thumbnail',
+    // ),
     this.categories = const [],
     this.categoriesBySection = const [],
     this.catStatus = Status.init,
@@ -38,9 +38,9 @@ class ChatState extends Equatable {
     // this.chatObserver,
   });
 
-  final List<types.Message>? messages;
-  final types.User? sender;
-  final types.User? receiver;
+  final List<TextMessage>? messages;
+  // final User? sender;
+  // final User? receiver;
   final List<Category>? categories;
   final List<CategoriesBySection> categoriesBySection;
   final Status? catStatus;
@@ -61,6 +61,7 @@ class ChatState extends Equatable {
   final ScrollPhysics? scrollPhysics;
   final bool? maintainScroll;
   final bool? suggestionLoaded;
+  // final List<String>
   // final ChatScrollObserver? chatObserver;
 
   @override
@@ -70,8 +71,8 @@ class ChatState extends Equatable {
         categoriesBySection,
         newMessage,
         messages,
-        sender,
-        receiver,
+        // sender,
+        // receiver,
         categories,
         catStatus,
         conversation,
@@ -92,9 +93,9 @@ class ChatState extends Equatable {
       ];
 
   ChatState copyWith({
-    List<types.Message>? messages,
-    types.User? sender,
-    types.User? receiver,
+    List<TextMessage>? messages,
+    // types.User? sender,
+    // types.User? receiver,
     List<Category>? categories,
     List<CategoriesBySection>? categoriesBySection,
     Status? catStatus,
@@ -122,8 +123,8 @@ class ChatState extends Equatable {
   }) {
     return ChatState(
       messages: messages ?? this.messages,
-      sender: sender ?? this.sender,
-      receiver: receiver ?? this.receiver,
+      // sender: sender ?? this.sender,
+      // receiver: receiver ?? this.receiver,
       categories: categories ?? this.categories,
       categoriesBySection: categoriesBySection ?? this.categoriesBySection,
       catStatus: catStatus ?? this.catStatus,

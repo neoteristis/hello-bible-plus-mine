@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gpt/features/flutter_chat_lib/src/models/bubble_rtl_alignment.dart';
+import 'package:gpt/core/widgets/typing_indicator.dart';
+// import 'package:gpt/features/flutter_chat_lib/src/models/bubble_rtl_alignment.dart';
 // import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../flutter_chat_lib/src/widgets/typing_indicator.dart';
+// import '../../../../flutter_chat_lib/src/widgets/typing_indicator.dart';
 import '../../bloc/chat_bloc.dart';
+// import '../typing_indicator.dart';
 // import 'list_bottom_chat_widget.dart';
 
 class CustomBottomWidget extends StatefulWidget {
@@ -189,11 +191,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                         ),
                       ),
                     ),
-                  if (state.isLoading!)
-                    const TypingIndicator(
-                      bubbleAlignment: BubbleRtlAlignment.left,
-                      showIndicator: true,
-                    ),
+                  if (state.isLoading ?? false) TypingIndicatorWidget()
                 ],
               ),
             ],

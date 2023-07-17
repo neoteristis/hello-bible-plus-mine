@@ -100,6 +100,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         return Scaffold(
           backgroundColor: backGroundColor,
           key: context.read<ChatBloc>().scaffoldKey,
+          resizeToAvoidBottomInset: true,
           appBar: const CustomAppBar(),
           endDrawer: const CustomDrawer(),
           body: state.conversation == null

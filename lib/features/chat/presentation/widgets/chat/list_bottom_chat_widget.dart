@@ -54,8 +54,8 @@ class ListBottomChatWidget extends StatelessWidget {
                       //   ),
                       // ),
                       Container(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * .90),
+                        // constraints: BoxConstraints(
+                        //     maxWidth: MediaQuery.of(context).size.width * .90),
                         child: CustomBubble(
                           color: Theme.of(context).colorScheme.onPrimary,
                           nip: BubbleNip.leftBottom,
@@ -94,13 +94,13 @@ class ListBottomChatWidget extends StatelessWidget {
                               return const SizedBox.shrink();
                             }
                             return Container(
-                              padding: const EdgeInsets.only(
-                                left: 25,
-                                right: 25,
-                                top: 20,
-                                bottom: 15,
-                              ),
-                              margin: const EdgeInsets.only(top: 15.0),
+                              // padding: const EdgeInsets.only(
+                              //   left: 15,
+                              //   right: 15,
+                              //   top: 20,
+                              //   bottom: 15,
+                              // ),
+                              // margin: const EdgeInsets.only(top: 15.0),
                               // width: double.infinity,
                               decoration: BoxDecoration(
                                 color:
@@ -207,18 +207,16 @@ class SuggestionItem extends StatelessWidget {
                     text,
                   ),
                 );
+            if (state.scrollController!.hasClients) {
+              state.scrollController?.animateTo(
+                state.scrollController!.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.ease,
+              );
+            }
           },
           child: Container(
             decoration: BoxDecoration(
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: const Color(0xFF000000)
-              //         .withOpacity(0.1), // shadow color with opacity
-              //     spreadRadius: 0, // spread radius
-              //     blurRadius: 10, // blur radius
-              //     offset: const Offset(0, 4), // offset in x and y direction
-              //   ),
-              // ],
               border: !light
                   ? Border.all(color: Theme.of(context).dividerColor, width: 1)
                   : Border.all(color: const Color(0xFFF5F5F5), width: 1),
