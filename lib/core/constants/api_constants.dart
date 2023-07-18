@@ -1,5 +1,6 @@
 // api_constants.dart
 import '../../features/chat/domain/usecases/fetch_historical_usecase.dart';
+import 'pagination_const.dart';
 
 const route = '/api';
 
@@ -40,7 +41,7 @@ class ApiConstants {
   static String historical(PHistorical params) {
     final String api = ApiConstants.conversation();
     final String parameters =
-        '$route?page=${params.pagination?.page ?? 1}&itemsPerPage=${params.pagination?.itemsPerPage ?? 10}&user=${params.uid}';
+        '?page=${params.pagination?.page ?? 1}&itemsPerPage=${params.pagination?.itemsPerPage ?? itemNumber}&user=${params.uid}';
     return '$api$parameters';
   }
 

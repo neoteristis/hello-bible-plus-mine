@@ -11,6 +11,7 @@ import '../../../../core/theme/bloc/theme_bloc.dart';
 import '../../../../core/widgets/custom_alert_dialog.dart';
 import '../../../../l10n/function.dart';
 import '../bloc/chat_bloc.dart';
+import '../bloc/historical_bloc/historical_bloc.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/custom_app_bar.dart';
 
@@ -110,9 +111,10 @@ class CustomDrawer extends StatelessWidget {
                               label: AppLocalizations.of(context)!.ok,
                               onPressed: () {
                                 context
-                                    .read<AuthBloc>()
-                                    .add(AuthLogoutSubmitted());
-                                context.go(RouteName.home);
+                                  ..read<AuthBloc>().add(AuthLogoutSubmitted())
+                                  ..read<HistoricalBloc>()
+                                      .add(HistoricalCleared())
+                                  ..go(RouteName.home);
                               },
                             ),
                           ],
@@ -186,6 +188,16 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         icon: const IconDrawerFromAsset('assets/icons/subscription.svg'),
         onPressed: () {
           context.go(RouteName.subscribe);
+        },
+      ),
+      DrawerTile(
+        label: dict(context).myHistory,
+        icon: const IconDrawerTiles(
+          Icons.history,
+        ),
+        onPressed: () {
+          context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
+          context.go(RouteName.historical);
         },
       ),
       DrawerTile(

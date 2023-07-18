@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
+import '../bloc/historical_bloc/historical_bloc.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -38,6 +41,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   padding: const EdgeInsets.all(0),
                   onPressed: () {
                     unfocusKeyboard();
+
+                    if (state.readOnly!) {
+                      context.go(RouteName.historical);
+                    } else {
+                      context
+                          .read<HistoricalBloc>()
+                          .add(const HistoricalFetched(isRefresh: true));
+                    }
                     context.read<ChatBloc>().add(ChatConversationCleared());
                   },
                   icon: const Icon(

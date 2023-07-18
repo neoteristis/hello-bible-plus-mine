@@ -62,7 +62,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatMessageAnswerGot>(_onChatMessageAnswerGot);
     on<ChatIncomingMessageLoaded>(_onChatIncomingMessageLoaded);
     on<ChatFocusNodeDisposed>(_onChatFocusNodeDisposed);
-    // on<ChatConversationInited>(_onChatConversationInited);
+    on<ChatConversationInited>(_onChatConversationInited);
     // on<ChatConversationFromNotificationInited>(
     //     _onChatConversationFromNotificationInited);
     on<ChatSuggestionsRequested>(_onChatSuggestionsRequested);
@@ -145,52 +145,61 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   //   // );
   // }
 
-  // void _onChatConversationInited(
-  //   ChatConversationInited event,
-  //   Emitter<ChatState> emit,
-  // ) async {
-  //   final historical = event.historical;
-  //   state.textEditingController?.clear();
-  //   emit(
-  //     state.copyWith(
-  //       conversationStatus: Status.loading,
-  //       conversation: const Conversation(),
-  //       messages: [],
-  //       clearNewMessage: true,
-  //     ),
-  //   );
-  //   state.focusNode?.requestFocus();
-  //   Category? categorySelected;
-  //   for (final CategoriesBySection catSection in state.categoriesBySection) {
-  //     if (catSection.categories != null) {
-  //       for (final Category category in catSection.categories!) {
-  //         if (category.id == historical.category) {
-  //           categorySelected = category;
-  //           break;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   final conversation =
-  //       Conversation(id: historical.idString, category: categorySelected);
-  //   emit(
-  //     state.copyWith(
-  //       conversation: conversation,
-  //       // theme: theme(conversation.category?.colorTheme),
-  //       conversationStatus: Status.loaded,
-  //     ),
-  //   );
-  //   for (final message in historical.messages) {
-  //     final author = message.role == Role.user ? state.sender : state.receiver;
-  //     final text = types.TextMessage(
-  //       author: author!,
-  //       createdAt: message.createdAt?.millisecondsSinceEpoch,
-  //       id: _randomString(),
-  //       text: message.content ?? '',
-  //     );
-  //     add(ChatMessageAdded(textMessage: text));
-  //   }
-  // }
+  void _onChatConversationInited(
+    ChatConversationInited event,
+    Emitter<ChatState> emit,
+  ) async {
+    final historical = event.historical;
+    state.textEditingController?.clear();
+    emit(
+      state.copyWith(
+        conversationStatus: Status.loading,
+        conversation: const Conversation(),
+        messages: [],
+        clearNewMessage: true,
+        readOnly: true,
+      ),
+    );
+    // state.focusNode?.requestFocus();
+    Category? categorySelected;
+    for (final CategoriesBySection catSection in state.categoriesBySection) {
+      if (catSection.categories != null) {
+        for (final Category category in catSection.categories!) {
+          if (category.id == historical.category?.id) {
+            categorySelected = category;
+            break;
+          }
+        }
+      }
+    }
+    final conversation =
+        Conversation(id: historical.idString, category: categorySelected);
+    emit(
+      state.copyWith(
+        conversation: conversation,
+        // theme: theme(conversation.category?.colorTheme),
+        conversationStatus: Status.loaded,
+      ),
+    );
+    // Log.info(historical.messages.length);
+    for (final message in historical.messages) {
+      // Log.info(message);
+      // final role = message.role == Role.user ? Role : state.receiver;
+      final text = TextMessage(
+        role: message.role,
+        createdAt: message.createdAt,
+        content: message.content ?? '',
+      );
+
+      add(
+        ChatMessageAdded(
+          textMessage: message.content ?? '',
+          createdAt: message.createdAt,
+          role: message.role,
+        ),
+      );
+    }
+  }
 
   void _onChatCategoriesBySectionFetched(
     ChatCategoriesBySectionFetched event,
@@ -348,8 +357,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final textAnswer = event.textMessage;
     final textMessage = TextMessage(
       content: textAnswer,
-      createdAt: DateTime.now(),
-      role: Role.user,
+      createdAt: event.createdAt ?? DateTime.now(),
+      role: event.role ?? Role.user,
     );
     emit(
       state.copyWith(
@@ -392,6 +401,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         conversation: const Conversation(),
         clearNewMessage: true,
         incoming: '',
+        readOnly: false,
       ),
     );
     final res =

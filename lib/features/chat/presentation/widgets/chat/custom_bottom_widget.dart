@@ -43,11 +43,15 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
     return BlocBuilder<ChatBloc, ChatState>(
       buildWhen: (previous, current) =>
           previous.focusNode != current.focusNode ||
-          previous.isLoading != current.isLoading,
+          previous.isLoading != current.isLoading ||
+          previous.readOnly != current.readOnly,
       // selector: (state) {
       //   return state.focusNode!;
       // },
       builder: (context, state) {
+        if (state.readOnly == true) {
+          return const SizedBox.shrink();
+        }
         return Container(
           padding: const EdgeInsets.only(
             top: 25,

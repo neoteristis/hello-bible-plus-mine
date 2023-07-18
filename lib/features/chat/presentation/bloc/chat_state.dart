@@ -35,6 +35,7 @@ class ChatState extends Equatable {
     this.scrollPhysics,
     this.maintainScroll = false,
     this.suggestionLoaded = false,
+    this.readOnly = false,
     // this.chatObserver,
   });
 
@@ -61,6 +62,7 @@ class ChatState extends Equatable {
   final ScrollPhysics? scrollPhysics;
   final bool? maintainScroll;
   final bool? suggestionLoaded;
+  final bool? readOnly;
   // final List<String>
   // final ChatScrollObserver? chatObserver;
 
@@ -90,6 +92,7 @@ class ChatState extends Equatable {
         showSuggestions,
         scrollPhysics,
         maintainScroll,
+        readOnly,
       ];
 
   ChatState copyWith({
@@ -119,6 +122,7 @@ class ChatState extends Equatable {
     bool clearScrollPhysics = false,
     bool? maintainScroll,
     bool? suggestionLoaded,
+    bool? readOnly,
     // ChatScrollObserver? chatObserver,
   }) {
     return ChatState(
@@ -148,6 +152,7 @@ class ChatState extends Equatable {
           clearScrollPhysics ? null : scrollPhysics ?? this.scrollPhysics,
       maintainScroll: maintainScroll ?? this.maintainScroll,
       suggestionLoaded: suggestionLoaded ?? this.suggestionLoaded,
+      readOnly: readOnly ?? this.readOnly,
       // chatObserver: chatObserver ?? this.chatObserver,
     );
   }

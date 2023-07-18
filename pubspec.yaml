@@ -67,6 +67,8 @@ dependencies:
   # visibility_detector: ^0.4.0+2
   # diffutil_dart: ^3.0.0
   animate_do: ^3.0.2
+  bloc_concurrency: ^0.2.2
+  shimmer: ^3.0.0
   # scrollview_observer: ^1.14.2
 
 dev_dependencies:

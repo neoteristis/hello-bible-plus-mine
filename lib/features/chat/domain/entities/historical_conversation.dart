@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/helper/log.dart';
+import 'category.dart';
 import 'message_by_role.dart';
 
 class HistoricalConversation extends Equatable {
   final String? idString;
   final int? idInt;
-  final String? category;
+  final Category? category;
   final String? user;
   final List<MessageByRole> messages;
   final String? title;
@@ -30,7 +32,7 @@ class HistoricalConversation extends Equatable {
   HistoricalConversation copyWith({
     String? idString,
     int? idInt,
-    String? category,
+    Category? category,
     String? user,
     List<MessageByRole>? messages,
     String? title,
@@ -46,9 +48,11 @@ class HistoricalConversation extends Equatable {
   }
 
   factory HistoricalConversation.fromJson(Map<String, dynamic> map) {
+    // Log.info((map['messages'] as List).length);
     return HistoricalConversation(
       idString: map['_id'],
-      category: map['category'],
+      category:
+          map['category'] != null ? Category.fromJson(map['category']) : null,
       user: map['user'],
       title: map['title'],
       messages: List<MessageByRole>.from(

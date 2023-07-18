@@ -39,11 +39,19 @@ class ChatConversationCleared extends ChatEvent {}
 
 class ChatMessageAdded extends ChatEvent {
   final String textMessage;
+  final Role? role;
+  final DateTime? createdAt;
   const ChatMessageAdded({
     required this.textMessage,
+    this.role,
+    this.createdAt,
   });
   @override
-  List<Object> get props => [textMessage];
+  List<Object?> get props => [
+        textMessage,
+        role,
+        createdAt,
+      ];
 }
 
 class ChatTypingStatusChanged extends ChatEvent {

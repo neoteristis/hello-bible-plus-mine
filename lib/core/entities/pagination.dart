@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart';
 
+import '../constants/pagination_const.dart';
+
 class Pagination extends Equatable {
   final int? page;
   final int? itemsPerPage;
   final String? query;
   const Pagination({
     this.page,
-    this.itemsPerPage = 10,
+    this.itemsPerPage = itemNumber,
     this.query,
   });
   @override

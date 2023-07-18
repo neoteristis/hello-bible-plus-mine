@@ -87,7 +87,12 @@ class ChatList extends StatelessWidget {
           controller: state.scrollController,
           itemBuilder: (ctx, index) {
             if (index == state.messages!.length - 1) {
-              return ListBottomChat(index);
+              if (!state.readOnly!) {
+                return ListBottomChat(index);
+              }
+              return customBubbleBuilder(
+                message: state.messages![index],
+              );
             } else if (index == 0) {
               return Column(
                 children: [
