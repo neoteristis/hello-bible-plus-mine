@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'user_subscription.dart';
+
 class User extends Equatable {
   final String? idString;
   final int? idInt;
@@ -14,6 +16,7 @@ class User extends Equatable {
   final String? photo;
   final String? phone;
   final DateTime? createdAt;
+  final UserSubscription? subscription;
 
   const User({
     this.idString,
@@ -29,6 +32,7 @@ class User extends Equatable {
     this.photo,
     this.phone,
     this.createdAt,
+    this.subscription,
   });
   @override
   List<Object?> get props => [
@@ -45,20 +49,25 @@ class User extends Equatable {
         username,
         phone,
         createdAt,
+        subscription,
       ];
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        idString: json['_id'],
-        lastName: json['name'],
-        firstName: json['firstname'],
-        email: json['email'],
-        country: json['country'],
-        photo: json['profile'],
-        username: json['username'],
-        createdAt: json['updatedAt'] != null
-            ? DateTime.parse(json['updatedAt']).toLocal()
-            : null);
+      idString: json['_id'],
+      lastName: json['name'],
+      firstName: json['firstname'],
+      email: json['email'],
+      country: json['country'],
+      photo: json['profile'],
+      username: json['username'],
+      subscription: json['subscription'] != null
+          ? UserSubscription.fromJson(json['subscription'])
+          : null,
+      createdAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt']).toLocal()
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() {

@@ -206,8 +206,8 @@ class BottomChatLoaded extends StatelessWidget {
                     }
                     return Container(
                       padding: const EdgeInsets.only(
-                        left: 25,
-                        right: 25,
+                        left: 15,
+                        right: 15,
                         top: 20,
                         bottom: 15,
                       ),
@@ -336,8 +336,8 @@ class EmptyChatWidget extends StatelessWidget {
                       }
                       return Container(
                         padding: const EdgeInsets.only(
-                          left: 25,
-                          right: 25,
+                          left: 15,
+                          right: 15,
                           top: 20,
                           bottom: 15,
                         ),

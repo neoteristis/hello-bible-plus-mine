@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(
                           height: 20,
                         ),
-                        UserProfilePictureWidget(),
+                        const UserProfilePictureWidget(),
                         const SizedBox(
                           height: 20,
                         ),

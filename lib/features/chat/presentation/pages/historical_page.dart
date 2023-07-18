@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/pagination_const.dart';
 import '../../../../core/constants/status.dart';
+import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../core/widgets/shimmer_widget.dart';
 import '../bloc/chat_bloc.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
@@ -28,6 +29,17 @@ class _HistoricalPageState extends State<HistoricalPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text('Mon historique'),
+        leading: IconButton(
+          constraints: const BoxConstraints(),
+          padding: const EdgeInsets.all(0),
+          onPressed: () {
+            unfocusKeyboard();
+            context.pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_rounded,
+          ),
+        ),
       ),
       body: BlocBuilder<HistoricalBloc, HistoricalState>(
         buildWhen: (previous, current) => previous.status != current.status,

@@ -55,8 +55,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
         return Container(
           padding: const EdgeInsets.only(
             top: 25,
-            left: 25,
-            right: 25,
+            left: 15,
+            right: 15,
             bottom: 25,
           ),
           width: double.infinity,
@@ -103,8 +103,10 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                 children: [
                   Expanded(
                     child: TextField(
-                      maxLines: null,
-                      keyboardType: TextInputType.text,
+                      maxLines: 5,
+                      minLines: 1,
+                      textInputAction: TextInputAction.newline,
+                      // keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.sentences,
                       focusNode: state.focusNode,
                       controller:
