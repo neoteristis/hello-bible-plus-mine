@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:gpt/core/extension/string_extension.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:logger/logger.dart';
@@ -256,7 +257,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
       (rs) async {
         String messageJoined = '';
-
+        print(rs.data);
         try {
           rs.data?.stream
               .transform(unit8Transformer)
@@ -264,23 +265,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               .transform(const LineSplitter())
               .transform(const SseTransformer())
               .listen(
-            (SseMessage event) async {
-              // print(event.data);
+            (event) async {
+              print(event.data);
               String trunck = '';
 
-              if (event.data == ' ') {
-                trunck = '.\n\n';
-              }
               if (event.data.length > 1) {
                 trunck = event.data.substring(1);
+              } else if (event.data == ' ') {
+                if (messageJoined[messageJoined.length - 1]
+                    .contains(RegExp(r'[?!;.,]'))) {
+                  trunck = '\n\n';
+                } else if (messageJoined
+                    .split('.')
+                    .last
+                    .hasUnclosedParenthesis) {
+                  trunck = ').\n\n';
+                } else if (messageJoined.hasUnclosedQuote) {
+                  trunck = '".\n\n';
+                } else {
+                  trunck = '.\n\n';
+                }
+              } else {
+                trunck = event.data;
               }
-
               add(
                 const ChatTypingStatusChanged(
                   isTyping: true,
                 ),
               );
-              if (trunck == endMessageMarker) {
+              if (trunck.contains(endMessageMarker)) {
                 debugPrint(messageJoined);
                 // mark that the stream is finished
                 add(
@@ -288,12 +301,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                     false,
                   ),
                 );
-
-                // add(
-                //   ChatIncomingMessageLoaded(
-                //     message: messageJoined,
-                //   ),
-                // );
                 add(
                   ChatMessageJoined(
                     newMessage: messageJoined,
@@ -306,25 +313,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                     true,
                   ),
                 );
-                // add(
-                //   const ChatScrollPhysicsSwitched(
-                //     PositionRetainedScrollPhysics(),
-                //   ),
-                // );
                 state.textEditingController?.text =
                     '${state.textEditingController?.text}$trunck';
 
                 messageJoined = '$messageJoined$trunck';
-
-                // maintain the emit of the new stream on the screen here if needed
-                ///we maintain the scroll here for retain the automatic scroll when user scroll as the new message coming force the automatic scroll
-                // if (state.maintainScroll == false) {
                 add(
                   ChatIncomingMessageLoaded(
                     message: messageJoined,
                   ),
                 );
-                // }
               }
             },
           );

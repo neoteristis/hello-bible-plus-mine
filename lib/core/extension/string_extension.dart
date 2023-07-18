@@ -20,6 +20,64 @@ extension StringExtension on String {
     }
     return hasMatch(this, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
   }
+
+  bool get hasUnclosedParenthesis {
+    final int openingCount = split('(').length - 1;
+    final int closingCount = split(')').length - 1;
+
+    if (openingCount > closingCount) {
+      final RegExp regex = RegExp(r'\([^)]*$');
+      final Iterable<Match> matches = regex.allMatches(this);
+
+      if (matches.isNotEmpty) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  bool get hasUnclosedQuote {
+    final int openingCount = split('"').length - 1;
+
+    if (openingCount % 2 != 0) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool get hasUnclosedSquareBracket {
+    final int openingCount = split('[').length - 1;
+    final int closingCount = split(']').length - 1;
+
+    if (openingCount > closingCount) {
+      final RegExp regex = RegExp(r'\[[^\[\]]*$');
+      final Iterable<Match> matches = regex.allMatches(this);
+
+      if (matches.isNotEmpty) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  bool get hasUnclosedCurlyBrace {
+    final int openingCount = split('{').length - 1;
+    final int closingCount = split('}').length - 1;
+
+    if (openingCount > closingCount) {
+      final RegExp regex = RegExp(r'{[^{}]*$');
+      final Iterable<Match> matches = regex.allMatches(this);
+
+      if (matches.isNotEmpty) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }
 
 bool hasMatch(String? value, String pattern) {
