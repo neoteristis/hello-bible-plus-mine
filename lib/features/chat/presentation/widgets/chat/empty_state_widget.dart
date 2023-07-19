@@ -111,7 +111,7 @@ class EmptyStateWidget extends StatelessWidget {
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
                               fontSize: 15.sp,
-                              // fontSize: 13,
+                              // fontSize: 15,
                               height: 1.4,
                               fontWeight: FontWeight.w400,
                             ),
@@ -232,6 +232,7 @@ class SuggestionItem extends StatelessWidget {
           style: TextStyle(
             color: color,
             fontSize: 14.sp,
+            // fontSize: 14,
           ),
         ),
       ),

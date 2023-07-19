@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
@@ -138,7 +137,7 @@ class EditProfilePage extends StatelessWidget {
                                     .bodyMedium
                                     ?.copyWith(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 14.sp),
+                                        fontSize: 14),
                               ),
                               const SizedBox(
                                 height: 5,

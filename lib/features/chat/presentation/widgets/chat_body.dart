@@ -185,6 +185,7 @@ class BottomChatLoaded extends StatelessWidget {
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontSize: 17.sp,
+                        // fontSize: 17,
                         height: 1.4,
                         fontWeight: FontWeight.w400,
                       ),
@@ -304,8 +305,8 @@ class EmptyChatWidget extends StatelessWidget {
                       state.incoming ?? '',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 15.sp,
-                        // fontSize: 13,
+                        fontSize: 17.sp,
+                        // fontSize: 15,
                         height: 1.4,
                         fontWeight: FontWeight.w400,
                       ),

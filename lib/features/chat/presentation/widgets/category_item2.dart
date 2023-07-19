@@ -62,6 +62,7 @@ class CategoryItem2 extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           fontSize: 14.sp,
+                          // fontSize: 14,
                         ),
                     // style: TextStyle(
                     //   fontSize: 14.sp,
@@ -88,6 +89,7 @@ class CategoryItem2 extends StatelessWidget {
                     // ),
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w500,
+                          // fontSize: 11,
                           fontSize: 11.sp,
                         ),
                     textAlign: TextAlign.center,

@@ -143,7 +143,11 @@ ThemeData light = ThemeData(
 );
 
 ThemeData dark = ThemeData(
+  fontFamily: 'SfProText',
+  dividerColor: const Color(0xFF22272A),
+  dividerTheme: const DividerThemeData(color: Color(0xFF22272A)),
   primaryColor: primaryColor,
+  useMaterial3: true,
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.black, //<-- SEE HERE
   ),
@@ -152,8 +156,6 @@ ThemeData dark = ThemeData(
     backgroundColor: Color(0xFF101520),
     contentTextStyle: TextStyle(color: Colors.white),
   ),
-  dividerColor: const Color(0xFF22272A),
-  dividerTheme: const DividerThemeData(color: Color(0xFF22272A)),
   scaffoldBackgroundColor: const Color(0xFF101520),
   inputDecorationTheme: InputDecorationTheme(
     prefixIconColor: const Color(0xFF223159),

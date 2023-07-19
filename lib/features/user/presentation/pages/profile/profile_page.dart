@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
@@ -106,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: Theme.of(context)
                                 .textTheme
                                 .labelLarge
-                                ?.copyWith(fontSize: 16.sp),
+                                ?.copyWith(fontSize: 16),
                           ),
                         ),
                         const SizedBox(
@@ -123,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   .bodyMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 14.sp,
+                                    fontSize: 14,
                                   ),
                             ),
                             const SizedBox(

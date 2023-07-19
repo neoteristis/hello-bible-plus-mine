@@ -137,6 +137,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                         hintText: state.conversation?.category?.placeholder,
                         hintStyle: TextStyle(
                           fontSize: 14.sp,
+                          // fontSize: 14,
                           color: hintColor,
                         ),
                         border: OutlineInputBorder(
@@ -145,6 +146,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
                             width: 2.w,
+                            // width: 2,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -153,6 +155,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
                             width: 2.w,
+                            // width: 2,
                           ),
                         ),
                       ),

@@ -64,7 +64,7 @@ class ListBottomChatWidget extends StatelessWidget {
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
                               fontSize: 16.sp,
-                              // fontSize: 13,
+                              // fontSize: 16,
                               height: 1.4,
                               fontWeight: FontWeight.w400,
                             ),
@@ -235,6 +235,7 @@ class SuggestionItem extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.tertiary,
                 fontSize: 14.sp,
+                // fontSize: 14,
               ),
             ),
           ),

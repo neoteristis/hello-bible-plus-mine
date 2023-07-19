@@ -155,7 +155,7 @@ Widget customBubbleBuilder({
                         ? senderContent
                         : receiverContent,
                     fontSize: 17.sp,
-                    // fontSize: 13,
+                    // fontSize: 17,
                     height: 1.4,
                     fontWeight: FontWeight.w400,
                   ),

@@ -28,12 +28,10 @@ class CategoryItemWidget extends StatelessWidget {
         Theme.of(context).colorScheme.brightness == Brightness.light;
     final background = Theme.of(context).colorScheme.onPrimary;
     return Container(
-      // width: 100.sp,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: isLight ? colorTheme ?? background : background,
-        // color: Colors.amber,
         border: Border.fromBorderSide(
             BorderSide(color: Theme.of(context).dividerColor)),
         boxShadow: [
@@ -90,10 +88,11 @@ class CategoryItemWidget extends StatelessWidget {
                     maxLines: 2,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           fontSize: 11.sp,
+                          // fontSize: 11,
                         ),
                     // style: TextStyle(
                     //   fontWeight: FontWeight.w700,
-                    //   fontSize: 11.sp,
+                    //   fontSize: 11,
                     //   // fontSize: 11,
                     //   color: contentColor,
                     // ),
@@ -114,9 +113,15 @@ class CategoryItemWidget extends StatelessWidget {
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
+                  // style: TextStyle(
+                  //   fontWeight: FontWeight.w500,
+                  //   fontSize: 11,
+                  //   color: contentColor,
+                  // ),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w500,
                         fontSize: 11.sp,
+                        // fontSize: 11,
                       ),
                 ),
               ),

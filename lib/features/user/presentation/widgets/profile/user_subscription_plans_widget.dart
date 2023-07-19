@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/l10n/function.dart';
 import 'package:intl/intl.dart';
 
@@ -34,7 +34,7 @@ class UserSubscriptionPlansWidget extends StatelessWidget {
                   // ?.copyWith(
                   //     fontWeight: FontWeight.w600,
                   //     fontSize: 14),
-                  ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
+                  ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
             ),
             const SizedBox(
               height: 5,

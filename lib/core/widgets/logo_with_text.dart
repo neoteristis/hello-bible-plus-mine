@@ -37,6 +37,7 @@ class LogoWithText extends StatelessWidget {
             // style: Theme.of(context).textTheme.,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontSize: textSize?.sp,
+                  // fontSize: textSize,
 
                   // fontWeight: FontWeight.w500,
                   // color: Color(
@@ -54,6 +55,7 @@ class LogoWithText extends StatelessWidget {
                 text: 'Bible +',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontSize: textSize?.sp,
+                      // fontSize: textSize,
                       wordSpacing: -2.5,
                       fontWeight: FontWeight.w800,
                       // fontWeight: FontWeight.w500,

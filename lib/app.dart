@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/features/contact_us/presentation/bloc/contact_us_bloc.dart';
 import 'package:gpt/features/notification/presentation/bloc/manage_notif/manage_notif_bloc.dart';
@@ -78,12 +79,10 @@ class App extends StatelessWidget {
         builder: (context, authState) {
           final route = authState.route;
 
-          // const route = RouteName.login;
           return ScreenUtilInit(
             designSize: const Size(375, 812),
             minTextAdapt: true,
             splitScreenMode: true,
-
             builder: (context, child) {
               return BlocBuilder<ThemeBloc, ThemeState>(
                 buildWhen: (previous, current) =>
@@ -107,18 +106,6 @@ class App extends StatelessWidget {
                 },
               );
             },
-            // child: MaterialApp.router(
-            //   title: 'hello bible +',
-            //   theme: state.theme ?? theme(null),
-            //   debugShowCheckedModeBanner: false,
-            //   // home: const ChatPage(),
-            //   // home: const RegistrationPage(),
-            //   routeInformationParser:
-            //       routers[route]?.routeInformationParser,
-            //   routerDelegate: routers[route]?.routerDelegate,
-            //   routeInformationProvider:
-            //       routers[route]?.routeInformationProvider,
-            // ),
           );
         },
       ),
