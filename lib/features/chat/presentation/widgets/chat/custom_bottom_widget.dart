@@ -44,7 +44,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
       buildWhen: (previous, current) =>
           previous.focusNode != current.focusNode ||
           previous.isLoading != current.isLoading ||
-          previous.readOnly != current.readOnly,
+          previous.readOnly != current.readOnly ||
+          previous.textFieldKey != current.textFieldKey,
       // selector: (state) {
       //   return state.focusNode!;
       // },
@@ -53,6 +54,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           return const SizedBox.shrink();
         }
         return Container(
+          key: state.textFieldKey,
           padding: const EdgeInsets.only(
             top: 25,
             left: 15,
@@ -123,6 +125,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                           context.read<ChatBloc>().add(
                                 ChatMessageSent(
                                   textEditingController!.text,
+                                  context,
                                 ),
                               );
 
@@ -177,6 +180,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                             context.read<ChatBloc>().add(
                                   ChatMessageSent(
                                     textEditingController!.text,
+                                    context,
                                   ),
                                 );
                             textEditingController!.clear();
@@ -200,7 +204,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                         ),
                       ),
                     ),
-                  if (state.isLoading ?? false) TypingIndicatorWidget()
+                  if (state.isLoading ?? false) const TypingIndicatorWidget()
                 ],
               ),
             ],

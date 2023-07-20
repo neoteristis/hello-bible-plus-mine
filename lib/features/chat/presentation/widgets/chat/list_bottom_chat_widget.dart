@@ -205,6 +205,7 @@ class SuggestionItem extends StatelessWidget {
             context.read<ChatBloc>().add(
                   ChatMessageSent(
                     text,
+                    context,
                   ),
                 );
             if (state.scrollController!.hasClients) {

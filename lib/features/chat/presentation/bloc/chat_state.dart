@@ -36,6 +36,12 @@ class ChatState extends Equatable {
     this.maintainScroll = false,
     this.suggestionLoaded = false,
     this.readOnly = false,
+    this.containerKey,
+    this.isUserTap = false,
+    this.textFieldKey,
+    this.listKey,
+    this.chatKey,
+    this.firstLaunch = false,
     // this.chatObserver,
   });
 
@@ -63,6 +69,12 @@ class ChatState extends Equatable {
   final bool? maintainScroll;
   final bool? suggestionLoaded;
   final bool? readOnly;
+  final GlobalKey? containerKey;
+  final GlobalKey? textFieldKey;
+  final GlobalKey? listKey;
+  final GlobalKey? chatKey;
+  final bool? isUserTap;
+  final bool? firstLaunch;
   // final List<String>
   // final ChatScrollObserver? chatObserver;
 
@@ -93,6 +105,12 @@ class ChatState extends Equatable {
         scrollPhysics,
         maintainScroll,
         readOnly,
+        containerKey,
+        textFieldKey,
+        isUserTap,
+        listKey,
+        chatKey,
+        firstLaunch,
       ];
 
   ChatState copyWith({
@@ -123,6 +141,12 @@ class ChatState extends Equatable {
     bool? maintainScroll,
     bool? suggestionLoaded,
     bool? readOnly,
+    GlobalKey? containerKey,
+    GlobalKey? textFieldKey,
+    GlobalKey? listKey,
+    GlobalKey? chatKey,
+    bool? isUserTap,
+    bool? firstLaunch,
     // ChatScrollObserver? chatObserver,
   }) {
     return ChatState(
@@ -153,6 +177,12 @@ class ChatState extends Equatable {
       maintainScroll: maintainScroll ?? this.maintainScroll,
       suggestionLoaded: suggestionLoaded ?? this.suggestionLoaded,
       readOnly: readOnly ?? this.readOnly,
+      containerKey: containerKey ?? this.containerKey,
+      isUserTap: isUserTap ?? this.isUserTap,
+      textFieldKey: textFieldKey ?? this.textFieldKey,
+      listKey: listKey ?? this.listKey,
+      chatKey: chatKey ?? this.chatKey,
+      firstLaunch: firstLaunch ?? this.firstLaunch,
       // chatObserver: chatObserver ?? this.chatObserver,
     );
   }
