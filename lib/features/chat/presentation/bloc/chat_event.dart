@@ -153,6 +153,8 @@ class ChatLoadingChanged extends ChatEvent {
   List<Object> get props => [status];
 }
 
+class ChatStramCanceled extends ChatEvent {}
+
 class ChatFirstLaunchStateChanged extends ChatEvent {
   final bool isFirstLaunch;
   const ChatFirstLaunchStateChanged({

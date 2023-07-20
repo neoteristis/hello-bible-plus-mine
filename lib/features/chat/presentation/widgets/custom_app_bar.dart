@@ -48,6 +48,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       context
                           .read<HistoricalBloc>()
                           .add(const HistoricalFetched(isRefresh: true));
+                      context.read<ChatBloc>().add(ChatStramCanceled());
                     }
                     context.read<ChatBloc>().add(ChatConversationCleared());
                   },

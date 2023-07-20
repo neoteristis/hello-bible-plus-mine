@@ -5,8 +5,6 @@ import 'package:gpt/core/widgets/custom_bubble.dart';
 import 'package:gpt/features/chat/presentation/widgets/chat/custom_bottom_widget.dart';
 
 import '../../../../core/constants/status.dart';
-import '../../../../core/helper/is_bottom.dart';
-import '../../../../core/helper/log.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/typing_indicator.dart';
 import '../bloc/chat_bloc.dart';
@@ -99,17 +97,54 @@ class ChatList extends StatelessWidget {
                 listHeight = listBox.size.height;
               }
               final chatViewArea = chatHeight - fieldHeight;
-              if (isBottom(
-                scrollController: state.scrollController!,
-                offset: 0.95,
-              )) {
-                if (listHeight >= chatViewArea &&
-                    !state.isUserTap! &&
-                    containerHeight < chatViewArea) {
+              // print(state.scrollController?.hasClients);
+              // print(isBottom(
+              //   scrollController: state.scrollController!,
+              //   offset: 0.95,
+              // ));
+              // print('position ${state.scrollController?.position.pixels}');
+              // print(
+              //     'max scroll extent ${state.scrollController!.position.maxScrollExtent}');
+
+              // if (isBottom(
+              //   scrollController: state.scrollController!,
+              //   offset: 0.95,
+              // )) {
+              // state.scrollController?.;
+              print(state.isUserTap);
+              if (!state.isUserTap!) {
+                if (containerHeight < chatViewArea) {
+                  // print('-------jump');
                   state.scrollController!
                       .jumpTo(state.scrollController!.position.maxScrollExtent);
                 }
               }
+
+              // if (state.isUserTap!) {
+              //   return;
+              // } else if (!state.isUserTap! &&
+              //     !isBottom(scrollController: state.scrollController!)) {
+              //   // print('--------isn bottom');
+              //   return;
+              // } else {
+              //   if (containerHeight < chatViewArea) {
+              //     // print('-------jump');
+              //     state.scrollController!
+              //         .jumpTo(state.scrollController!.position.maxScrollExtent);
+              //   }
+              // }
+
+              // if (listHeight >= chatViewArea &&
+              //     !state.isUserTap! &&
+              //     containerHeight < chatViewArea) {
+              //   state.scrollController!
+              //       .jumpTo(state.scrollController!.position.maxScrollExtent);
+              // }
+              // }
+              // else {
+              //   state.scrollController!
+              //       .jumpTo(state.scrollController!.position.maxScrollExtent);
+              // }
             }
           }
         }
@@ -120,13 +155,13 @@ class ChatList extends StatelessWidget {
             return NotificationListener(
               onNotification: (ScrollNotification scrollNotif) {
                 // if(state)
-                if (scrollNotif is ScrollStartNotification) {
-                  Log.info('tap');
+
+                if (scrollNotif is UserScrollNotification) {
                   context.read<ChatBloc>().add(const ChatUserTapChanged(true));
-                } else if (scrollNotif is ScrollEndNotification) {
-                  Log.info('tap remove');
-                  context.read<ChatBloc>().add(const ChatUserTapChanged(false));
                 }
+                // else if (scrollNotif is ScrollEndNotification) {
+                //   context.read<ChatBloc>().add(const ChatUserTapChanged(false));
+                // }
                 return false;
               },
               child: ListView.builder(
@@ -144,21 +179,23 @@ class ChatList extends StatelessWidget {
                     return customBubbleBuilder(
                       message: state.messages![index],
                     );
-                  } else if (index == 0) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: customBubbleBuilder(
-                            message: state.messages![index],
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
+                  }
+                  //  else if (index == 0) {
+                  //   return Column(
+                  //     children: [
+                  //       const SizedBox(
+                  //         height: 8,
+                  //       ),
+                  //       Align(
+                  //         alignment: Alignment.topLeft,
+                  //         child: customBubbleBuilder(
+                  //           message: state.messages![index],
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   );
+                  // }
+                  else {
                     return customBubbleBuilder(
                       message: state.messages![index],
                     );
@@ -310,7 +347,7 @@ class BottomChatLoaded extends StatelessWidget {
         return Column(
           children: [
             Align(
-              alignment: Alignment.topRight,
+              alignment: Alignment.bottomRight,
               child: BlocBuilder<ChatBloc, ChatState>(
                 buildWhen: (previous, current) =>
                     previous.messages != current.messages,

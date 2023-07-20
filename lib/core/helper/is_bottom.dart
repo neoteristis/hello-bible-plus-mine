@@ -5,9 +5,9 @@ bool isBottom({required ScrollController scrollController, double? offset}) {
     return false;
   }
   final maxScroll = scrollController.position.maxScrollExtent;
-  final currentScroll = scrollController.position.pixels;
+  final currentScroll = scrollController.offset;
   if (offset != null) {
     return currentScroll >= (maxScroll * offset);
   }
-  return currentScroll >= (maxScroll * 0.9);
+  return currentScroll >= (maxScroll * .9) - 30;
 }

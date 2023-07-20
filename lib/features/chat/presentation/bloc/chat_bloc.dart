@@ -7,6 +7,7 @@ import 'dart:typed_data';
 // import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gpt/core/extension/string_extension.dart';
@@ -37,7 +38,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetResponseMessagesUsecase getResponseMessages;
   final GetConversationByIdUsecase getConversationById;
   final GetSuggestionsMessageUsecase getSuggestionMessages;
-  // late StreamSubscription<String?> streamSubscription;
+  late StreamSubscription<SseMessage> streamSubscription;
   ChatBloc({
     required this.fetchCategoriesBySection,
     required this.fetchCategories,
@@ -65,19 +66,33 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatMessageAdded>(_onChatMessageAdded);
     on<ChatTypingStatusChanged>(_onChatTypingStatusChanged);
     on<ChatMessageJoined>(_onChatMessageJoined);
-    on<ChatMessageAnswerGot>(_onChatMessageAnswerGot);
+    on<ChatMessageAnswerGot>(
+      _onChatMessageAnswerGot,
+      transformer: restartable(),
+    );
     on<ChatIncomingMessageLoaded>(_onChatIncomingMessageLoaded);
     on<ChatFocusNodeDisposed>(_onChatFocusNodeDisposed);
     on<ChatConversationInited>(_onChatConversationInited);
     // on<ChatConversationFromNotificationInited>(
     //     _onChatConversationFromNotificationInited);
-    on<ChatSuggestionsRequested>(_onChatSuggestionsRequested);
+    on<ChatSuggestionsRequested>(
+      _onChatSuggestionsRequested,
+      transformer: restartable(),
+    );
     on<ChatLoadingChanged>(_onChatLoadingChanged);
     on<ChatUserTapChanged>(_onChatUserTapChanged);
     on<ChatFirstLaunchStateChanged>(_onChatFirstLaunchStateChanged);
+    on<ChatStramCanceled>(_onChatStramCanceled);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatStramCanceled(
+    ChatStramCanceled event,
+    Emitter<ChatState> emit,
+  ) {
+    streamSubscription.cancel();
+  }
 
   void _onChatFirstLaunchStateChanged(
     ChatFirstLaunchStateChanged event,
@@ -276,16 +291,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
       (rs) async {
         String messageJoined = '';
+        add(const ChatUserTapChanged(false));
         print(rs.data);
         try {
-          rs.data?.stream
+          streamSubscription = rs.data?.stream
               .transform(unit8Transformer)
               .transform(const Utf8Decoder())
               .transform(const LineSplitter())
               .transform(const SseTransformer())
               .listen(
-            (sse) async {
-              print(sse.data);
+            (SseMessage sse) async {
               String trunck = '';
 
               if (sse.data.length > 1) {
@@ -313,7 +328,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 ),
               );
               if (trunck.contains(endMessageMarker)) {
-                debugPrint(messageJoined);
+                // debugPrint(messageJoined);
                 // mark that the stream is finished
                 add(
                   const ChatLoadingChanged(
@@ -327,40 +342,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 );
               }
               if (trunck != endMessageMarker) {
-                // if (isBottom(scrollController: state.scrollController!)) {
-                //   state.scrollController!
-                //       .jumpTo(state.scrollController!.position.maxScrollExtent);
-                // }
-                // if (state.scrollController!.hasClients) {
-                //   if (isBottom(
-                //     scrollController: state.scrollController!,
-                //     offset: 0.95,
-                //   )) {
-                //     if (!state.isUserTap!) {
-                //       final box = state.containerKey?.currentContext
-                //           ?.findRenderObject() as RenderBox?;
-                //       final boxField = state.containerKey?.currentContext
-                //           ?.findRenderObject() as RenderBox?;
-
-                //       double? containerHeight = 0.0;
-                //       double? fieldHeight = 0.0;
-                //       if (box != null && box.hasSize) {
-                //         containerHeight = box.size.height;
-                //         if (boxField != null && boxField.hasSize) {
-                //           fieldHeight = boxField.size.height;
-                //         }
-                //         final screenSize =
-                //             MediaQuery.sizeOf(event.context).height;
-                //         final sizeToAvoid = screenSize - fieldHeight + 60 + 10;
-                //         if (containerHeight < sizeToAvoid) {
-                //           state.scrollController!.jumpTo(
-                //             state.scrollController!.position.maxScrollExtent,
-                //           );
-                //         }
-                //       }
-                //     }
-                //   }
-                // }
                 add(
                   const ChatLoadingChanged(
                     true,
@@ -379,9 +360,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             },
           );
         } catch (e) {
-          emit(state.copyWith(
+          emit(
+            state.copyWith(
               messageStatus: Status.failed,
-              failure: ServerFailure(info: e.toString())));
+              failure: ServerFailure(
+                info: e.toString(),
+              ),
+            ),
+          );
         }
       },
     );
