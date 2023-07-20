@@ -10,7 +10,7 @@ import '../../../../core/helper/log.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/typing_indicator.dart';
 import '../bloc/chat_bloc.dart';
-import 'chat/list_bottom_chat_widget.dart';
+import 'chat/suggestion_item.dart';
 import 'container_categories_widget.dart';
 
 class ChatBody extends StatelessWidget {
@@ -53,37 +53,10 @@ class CustomChat extends StatelessWidget {
       builder: (context, state) {
         return Column(
           key: state.chatKey,
-          children: [
-            Chat(),
+          children: const [
+            Expanded(child: ChatList()),
             CustomBottomWidget(),
           ],
-        );
-      },
-    );
-  }
-}
-
-class Chat extends StatelessWidget {
-  const Chat({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ChatBloc, ChatState>(
-      buildWhen: (previous, current) => previous.messages != current.messages,
-      builder: (context, state) {
-        return const Expanded(
-          child: ChatList(),
-          // child: Visibility(
-          //   // visible: state.messages != null && state.messages!.isNotEmpty,
-          //   visible: true,
-          //   replacement: const EmptyChatWidget(),
-          //   child: const ChatList(),
-          // ),
-          // child:
-          //     ? const ChatList()
-          //     : const EmptyChatWidget(),
         );
       },
     );
@@ -98,7 +71,6 @@ class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatBloc, ChatState>(
-      // listenWhen: (previous, current) => previous.isLoading != current.isLoading || previous,
       listener: (context, state) {
         if (state.isLoading!) {
           if (state.scrollController!.hasClients) {
@@ -119,17 +91,12 @@ class ChatList extends StatelessWidget {
               containerHeight = box.size.height;
               if (boxField != null && boxField.hasSize) {
                 fieldHeight = boxField.size.height;
-                // Log.info('field height $fieldHeight');
               }
               if (boxChat != null && boxChat.hasSize) {
                 chatHeight = boxChat.size.height;
-                // Log.info('chat height $chatHeight');
               }
-
-              // double? fieldHeight = 0.0;
               if (listBox != null && listBox.hasSize) {
                 listHeight = listBox.size.height;
-                // Log.info('chat height $listHeight');
               }
               final chatViewArea = chatHeight - fieldHeight;
               if (isBottom(
@@ -143,10 +110,6 @@ class ChatList extends StatelessWidget {
                       .jumpTo(state.scrollController!.position.maxScrollExtent);
                 }
               }
-              // else {
-              //   state.scrollController!
-              //       .jumpTo(state.scrollController!.position.maxScrollExtent);
-              // }
             }
           }
         }
@@ -164,9 +127,6 @@ class ChatList extends StatelessWidget {
                   Log.info('tap remove');
                   context.read<ChatBloc>().add(const ChatUserTapChanged(false));
                 }
-                //  else if (scrollNotif is UserScrollNotification) {
-                //   Log.info('----update');
-                // }
                 return false;
               },
               child: ListView.builder(
@@ -174,97 +134,7 @@ class ChatList extends StatelessWidget {
                 controller: state.scrollController,
                 itemBuilder: (ctx, index) {
                   if (state.messages == null || state.messages!.isEmpty) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        BlocBuilder<ChatBloc, ChatState>(
-                          buildWhen: (previous, current) =>
-                              previous.incoming != current.incoming,
-                          builder: (context, state) {
-                            return Align(
-                              alignment: Alignment.topLeft,
-                              child: Container(
-                                constraints: const BoxConstraints(),
-                                child: CustomBubble(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                  nip: BubbleNip.leftBottom,
-                                  message: Text(
-                                    state.incoming ?? '',
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontSize: 17.sp,
-                                      // fontSize: 15,
-                                      height: 1.4,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        BlocBuilder<ChatBloc, ChatState>(
-                          buildWhen: (previous, current) =>
-                              previous.messageStatus != current.messageStatus,
-                          builder: (context, state) {
-                            switch (state.messageStatus) {
-                              case Status.loaded:
-                                return BlocBuilder<ChatBloc, ChatState>(
-                                  buildWhen: (previous, current) =>
-                                      previous.suggestions !=
-                                          current.suggestions ||
-                                      previous.isLoading != current.isLoading ||
-                                      previous.maintainScroll !=
-                                          current.maintainScroll,
-                                  builder: (context, state) {
-                                    final suggestions = state.suggestions;
-                                    if (suggestions == null ||
-                                        suggestions.isEmpty ||
-                                        state.isLoading! ||
-                                        state.maintainScroll!) {
-                                      return const SizedBox.shrink();
-                                    }
-                                    return Container(
-                                      padding: const EdgeInsets.only(
-                                        left: 15,
-                                        right: 15,
-                                        top: 20,
-                                        bottom: 15,
-                                      ),
-                                      margin: const EdgeInsets.only(top: 15.0),
-                                      // width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        border: Border(
-                                          top: BorderSide(
-                                            color:
-                                                Theme.of(context).dividerColor,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          ...suggestions.map(
-                                            (e) => SuggestionItem(e),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              default:
-                                return const SizedBox.shrink();
-                            }
-                          },
-                        )
-                      ],
-                    );
+                    return EmptyChatWidget();
                   }
 
                   if (index == state.messages!.length - 1) {
@@ -306,41 +176,97 @@ class ChatList extends StatelessWidget {
   }
 }
 
-class PositionRetainedScrollPhysics extends ScrollPhysics {
-  final bool shouldRetain;
-  const PositionRetainedScrollPhysics({super.parent, this.shouldRetain = true});
+class EmptyChatWidget extends StatelessWidget {
+  const EmptyChatWidget({
+    super.key,
+  });
 
   @override
-  PositionRetainedScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return PositionRetainedScrollPhysics(
-      parent: buildParent(ancestor),
-      shouldRetain: shouldRetain,
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 8,
+        ),
+        BlocBuilder<ChatBloc, ChatState>(
+          buildWhen: (previous, current) =>
+              previous.incoming != current.incoming,
+          builder: (context, state) {
+            return Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                constraints: const BoxConstraints(),
+                child: CustomBubble(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  nip: BubbleNip.leftBottom,
+                  message: Text(
+                    state.incoming ?? '',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 17.sp,
+                      // fontSize: 15,
+                      height: 1.4,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        BlocBuilder<ChatBloc, ChatState>(
+          buildWhen: (previous, current) =>
+              previous.messageStatus != current.messageStatus,
+          builder: (context, state) {
+            switch (state.messageStatus) {
+              case Status.loaded:
+                return BlocBuilder<ChatBloc, ChatState>(
+                  buildWhen: (previous, current) =>
+                      previous.suggestions != current.suggestions ||
+                      previous.isLoading != current.isLoading ||
+                      previous.maintainScroll != current.maintainScroll,
+                  builder: (context, state) {
+                    final suggestions = state.suggestions;
+                    if (suggestions == null ||
+                        suggestions.isEmpty ||
+                        state.isLoading! ||
+                        state.maintainScroll!) {
+                      return const SizedBox.shrink();
+                    }
+                    return Container(
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        top: 20,
+                        bottom: 15,
+                      ),
+                      margin: const EdgeInsets.only(top: 15.0),
+                      // width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        border: Border(
+                          top: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          ...suggestions.map(
+                            (e) => SuggestionItem(e),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              default:
+                return const SizedBox.shrink();
+            }
+          },
+        )
+      ],
     );
-  }
-
-  @override
-  double adjustPositionForNewDimensions({
-    required ScrollMetrics oldPosition,
-    required ScrollMetrics newPosition,
-    required bool isScrolling,
-    required double velocity,
-  }) {
-    final position = super.adjustPositionForNewDimensions(
-      oldPosition: oldPosition,
-      newPosition: newPosition,
-      isScrolling: isScrolling,
-      velocity: velocity,
-    );
-
-    final diff = newPosition.maxScrollExtent - oldPosition.maxScrollExtent;
-
-    if (oldPosition.pixels > oldPosition.minScrollExtent &&
-        diff > 0 &&
-        shouldRetain) {
-      return position + diff;
-    } else {
-      return position;
-    }
   }
 }
 
@@ -499,102 +425,6 @@ class BottomChatLoading extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class EmptyChatWidget extends StatelessWidget {
-  const EmptyChatWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 8,
-          ),
-          BlocBuilder<ChatBloc, ChatState>(
-            buildWhen: (previous, current) =>
-                previous.incoming != current.incoming,
-            builder: (context, state) {
-              return Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  constraints: const BoxConstraints(),
-                  child: CustomBubble(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    nip: BubbleNip.leftBottom,
-                    message: Text(
-                      state.incoming ?? '',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 17.sp,
-                        // fontSize: 15,
-                        height: 1.4,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-          BlocBuilder<ChatBloc, ChatState>(
-            buildWhen: (previous, current) =>
-                previous.messageStatus != current.messageStatus,
-            builder: (context, state) {
-              switch (state.messageStatus) {
-                case Status.loaded:
-                  return BlocBuilder<ChatBloc, ChatState>(
-                    buildWhen: (previous, current) =>
-                        previous.suggestions != current.suggestions ||
-                        previous.isLoading != current.isLoading ||
-                        previous.maintainScroll != current.maintainScroll,
-                    builder: (context, state) {
-                      final suggestions = state.suggestions;
-                      if (suggestions == null ||
-                          suggestions.isEmpty ||
-                          state.isLoading! ||
-                          state.maintainScroll!) {
-                        return const SizedBox.shrink();
-                      }
-                      return Container(
-                        padding: const EdgeInsets.only(
-                          left: 15,
-                          right: 15,
-                          top: 20,
-                          bottom: 15,
-                        ),
-                        margin: const EdgeInsets.only(top: 15.0),
-                        // width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          border: Border(
-                            top: BorderSide(
-                              color: Theme.of(context).dividerColor,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            ...suggestions.map(
-                              (e) => SuggestionItem(e),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                default:
-                  return const SizedBox.shrink();
-              }
-            },
-          )
-        ],
-      ),
     );
   }
 }

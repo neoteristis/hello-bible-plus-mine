@@ -27,13 +27,6 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
     textEditingController = TextEditingController();
   }
 
-  // @override
-  // void dispose() {
-  //   print('--------------------dispose it--------------');
-  //   context.read<ChatBloc>().add(ChatFocusNodeDisposed());
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final hintColor = Theme.of(context)
@@ -46,9 +39,6 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           previous.isLoading != current.isLoading ||
           previous.readOnly != current.readOnly ||
           previous.textFieldKey != current.textFieldKey,
-      // selector: (state) {
-      //   return state.focusNode!;
-      // },
       builder: (context, state) {
         if (state.readOnly == true) {
           return const SizedBox.shrink();
@@ -70,37 +60,6 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           ),
           child: Column(
             children: [
-              // BlocBuilder<ChatBloc, ChatState>(
-              //   buildWhen: (previous, current) =>
-              //       previous.messageStatus != current.messageStatus,
-              //   builder: (context, state) {
-              //     switch (state.messageStatus) {
-              //       case Status.loaded:
-              //         return BlocBuilder<ChatBloc, ChatState>(
-              //           buildWhen: (previous, current) =>
-              //               previous.suggestions != current.suggestions ||
-              //               previous.isLoading != current.isLoading,
-              //           builder: (context, state) {
-              //             final suggestions = state.suggestions;
-              //             if (suggestions == null ||
-              //                 suggestions.isEmpty ||
-              //                 state.isLoading!) {
-              //               return const SizedBox.shrink();
-              //             }
-              //             return Column(
-              //               children: [
-              //                 ...suggestions.map(
-              //                   (e) => SuggestionItem(e),
-              //                 ),
-              //               ],
-              //             );
-              //           },
-              //         );
-              //       default:
-              //         return const SizedBox.shrink();
-              //     }
-              //   },
-              // ),
               Row(
                 children: [
                   Expanded(
