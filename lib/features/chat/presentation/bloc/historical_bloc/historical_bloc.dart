@@ -6,6 +6,7 @@ import 'package:gpt/features/chat/domain/usecases/usecases.dart';
 
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/error/failure.dart';
+import '../../../../../core/helper/is_bottom.dart';
 import '../../../../../core/helper/throttle_droppable.dart';
 import '../../../domain/entities/entities.dart';
 
@@ -130,18 +131,9 @@ class HistoricalBloc extends Bloc<HistoricalEvent, HistoricalState> {
   }
 
   void _onScroll() {
-    if (isBottom(state.scrollController!)) {
+    if (isBottom(scrollController: state.scrollController!)) {
       add(HistoricalFetched());
     }
-  }
-
-  bool isBottom(ScrollController scrollController) {
-    if (!scrollController.hasClients) {
-      return false;
-    }
-    final maxScroll = scrollController.position.maxScrollExtent;
-    final currentScroll = scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
   }
 
   @override

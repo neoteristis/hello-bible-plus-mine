@@ -22,6 +22,9 @@ class HistoricalItemWidget extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
+      subtitleTextStyle: const TextStyle(
+        fontWeight: FontWeight.w500,
+      ),
       // subtitle: historic.messages.isNotEmpty
       //     ? Text(
       //         DateFormat('d/M/y HH:mm')

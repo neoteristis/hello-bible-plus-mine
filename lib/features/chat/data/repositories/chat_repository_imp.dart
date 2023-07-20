@@ -46,7 +46,7 @@ class ChatRepositoryImp implements ChatRepository {
     if (await networkInfo.isConnected) {
       try {
         final user = await local.getUser();
-        Logger().i(user);
+        // Logger().i(user);
         final uid = user?.idString;
         if (uid != null) {
           final res = await remote.changeConversation(

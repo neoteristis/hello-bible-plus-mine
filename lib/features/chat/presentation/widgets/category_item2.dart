@@ -26,6 +26,7 @@ class CategoryItem2 extends StatelessWidget {
         context.read<ChatBloc>().add(
               ChatConversationChanged(
                 category,
+                context,
               ),
             );
       },

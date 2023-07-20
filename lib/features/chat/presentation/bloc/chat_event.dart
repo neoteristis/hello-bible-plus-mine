@@ -10,9 +10,13 @@ abstract class ChatEvent extends Equatable {
 class ChatMessageSent extends ChatEvent {
   // final types.PartialText? message;
   final String textMessage;
-  const ChatMessageSent(this.textMessage);
+  final BuildContext context;
+  const ChatMessageSent(this.textMessage, this.context);
   @override
-  List<Object> get props => [textMessage];
+  List<Object> get props => [
+        textMessage,
+        context,
+      ];
 }
 
 class ChatSuggestionsRequested extends ChatEvent {
@@ -27,12 +31,17 @@ class ChatCategoriesBySectionFetched extends ChatEvent {}
 
 class ChatConversationChanged extends ChatEvent {
   final Category category;
+  final BuildContext context;
   const ChatConversationChanged(
     this.category,
+    this.context,
   );
 
   @override
-  List<Object> get props => [category];
+  List<Object> get props => [
+        category,
+        context,
+      ];
 }
 
 class ChatConversationCleared extends ChatEvent {}
@@ -79,12 +88,17 @@ class ChatMessageJoined extends ChatEvent {
 
 class ChatMessageAnswerGot extends ChatEvent {
   final String conversationId;
+  final BuildContext context;
   const ChatMessageAnswerGot({
     required this.conversationId,
+    required this.context,
   });
 
   @override
-  List<Object> get props => [conversationId];
+  List<Object> get props => [
+        conversationId,
+        context,
+      ];
 }
 
 class ChatMessageModChanged extends ChatEvent {
@@ -139,15 +153,15 @@ class ChatLoadingChanged extends ChatEvent {
   List<Object> get props => [status];
 }
 
-// class ChatFirstLaunchStateChanged extends ChatEvent {
-//   final bool isFirstLaunch;
-//   const ChatFirstLaunchStateChanged({
-//     required this.isFirstLaunch,
-//   });
+class ChatFirstLaunchStateChanged extends ChatEvent {
+  final bool isFirstLaunch;
+  const ChatFirstLaunchStateChanged({
+    required this.isFirstLaunch,
+  });
 
-//   @override
-//   List<Object> get props => [isFirstLaunch];
-// }
+  @override
+  List<Object> get props => [isFirstLaunch];
+}
 
 // class ChatScrollPhysicsSwitched extends ChatEvent {
 //   final ScrollPhysics physics;
@@ -161,14 +175,14 @@ class ChatLoadingChanged extends ChatEvent {
 //       ];
 // }
 
-class ChatMaintainScrollChanged extends ChatEvent {
-  final bool maintainScroll;
-  const ChatMaintainScrollChanged(
-    this.maintainScroll,
+class ChatUserTapChanged extends ChatEvent {
+  final bool isUserTap;
+  const ChatUserTapChanged(
+    this.isUserTap,
   );
 
   @override
   List<Object> get props => [
-        maintainScroll,
+        isUserTap,
       ];
 }

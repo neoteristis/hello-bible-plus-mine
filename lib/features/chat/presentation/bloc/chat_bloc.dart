@@ -19,6 +19,7 @@ import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/helper/custom_scroll_physics.dart';
+import '../../../../core/helper/is_bottom.dart';
 import '../../../../core/helper/log.dart';
 import '../../../../core/sse/sse.dart';
 import '../../../../core/usecase/usecase.dart';
@@ -51,6 +52,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             focusNode: FocusNode(),
             scrollController: ScrollController(),
             scrollPhysics: const PositionRetainedScrollPhysics(),
+            containerKey: GlobalKey(),
+            textFieldKey: GlobalKey(),
+            listKey: GlobalKey(),
+            chatKey: GlobalKey(),
           ),
         ) {
     on<ChatMessageSent>(_onChatMessageSent);
@@ -68,11 +73,25 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     //     _onChatConversationFromNotificationInited);
     on<ChatSuggestionsRequested>(_onChatSuggestionsRequested);
     on<ChatLoadingChanged>(_onChatLoadingChanged);
-    // on<ChatScrollPhysicsSwitched>(_onChatScrollPhysicsSwitched);
-    // on<ChatMaintainScrollChanged>(_onChatMaintainScrollChanged);
+    on<ChatUserTapChanged>(_onChatUserTapChanged);
+    on<ChatFirstLaunchStateChanged>(_onChatFirstLaunchStateChanged);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatFirstLaunchStateChanged(
+    ChatFirstLaunchStateChanged event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(state.copyWith(firstLaunch: event.isFirstLaunch));
+  }
+
+  void _onChatUserTapChanged(
+    ChatUserTapChanged event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(state.copyWith(isUserTap: event.isUserTap));
+  }
 
   void _onChatLoadingChanged(
       ChatLoadingChanged event, Emitter<ChatState> emit) {
@@ -265,13 +284,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               .transform(const LineSplitter())
               .transform(const SseTransformer())
               .listen(
-            (event) async {
-              print(event.data);
+            (sse) async {
+              print(sse.data);
               String trunck = '';
 
-              if (event.data.length > 1) {
-                trunck = event.data.substring(1);
-              } else if (event.data == ' ') {
+              if (sse.data.length > 1) {
+                trunck = sse.data.substring(1);
+              } else if (sse.data == ' ') {
                 if (messageJoined[messageJoined.length - 1]
                     .contains(RegExp(r'[?!;.,]'))) {
                   trunck = '\n\n';
@@ -286,7 +305,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                   trunck = '.\n\n';
                 }
               } else {
-                trunck = event.data;
+                trunck = sse.data;
               }
               add(
                 const ChatTypingStatusChanged(
@@ -308,6 +327,40 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 );
               }
               if (trunck != endMessageMarker) {
+                // if (isBottom(scrollController: state.scrollController!)) {
+                //   state.scrollController!
+                //       .jumpTo(state.scrollController!.position.maxScrollExtent);
+                // }
+                // if (state.scrollController!.hasClients) {
+                //   if (isBottom(
+                //     scrollController: state.scrollController!,
+                //     offset: 0.95,
+                //   )) {
+                //     if (!state.isUserTap!) {
+                //       final box = state.containerKey?.currentContext
+                //           ?.findRenderObject() as RenderBox?;
+                //       final boxField = state.containerKey?.currentContext
+                //           ?.findRenderObject() as RenderBox?;
+
+                //       double? containerHeight = 0.0;
+                //       double? fieldHeight = 0.0;
+                //       if (box != null && box.hasSize) {
+                //         containerHeight = box.size.height;
+                //         if (boxField != null && boxField.hasSize) {
+                //           fieldHeight = boxField.size.height;
+                //         }
+                //         final screenSize =
+                //             MediaQuery.sizeOf(event.context).height;
+                //         final sizeToAvoid = screenSize - fieldHeight + 60 + 10;
+                //         if (containerHeight < sizeToAvoid) {
+                //           state.scrollController!.jumpTo(
+                //             state.scrollController!.position.maxScrollExtent,
+                //           );
+                //         }
+                //       }
+                //     }
+                //   }
+                // }
                 add(
                   const ChatLoadingChanged(
                     true,
@@ -399,6 +452,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         clearNewMessage: true,
         incoming: '',
         readOnly: false,
+        firstLaunch: true,
       ),
     );
     final res =
@@ -427,9 +481,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         if (id != null) {
           // get the first default message and the suggestions message when the convesation is ready
           add(
-            ChatMessageAnswerGot(
-              conversationId: id,
-            ),
+            ChatMessageAnswerGot(conversationId: id, context: event.context),
           );
           add(
             ChatSuggestionsRequested(
@@ -446,13 +498,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     // add(const ChatSuggestionViewChanged(false));
-    if (state.scrollController!.hasClients) {
-      state.scrollController?.jumpTo(
-        state.scrollController!.position.maxScrollExtent,
-        // duration: const Duration(milliseconds: 500),
-        // curve: Curves.ease,
-      );
-    }
 
     if (state.newMessage != null) {
       /*
@@ -497,6 +542,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messageParams,
       ),
     );
+    // if (state.scrollController!.hasClients) {
+    await Future.delayed(const Duration(milliseconds: 200));
+    Log.info('has client');
+    state.scrollController?.jumpTo(
+      state.scrollController!.position.maxScrollExtent,
+      // duration: const Duration(milliseconds: 500),
+      // curve: Curves.ease,
+    );
+    // }
     final res = await sendMessage(messageParams);
 
     return res.fold(
@@ -512,7 +566,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         if (message.response == null) {
           final idConversation = state.conversation?.id;
           if (idConversation != null) {
-            return add(ChatMessageAnswerGot(conversationId: idConversation));
+            return add(ChatMessageAnswerGot(
+                conversationId: idConversation, context: event.context));
           } else {
             return emit(
               state.copyWith(
@@ -540,16 +595,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
   }
 
+  @override
+  Future<void> close() {
+    if (state.scrollController != null) {
+      state.scrollController!.dispose();
+    }
+    return super.close();
+  }
+
   StreamTransformer<Uint8List, List<int>> unit8Transformer =
       StreamTransformer.fromHandlers(
     handleData: (data, sink) {
       sink.add(List<int>.from(data));
     },
   );
-
-  String _randomString() {
-    final random = Random.secure();
-    final values = List<int>.generate(16, (i) => random.nextInt(255));
-    return base64UrlEncode(values);
-  }
 }
