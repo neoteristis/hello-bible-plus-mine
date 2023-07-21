@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/widgets/custom_bubble.dart';
+import 'package:gpt/features/chat/domain/entities/text_message.dart';
 import 'package:gpt/features/chat/presentation/widgets/chat/custom_bottom_widget.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/typing_indicator.dart';
+import '../../domain/entities/message_by_role.dart';
 import '../bloc/chat_bloc.dart';
 import 'chat/suggestion_item.dart';
 import 'container_categories_widget.dart';
@@ -49,11 +51,16 @@ class CustomChat extends StatelessWidget {
     return BlocBuilder<ChatBloc, ChatState>(
       buildWhen: (previous, current) => previous.chatKey != current.chatKey,
       builder: (context, state) {
-        return Column(
+        return Stack(
           key: state.chatKey,
           children: const [
-            Expanded(child: ChatList()),
-            CustomBottomWidget(),
+            ChatList(),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: CustomBottomWidget(),
+            ),
           ],
         );
       },
@@ -78,13 +85,10 @@ class ChatList extends StatelessWidget {
                 ?.findRenderObject() as RenderBox?;
             final boxChat =
                 state.chatKey?.currentContext?.findRenderObject() as RenderBox?;
-            final listBox =
-                state.listKey?.currentContext?.findRenderObject() as RenderBox?;
 
             double? containerHeight = 0.0;
             double? fieldHeight = 0.0;
             double? chatHeight = 0.0;
-            double? listHeight = 0.0;
             if (box != null && box.hasSize) {
               containerHeight = box.size.height;
               if (boxField != null && boxField.hasSize) {
@@ -92,9 +96,6 @@ class ChatList extends StatelessWidget {
               }
               if (boxChat != null && boxChat.hasSize) {
                 chatHeight = boxChat.size.height;
-              }
-              if (listBox != null && listBox.hasSize) {
-                listHeight = listBox.size.height;
               }
               final chatViewArea = chatHeight - fieldHeight;
               // print(state.scrollController?.hasClients);
@@ -108,13 +109,18 @@ class ChatList extends StatelessWidget {
 
               // if (isBottom(
               //   scrollController: state.scrollController!,
-              //   offset: 0.95,
+              //   // offset: 0.95,
               // )) {
+              //   if (containerHeight < chatViewArea) {
+              //     state.scrollController!
+              //         .jumpTo(state.scrollController!.position.maxScrollExtent);
+              //   }
+              // }
               // state.scrollController?.;
-              print(state.isUserTap);
               if (!state.isUserTap!) {
+                // uncomment from here
+
                 if (containerHeight < chatViewArea) {
-                  // print('-------jump');
                   state.scrollController!
                       .jumpTo(state.scrollController!.position.maxScrollExtent);
                 }
@@ -169,35 +175,41 @@ class ChatList extends StatelessWidget {
                 controller: state.scrollController,
                 itemBuilder: (ctx, index) {
                   if (state.messages == null || state.messages!.isEmpty) {
-                    return EmptyChatWidget();
+                    return const EmptyChatWidget();
                   }
 
-                  if (index == state.messages!.length - 1) {
+                  if (index == 0 && state.messages!.length > 1) {
+                    // the first item on the list
+                    return Column(
+                      children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: customBubbleBuilder(
+                            message: state.messages![index],
+                            context: context,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  if (index == state.messages!.length - 1 ||
+                      state.messages!.length == 1) {
+                    // the last item on the list
                     if (!state.readOnly!) {
+                      // readOnly is check for the sake of the historic that doesnt contain the text field
                       return ListBottomChat(index);
                     }
                     return customBubbleBuilder(
                       message: state.messages![index],
+                      context: context,
                     );
-                  }
-                  //  else if (index == 0) {
-                  //   return Column(
-                  //     children: [
-                  //       const SizedBox(
-                  //         height: 8,
-                  //       ),
-                  //       Align(
-                  //         alignment: Alignment.topLeft,
-                  //         child: customBubbleBuilder(
-                  //           message: state.messages![index],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   );
-                  // }
-                  else {
+                  } else {
                     return customBubbleBuilder(
                       message: state.messages![index],
+                      context: context,
                     );
                   }
                 },
@@ -234,6 +246,10 @@ class EmptyChatWidget extends StatelessWidget {
               child: Container(
                 constraints: const BoxConstraints(),
                 child: CustomBubble(
+                  textMessage: TextMessage(
+                    content: state.incoming,
+                    role: Role.system,
+                  ),
                   color: Theme.of(context).colorScheme.onPrimary,
                   nip: BubbleNip.leftBottom,
                   message: Text(
@@ -342,8 +358,16 @@ class BottomChatLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
-      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+      buildWhen: (previous, current) =>
+          previous.isLoading != current.isLoading ||
+          previous.textFieldKey != current.textFieldKey,
       builder: (context, state) {
+        final boxField = state.textFieldKey?.currentContext?.findRenderObject()
+            as RenderBox?;
+        double? fieldHeight = 0.0;
+        if (boxField != null && boxField.hasSize) {
+          fieldHeight = boxField.size.height;
+        }
         return Column(
           children: [
             Align(
@@ -354,6 +378,7 @@ class BottomChatLoaded extends StatelessWidget {
                 builder: (context, state) {
                   return customBubbleBuilder(
                     message: state.messages![lastIndex],
+                    context: context,
                   );
                 },
               ),
@@ -361,22 +386,38 @@ class BottomChatLoaded extends StatelessWidget {
             BlocBuilder<ChatBloc, ChatState>(
               buildWhen: (previous, current) =>
                   previous.incoming != current.incoming ||
-                  previous.containerKey != current.containerKey,
+                  previous.containerKey != current.containerKey ||
+                  previous.suggestions != current.suggestions ||
+                  previous.isLoading != current.isLoading,
               builder: (context, state) {
+                final suggestions = state.suggestions;
                 return Align(
                   alignment: Alignment.bottomLeft,
-                  child: CustomBubble(
-                    key: state.containerKey,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    nip: BubbleNip.leftBottom,
-                    message: Text(
-                      state.incoming ?? '',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 17.sp,
-                        // fontSize: 17,
-                        height: 1.4,
-                        fontWeight: FontWeight.w400,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: suggestions == null ||
+                              suggestions.isEmpty ||
+                              state.isLoading!
+                          ? fieldHeight ?? 0
+                          : 0,
+                    ),
+                    child: CustomBubble(
+                      key: state.containerKey,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      nip: BubbleNip.leftBottom,
+                      textMessage: TextMessage(
+                        content: state.incoming,
+                        role: Role.system,
+                      ),
+                      message: Text(
+                        state.incoming ?? '',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontSize: 17.sp,
+                          // fontSize: 17,
+                          height: 1.4,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ),
@@ -395,11 +436,11 @@ class BottomChatLoaded extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                     return Container(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                         left: 15,
                         right: 15,
                         top: 20,
-                        bottom: 15,
+                        bottom: fieldHeight ?? 0,
                       ),
                       margin: const EdgeInsets.only(top: 15.0),
                       decoration: BoxDecoration(
@@ -448,17 +489,21 @@ class BottomChatLoading extends StatelessWidget {
               alignment: Alignment.topRight,
               child: customBubbleBuilder(
                 message: state.messages![lastIndex],
+                context: context,
               ),
             );
           },
         ),
         Align(
           alignment: Alignment.topLeft,
-          child: CustomBubble(
-            color: Theme.of(context).colorScheme.onPrimary,
-            padding: EdgeInsets.zero,
-            nip: BubbleNip.leftBottom,
-            message: const TypingIndicatorWidget(),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 150),
+            child: CustomBubble(
+              color: Theme.of(context).colorScheme.onPrimary,
+              padding: EdgeInsets.zero,
+              nip: BubbleNip.leftBottom,
+              message: const TypingIndicatorWidget(),
+            ),
           ),
         ),
       ],

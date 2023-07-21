@@ -40,6 +40,7 @@ const labelSmall = TextStyle(
 );
 
 ThemeData light = ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.white),
   fontFamily: 'SfProText',
   dividerColor: const Color(0xFFE3E6E8),
@@ -143,6 +144,7 @@ ThemeData light = ThemeData(
 );
 
 ThemeData dark = ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'SfProText',
   dividerColor: const Color(0xFF22272A),
   dividerTheme: const DividerThemeData(color: Color(0xFF22272A)),

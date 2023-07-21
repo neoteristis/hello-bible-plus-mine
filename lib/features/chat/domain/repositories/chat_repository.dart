@@ -18,4 +18,6 @@ abstract class ChatRepository {
   Future<Either<Failure, Conversation>> getConversationById(
       String conversationId);
   Future<Either<Failure, List<String>>> getSuggestions(MessageParam param);
+  Future<Either<Failure, dynamic>> cancelMessageComing(
+      Conversation conversation);
 }

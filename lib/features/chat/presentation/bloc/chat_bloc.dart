@@ -14,6 +14,7 @@ import 'package:gpt/core/extension/string_extension.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:logger/logger.dart';
+import 'package:vibration/vibration.dart';
 // import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../../../core/constants/status.dart';
@@ -38,6 +39,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetResponseMessagesUsecase getResponseMessages;
   final GetConversationByIdUsecase getConversationById;
   final GetSuggestionsMessageUsecase getSuggestionMessages;
+  final CancelMessageComingUsecase cancelMessageComing;
   late StreamSubscription<SseMessage> streamSubscription;
   ChatBloc({
     required this.fetchCategoriesBySection,
@@ -47,6 +49,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.getResponseMessages,
     required this.getConversationById,
     required this.getSuggestionMessages,
+    required this.cancelMessageComing,
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
@@ -82,16 +85,79 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatLoadingChanged>(_onChatLoadingChanged);
     on<ChatUserTapChanged>(_onChatUserTapChanged);
     on<ChatFirstLaunchStateChanged>(_onChatFirstLaunchStateChanged);
-    on<ChatStramCanceled>(_onChatStramCanceled);
+    on<ChatStreamCanceled>(_onChatStreamCanceled);
+    on<ChatVibrated>(_onChatVibrated);
+    on<ChatAnswerRegenerated>(_onChatAnswerRegenerated);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _onChatStramCanceled(
-    ChatStramCanceled event,
+  void _onChatAnswerRegenerated(
+    ChatAnswerRegenerated event,
     Emitter<ChatState> emit,
   ) {
+    state.scrollController?.jumpTo(
+      state.scrollController!.position.maxScrollExtent,
+      // duration: const Duration(milliseconds: 500),
+      // curve: Curves.ease,
+    );
+    if (state.newMessage != null) {
+      /*
+        the last message on the screen is still the customMessage build from the listbottomWidget,
+        then you have to add the actual message here before inserting the new message from the user typing
+      */
+
+      //first clear the text controller
+
+      state.textEditingController?.clear();
+      final textAnswer = TextMessage(
+        role: Role.system,
+        createdAt: DateTime.now(),
+        content: state.newMessage ?? '',
+      );
+
+      emit(
+        state.copyWith(
+          messages: List.of(state.messages!)..add(textAnswer),
+          messageStatus: Status.loading,
+        ),
+      );
+    }
+    final id = state.conversation?.id;
+    if (id != null) {
+      add(ChatMessageAnswerGot(conversationId: id));
+    }
+  }
+
+  void _onChatVibrated(
+    ChatVibrated event,
+    Emitter<ChatState> emit,
+  ) async {
+    // if (await Vibration.hasVibrator() ?? false) {
+    try {
+      Vibration.vibrate(duration: 10, amplitude: -1);
+    } catch (e) {}
+// }
+  }
+
+  void _onChatStreamCanceled(
+    ChatStreamCanceled event,
+    Emitter<ChatState> emit,
+  ) async {
     streamSubscription.cancel();
+    add(
+      const ChatLoadingChanged(
+        false,
+      ),
+    );
+    add(
+      ChatMessageJoined(
+        newMessage: state.incoming ?? '',
+      ),
+    );
+    if (state.conversation != null) {
+      cancelMessageComing(state.conversation!);
+    }
   }
 
   void _onChatFirstLaunchStateChanged(
@@ -434,7 +500,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       state.copyWith(
         conversationStatus: Status.loading,
         // emit an empty conversation to go the chat screen
-        conversation: const Conversation(),
+        conversation: Conversation(category: event.category),
         clearNewMessage: true,
         incoming: '',
         readOnly: false,
@@ -464,16 +530,30 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ),
         );
         final id = conversation.id;
-        if (id != null) {
+        if (id != null && event.firstMessage == null) {
           // get the first default message and the suggestions message when the convesation is ready
           add(
-            ChatMessageAnswerGot(conversationId: id, context: event.context),
+            ChatMessageAnswerGot(conversationId: id),
           );
           add(
             ChatSuggestionsRequested(
               MessageParam(conversation: conversation),
             ),
           );
+        } else if (event.firstMessage != null) {
+          // final textAnswer = TextMessage(
+          //   role: Role.user,
+          //   createdAt: DateTime.now(),
+          //   content: event.firstMessage ?? '',
+          // );
+
+          // emit(
+          //   state.copyWith(
+          //     messages: List.of(state.messages!)..add(textAnswer),
+          //     messageStatus: Status.loading,
+          //   ),
+          // );
+          add(ChatMessageSent(event.firstMessage ?? ''));
         }
       },
     );
@@ -552,8 +632,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         if (message.response == null) {
           final idConversation = state.conversation?.id;
           if (idConversation != null) {
-            return add(ChatMessageAnswerGot(
-                conversationId: idConversation, context: event.context));
+            return add(ChatMessageAnswerGot(conversationId: idConversation));
           } else {
             return emit(
               state.copyWith(

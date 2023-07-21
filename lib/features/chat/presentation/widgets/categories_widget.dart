@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
+import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc.dart';
@@ -17,6 +18,7 @@ class CategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         switch (state.catStatus) {
@@ -71,9 +73,39 @@ class CategoriesWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: TextField(
+                            controller: searchController,
                             keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.search,
                             textCapitalization: TextCapitalization.sentences,
                             cursorColor: Theme.of(context).primaryColor,
+                            onSubmitted: (value) {
+                              try {
+                                //TODO section id here
+                                final category = state.categoriesBySection
+                                    .firstWhere((element) =>
+                                        element.id ==
+                                        '64ba9f74a8bccd0239a4b4e6')
+                                    .categories
+                                    ?.first;
+                                context
+                                    .read<ChatBloc>()
+                                    .scaffoldKey
+                                    .currentState
+                                    ?.closeDrawer();
+                                unfocusKeyboard();
+                                if (category != null) {
+                                  context.read<ChatBloc>().add(
+                                        ChatConversationChanged(
+                                          category: category,
+                                          firstMessage: searchController.text,
+                                        ),
+                                      );
+                                }
+                                print(searchController.text);
+                              } catch (_) {
+                                print(_);
+                              }
+                            },
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.tertiary),
                             decoration: InputDecoration(
@@ -82,12 +114,43 @@ class CategoriesWidget extends StatelessWidget {
                                   Theme.of(context).colorScheme.onPrimary,
                               contentPadding:
                                   const EdgeInsets.symmetric(horizontal: 20),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: hintColor,
+                              prefixIcon: IconButton(
+                                onPressed: () {
+                                  try {
+                                    //TODO section id here
+                                    final category = state.categoriesBySection
+                                        .firstWhere((element) =>
+                                            element.id ==
+                                            '64ba9f74a8bccd0239a4b4e6')
+                                        .categories
+                                        ?.first;
+                                    context
+                                        .read<ChatBloc>()
+                                        .scaffoldKey
+                                        .currentState
+                                        ?.closeDrawer();
+                                    unfocusKeyboard();
+                                    if (category != null) {
+                                      context.read<ChatBloc>().add(
+                                            ChatConversationChanged(
+                                              category: category,
+                                              firstMessage:
+                                                  searchController.text,
+                                            ),
+                                          );
+                                    }
+                                    print(searchController.text);
+                                  } catch (_) {
+                                    print(_);
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.search,
+                                  color: hintColor,
+                                ),
                               ),
-                              hintText:
-                                  AppLocalizations.of(context)!.searchInBible,
+                              hintText: 'Chercher dans la Bible',
+                              // AppLocalizations.of(context)!.searchInBible,
                               hintStyle: TextStyle(
                                 fontSize: 14.sp,
                                 // fontSize: 14,

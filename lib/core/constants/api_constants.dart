@@ -14,6 +14,8 @@ class ApiConstants {
     return '$route/conversations';
   }
 
+  static String stop(String id) => '$route/conversations/stop/$id';
+
   static String checkEmail(String email) => '$route/user_email?email=$email';
 
   static String messages(String conversationId) =>

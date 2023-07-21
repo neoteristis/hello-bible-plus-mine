@@ -10,12 +10,12 @@ abstract class ChatEvent extends Equatable {
 class ChatMessageSent extends ChatEvent {
   // final types.PartialText? message;
   final String textMessage;
-  final BuildContext context;
-  const ChatMessageSent(this.textMessage, this.context);
+  const ChatMessageSent(
+    this.textMessage,
+  );
   @override
   List<Object> get props => [
         textMessage,
-        context,
       ];
 }
 
@@ -31,16 +31,16 @@ class ChatCategoriesBySectionFetched extends ChatEvent {}
 
 class ChatConversationChanged extends ChatEvent {
   final Category category;
-  final BuildContext context;
-  const ChatConversationChanged(
-    this.category,
-    this.context,
-  );
+  final String? firstMessage;
+  const ChatConversationChanged({
+    required this.category,
+    this.firstMessage,
+  });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         category,
-        context,
+        firstMessage,
       ];
 }
 
@@ -88,16 +88,13 @@ class ChatMessageJoined extends ChatEvent {
 
 class ChatMessageAnswerGot extends ChatEvent {
   final String conversationId;
-  final BuildContext context;
   const ChatMessageAnswerGot({
     required this.conversationId,
-    required this.context,
   });
 
   @override
   List<Object> get props => [
         conversationId,
-        context,
       ];
 }
 
@@ -153,7 +150,7 @@ class ChatLoadingChanged extends ChatEvent {
   List<Object> get props => [status];
 }
 
-class ChatStramCanceled extends ChatEvent {}
+class ChatStreamCanceled extends ChatEvent {}
 
 class ChatFirstLaunchStateChanged extends ChatEvent {
   final bool isFirstLaunch;
@@ -164,6 +161,8 @@ class ChatFirstLaunchStateChanged extends ChatEvent {
   @override
   List<Object> get props => [isFirstLaunch];
 }
+
+class ChatVibrated extends ChatEvent {}
 
 // class ChatScrollPhysicsSwitched extends ChatEvent {
 //   final ScrollPhysics physics;
@@ -188,3 +187,5 @@ class ChatUserTapChanged extends ChatEvent {
         isUserTap,
       ];
 }
+
+class ChatAnswerRegenerated extends ChatEvent {}

@@ -259,6 +259,8 @@ void usecase() {
 
   getIt.registerLazySingleton(() => GetSuggestionsMessageUsecase(getIt()));
   getIt.registerLazySingleton(() => ChangeNotifTimeUsecase(getIt()));
+  // getIt.registerLazySingleton(() => ChangeNotifTimeUsecase(getIt()));
+  getIt.registerLazySingleton(() => CancelMessageComingUsecase(getIt()));
 }
 
 void bloc() {
@@ -271,6 +273,7 @@ void bloc() {
       fetchCategoriesBySection: getIt(),
       getConversationById: getIt(),
       getSuggestionMessages: getIt(),
+      cancelMessageComing: getIt(),
       // tts: getIt(),
     ),
   );

@@ -21,6 +21,9 @@ class CategoriesBySectionWidget extends StatelessWidget {
     final categories = data?.categories;
     final sectionName = data?.sectionName;
     final sectionId = data?.id;
+    if (sectionId == '64ba9f74a8bccd0239a4b4e6') {
+      return const SizedBox.shrink();
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,

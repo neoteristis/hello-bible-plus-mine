@@ -25,8 +25,7 @@ class CategoryItem2 extends StatelessWidget {
         unfocusKeyboard();
         context.read<ChatBloc>().add(
               ChatConversationChanged(
-                category,
-                context,
+                category: category,
               ),
             );
       },

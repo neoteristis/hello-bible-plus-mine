@@ -23,6 +23,7 @@ abstract class ChatRemoteDatasources {
       PHistorical param);
   Future<Conversation> getConversationById(String conversationId);
   Future<List<String>> getSuggestions(MessageParam param);
+  Future cancelMessage(Conversation param);
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -166,6 +167,20 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
       }
       return data.map((m) => m.toString()).toList();
       // return [];
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future cancelMessage(Conversation param) async {
+    try {
+      if (param.id != null) {
+        final res = await baseRepo.post(
+          ApiConstants.stop(param.id!),
+        );
+        return res.data;
+      }
     } catch (e) {
       throw ServerException(message: e.toString());
     }

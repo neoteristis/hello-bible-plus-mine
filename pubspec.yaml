@@ -69,6 +69,10 @@ dependencies:
   animate_do: ^3.0.2
   bloc_concurrency: ^0.2.2
   shimmer: ^3.0.0
+  vibration: ^1.8.1
+  focused_menu: ^1.0.5
+  share_plus: ^7.0.2
+  # focused_menu_custom: ^1.2.0
   # scrollview_observer: ^1.14.2
 
 dev_dependencies:

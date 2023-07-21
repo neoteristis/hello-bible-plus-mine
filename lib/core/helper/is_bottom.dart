@@ -9,5 +9,5 @@ bool isBottom({required ScrollController scrollController, double? offset}) {
   if (offset != null) {
     return currentScroll >= (maxScroll * offset);
   }
-  return currentScroll >= (maxScroll * .9) - 30;
+  return currentScroll >= (maxScroll * .9);
 }

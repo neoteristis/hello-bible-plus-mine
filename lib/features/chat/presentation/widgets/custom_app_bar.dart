@@ -48,7 +48,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       context
                           .read<HistoricalBloc>()
                           .add(const HistoricalFetched(isRefresh: true));
-                      context.read<ChatBloc>().add(ChatStramCanceled());
+                      context.read<ChatBloc>().add(ChatStreamCanceled());
                     }
                     context.read<ChatBloc>().add(ChatConversationCleared());
                   },
@@ -112,41 +112,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   )
                 ],
-                // leading: const Logo(
-                //   size: Size(22, 22),
-                // ),
-                // title: Text(
-                //   state.conversation!.category?.name ?? 'chargement ...',
-                //   style: TextStyle(
-                //     fontWeight: FontWeight.w500,
-                //     fontSize: 14.sp,
-                //     color: Theme.of(context).colorScheme.tertiary,
-                //   ),
-                // ),
-                // subtitle: Text(
-                //   state.conversation!.category?.welcomePhrase ?? '',
-                //   softWrap: false,
-                //   maxLines: 1,
-                //   overflow: TextOverflow.ellipsis,
-                //   style: TextStyle(
-                //     fontWeight: FontWeight.w400,
-                //     fontSize: 10.sp,
-                //     color: Theme.of(context).colorScheme.tertiary,
-                //   ),
-                // ),
               );
             },
           ),
           actions: [
             IconButton(
               onPressed: () {
-                // context.read<ChatBloc>().scaffoldKey.currentState.openEndDrawer();
                 if (context
                     .read<ChatBloc>()
                     .scaffoldKey
                     .currentState!
                     .isEndDrawerOpen) {
-                  // Scaffold.of(context).closeEndDrawer();
                   context
                       .read<ChatBloc>()
                       .scaffoldKey
@@ -155,13 +131,59 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 } else {
                   Scaffold.of(context).openEndDrawer();
                 }
-                // getIt<DbService>().deleteToken();
-                // getIt<DbService>().deleteUser();
               },
               icon: Visibility(
                 visible: state.conversation == null,
-                replacement: IconButton(
-                    icon: const Icon(Icons.more_vert), onPressed: () {}),
+                replacement: PopupMenuButton<int>(
+                    position: PopupMenuPosition.under,
+                    surfaceTintColor:
+                        Theme.of(context).colorScheme.onBackground,
+                    color: Colors.white,
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    ),
+                    // Callback that sets the selected popup menu item.
+                    onSelected: (int item) {
+                      switch (item) {
+                        case 0:
+                          final category = state.conversation?.category;
+                          if (category != null) {
+                            context.read<ChatBloc>().add(
+                                  ChatConversationChanged(category: category),
+                                );
+                          }
+                          break;
+                        case 1:
+                          context.go(RouteName.historical);
+                          break;
+                        default:
+                      }
+                    },
+                    itemBuilder: (BuildContext context) {
+                      final list = <PopupMenuEntry<int>>[];
+                      list.add(const PopupMenuItem<int>(
+                        value: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Nouvelle conversation'),
+                            Icon(Icons.add),
+                          ],
+                        ),
+                      ));
+                      list.add(const PopupMenuItem<int>(
+                        value: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Historique'),
+                            Icon(Icons.history_rounded),
+                          ],
+                        ),
+                      ));
+                      return list;
+                    }),
                 child: SvgPicture.asset(
                   'assets/icons/more_vert.svg',
                   width: 20,
@@ -179,21 +201,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
-            // Builder(
-            //   builder: (BuildContext context) {
-            //     return IconButton(
-            //       icon: Transform.scale(
-            //         scaleX: -1,
-            //         child: ,
-            //       ),
-            //       onPressed: () {
-            //         // Scaffold.of(context).openDrawer();
-            //         context.read<AuthBloc>().add(AuthLogoutSubmitted());
-            //       },
-            //       tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            //     );
-            //   },
-            // )
           ],
         );
       },
