@@ -33,10 +33,10 @@ class CategoriesBySectionWidget extends StatelessWidget {
             const SizedBox(
               width: 20,
             ),
-            iconLeadings(context)[index < 3 ? index : index % 3],
-            const SizedBox(
-              width: 5,
-            ),
+            // iconLeadings(context)[index < 3 ? index : index % 3],
+            // const SizedBox(
+            //   width: 5,
+            // ),
             Text(
               sectionName!,
               style: TextStyle(
@@ -66,7 +66,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                childAspectRatio: 6 / 8,
+                childAspectRatio: 6 / 6,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),

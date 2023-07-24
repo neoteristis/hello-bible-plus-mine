@@ -8,6 +8,7 @@ import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
 
@@ -26,7 +27,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
       buildWhen: (previous, current) =>
-          previous.conversation != current.conversation,
+          previous.conversation != current.conversation ||
+          previous.chatToShare != current.chatToShare,
       builder: (context, state) {
         return AppBar(
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -135,34 +137,39 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: Visibility(
                 visible: state.conversation == null,
                 replacement: PopupMenuButton<int>(
-                    position: PopupMenuPosition.under,
-                    surfaceTintColor:
-                        Theme.of(context).colorScheme.onBackground,
-                    color: Colors.white,
-                    icon: const Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
-                    ),
-                    // Callback that sets the selected popup menu item.
-                    onSelected: (int item) {
-                      switch (item) {
-                        case 0:
-                          final category = state.conversation?.category;
-                          if (category != null) {
-                            context.read<ChatBloc>().add(
-                                  ChatConversationChanged(category: category),
-                                );
-                          }
-                          break;
-                        case 1:
-                          context.go(RouteName.historical);
-                          break;
-                        default:
-                      }
-                    },
-                    itemBuilder: (BuildContext context) {
-                      final list = <PopupMenuEntry<int>>[];
-                      list.add(const PopupMenuItem<int>(
+                  position: PopupMenuPosition.under,
+                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  // Callback that sets the selected popup menu item.
+                  onSelected: (int item) async {
+                    switch (item) {
+                      case 0:
+                        final category = state.conversation?.category;
+                        if (category != null) {
+                          context.read<ChatBloc>().add(
+                                ChatConversationChanged(category: category),
+                              );
+                        }
+                        break;
+                      case 1:
+                        context.go(RouteName.historical);
+                        break;
+                      case 2:
+                        await Share.share(
+                          state.chatToShare ?? '',
+                        );
+                        break;
+                      default:
+                    }
+                  },
+                  itemBuilder: (BuildContext context) {
+                    final list = <PopupMenuEntry<int>>[];
+                    list.add(
+                      const PopupMenuItem<int>(
                         value: 0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,8 +178,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             Icon(Icons.add),
                           ],
                         ),
-                      ));
-                      list.add(const PopupMenuItem<int>(
+                      ),
+                    );
+                    list.add(
+                      const PopupMenuItem<int>(
                         value: 1,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,9 +190,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             Icon(Icons.history_rounded),
                           ],
                         ),
-                      ));
-                      return list;
-                    }),
+                      ),
+                    );
+                    list.add(
+                      const PopupMenuItem<int>(
+                        value: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Partager'),
+                            Icon(Icons.share),
+                          ],
+                        ),
+                      ),
+                    );
+                    return list;
+                  },
+                ),
                 child: SvgPicture.asset(
                   'assets/icons/more_vert.svg',
                   width: 20,

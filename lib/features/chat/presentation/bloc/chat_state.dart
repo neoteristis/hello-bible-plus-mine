@@ -42,6 +42,7 @@ class ChatState extends Equatable {
     this.listKey,
     this.chatKey,
     this.firstLaunch = false,
+    this.chatToShare,
     // this.chatObserver,
   });
 
@@ -75,12 +76,14 @@ class ChatState extends Equatable {
   final GlobalKey? chatKey;
   final bool? isUserTap;
   final bool? firstLaunch;
+  final String? chatToShare;
   // final List<String>
   // final ChatScrollObserver? chatObserver;
 
   @override
   List<Object?> get props => [
         // chatObserver,
+        chatToShare,
         suggestionLoaded,
         categoriesBySection,
         newMessage,
@@ -147,6 +150,7 @@ class ChatState extends Equatable {
     GlobalKey? chatKey,
     bool? isUserTap,
     bool? firstLaunch,
+    String? chatToShare,
     // ChatScrollObserver? chatObserver,
   }) {
     return ChatState(
@@ -183,6 +187,7 @@ class ChatState extends Equatable {
       listKey: listKey ?? this.listKey,
       chatKey: chatKey ?? this.chatKey,
       firstLaunch: firstLaunch ?? this.firstLaunch,
+      chatToShare: chatToShare ?? this.chatToShare,
       // chatObserver: chatObserver ?? this.chatObserver,
     );
   }

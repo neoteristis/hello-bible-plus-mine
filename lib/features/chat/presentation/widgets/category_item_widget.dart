@@ -69,7 +69,7 @@ class CategoryItemWidget extends StatelessWidget {
               ),
             if (logo == null)
               const SizedBox(
-                height: 10,
+                height: 8,
               ),
             if (logo != null)
               const SizedBox(

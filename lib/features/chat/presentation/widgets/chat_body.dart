@@ -277,7 +277,8 @@ class EmptyChatWidget extends StatelessWidget {
                   buildWhen: (previous, current) =>
                       previous.suggestions != current.suggestions ||
                       previous.isLoading != current.isLoading ||
-                      previous.maintainScroll != current.maintainScroll,
+                      previous.maintainScroll != current.maintainScroll ||
+                      previous.textFieldKey != current.textFieldKey,
                   builder: (context, state) {
                     final suggestions = state.suggestions;
                     if (suggestions == null ||
@@ -286,12 +287,18 @@ class EmptyChatWidget extends StatelessWidget {
                         state.maintainScroll!) {
                       return const SizedBox.shrink();
                     }
+                    final boxField = state.textFieldKey?.currentContext
+                        ?.findRenderObject() as RenderBox?;
+                    double? fieldHeight = 150.0;
+                    if (boxField != null && boxField.hasSize) {
+                      fieldHeight = boxField.size.height;
+                    }
                     return Container(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                         left: 15,
                         right: 15,
                         top: 20,
-                        bottom: 15,
+                        bottom: fieldHeight,
                       ),
                       margin: const EdgeInsets.only(top: 15.0),
                       // width: double.infinity,
@@ -496,14 +503,26 @@ class BottomChatLoading extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 150),
-            child: CustomBubble(
-              color: Theme.of(context).colorScheme.onPrimary,
-              padding: EdgeInsets.zero,
-              nip: BubbleNip.leftBottom,
-              message: const TypingIndicatorWidget(),
-            ),
+          child: BlocBuilder<ChatBloc, ChatState>(
+            buildWhen: (previous, current) =>
+                previous.textFieldKey != current.textFieldKey,
+            builder: (context, state) {
+              final boxField = state.textFieldKey?.currentContext
+                  ?.findRenderObject() as RenderBox?;
+              double? fieldHeight = 0.0;
+              if (boxField != null && boxField.hasSize) {
+                fieldHeight = boxField.size.height;
+              }
+              return Padding(
+                padding: EdgeInsets.only(bottom: fieldHeight),
+                child: CustomBubble(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  padding: EdgeInsets.zero,
+                  nip: BubbleNip.leftBottom,
+                  message: const TypingIndicatorWidget(),
+                ),
+              );
+            },
           ),
         ),
       ],

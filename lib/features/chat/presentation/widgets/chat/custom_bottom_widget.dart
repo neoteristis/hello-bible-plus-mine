@@ -51,17 +51,18 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (state.isLoading!)
-              ChatActionButton(
-                icon: const Icon(Icons.stop),
-                label: 'Arrêter',
-                onPressed: () {
-                  context.read<ChatBloc>().add(ChatStreamCanceled());
-                },
-              ),
-            if (!state.isLoading! &&
-                state.messages!.isNotEmpty &&
-                state.messageStatus != Status.loading)
+            // if (state.isLoading!)
+            //   ChatActionButton(
+            //     icon: const Icon(Icons.stop),
+            //     label: 'Arrêter',
+            //     onPressed: () {
+            //       context.read<ChatBloc>().add(ChatStreamCanceled());
+            //     },
+            //   ),
+            if (
+                // !state.isLoading! &&
+                //   state.messages!.isNotEmpty &&
+                state.messageStatus == Status.failed)
               ChatActionButton(
                 onPressed: () {
                   context.read<ChatBloc>().add(ChatAnswerRegenerated());
@@ -126,6 +127,9 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                               // fontSize: 14,
                               color: hintColor,
                             ),
+                            suffixIcon: state.isLoading!
+                                ? const TypingIndicatorWidget()
+                                : null,
                             border: OutlineInputBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(24)),
@@ -188,7 +192,18 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                           ),
                         ),
                       if (state.isLoading ?? false)
-                        const TypingIndicatorWidget()
+                        CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: IconButton(
+                            onPressed: () {
+                              context
+                                  .read<ChatBloc>()
+                                  .add(ChatStreamCanceled());
+                            },
+                            icon: const Icon(Icons.stop_rounded),
+                          ),
+                        ),
+                      // const TypingIndicatorWidget()
                     ],
                   ),
                 ],

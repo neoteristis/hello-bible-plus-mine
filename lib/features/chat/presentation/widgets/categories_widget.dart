@@ -189,51 +189,15 @@ class CategoriesWidget extends StatelessWidget {
                         ),
                       ],
                     );
-                  } else if (index == state.categoriesBySection.length - 1) {
-                    return Column(
-                      children: [
-                        CategoriesBySectionWidget(
-                          data: state.categoriesBySection[index],
-                          index: index,
-                        ),
-                        const CustomDivider(),
-                        SizedBox(
-                          height: 90,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: const [
-                              SizedBox(
-                                width: 20,
-                              ),
-                              BottomContainer(
-                                title: 'Comment utiliser cet outil ?',
-                                subtitle: 'HelloBible+ se base sur la nouve...',
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              BottomContainer(
-                                title: ' ⚡ Payez selon votre usage',
-                                subtitle: 'Aucune obligation de montant,...',
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                      ],
-                    );
                   }
                   return CategoriesBySectionWidget(
                     data: state.categoriesBySection[index],
                     index: index,
                   );
                 },
-                separatorBuilder: (context, index) => const CustomDivider(),
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 10,
+                ),
               ),
             );
           default:

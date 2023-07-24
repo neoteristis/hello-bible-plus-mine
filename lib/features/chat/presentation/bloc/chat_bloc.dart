@@ -21,7 +21,6 @@ import '../../../../core/constants/status.dart';
 import '../../../../core/constants/string_constants.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/helper/custom_scroll_physics.dart';
-import '../../../../core/helper/is_bottom.dart';
 import '../../../../core/helper/log.dart';
 import '../../../../core/sse/sse.dart';
 import '../../../../core/usecase/usecase.dart';
@@ -88,9 +87,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatStreamCanceled>(_onChatStreamCanceled);
     on<ChatVibrated>(_onChatVibrated);
     on<ChatAnswerRegenerated>(_onChatAnswerRegenerated);
+    on<ChatSharingTextGenerated>(_onChatSharingTextGenerated);
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatSharingTextGenerated(
+    ChatSharingTextGenerated event,
+    Emitter<ChatState> emit,
+  ) {
+    final List<String> sharingChat = [];
+    List<TextMessage>? messages = List.of(state.messages ?? []);
+    if (event.lastMessage != null) {
+      messages.add(TextMessage(content: event.lastMessage, role: Role.system));
+    }
+    if (messages.isNotEmpty) {
+      for (final chat in messages) {
+        if (chat.role == Role.user) {
+          sharingChat.add('Moi : ${chat.content}');
+        } else {
+          sharingChat.add('Bot : ${chat.content}');
+        }
+      }
+      emit(
+        state.copyWith(
+          chatToShare: 'HelloBible+ \n\n${sharingChat.join('\n\n')}',
+        ),
+      );
+    }
+  }
 
   void _onChatAnswerRegenerated(
     ChatAnswerRegenerated event,
@@ -155,7 +180,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         newMessage: state.incoming ?? '',
       ),
     );
-    if (state.conversation != null) {
+    if (state.conversation != null && state.isLoading!) {
       cancelMessageComing(state.conversation!);
     }
   }
@@ -406,6 +431,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                     newMessage: messageJoined,
                   ),
                 );
+                add(ChatSharingTextGenerated(lastMessage: messageJoined));
               }
               if (trunck != endMessageMarker) {
                 add(

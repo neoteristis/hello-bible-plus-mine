@@ -120,8 +120,9 @@ class CustomBubble extends StatelessWidget {
                 // ),
                 if (textMessage?.content != null)
                   FocusedMenuItem(
-                    title: const Text('Share'),
+                    title: const Text('Partager'),
                     trailingIcon: const Icon(Icons.share),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     onPressed: () async {
                       await Share.share(
                         textMessage?.content ?? '',

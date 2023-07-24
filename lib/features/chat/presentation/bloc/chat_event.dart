@@ -189,3 +189,14 @@ class ChatUserTapChanged extends ChatEvent {
 }
 
 class ChatAnswerRegenerated extends ChatEvent {}
+
+class ChatSharingTextGenerated extends ChatEvent {
+  final String? lastMessage;
+  const ChatSharingTextGenerated({
+    this.lastMessage,
+  });
+  @override
+  List<Object?> get props => [
+        lastMessage,
+      ];
+}
