@@ -1,91 +1,109 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
-import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../features/chat/domain/entities/entities.dart';
 import '../../features/chat/presentation/bloc/chat_bloc.dart';
+import '../helper/log.dart';
 
-class CustomBubble extends StatelessWidget {
+class CustomBubble extends StatefulWidget {
   const CustomBubble({
     super.key,
-    required this.message,
+    this.message,
     this.nip = BubbleNip.no,
     // this.textColor = Colors.black,
     this.color = Colors.white,
     this.radius = 20.0,
     this.padding,
     this.textMessage,
+    this.messageContent,
   });
 
-  final Widget message;
+  final Widget? message;
   final BubbleNip? nip;
   final Color? color;
   final TextMessage? textMessage;
   // final Color? textColor;
   final double? radius;
   final EdgeInsetsGeometry? padding;
+  final String? messageContent;
+
+  @override
+  State<CustomBubble> createState() => _CustomBubbleState();
+}
+
+class _CustomBubbleState extends State<CustomBubble> {
+  late final FocusNode focusNode;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    focusNode = FocusNode(
+      skipTraversal: true,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final BorderRadiusGeometry? borderRadius;
 
-    switch (nip) {
+    switch (widget.nip) {
       case BubbleNip.leftBottom:
         borderRadius = BorderRadius.only(
           topLeft: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
           topRight: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
           bottomRight: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
         );
         break;
       case BubbleNip.rightBottom:
         borderRadius = BorderRadius.only(
           topLeft: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
           topRight: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
           bottomLeft: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
         );
         break;
       default:
         borderRadius = BorderRadius.only(
           topLeft: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
           topRight: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
           bottomLeft: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
           bottomRight: Radius.circular(
-            radius!,
+            widget.radius!,
           ),
         );
     }
     final isLight =
         Theme.of(context).colorScheme.brightness == Brightness.light;
+    final receiverContent = Theme.of(context).colorScheme.secondary;
+    final senderContent = Theme.of(context).colorScheme.onPrimary;
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 15,
         vertical: 3,
       ),
-      child: nip == BubbleNip.leftBottom
+      child: widget.nip == BubbleNip.leftBottom
           ? FocusedMenuHolder(
               onPressed: () {},
               menuWidth: MediaQuery.of(context).size.width * 0.50,
@@ -93,13 +111,13 @@ class CustomBubble extends StatelessWidget {
               menuOffset: 10,
               menuItemExtent: 45,
               menuBoxDecoration: const BoxDecoration(
-                // color: Colors.grey,
                 borderRadius: BorderRadius.all(
                   Radius.circular(20.0),
                 ),
               ),
               duration: const Duration(milliseconds: 100),
               animateMenuItems: true,
+              openWithTap: true,
               blurBackgroundColor: Colors.black54,
               // bottomOffsetHeight: 100,
               // openWithTap: true,
@@ -113,19 +131,23 @@ class CustomBubble extends StatelessWidget {
                 //           ClipboardData(text: textMessage?.content ?? ''));
                 //     },
                 //   ),
-                // FocusedMenuItem(
-                //   title: const Text('Regénérer'),
-                //   trailingIcon: const Icon(Icons.refresh_rounded),
-                //   onPressed: () {},
-                // ),
-                if (textMessage?.content != null)
+                FocusedMenuItem(
+                  title: const Text('Sélectionner le texte'),
+                  trailingIcon: const Icon(Icons.crop_rounded),
+                  onPressed: () {
+                    // selectionControls
+                    Log.info('focuuuuus');
+                    focusNode.requestFocus();
+                  },
+                ),
+                if (widget.textMessage?.content != null)
                   FocusedMenuItem(
                     title: const Text('Partager'),
                     trailingIcon: const Icon(Icons.share),
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     onPressed: () async {
                       await Share.share(
-                        textMessage?.content ?? '',
+                        widget.textMessage?.content ?? '',
                       );
                     },
                   ),
@@ -144,12 +166,26 @@ class CustomBubble extends StatelessWidget {
                   border: !isLight
                       ? Border.all(color: const Color(0xFF232628), width: 1)
                       : Border.all(color: const Color(0xFFF5F5F5), width: 1),
-                  color: color,
+                  color: widget.color,
                   borderRadius: borderRadius,
                 ),
                 child: Padding(
-                  padding: padding ?? const EdgeInsets.all(10.0),
-                  child: message,
+                  padding: widget.padding ?? const EdgeInsets.all(10.0),
+                  child: widget.message ??
+                      SelectableText(
+                        widget.textMessage?.content ?? '',
+                        focusNode: focusNode,
+                        // selectionControls: selectionControls,
+                        style: TextStyle(
+                          color: widget.textMessage?.role == Role.user
+                              ? senderContent
+                              : receiverContent,
+                          fontSize: 17.sp,
+                          // fontSize: 17,
+                          height: 1.4,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                 ),
               ),
             )
@@ -167,12 +203,25 @@ class CustomBubble extends StatelessWidget {
                 border: !isLight
                     ? Border.all(color: const Color(0xFF232628), width: 1)
                     : Border.all(color: const Color(0xFFF5F5F5), width: 1),
-                color: color,
+                color: widget.color,
                 borderRadius: borderRadius,
               ),
               child: Padding(
-                padding: padding ?? const EdgeInsets.all(10.0),
-                child: message,
+                padding: widget.padding ?? const EdgeInsets.all(10.0),
+                child: widget.message ??
+                    SelectableText(
+                      widget.textMessage?.content ?? '',
+                      focusNode: focusNode,
+                      style: TextStyle(
+                        color: widget.textMessage?.role == Role.user
+                            ? senderContent
+                            : receiverContent,
+                        fontSize: 17.sp,
+                        // fontSize: 17,
+                        height: 1.4,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
               ),
             ),
     );
@@ -200,19 +249,6 @@ Widget customBubbleBuilder({
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          // if (message.createdAt != null)
-          //   Align(
-          //     alignment: message.role == Role.user
-          //         ? Alignment.centerRight
-          //         : Alignment.centerLeft,
-          //     child: Row(
-          //       children: [
-          //         Text(
-          //           DateFormat.jm().format(message.createdAt!),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
             child: CustomBubble(
@@ -223,19 +259,19 @@ Widget customBubbleBuilder({
               color: message.role == Role.user
                   ? senderContainer
                   : receiverContainer,
-              message: Text(
-                message.content ?? '',
-                // textScaleFactor: 1.2,
-                style: TextStyle(
-                  color: message.role == Role.user
-                      ? senderContent
-                      : receiverContent,
-                  fontSize: 17.sp,
-                  // fontSize: 17,
-                  height: 1.4,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              messageContent: message.content,
+              // message: SelectableText(
+              //   message.content ?? '',
+              //   style: TextStyle(
+              //     color: message.role == Role.user
+              //         ? senderContent
+              //         : receiverContent,
+              //     fontSize: 17.sp,
+              //     // fontSize: 17,
+              //     height: 1.4,
+              //     fontWeight: FontWeight.w400,
+              //   ),
+              // ),
             ),
           ),
         ],

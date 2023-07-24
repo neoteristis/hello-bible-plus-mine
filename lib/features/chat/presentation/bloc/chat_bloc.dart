@@ -97,16 +97,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) {
     final List<String> sharingChat = [];
-    List<TextMessage>? messages = List.of(state.messages ?? []);
+    final List<TextMessage> messages = List.of(state.messages ?? []);
     if (event.lastMessage != null) {
       messages.add(TextMessage(content: event.lastMessage, role: Role.system));
     }
     if (messages.isNotEmpty) {
       for (final chat in messages) {
         if (chat.role == Role.user) {
-          sharingChat.add('Moi : ${chat.content}');
+          sharingChat.add(
+            'Moi : ${chat.content}',
+          );
         } else {
-          sharingChat.add('Bot : ${chat.content}');
+          sharingChat.add(
+            'Bot : ${chat.content}',
+          );
         }
       }
       emit(
@@ -636,7 +640,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
     // if (state.scrollController!.hasClients) {
     await Future.delayed(const Duration(milliseconds: 200));
-    Log.info('has client');
     state.scrollController?.jumpTo(
       state.scrollController!.position.maxScrollExtent,
       // duration: const Duration(milliseconds: 500),
