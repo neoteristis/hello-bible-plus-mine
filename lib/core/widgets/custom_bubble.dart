@@ -154,12 +154,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                   title: const Text('Sélectionner le texte'),
                   trailingIcon: const Icon(Icons.crop_rounded),
                   onPressed: () {
-<<<<<<< HEAD
-                    // selectionControls
-                    focusNode.requestFocus();
-=======
                     _selectionController.selectAll();
->>>>>>> e5bdab8683511ef5ddc0ea7fb617dcec540a177c
                   },
                 ),
                 if (widget.textMessage?.content != null)
