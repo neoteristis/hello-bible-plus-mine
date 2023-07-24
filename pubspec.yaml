@@ -72,6 +72,7 @@ dependencies:
   vibration: ^1.8.1
   focused_menu: ^1.0.5
   share_plus: ^7.0.2
+  selectable: ^0.3.0
   # focused_menu_custom: ^1.2.0
   # scrollview_observer: ^1.14.2
 

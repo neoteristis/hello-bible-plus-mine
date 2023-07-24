@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
+import 'package:gpt/features/chat/presentation/widgets/custom_selectable_text.dart';
+import 'package:selectable/selectable.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../features/chat/domain/entities/entities.dart';
@@ -27,6 +30,7 @@ class CustomBubble extends StatefulWidget {
   final BubbleNip? nip;
   final Color? color;
   final TextMessage? textMessage;
+
   // final Color? textColor;
   final double? radius;
   final EdgeInsetsGeometry? padding;
@@ -38,13 +42,15 @@ class CustomBubble extends StatefulWidget {
 
 class _CustomBubbleState extends State<CustomBubble> {
   late final FocusNode focusNode;
+
+  final _selectionController = SelectableController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    focusNode = FocusNode(
-      skipTraversal: true,
-    );
+
+    focusNode = FocusNode(skipTraversal: true, canRequestFocus: true);
   }
 
   @override
@@ -135,9 +141,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                   title: const Text('Sélectionner le texte'),
                   trailingIcon: const Icon(Icons.crop_rounded),
                   onPressed: () {
-                    // selectionControls
-                    Log.info('focuuuuus');
-                    focusNode.requestFocus();
+                    _selectionController.selectAll();
                   },
                 ),
                 if (widget.textMessage?.content != null)
@@ -171,21 +175,10 @@ class _CustomBubbleState extends State<CustomBubble> {
                 ),
                 child: Padding(
                   padding: widget.padding ?? const EdgeInsets.all(10.0),
-                  child: widget.message ??
-                      SelectableText(
-                        widget.textMessage?.content ?? '',
-                        focusNode: focusNode,
-                        // selectionControls: selectionControls,
-                        style: TextStyle(
-                          color: widget.textMessage?.role == Role.user
-                              ? senderContent
-                              : receiverContent,
-                          fontSize: 17.sp,
-                          // fontSize: 17,
-                          height: 1.4,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                  child: Selectable(
+                    selectionController: _selectionController,
+                    child: widget.message ?? const Text('ggggggggggggggg'),
+                  ),
                 ),
               ),
             )
