@@ -17,7 +17,8 @@ abstract class ChatRemoteDatasources {
     String? conversationId,
   });
   Future<Message> sendMessage(MessageParam param);
-  Future getResponseMessages(String idConversation, Token token);
+  Future getResponseMessages(
+      String idConversation, Token token, int? idMessage);
   Future<List<CategoriesBySection>> fetchCategoriesBySection();
   Future<List<HistoricalConversation>> fetchHistoricalConversation(
       PHistorical param);
@@ -89,10 +90,16 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   }
 
   @override
-  Future getResponseMessages(String idConversation, Token token) async {
+  Future getResponseMessages(
+      String idConversation, Token token, int? idMessage) async {
     try {
       final res = await baseRepo.get(
         ApiConstants.answer(idConversation),
+        queryParameters: idMessage != null
+            ? {
+                'messageId': idMessage,
+              }
+            : null,
         options: Options(
           headers: {
             'Accept': 'text/event-stream',

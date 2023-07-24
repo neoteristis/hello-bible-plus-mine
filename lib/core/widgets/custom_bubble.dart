@@ -21,6 +21,7 @@ class CustomBubble extends StatefulWidget {
     this.padding,
     this.textMessage,
     this.messageContent,
+    this.indexMessage,
   });
 
   final Widget? message;
@@ -31,6 +32,7 @@ class CustomBubble extends StatefulWidget {
   final double? radius;
   final EdgeInsetsGeometry? padding;
   final String? messageContent;
+  final int? indexMessage;
 
   @override
   State<CustomBubble> createState() => _CustomBubbleState();
@@ -132,11 +134,21 @@ class _CustomBubbleState extends State<CustomBubble> {
                 //     },
                 //   ),
                 FocusedMenuItem(
+                  title: const Text('Regénérer'),
+                  trailingIcon: const Icon(Icons.refresh_rounded),
+                  onPressed: () {
+                    context.read<ChatBloc>().add(
+                          ChatAnswerRegenerated(
+                            messsageId: widget.indexMessage,
+                          ),
+                        );
+                  },
+                ),
+                FocusedMenuItem(
                   title: const Text('Sélectionner le texte'),
                   trailingIcon: const Icon(Icons.crop_rounded),
                   onPressed: () {
                     // selectionControls
-                    Log.info('focuuuuus');
                     focusNode.requestFocus();
                   },
                 ),
@@ -237,13 +249,14 @@ enum BubbleNip {
 Widget customBubbleBuilder({
   required TextMessage message,
   required BuildContext context,
+  int? index,
 }) {
   return BlocBuilder<ChatBloc, ChatState>(
     builder: (context, state) {
       final senderContainer = Theme.of(context).primaryColor;
       final receiverContainer = Theme.of(context).colorScheme.onPrimary;
-      final receiverContent = Theme.of(context).colorScheme.secondary;
-      final senderContent = Theme.of(context).colorScheme.onPrimary;
+      // final receiverContent = Theme.of(context).colorScheme.secondary;
+      // final senderContent = Theme.of(context).colorScheme.onPrimary;
       return Column(
         crossAxisAlignment: message.role == Role.user
             ? CrossAxisAlignment.end
@@ -252,6 +265,7 @@ Widget customBubbleBuilder({
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
             child: CustomBubble(
+              indexMessage: index,
               textMessage: message,
               nip: message.role == Role.user
                   ? BubbleNip.rightBottom

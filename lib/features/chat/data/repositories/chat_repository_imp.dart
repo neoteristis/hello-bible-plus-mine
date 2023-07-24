@@ -80,11 +80,12 @@ class ChatRepositoryImp implements ChatRepository {
 
   @override
   Future<Either<Failure, dynamic>> getResponseMessages(
-      String idConversation) async {
+      PGetResponseMessage param) async {
     if (await networkInfo.isConnected) {
       try {
         final token = await local.getToken();
-        final res = await remote.getResponseMessages(idConversation, token);
+        final res = await remote.getResponseMessages(
+            param.idConversation, token, param.messageId);
         return Right(res);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));

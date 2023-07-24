@@ -17,6 +17,7 @@ abstract class BaseRepository {
     Map<String, String>? headers,
     bool? addToken,
     Options? options,
+    Map<String, dynamic>? queryParameters,
     // ResponseType? responseType,
   });
 

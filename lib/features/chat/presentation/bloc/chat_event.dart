@@ -88,13 +88,16 @@ class ChatMessageJoined extends ChatEvent {
 
 class ChatMessageAnswerGot extends ChatEvent {
   final String conversationId;
+  final int? messageId;
   const ChatMessageAnswerGot({
     required this.conversationId,
+    this.messageId,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         conversationId,
+        messageId,
       ];
 }
 
@@ -188,7 +191,16 @@ class ChatUserTapChanged extends ChatEvent {
       ];
 }
 
-class ChatAnswerRegenerated extends ChatEvent {}
+class ChatAnswerRegenerated extends ChatEvent {
+  final int? messsageId;
+  const ChatAnswerRegenerated({
+    this.messsageId,
+  });
+  @override
+  List<Object?> get props => [
+        messsageId,
+      ];
+}
 
 class ChatSharingTextGenerated extends ChatEvent {
   final String? lastMessage;

@@ -154,7 +154,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
     final id = state.conversation?.id;
     if (id != null) {
-      add(ChatMessageAnswerGot(conversationId: id));
+      add(
+        ChatMessageAnswerGot(
+          conversationId: id,
+          messageId: event.messsageId != null ? event.messsageId! - 1 : null,
+        ),
+      );
+    }
+    if (event.messsageId != null) {
+      emit(
+        state.copyWith(
+          messages: List.of(state.messages ?? [])
+            ..removeRange(
+              event.messsageId!,
+              state.messages!.length - 1,
+            ),
+        ),
+      );
     }
   }
 
@@ -374,7 +390,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatMessageAnswerGot event,
     Emitter<ChatState> emit,
   ) async {
-    final res = await getResponseMessages(event.conversationId);
+    final res = await getResponseMessages(
+      PGetResponseMessage(
+        idConversation: event.conversationId,
+        messageId: event.messageId,
+      ),
+    );
     res.fold(
       (l) => emit(
         state.copyWith(

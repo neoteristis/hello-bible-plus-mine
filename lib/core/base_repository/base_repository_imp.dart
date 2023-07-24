@@ -42,10 +42,12 @@ class BaseRepositoryImp implements BaseRepository {
     Map<String, String>? headers,
     bool? addToken,
     Options? options,
+    Map<String, dynamic>? queryParameters,
     // ResponseType? responseType,
   }) async {
     return await dio.get(
       url!,
+      queryParameters: queryParameters,
       options: options ??
           Options(
             headers: headers ?? this.headers,
