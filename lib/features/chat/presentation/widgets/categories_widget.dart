@@ -9,7 +9,6 @@ import '../../../../core/theme/theme.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import 'categories_by_section_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({
@@ -187,6 +186,19 @@ class CategoriesWidget extends StatelessWidget {
                           data: state.categoriesBySection[0],
                           index: index,
                         ),
+                      ],
+                    );
+                  }
+                  if (index == state.categoriesBySection.length - 1) {
+                    return Column(
+                      children: [
+                        CategoriesBySectionWidget(
+                          data: state.categoriesBySection[index],
+                          index: index,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        )
                       ],
                     );
                   }

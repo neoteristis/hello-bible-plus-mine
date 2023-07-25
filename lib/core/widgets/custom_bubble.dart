@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -8,7 +9,10 @@ import 'package:selectable/selectable.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../features/chat/domain/entities/entities.dart';
+
 import 'custom_focused_menu.dart';
+
+import '../helper/show_text_selection.dart';
 
 class CustomBubble extends StatefulWidget {
   const CustomBubble({
@@ -40,12 +44,13 @@ class CustomBubble extends StatefulWidget {
 }
 
 class _CustomBubbleState extends State<CustomBubble> {
-  final _selectionController = SelectableController();
+  // final textController = TextEditingController();
+  final selectionController = SelectableController();
 
   @override
   void dispose() {
     super.dispose();
-    _selectionController.dispose();
+    // _selectionController.dispose();
   }
 
   @override
@@ -105,9 +110,9 @@ class _CustomBubbleState extends State<CustomBubble> {
         vertical: 3,
       ),
       child: widget.nip == BubbleNip.leftBottom
-          ? FocusedMenuHolder(
+          ? CustomFocusedMenuHolder(
               onPressed: () {},
-              menuWidth: MediaQuery.of(context).size.width * 0.50,
+              // menuWidth: MediaQuery.of(context).size.width * 0.50,
               blurSize: 5.0,
               menuOffset: 10,
               menuItemExtent: 45,
@@ -120,28 +125,57 @@ class _CustomBubbleState extends State<CustomBubble> {
                 milliseconds: 100,
               ),
               animateMenuItems: true,
-              openWithTap: true,
               blurBackgroundColor: Colors.black54,
               menuItems: <FocusedMenuItem>[
-                FocusedMenuItem(
-                  title: const Text('Regénérer'),
-                  trailingIcon: const Icon(Icons.refresh_rounded),
-                  onPressed: () {
-                    print('--------------${widget.indexMessage}');
-                    context.read<ChatBloc>().add(
-                          ChatAnswerRegenerated(
-                            messsageId: widget.indexMessage,
-                          ),
-                        );
-                  },
-                ),
+                if (widget.indexMessage != 0)
+                  FocusedMenuItem(
+                    title: const Text('Regénérer'),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    trailingIcon: const Icon(Icons.refresh_rounded),
+                    onPressed: () {
+                      context.read<ChatBloc>().add(
+                            ChatAnswerRegenerated(
+                              messsageId: widget.indexMessage,
+                            ),
+                          );
+                    },
+                  ),
+                if (widget.textMessage?.content != null)
+                  FocusedMenuItem(
+                    title: const Text('Copier'),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    trailingIcon: const Icon(Icons.copy),
+                    onPressed: () {
+                      Clipboard.setData(
+                        ClipboardData(
+                          text: widget.textMessage!.content!,
+                        ),
+                      );
+                    },
+                  ),
                 FocusedMenuItem(
                   title: const Text(
                     'Sélectionner le texte',
                   ),
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   trailingIcon: const Icon(Icons.crop_rounded),
-                  onPressed: () {
-                    _selectionController.selectAll();
+                  onPressed: () async {
+                    final text = widget.textMessage?.content;
+                    if (text != null) {
+                      showTextSelection(
+                        context: context,
+                        selectionController: selectionController,
+                        text: text,
+                      );
+                      await Future.delayed(
+                        const Duration(milliseconds: 500),
+                        () {
+                          // setState(() {
+                          selectionController.selectAll();
+                          // });
+                        },
+                      );
+                    }
                   },
                 ),
                 if (widget.textMessage?.content != null)
@@ -175,21 +209,18 @@ class _CustomBubbleState extends State<CustomBubble> {
                 ),
                 child: Padding(
                   padding: widget.padding ?? const EdgeInsets.all(10.0),
-                  child: Selectable(
-                    selectionController: _selectionController,
-                    child: widget.message ??
-                        Text(
-                          widget.textMessage?.content ?? '_',
-                          style: TextStyle(
-                            color: widget.textMessage?.role == Role.user
-                                ? senderContent
-                                : receiverContent,
-                            fontSize: 17.sp,
-                            height: 1.4,
-                            fontWeight: FontWeight.w400,
-                          ),
+                  child: widget.message ??
+                      Text(
+                        widget.textMessage?.content ?? '_',
+                        style: TextStyle(
+                          color: widget.textMessage?.role == Role.user
+                              ? senderContent
+                              : receiverContent,
+                          fontSize: 17.sp,
+                          height: 1.4,
+                          fontWeight: FontWeight.w400,
                         ),
-                  ),
+                      ),
                 ),
               ),
             )
@@ -215,6 +246,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                 child: widget.message ??
                     SelectableText(
                       widget.textMessage?.content ?? '_',
+                      cursorColor: Colors.grey,
                       style: TextStyle(
                         color: widget.textMessage?.role == Role.user
                             ? senderContent
@@ -252,7 +284,7 @@ class CustomBubbleBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
-        final senderContainer = Theme.of(context).primaryColor;
+        final senderContainer = Theme.of(context).primaryColor.withOpacity(0.8);
         final receiverContainer = Theme.of(context).colorScheme.onPrimary;
         // final receiverContent = Theme.of(context).colorScheme.secondary;
         // final senderContent = Theme.of(context).colorScheme.onPrimary;

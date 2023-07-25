@@ -23,13 +23,14 @@ class EmptyChatWidget extends StatelessWidget {
         ),
         BlocBuilder<ChatBloc, ChatState>(
           buildWhen: (previous, current) =>
-          previous.incoming != current.incoming,
+              previous.incoming != current.incoming,
           builder: (context, state) {
             return Align(
               alignment: Alignment.topLeft,
               child: Container(
                 constraints: const BoxConstraints(),
                 child: CustomBubble(
+                  indexMessage: 0,
                   textMessage: TextMessage(
                     content: state.incoming,
                     role: Role.system,
@@ -53,13 +54,13 @@ class EmptyChatWidget extends StatelessWidget {
         ),
         BlocBuilder<ChatBloc, ChatState>(
           buildWhen: (previous, current) =>
-          previous.messageStatus != current.messageStatus,
+              previous.messageStatus != current.messageStatus,
           builder: (context, state) {
             switch (state.messageStatus) {
               case Status.loaded:
                 return BlocBuilder<ChatBloc, ChatState>(
                   buildWhen: (previous, current) =>
-                  previous.suggestions != current.suggestions ||
+                      previous.suggestions != current.suggestions ||
                       previous.isLoading != current.isLoading ||
                       previous.maintainScroll != current.maintainScroll ||
                       previous.textFieldKey != current.textFieldKey,
@@ -97,7 +98,7 @@ class EmptyChatWidget extends StatelessWidget {
                       child: Column(
                         children: [
                           ...suggestions.map(
-                                (e) => SuggestionItem(e),
+                            (e) => SuggestionItem(e),
                           ),
                         ],
                       ),

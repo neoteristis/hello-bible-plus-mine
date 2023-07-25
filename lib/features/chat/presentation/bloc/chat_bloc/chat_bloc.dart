@@ -63,7 +63,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             chatKey: GlobalKey(),
           ),
         ) {
-    on<ChatMessageSent>(_onChatMessageSent);
+    on<ChatMessageSent>(
+      _onChatMessageSent,
+      transformer: restartable(),
+    );
     on<ChatCategoriesBySectionFetched>(_onChatCategoriesBySectionFetched);
     on<ChatConversationChanged>(_onChatConversationChanged);
     on<ChatConversationCleared>(_onChatConversationCleared);
