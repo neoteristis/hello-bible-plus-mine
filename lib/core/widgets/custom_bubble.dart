@@ -3,13 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:selectable/selectable.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../features/chat/domain/entities/entities.dart';
+import 'custom_focused_menu.dart';
 
 class CustomBubble extends StatefulWidget {
   const CustomBubble({
