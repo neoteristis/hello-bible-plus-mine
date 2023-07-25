@@ -20,8 +20,12 @@ class ApiConstants {
 
   static String messages(String conversationId) =>
       '$route/messages/$conversationId';
-  static String answer(String conversationId) =>
-      '$route/messages/$conversationId';
+  static String answer(String conversationId, int? idMessage) {
+    if (idMessage != null) {
+      return '$route/messages/$conversationId?messageId=$idMessage';
+    }
+    return '$route/messages/$conversationId';
+  }
 
   static String suggestions(String conversationId) =>
       '$route/conversations/generate_question/$conversationId';
@@ -35,7 +39,7 @@ class ApiConstants {
     return '$route/users/$uid';
   }
 
-  static String categoryNotif = '$route/category-notification';
+  static String categoryNotif = '$route/notification-time';
 
   static String me = '$route/me';
 

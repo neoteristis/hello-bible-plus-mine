@@ -187,9 +187,10 @@ class ChatList extends StatelessWidget {
                         ),
                         Align(
                           alignment: Alignment.topLeft,
-                          child: customBubbleBuilder(
+                          child: CustomBubbleBuilder(
                             message: state.messages![index],
                             context: context,
+                            index: index,
                           ),
                         ),
                       ],
@@ -202,14 +203,16 @@ class ChatList extends StatelessWidget {
                       // readOnly is check for the sake of the historic that doesnt contain the text field
                       return ListBottomChat(index);
                     }
-                    return customBubbleBuilder(
+                    return CustomBubbleBuilder(
                       message: state.messages![index],
                       context: context,
+                      index: index,
                     );
                   } else {
-                    return customBubbleBuilder(
+                    return CustomBubbleBuilder(
                       message: state.messages![index],
                       context: context,
+                      index: index,
                     );
                   }
                 },
@@ -383,7 +386,7 @@ class BottomChatLoaded extends StatelessWidget {
                 buildWhen: (previous, current) =>
                     previous.messages != current.messages,
                 builder: (context, state) {
-                  return customBubbleBuilder(
+                  return CustomBubbleBuilder(
                     message: state.messages![lastIndex],
                     context: context,
                   );
@@ -494,7 +497,7 @@ class BottomChatLoading extends StatelessWidget {
           builder: (context, state) {
             return Align(
               alignment: Alignment.topRight,
-              child: customBubbleBuilder(
+              child: CustomBubbleBuilder(
                 message: state.messages![lastIndex],
                 context: context,
               ),
