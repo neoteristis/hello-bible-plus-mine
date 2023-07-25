@@ -7,7 +7,6 @@ import 'package:gpt/features/chat/domain/entities/category_by_section.dart';
 import 'package:gpt/features/chat/domain/entities/conversation.dart';
 import 'package:gpt/features/chat/domain/entities/historical_conversation.dart';
 import 'package:gpt/features/chat/domain/entities/message.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../core/network/network_info.dart';
 import '../../domain/repositories/chat_repository.dart';
@@ -55,7 +54,7 @@ class ChatRepositoryImp implements ChatRepository {
               conversationId: param.conversationId);
           return Right(res);
         }
-        return const Left(ServerFailure(info: 'Utilisateur introuvalbe'));
+        return const Left(ServerFailure(info: 'Utilisateur introuvable'));
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }

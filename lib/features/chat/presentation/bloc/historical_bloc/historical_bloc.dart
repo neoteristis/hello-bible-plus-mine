@@ -11,10 +11,12 @@ import '../../../../../core/helper/throttle_droppable.dart';
 import '../../../domain/entities/entities.dart';
 
 part 'historical_event.dart';
+
 part 'historical_state.dart';
 
 class HistoricalBloc extends Bloc<HistoricalEvent, HistoricalState> {
   final FetchHistoricalUsecase fetchHistorical;
+
   HistoricalBloc({required this.fetchHistorical})
       : super(HistoricalState(scrollController: ScrollController())) {
     on<HistoricalFetched>(
@@ -132,7 +134,7 @@ class HistoricalBloc extends Bloc<HistoricalEvent, HistoricalState> {
 
   void _onScroll() {
     if (isBottom(scrollController: state.scrollController!)) {
-      add(HistoricalFetched());
+      add(const HistoricalFetched());
     }
   }
 

@@ -28,6 +28,7 @@ import '../../../domain/entities/entities.dart';
 import '../../../domain/usecases/usecases.dart';
 
 part 'chat_event.dart';
+
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -40,6 +41,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetSuggestionsMessageUsecase getSuggestionMessages;
   final CancelMessageComingUsecase cancelMessageComing;
   late StreamSubscription<SseMessage> streamSubscription;
+
   ChatBloc({
     required this.fetchCategoriesBySection,
     required this.fetchCategories,
@@ -318,8 +320,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         }
       }
     }
-    final conversation =
-        Conversation(id: historical.idString, category: categorySelected);
+    final conversation = Conversation(
+      id: historical.idString,
+      category: categorySelected,
+    );
     emit(
       state.copyWith(
         conversation: conversation,
