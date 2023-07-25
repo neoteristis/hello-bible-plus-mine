@@ -45,7 +45,6 @@ class _CustomBubbleState extends State<CustomBubble> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _selectionController.dispose();
   }

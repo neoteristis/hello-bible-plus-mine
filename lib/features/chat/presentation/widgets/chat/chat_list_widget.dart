@@ -40,8 +40,6 @@ class _ChatListWidgetState extends State<ChatListWidget> {
               }
               final chatViewArea = chatHeight - fieldHeight;
               if (!state.isUserTap!) {
-                // uncomment from here
-
                 if (containerHeight < chatViewArea) {
                   state.scrollController!
                       .jumpTo(state.scrollController!.position.maxScrollExtent);
@@ -54,6 +52,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
       builder: (context, state) {
         return BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
+            final messages = state.messages;
             return NotificationListener(
               onNotification: (ScrollNotification scrollNotif) {
                 if (scrollNotif is UserScrollNotification) {
@@ -64,15 +63,12 @@ class _ChatListWidgetState extends State<ChatListWidget> {
               child: ListView.builder(
                 key: state.listKey,
                 controller: state.scrollController,
-                itemCount: state.messages == null || state.messages!.isEmpty
-                    ? 1
-                    : state.messages?.length,
                 itemBuilder: (ctx, index) {
-                  if (state.messages == null || state.messages!.isEmpty) {
+                  if (messages == null || messages.isEmpty) {
                     return const EmptyChatWidget();
                   }
 
-                  if (index == 0 && state.messages!.length > 1) {
+                  if (index == 0 && messages.length > 1) {
                     // the first item on the list
                     return Column(
                       children: [
@@ -82,29 +78,30 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: CustomBubbleBuilder(
-                            message: state.messages![index],
+                            message: messages[index],
                             context: context,
                           ),
                         ),
                       ],
                     );
                   }
-                  if (index == state.messages!.length - 1 ||
-                      state.messages!.length == 1) {
+                  if (index == messages.length - 1 || messages.length == 1) {
                     if (!state.readOnly!) {
                       return ListBottomChatWidget(index);
                     }
                     return CustomBubbleBuilder(
-                      message: state.messages![index],
+                      message: messages[index],
                       context: context,
                     );
                   } else {
                     return CustomBubbleBuilder(
-                      message: state.messages![index],
+                      message: messages[index],
                       context: context,
                     );
                   }
                 },
+                itemCount:
+                    messages == null || messages.isEmpty ? 1 : messages.length,
               ),
             );
           },
