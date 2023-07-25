@@ -118,7 +118,9 @@ class _CustomBubbleState extends State<CustomBubble> {
                   Radius.circular(20.0),
                 ),
               ),
-              duration: const Duration(milliseconds: 100),
+              duration: const Duration(
+                milliseconds: 100,
+              ),
               animateMenuItems: true,
               openWithTap: true,
               blurBackgroundColor: Colors.black54,

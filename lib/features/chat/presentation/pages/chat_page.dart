@@ -108,7 +108,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           endDrawer: const CustomDrawer(),
           body: state.conversation == null
               ? const ContainerCategoriesWidget()
-              : const ChatBody(),
+              : const ChatBodyWidget(),
         );
       },
     );

@@ -54,31 +54,22 @@ class BottomChatLoadedWidget extends StatelessWidget {
                 final suggestions = state.suggestions;
                 return Align(
                   alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: suggestions == null ||
-                          suggestions.isEmpty ||
-                          state.isLoading!
-                          ? fieldHeight ?? 0
-                          : 0,
+                  child: CustomBubble(
+                    key: state.containerKey,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    nip: BubbleNip.leftBottom,
+                    textMessage: TextMessage(
+                      content: state.incoming,
+                      role: Role.system,
                     ),
-                    child: CustomBubble(
-                      key: state.containerKey,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      nip: BubbleNip.leftBottom,
-                      textMessage: TextMessage(
-                        content: state.incoming,
-                        role: Role.system,
-                      ),
-                      message: Text(
-                        state.incoming ?? '',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: 17.sp,
-                          // fontSize: 17,
-                          height: 1.4,
-                          fontWeight: FontWeight.w400,
-                        ),
+                    message: Text(
+                      state.incoming ?? '',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 17.sp,
+                        // fontSize: 17,
+                        height: 1.4,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
@@ -97,11 +88,10 @@ class BottomChatLoadedWidget extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                     return Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 15,
                         right: 15,
                         top: 20,
-                        bottom: fieldHeight ?? 0,
                       ),
                       margin: const EdgeInsets.only(top: 15.0),
                       decoration: BoxDecoration(

@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/widgets/typing_indicator.dart';
-// import 'package:gpt/features/flutter_chat_lib/src/models/bubble_rtl_alignment.dart';
-// import '../../../../../core/constants/status.dart';
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
-// import '../../../../flutter_chat_lib/src/widgets/typing_indicator.dart';
 import '../../bloc/chat_bloc/chat_bloc.dart';
-// import '../typing_indicator.dart';
-// import 'list_bottom_chat_widget.dart';
 
 class CustomBottomWidget extends StatefulWidget {
   const CustomBottomWidget({super.key});
@@ -51,31 +46,21 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // if (state.isLoading!)
-            //   ChatActionButton(
-            //     icon: const Icon(Icons.stop),
-            //     label: 'Arrêter',
-            //     onPressed: () {
-            //       context.read<ChatBloc>().add(ChatStreamCanceled());
-            //     },
-            //   ),
             if (
                 // !state.isLoading! &&
                 //   state.messages!.isNotEmpty &&
                 state.messageStatus == Status.failed)
               ChatActionButton(
                 onPressed: () {
-                  context.read<ChatBloc>().add(ChatAnswerRegenerated());
+                  context.read<ChatBloc>().add(const ChatAnswerRegenerated());
                 },
                 icon: const Icon(Icons.refresh_rounded),
                 label: 'Regénerer',
               ),
             Container(
-              padding: const EdgeInsets.only(
-                top: 25,
-                left: 15,
-                right: 15,
-                bottom: 25,
+              padding: const EdgeInsets.symmetric(
+                vertical: 25,
+                horizontal: 15,
               ),
               width: double.infinity,
               decoration: BoxDecoration(
@@ -176,8 +161,6 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                               builder: (context, state) {
                                 return Visibility(
                                   visible: true,
-                                  // visible: !state.isTyping!,
-                                  // add here the widget to show while typing
                                   replacement: const SizedBox.shrink(),
                                   child: Icon(
                                     Icons.send_rounded,

@@ -27,9 +27,9 @@ class _ChatListWidgetState extends State<ChatListWidget> {
             final boxChat =
                 state.chatKey?.currentContext?.findRenderObject() as RenderBox?;
 
-            double? containerHeight = 0.0;
-            double? fieldHeight = 0.0;
-            double? chatHeight = 0.0;
+            double containerHeight = 0.0;
+            double fieldHeight = 0.0;
+            double chatHeight = 0.0;
             if (box != null && box.hasSize) {
               containerHeight = box.size.height;
               if (boxField != null && boxField.hasSize) {
@@ -64,6 +64,9 @@ class _ChatListWidgetState extends State<ChatListWidget> {
               child: ListView.builder(
                 key: state.listKey,
                 controller: state.scrollController,
+                itemCount: state.messages == null || state.messages!.isEmpty
+                    ? 1
+                    : state.messages?.length,
                 itemBuilder: (ctx, index) {
                   if (state.messages == null || state.messages!.isEmpty) {
                     return const EmptyChatWidget();
@@ -102,9 +105,6 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                     );
                   }
                 },
-                itemCount: state.messages == null || state.messages!.isEmpty
-                    ? 1
-                    : state.messages?.length,
               ),
             );
           },
