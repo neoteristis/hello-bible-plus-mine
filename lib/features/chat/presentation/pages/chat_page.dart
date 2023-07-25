@@ -8,7 +8,7 @@ import 'package:gpt/core/constants/api_constants.dart';
 import 'package:logger/logger.dart';
 import '../../../../core/db_services/db_services.dart';
 import '../../../../injections.dart';
-import '../bloc/chat_bloc.dart';
+import '../bloc/chat_bloc/chat_bloc.dart';
 import '../widgets/chat_body.dart';
 import '../widgets/container_categories_widget.dart';
 import '../widgets/custom_app_bar.dart';

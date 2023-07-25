@@ -6,7 +6,7 @@ import '../../../../core/constants/pagination_const.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../core/widgets/shimmer_widget.dart';
-import '../bloc/chat_bloc.dart';
+import '../bloc/chat_bloc/chat_bloc.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
 import '../widgets/historical/historical_item_widget.dart';
 

@@ -16,7 +16,7 @@ import '../../../../core/routes/route_name.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/icon_text_row_recognizer.dart';
 import '../../../../l10n/function.dart';
-import '../../../chat/presentation/bloc/chat_bloc.dart';
+import '../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import '../bloc/registration_bloc/registration_bloc.dart';
 import 'base_page.dart';
 

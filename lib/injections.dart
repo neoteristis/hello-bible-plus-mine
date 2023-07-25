@@ -12,7 +12,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
-import 'package:gpt/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/introduction/presentation/bloc/introduction_bloc.dart';
 import 'package:gpt/features/notification/data/repositories/notification_repository_imp.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';

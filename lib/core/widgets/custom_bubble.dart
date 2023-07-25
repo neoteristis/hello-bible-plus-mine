@@ -10,7 +10,7 @@ import 'package:selectable/selectable.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../features/chat/domain/entities/entities.dart';
-import '../../features/chat/presentation/bloc/chat_bloc.dart';
+import '../../features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import '../helper/log.dart';
 
 class CustomBubble extends StatefulWidget {

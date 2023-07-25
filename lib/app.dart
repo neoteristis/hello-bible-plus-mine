@@ -11,7 +11,7 @@ import 'package:gpt/features/notification/presentation/bloc/manage_notif/manage_
 import 'core/bloc/obscure_text/obscure_text_cubit.dart';
 import 'core/routes/router.dart';
 import 'core/theme/bloc/theme_bloc.dart';
-import 'features/chat/presentation/bloc/chat_bloc.dart';
+import 'features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import 'features/introduction/presentation/bloc/introduction_bloc.dart';

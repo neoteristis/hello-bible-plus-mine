@@ -4,7 +4,7 @@ import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
 import 'core/constants/status.dart';
-import 'features/chat/presentation/bloc/chat_bloc.dart';
+import 'features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

@@ -6,7 +6,7 @@ import 'package:gpt/core/widgets/custom_network_image.dart';
 
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../domain/entities/entities.dart';
-import '../bloc/chat_bloc.dart';
+import '../bloc/chat_bloc/chat_bloc.dart';
 
 class CategoryItemWidget extends StatelessWidget {
   const CategoryItemWidget({

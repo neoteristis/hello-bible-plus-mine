@@ -9,7 +9,7 @@ import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/typing_indicator.dart';
 import '../../domain/entities/message_by_role.dart';
-import '../bloc/chat_bloc.dart';
+import '../bloc/chat_bloc/chat_bloc.dart';
 import 'chat/suggestion_item.dart';
 import 'container_categories_widget.dart';
 

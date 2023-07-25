@@ -17,15 +17,15 @@ import 'package:logger/logger.dart';
 import 'package:vibration/vibration.dart';
 // import 'package:scrollview_observer/scrollview_observer.dart';
 
-import '../../../../core/constants/status.dart';
-import '../../../../core/constants/string_constants.dart';
-import '../../../../core/error/failure.dart';
-import '../../../../core/helper/custom_scroll_physics.dart';
-import '../../../../core/helper/log.dart';
-import '../../../../core/sse/sse.dart';
-import '../../../../core/usecase/usecase.dart';
-import '../../domain/entities/entities.dart';
-import '../../domain/usecases/usecases.dart';
+import '../../../../../core/constants/status.dart';
+import '../../../../../core/constants/string_constants.dart';
+import '../../../../../core/error/failure.dart';
+import '../../../../../core/helper/custom_scroll_physics.dart';
+import '../../../../../core/helper/log.dart';
+import '../../../../../core/sse/sse.dart';
+import '../../../../../core/usecase/usecase.dart';
+import '../../../domain/entities/entities.dart';
+import '../../../domain/usecases/usecases.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';

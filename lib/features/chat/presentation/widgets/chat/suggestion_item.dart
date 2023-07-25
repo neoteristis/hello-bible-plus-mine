@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../bloc/chat_bloc.dart';
+import '../../bloc/chat_bloc/chat_bloc.dart';
 
 class SuggestionItem extends StatelessWidget {
   const SuggestionItem(

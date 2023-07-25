@@ -8,7 +8,7 @@ import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
 // import '../../../../flutter_chat_lib/src/widgets/typing_indicator.dart';
-import '../../bloc/chat_bloc.dart';
+import '../../bloc/chat_bloc/chat_bloc.dart';
 // import '../typing_indicator.dart';
 // import 'list_bottom_chat_widget.dart';
 

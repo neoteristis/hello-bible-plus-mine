@@ -10,7 +10,7 @@ import '../../../../core/routes/route_name.dart';
 import '../../../../core/theme/bloc/theme_bloc.dart';
 import '../../../../core/widgets/custom_alert_dialog.dart';
 import '../../../../l10n/function.dart';
-import '../bloc/chat_bloc.dart';
+import '../bloc/chat_bloc/chat_bloc.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/custom_app_bar.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/helper/show_dialog.dart';
-import '../../../chat/presentation/bloc/chat_bloc.dart';
+import '../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../bloc/social_connect_bloc/social_connect_bloc.dart';
 import '../widgets/registrations/registrations.dart';
