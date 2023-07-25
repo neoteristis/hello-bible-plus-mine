@@ -1,6 +1,7 @@
 part of 'theme.dart';
 
 ThemeData light = ThemeData(
+  canvasColor: Colors.white,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'SfProText',
   dividerColor: const Color(0xFFE3E6E8),
@@ -20,7 +21,8 @@ ThemeData light = ThemeData(
     onError: Colors.white,
     background: const Color(0xFFF3F5F7),
     onBackground: const Color(0xFF223159),
-    surface: Colors.black,
+    surface: Colors.white,
+    // surface: Colors.black,
     onSurface: const Color(0xFF24282E),
   ),
   scaffoldBackgroundColor: Colors.white,

@@ -52,6 +52,11 @@ ThemeData dark = ThemeData(
     filled: true,
     fillColor: const Color(0xFF0D0D0D),
   ),
+  // bottomSheetTheme: const BottomSheetThemeData(
+  //   backgroundColor: Color(0xFF101520),
+  //   modalBackgroundColor: Color(0xFF101520),
+  //   surfaceTintColor: Color(0xFF101520),
+  // ),
   textTheme: TextTheme(
     bodyLarge: bodyLarge.copyWith(
       color: const Color(0xFFB6B6B6),

@@ -183,7 +183,7 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   Future cancelMessage(Conversation param) async {
     try {
       if (param.id != null) {
-        final res = await baseRepo.get(
+        final res = await baseRepo.post(
           ApiConstants.stop(param.id!),
         );
         return res.data;

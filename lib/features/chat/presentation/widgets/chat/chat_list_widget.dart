@@ -6,14 +6,8 @@ import '../../bloc/chat_bloc/chat_bloc.dart';
 import 'empty_chat_widget.dart';
 import 'list_bottom_chat_widget.dart';
 
-class ChatListWidget extends StatefulWidget {
+class ChatListWidget extends StatelessWidget {
   const ChatListWidget({super.key});
-
-  @override
-  State<ChatListWidget> createState() => _ChatListWidgetState();
-}
-
-class _ChatListWidgetState extends State<ChatListWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatBloc, ChatState>(
@@ -80,6 +74,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                           child: CustomBubbleBuilder(
                             message: messages[index],
                             context: context,
+                            index: index,
                           ),
                         ),
                       ],
@@ -92,11 +87,13 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                     return CustomBubbleBuilder(
                       message: messages[index],
                       context: context,
+                      index: index,
                     );
                   } else {
                     return CustomBubbleBuilder(
                       message: messages[index],
                       context: context,
+                      index: index,
                     );
                   }
                 },
