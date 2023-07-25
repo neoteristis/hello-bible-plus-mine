@@ -94,12 +94,12 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
       String idConversation, Token token, int? idMessage) async {
     try {
       final res = await baseRepo.get(
-        ApiConstants.answer(idConversation),
-        queryParameters: idMessage != null
-            ? {
-                'messageId': idMessage,
-              }
-            : null,
+        ApiConstants.answer(idConversation, idMessage),
+        // queryParameters: idMessage != null
+        //     ? {
+        //         'messageId': idMessage,
+        //       }
+        //     : null,
         options: Options(
           headers: {
             'Accept': 'text/event-stream',

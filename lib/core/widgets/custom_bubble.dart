@@ -5,13 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
-import 'package:gpt/features/chat/presentation/widgets/custom_selectable_text.dart';
+import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:selectable/selectable.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../features/chat/domain/entities/entities.dart';
-import '../../features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
-import '../helper/log.dart';
 
 class CustomBubble extends StatefulWidget {
   const CustomBubble({
@@ -43,16 +41,13 @@ class CustomBubble extends StatefulWidget {
 }
 
 class _CustomBubbleState extends State<CustomBubble> {
-  late final FocusNode focusNode;
-
   final _selectionController = SelectableController();
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    focusNode = FocusNode(skipTraversal: true, canRequestFocus: true);
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _selectionController.dispose();
   }
 
   @override
@@ -127,22 +122,12 @@ class _CustomBubbleState extends State<CustomBubble> {
               animateMenuItems: true,
               openWithTap: true,
               blurBackgroundColor: Colors.black54,
-              // bottomOffsetHeight: 100,
-              // openWithTap: true,
               menuItems: <FocusedMenuItem>[
-                // if (textMessage?.content != null)
-                //   FocusedMenuItem(
-                //     title: const Text('Copier'),
-                //     trailingIcon: const Icon(Icons.copy),
-                //     onPressed: () {
-                //       Clipboard.setData(
-                //           ClipboardData(text: textMessage?.content ?? ''));
-                //     },
-                //   ),
                 FocusedMenuItem(
                   title: const Text('Regénérer'),
                   trailingIcon: const Icon(Icons.refresh_rounded),
                   onPressed: () {
+                    print('--------------${widget.indexMessage}');
                     context.read<ChatBloc>().add(
                           ChatAnswerRegenerated(
                             messsageId: widget.indexMessage,
@@ -151,7 +136,9 @@ class _CustomBubbleState extends State<CustomBubble> {
                   },
                 ),
                 FocusedMenuItem(
-                  title: const Text('Sélectionner le texte'),
+                  title: const Text(
+                    'Sélectionner le texte',
+                  ),
                   trailingIcon: const Icon(Icons.crop_rounded),
                   onPressed: () {
                     _selectionController.selectAll();
@@ -190,7 +177,18 @@ class _CustomBubbleState extends State<CustomBubble> {
                   padding: widget.padding ?? const EdgeInsets.all(10.0),
                   child: Selectable(
                     selectionController: _selectionController,
-                    child: widget.message ?? const Text('ggggggggggggggg'),
+                    child: widget.message ??
+                        Text(
+                          widget.textMessage?.content ?? '_',
+                          style: TextStyle(
+                            color: widget.textMessage?.role == Role.user
+                                ? senderContent
+                                : receiverContent,
+                            fontSize: 17.sp,
+                            height: 1.4,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                   ),
                 ),
               ),
@@ -216,14 +214,12 @@ class _CustomBubbleState extends State<CustomBubble> {
                 padding: widget.padding ?? const EdgeInsets.all(10.0),
                 child: widget.message ??
                     SelectableText(
-                      widget.textMessage?.content ?? '',
-                      focusNode: focusNode,
+                      widget.textMessage?.content ?? '_',
                       style: TextStyle(
                         color: widget.textMessage?.role == Role.user
                             ? senderContent
                             : receiverContent,
                         fontSize: 17.sp,
-                        // fontSize: 17,
                         height: 1.4,
                         fontWeight: FontWeight.w400,
                       ),
@@ -240,50 +236,48 @@ enum BubbleNip {
   rightBottom,
 }
 
-Widget customBubbleBuilder({
-  required TextMessage message,
-  required BuildContext context,
-  int? index,
-}) {
-  return BlocBuilder<ChatBloc, ChatState>(
-    builder: (context, state) {
-      final senderContainer = Theme.of(context).primaryColor;
-      final receiverContainer = Theme.of(context).colorScheme.onPrimary;
-      // final receiverContent = Theme.of(context).colorScheme.secondary;
-      // final senderContent = Theme.of(context).colorScheme.onPrimary;
-      return Column(
-        crossAxisAlignment: message.role == Role.user
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 5.0),
-            child: CustomBubble(
-              indexMessage: index,
-              textMessage: message,
-              nip: message.role == Role.user
-                  ? BubbleNip.rightBottom
-                  : BubbleNip.leftBottom,
-              color: message.role == Role.user
-                  ? senderContainer
-                  : receiverContainer,
-              messageContent: message.content,
-              // message: SelectableText(
-              //   message.content ?? '',
-              //   style: TextStyle(
-              //     color: message.role == Role.user
-              //         ? senderContent
-              //         : receiverContent,
-              //     fontSize: 17.sp,
-              //     // fontSize: 17,
-              //     height: 1.4,
-              //     fontWeight: FontWeight.w400,
-              //   ),
-              // ),
+class CustomBubbleBuilder extends StatelessWidget {
+  const CustomBubbleBuilder({
+    super.key,
+    required this.message,
+    required this.context,
+    this.index,
+  });
+
+  final TextMessage message;
+  final BuildContext context;
+  final int? index;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChatBloc, ChatState>(
+      builder: (context, state) {
+        final senderContainer = Theme.of(context).primaryColor;
+        final receiverContainer = Theme.of(context).colorScheme.onPrimary;
+        // final receiverContent = Theme.of(context).colorScheme.secondary;
+        // final senderContent = Theme.of(context).colorScheme.onPrimary;
+        return Column(
+          crossAxisAlignment: message.role == Role.user
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: CustomBubble(
+                indexMessage: index,
+                textMessage: message,
+                nip: message.role == Role.user
+                    ? BubbleNip.rightBottom
+                    : BubbleNip.leftBottom,
+                color: message.role == Role.user
+                    ? senderContainer
+                    : receiverContainer,
+                messageContent: message.content,
+              ),
             ),
-          ),
-        ],
-      );
-    },
-  );
+          ],
+        );
+      },
+    );
+  }
 }

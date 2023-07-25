@@ -37,7 +37,7 @@ class BottomChatLoadedWidget extends StatelessWidget {
                 buildWhen: (previous, current) =>
                 previous.messages != current.messages,
                 builder: (context, state) {
-                  return customBubbleBuilder(
+                  return CustomBubbleBuilder(
                     message: state.messages![lastIndex],
                     context: context,
                   );

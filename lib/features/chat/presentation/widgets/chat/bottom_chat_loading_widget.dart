@@ -23,7 +23,7 @@ class BottomChatLoadingWidget extends StatelessWidget {
           builder: (context, state) {
             return Align(
               alignment: Alignment.topRight,
-              child: customBubbleBuilder(
+              child: CustomBubbleBuilder(
                 message: state.messages![lastIndex],
                 context: context,
               ),

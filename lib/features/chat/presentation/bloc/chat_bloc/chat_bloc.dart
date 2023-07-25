@@ -169,7 +169,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           messages: List.of(state.messages ?? [])
             ..removeRange(
               event.messsageId!,
-              state.messages!.length - 1,
+              state.messages!.length,
             ),
         ),
       );

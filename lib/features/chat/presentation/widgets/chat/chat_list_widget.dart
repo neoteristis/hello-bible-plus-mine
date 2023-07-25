@@ -78,7 +78,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                         ),
                         Align(
                           alignment: Alignment.topLeft,
-                          child: customBubbleBuilder(
+                          child: CustomBubbleBuilder(
                             message: state.messages![index],
                             context: context,
                           ),
@@ -91,12 +91,12 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                     if (!state.readOnly!) {
                       return ListBottomChatWidget(index);
                     }
-                    return customBubbleBuilder(
+                    return CustomBubbleBuilder(
                       message: state.messages![index],
                       context: context,
                     );
                   } else {
-                    return customBubbleBuilder(
+                    return CustomBubbleBuilder(
                       message: state.messages![index],
                       context: context,
                     );
