@@ -212,3 +212,35 @@ class ChatSharingTextGenerated extends ChatEvent {
         lastMessage,
       ];
 }
+
+class ChatMessageReadStarted extends ChatEvent {
+  final String? messsage;
+  const ChatMessageReadStarted({
+    this.messsage,
+  });
+  @override
+  List<Object?> get props => [
+        messsage,
+      ];
+}
+
+class ChatMessageReadStopped extends ChatEvent {
+  const ChatMessageReadStopped();
+  @override
+  List<Object?> get props => [];
+}
+
+class ChatMessageReadPaused extends ChatEvent {
+  const ChatMessageReadPaused();
+  @override
+  List<Object?> get props => [];
+}
+
+class ChatReadingStatusChanged extends ChatEvent {
+  final ReadStatus status;
+  const ChatReadingStatusChanged({
+    required this.status,
+  });
+  @override
+  List<Object?> get props => [status];
+}

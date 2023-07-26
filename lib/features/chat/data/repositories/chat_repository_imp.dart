@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gpt/core/error/exception.dart';
 
 import 'package:gpt/core/error/failure.dart';
@@ -18,11 +19,13 @@ class ChatRepositoryImp implements ChatRepository {
   final ChatRemoteDatasources remote;
   final ChatLocalDatasources local;
   final NetworkInfo networkInfo;
+  // final FlutterTts tts;
 
   ChatRepositoryImp({
     required this.remote,
     required this.networkInfo,
     required this.local,
+    // required this.tts,
   });
 
   @override
@@ -176,4 +179,34 @@ class ChatRepositoryImp implements ChatRepository {
       return const Left(NoConnexionFailure());
     }
   }
+
+  // @override
+  // Future<Either<Failure, dynamic>> startReading(String message) async {
+  //   try {
+  //     final result = await tts.speak(message);
+  //     return Right(result);
+  //   } catch (_) {
+  //     return const Left(CacheFailure());
+  //   }
+  // }
+
+  // @override
+  // Future<Either<Failure, dynamic>> stopReading() async {
+  //   try {
+  //     final result = await tts.stop();
+  //     return Right(result);
+  //   } catch (_) {
+  //     return const Left(CacheFailure());
+  //   }
+  // }
+
+  // @override
+  // Future<Either<Failure, dynamic>> pauseReading() async {
+  //   try {
+  //     final result = await tts.pause();
+  //     return Right(result);
+  //   } catch (_) {
+  //     return const Left(CacheFailure());
+  //   }
+  // }
 }

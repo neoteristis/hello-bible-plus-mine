@@ -43,13 +43,11 @@ class CustomBubble extends StatefulWidget {
 }
 
 class _CustomBubbleState extends State<CustomBubble> {
-  // final textController = TextEditingController();
   final selectionController = SelectableController();
 
   @override
   void dispose() {
     super.dispose();
-    // _selectionController.dispose();
   }
 
   @override
@@ -103,6 +101,7 @@ class _CustomBubbleState extends State<CustomBubble> {
         Theme.of(context).colorScheme.brightness == Brightness.light;
     final receiverContent = Theme.of(context).colorScheme.secondary;
     final senderContent = Theme.of(context).colorScheme.onPrimary;
+    final message = widget.textMessage?.content;
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 15,
@@ -137,7 +136,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                           );
                     },
                   ),
-                if (widget.textMessage?.content != null)
+                if (message != null)
                   FocusedMenuItem(
                     title: const Text('Copier'),
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -145,9 +144,20 @@ class _CustomBubbleState extends State<CustomBubble> {
                     onPressed: () {
                       Clipboard.setData(
                         ClipboardData(
-                          text: widget.textMessage!.content!,
+                          text: message,
                         ),
                       );
+                    },
+                  ),
+                if (message != null)
+                  FocusedMenuItem(
+                    title: const Text('Lire'),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    trailingIcon: const Icon(Icons.volume_up_rounded),
+                    onPressed: () {
+                      context
+                          .read<ChatBloc>()
+                          .add(ChatMessageReadStarted(messsage: message));
                     },
                   ),
                 FocusedMenuItem(

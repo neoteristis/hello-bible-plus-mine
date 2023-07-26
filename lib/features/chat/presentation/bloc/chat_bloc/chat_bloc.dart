@@ -10,6 +10,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gpt/core/extension/string_extension.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -22,6 +23,7 @@ import '../../../../../core/constants/string_constants.dart';
 import '../../../../../core/error/failure.dart';
 import '../../../../../core/helper/custom_scroll_physics.dart';
 import '../../../../../core/helper/log.dart';
+import '../../../../../core/helper/text_to_speech.dart';
 import '../../../../../core/sse/sse.dart';
 import '../../../../../core/usecase/usecase.dart';
 import '../../../domain/entities/entities.dart';
@@ -40,6 +42,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetConversationByIdUsecase getConversationById;
   final GetSuggestionsMessageUsecase getSuggestionMessages;
   final CancelMessageComingUsecase cancelMessageComing;
+  final TextToSpeech tts;
   late StreamSubscription<SseMessage> streamSubscription;
 
   ChatBloc({
@@ -51,6 +54,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.getConversationById,
     required this.getSuggestionMessages,
     required this.cancelMessageComing,
+    required this.tts,
   }) : super(
           ChatState(
             textEditingController: TextEditingController(),
@@ -93,9 +97,69 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatVibrated>(_onChatVibrated);
     on<ChatAnswerRegenerated>(_onChatAnswerRegenerated);
     on<ChatSharingTextGenerated>(_onChatSharingTextGenerated);
+    on<ChatMessageReadStarted>(_onChatMessageReadStarted);
+    on<ChatMessageReadStopped>(_onChatMessageReadStopped);
+    on<ChatMessageReadPaused>(_onChatMessageReadPaused);
+    on<ChatReadingStatusChanged>(_onChatReadingStatusChanged);
+
+    tts.tts
+      ..setInitHandler(() {
+        add(const ChatReadingStatusChanged(status: ReadStatus.init));
+      })
+      ..setStartHandler(() {
+        add(const ChatReadingStatusChanged(status: ReadStatus.play));
+      })
+      ..setCompletionHandler(() {
+        add(const ChatReadingStatusChanged(status: ReadStatus.stop));
+      })
+      ..setErrorHandler((msg) {
+        add(const ChatReadingStatusChanged(status: ReadStatus.stop));
+      })
+      ..setPauseHandler(() {
+        add(const ChatReadingStatusChanged(status: ReadStatus.pause));
+      })
+      ..setContinueHandler(() {
+        add(const ChatReadingStatusChanged(status: ReadStatus.play));
+      })
+      ..setCancelHandler(() {
+        add(const ChatReadingStatusChanged(status: ReadStatus.stop));
+      });
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onChatReadingStatusChanged(
+    ChatReadingStatusChanged event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(state.copyWith(readStatus: event.status));
+  }
+
+  void _onChatMessageReadStarted(
+    ChatMessageReadStarted event,
+    Emitter<ChatState> emit,
+  ) async {
+    final message = event.messsage;
+    if (message != null) {
+      final int? max = await tts.getMaxLenghtInput();
+      Log.info('max: $max\nen cours: ${message.length}');
+      await tts.startReading(message);
+    }
+  }
+
+  void _onChatMessageReadPaused(
+    ChatMessageReadPaused event,
+    Emitter<ChatState> emit,
+  ) async {
+    await tts.pauseReading();
+  }
+
+  void _onChatMessageReadStopped(
+    ChatMessageReadStopped event,
+    Emitter<ChatState> emit,
+  ) async {
+    await tts.stopReading();
+  }
 
   void _onChatSharingTextGenerated(
     ChatSharingTextGenerated event,

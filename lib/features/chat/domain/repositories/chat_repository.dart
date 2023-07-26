@@ -2,9 +2,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
 import '../entities/entities.dart';
-import '../usecases/change_conversation_usecase.dart';
-import '../usecases/fetch_historical_usecase.dart';
-import '../usecases/send_messages_usecase.dart';
 import '../usecases/usecases.dart';
 
 abstract class ChatRepository {
@@ -22,4 +19,7 @@ abstract class ChatRepository {
   Future<Either<Failure, List<String>>> getSuggestions(MessageParam param);
   Future<Either<Failure, dynamic>> cancelMessageComing(
       Conversation conversation);
+  // Future<Either<Failure, dynamic>> startReading(String message);
+  // Future<Either<Failure, dynamic>> stopReading();
+  // Future<Either<Failure, dynamic>> pauseReading();
 }
