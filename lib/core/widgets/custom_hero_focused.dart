@@ -71,7 +71,7 @@ class _CustomHeroFocusedState extends State<CustomHeroFocused> {
         getOffset();
         await Navigator.of(context).push(
           PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 300),
+            transitionDuration: const Duration(microseconds: 100),
             fullscreenDialog: true,
             opaque: true,
             pageBuilder: (context, animation, secondaryAnimation) {
@@ -100,7 +100,7 @@ class _CustomHeroFocusedState extends State<CustomHeroFocused> {
   }
 }
 
-class CustomHeroFocusedDetailWidget extends StatelessWidget {
+class CustomHeroFocusedDetailWidget extends StatefulWidget {
   const CustomHeroFocusedDetailWidget({
     super.key,
     required this.bubble,
@@ -127,33 +127,55 @@ class CustomHeroFocusedDetailWidget extends StatelessWidget {
   final double bottomOffsetHeight;
 
   @override
+  State<CustomHeroFocusedDetailWidget> createState() =>
+      _CustomHeroFocusedDetailWidgetState();
+}
+
+class _CustomHeroFocusedDetailWidgetState
+    extends State<CustomHeroFocusedDetailWidget> with TickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _animation = Tween(begin: 1.0, end: 0.5).animate(_controller);
+    _controller.forward();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double paddingTop = MediaQuery.of(context).viewPadding.top;
 
     final maxMenuHeight = size.height * 0.45;
-    final listHeight = menuItems.length * (itemExtent);
+    final listHeight = widget.menuItems.length * (widget.itemExtent);
 
-    final maxMenuWidth = menuWidth;
+    final maxMenuWidth = widget.menuWidth;
     final menuHeight = listHeight < maxMenuHeight ? listHeight : maxMenuHeight;
-    final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
-        ? childOffset.dx
-        : (childOffset.dx - maxMenuWidth + childSize!.width);
-    double topOffset = (childOffset.dy + menuHeight + childSize!.height) <
-            size.height - bottomOffsetHeight
-        ? childOffset.dy + childSize!.height + menuOffset
-        : childOffset.dy - menuHeight - menuOffset;
+    final leftOffset = (widget.childOffset.dx + maxMenuWidth) < size.width
+        ? widget.childOffset.dx
+        : (widget.childOffset.dx - maxMenuWidth + widget.childSize!.width);
+    double topOffset = (widget.childOffset.dy +
+                menuHeight +
+                widget.childSize!.height) <
+            size.height - widget.bottomOffsetHeight
+        ? widget.childOffset.dy + widget.childSize!.height + widget.menuOffset
+        : widget.childOffset.dy - menuHeight - widget.menuOffset;
 
     topOffset = topOffset < 0 ? paddingTop : topOffset;
     final paddingVertical = (MediaQuery.of(context).viewPadding.top +
         MediaQuery.of(context).viewPadding.bottom);
 
     final isBubbleHeightContainInList =
-        (size.height - paddingVertical) > childSize!.height;
+        (size.height - paddingVertical) > widget.childSize!.height;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
-        fit: StackFit.expand,
         children: [
           GestureDetector(
             onTap: () {
@@ -171,39 +193,22 @@ class CustomHeroFocusedDetailWidget extends StatelessWidget {
           ),
           if (isBubbleHeightContainInList)
             Positioned(
-              top: childOffset.dy,
-              left: childOffset.dx,
+              top: widget.childOffset.dy,
+              left: widget.childOffset.dx,
               child: SizedBox(
-                width: childSize?.width,
+                width: widget.childSize?.width,
                 child: BubbleHero(
-                  child: bubble,
+                  child: widget.bubble,
                 ),
               ),
             ),
           if (!isBubbleHeightContainInList)
-            TweenAnimationBuilder(
-              tween: Tween(
-                begin: 1.0,
-                end: 2.0,
-              ),
-              builder: (BuildContext context, dynamic value, Widget? child) {
-                double scale = 1.0;
-                if ((size.height - paddingVertical) < childSize!.height) {
-                  scale = ((size.height - paddingVertical) /
-                          (childSize?.height ?? 800)) /
-                      value;
-                }
-                return Transform.scale(
-                  scale: scale,
-                  alignment: Alignment.center,
-                  child: child,
-                );
-              },
-              duration: const Duration(
-                milliseconds: 200,
-              ),
+            ScaleTransition(
+              scale: _animation,
+              filterQuality: FilterQuality.low,
+              alignment: Alignment.center,
               child: BubbleHero(
-                child: bubble,
+                child: widget.bubble,
               ),
             ),
           Positioned(
@@ -224,7 +229,7 @@ class CustomHeroFocusedDetailWidget extends StatelessWidget {
               child: Container(
                 width: maxMenuWidth,
                 height: menuHeight,
-                decoration: menuBoxDecoration ??
+                decoration: widget.menuBoxDecoration ??
                     BoxDecoration(
                       color: Colors.grey.shade200,
                       borderRadius:
@@ -240,11 +245,11 @@ class CustomHeroFocusedDetailWidget extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                   child: ListView.builder(
-                    itemCount: menuItems.length,
+                    itemCount: widget.menuItems.length,
                     padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      final FocusedMenuItem item = menuItems[index];
+                      final FocusedMenuItem item = widget.menuItems[index];
                       final Widget listItem = GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
@@ -256,7 +261,7 @@ class CustomHeroFocusedDetailWidget extends StatelessWidget {
                                 bottom: 1,
                               ),
                               color: item.backgroundColor ?? Colors.white,
-                              height: itemExtent,
+                              height: widget.itemExtent,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 8.0,
