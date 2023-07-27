@@ -96,12 +96,8 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
-        ///final isLight = Theme.of(context).brightness == Brightness.dark;
-        ///final backGroundColor = isLight
-         ///   ? Theme.of(context).scaffoldBackgroundColor
-          ////  : Theme.of(context).colorScheme.background;
         return Scaffold(
-          ///backgroundColor: backGroundColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           key: context.read<ChatBloc>().scaffoldKey,
           resizeToAvoidBottomInset: true,
           appBar: const CustomAppBar(),

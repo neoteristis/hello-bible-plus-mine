@@ -6,13 +6,17 @@ part 'light_theme.dart';
 
 const primaryColor = Color(0xFF22B573);
 
-final bodyLarge = TextStyle(
-  color: const Color(0xFF223159).withOpacity(.6),
-  fontSize: 16,
+const titleLarge = TextStyle(
+  fontSize: 25.5,
 );
 
 const titleMedium = TextStyle(
   color: Colors.black, // <-- TextFormField input color
+);
+
+final bodyLarge = TextStyle(
+  color: const Color(0xFF223159).withOpacity(.6),
+  fontSize: 16,
 );
 const headlineLarge = TextStyle(
   fontWeight: FontWeight.w800,

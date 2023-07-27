@@ -21,6 +21,7 @@ class ContainerCategoriesWidget extends StatelessWidget {
   }
 }
 
+/**
 class LastHistoricWidget extends StatelessWidget {
   const LastHistoricWidget({super.key});
 
@@ -56,3 +57,4 @@ class LastHistoricWidget extends StatelessWidget {
     );
   }
 }
+    **/
