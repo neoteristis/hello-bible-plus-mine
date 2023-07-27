@@ -1,6 +1,9 @@
 part of 'home_bloc.dart';
 
-abstract class HomeState extends Equatable {}
+class HomeState extends Equatable {
+
+  final List<CategoriesBySection> categoriesBySection;
+}
 
 class HomeInitial extends HomeState {
   @override

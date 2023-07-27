@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/widgets/typing_indicator.dart';
+import 'package:lottie/lottie.dart';
+// import 'package:gpt/features/flutter_chat_lib/src/models/bubble_rtl_alignment.dart';
+// import '../../../../../core/constants/status.dart';
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
@@ -36,7 +40,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           previous.isLoading != current.isLoading ||
           previous.readOnly != current.readOnly ||
           previous.textFieldKey != current.textFieldKey ||
-          previous.messageStatus != current.messageStatus,
+          previous.messageStatus != current.messageStatus ||
+          previous.readStatus != current.readStatus,
       builder: (context, state) {
         if (state.readOnly == true) {
           return const SizedBox.shrink();
@@ -46,6 +51,15 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // if (state.isLoading!)
+            //   ChatActionButton(
+            //     icon: const Icon(Icons.stop),
+            //     label: 'Arrêter',
+            //     onPressed: () {
+            //       context.read<ChatBloc>().add(ChatStreamCanceled());
+            //     },
+            //   ),
+
             if (
                 // !state.isLoading! &&
                 //   state.messages!.isNotEmpty &&
@@ -114,7 +128,14 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                             ),
                             suffixIcon: state.isLoading!
                                 ? const TypingIndicatorWidget()
-                                : null,
+                                : (state.readStatus == ReadStatus.play)
+                                    ? Lottie.asset(
+                                        'assets/lotties/wave_sound.json',
+                                        width: 50,
+                                        height: 40,
+                                        fit: BoxFit.contain,
+                                      )
+                                    : null,
                             border: OutlineInputBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(24)),
@@ -139,7 +160,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                       const SizedBox(
                         width: 4,
                       ),
-                      if (!state.isLoading!)
+                      if (!state.isLoading! &&
+                          state.readStatus != ReadStatus.play)
                         CircleAvatar(
                           backgroundColor: Theme.of(context).primaryColor,
                           child: IconButton(
@@ -186,6 +208,20 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                             icon: const Icon(Icons.stop_rounded),
                           ),
                         ),
+                      if (!state.isLoading! &&
+                          state.readStatus == ReadStatus.play)
+                        CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: IconButton(
+                            onPressed: () {
+                              context
+                                  .read<ChatBloc>()
+                                  .add(const ChatMessageReadStopped());
+                            },
+                            icon: const Icon(Icons.stop_rounded),
+                          ),
+                        ),
+
                       // const TypingIndicatorWidget()
                     ],
                   ),

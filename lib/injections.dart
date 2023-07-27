@@ -10,6 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
@@ -30,6 +31,7 @@ import 'core/bloc/obscure_text/obscure_text_cubit.dart';
 import 'core/db_services/db_services.dart';
 import 'core/dio_interceptors/interceptors.dart';
 import 'core/helper/log.dart';
+import 'core/helper/text_to_speech.dart';
 import 'core/network/network_info.dart';
 import 'core/theme/bloc/theme_bloc.dart';
 import 'features/chat/data/datasources/chat_local_datasources.dart';
@@ -41,7 +43,6 @@ import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import 'features/contact_us/presentation/bloc/contact_us_bloc.dart';
 import 'features/notification/data/datasources/notification_remote_datasource.dart';
 import 'features/notification/domain/repositories/notification_repository.dart';
-import 'features/notification/domain/usecases/fetch_notification_values_by_category_usecase.dart';
 import 'features/notification/domain/usecases/usecases.dart';
 import 'features/notification/presentation/bloc/manage_notif/manage_notif_bloc.dart';
 import 'features/notification/presentation/bloc/notification_bloc.dart';
@@ -150,6 +151,10 @@ Future external() async {
   Stripe.merchantIdentifier = 'merchant.com.hello.bible.plus';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
+  final FlutterTts flutterTts = FlutterTts();
+  flutterTts.setLanguage('fr');
+  final TextToSpeech tts = TextToSpeech(tts: flutterTts);
+  getIt.registerLazySingleton<TextToSpeech>(() => tts);
   await dioHandling();
 }
 
@@ -274,6 +279,7 @@ void bloc() {
       getConversationById: getIt(),
       getSuggestionMessages: getIt(),
       cancelMessageComing: getIt(),
+      tts: getIt(),
       // tts: getIt(),
     ),
   );
@@ -362,6 +368,7 @@ void bloc() {
     () => ManageNotifBloc(
       switchNotifValue: getIt(),
       changeNotifTime: getIt(),
+      notificationFetched: getIt(),
     ),
   );
 }
@@ -376,6 +383,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   Log.info('Handling a background message ${message.messageId}');
+  getIt<StreamController<String?>>(instanceName: 'select_nofitication')
+      .add(message.data['theme']);
 }
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
@@ -412,7 +421,12 @@ Future<void> setupFlutterNotifications() async {
 
   flutterLocalNotificationsPlugin
       .getNotificationAppLaunchDetails()
-      .then((value) => selectNotificationStream.add('heeeey'));
+      .then((value) {
+    final payload = value?.notificationResponse?.payload;
+    if (payload != null) {
+      selectNotificationStream.add(value!.notificationResponse!.payload);
+    }
+  });
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('mipmap/ic_launcher');
@@ -427,6 +441,8 @@ Future<void> setupFlutterNotifications() async {
     initializationSettings,
     onDidReceiveNotificationResponse:
         (NotificationResponse notificationResponse) {
+      Log.info('there we go : ${notificationResponse.payload}');
+      // print(notificationResponse.payload);
       selectNotificationStream.add(notificationResponse.payload);
     },
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
@@ -456,7 +472,7 @@ Future<void> setupFlutterNotifications() async {
 void showFlutterNotification(RemoteMessage message) {
   final RemoteNotification? notification = message.notification;
   final AndroidNotification? android = message.notification?.android;
-  Log.info(message);
+  Log.info('play here ${message.data}');
   onNewPushNotificationStream.add(message);
   if (notification != null && android != null && !kIsWeb) {
     flutterLocalNotificationsPlugin.show(
@@ -475,7 +491,7 @@ void showFlutterNotification(RemoteMessage message) {
           presentSound: true,
         ),
       ),
-      payload: message.data['idConversation'],
+      payload: message.data['theme'],
     );
   }
 }

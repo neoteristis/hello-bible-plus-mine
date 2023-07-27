@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/pagination_const.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
+import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/shimmer_widget.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
@@ -53,7 +54,7 @@ class _HistoricalPageState extends State<HistoricalPage> {
               );
             default:
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CustomProgressIndicator(),
               );
           }
         },

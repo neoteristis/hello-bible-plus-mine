@@ -13,60 +13,60 @@ class NotifManageItem extends StatelessWidget {
     super.key,
     this.onTap,
   });
-  final NotifByCategory notif;
+  final NotificationTime notif;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final title = notif.title == '{{data}}'
+        ? 'Thème aléatoire'
+        : notif.title ?? 'Notification';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomListTile(
-          leading: IconLogoNotifWidget(
-            icon: SvgPicture.asset(
-              notif.iconPath!,
-              color: Colors.white,
+          leading: const IconLogoNotifWidget(
+            icon: Icon(
+              Icons.notifications,
+              size: 18,
             ),
+            radius: 15,
           ),
           title: Text(
-            notif.title!,
+            title,
             style: TextStyle(
               color: Theme.of(context).colorScheme.tertiary,
               fontWeight: FontWeight.w600,
               fontSize: 16,
-            ),
-          ),
-          switchValue: notif.value,
-          description:
-              '${dict(context).handleYourNotifOn}${notif.title!.toLowerCase()}',
-          onChanged: (value) {},
-        ),
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: Text(
-            dict(context).resetToDefault,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.tertiary,
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-          trailing: Transform.scale(
-            scale: 0.8,
-            origin: const Offset(50, 0),
-            child: CupertinoSwitch(
-              value: false,
-              onChanged: (_) {},
             ),
           ),
         ),
         GestureDetector(
           onTap: onTap,
           child: DateInformation(
-            label: dict(context).hour,
+            label: 'Heure de la notification',
             info: notif.time,
           ),
         ),
+        // ListTile(
+        //   contentPadding: EdgeInsets.zero,
+        //   title: Text(
+        //     dict(context).resetToDefault,
+        //     style: TextStyle(
+        //       color: Theme.of(context).colorScheme.tertiary,
+        //       fontWeight: FontWeight.w500,
+        //       fontSize: 14,
+        //     ),
+        //   ),
+        //   trailing: Transform.scale(
+        //     scale: 0.8,
+        //     origin: const Offset(50, 0),
+        //     child: CupertinoSwitch(
+        //       value: false,
+        //       onChanged: (_) {},
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

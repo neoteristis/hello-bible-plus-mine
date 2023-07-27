@@ -7,6 +7,8 @@ abstract class ManageNotifEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class ManageNotifCategoryFetched extends ManageNotifEvent {}
+
 class ManageNotifTimeChanged extends ManageNotifEvent {
   // final String heure;
   final String id;

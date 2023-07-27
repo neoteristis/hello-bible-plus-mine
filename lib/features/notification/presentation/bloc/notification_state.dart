@@ -28,7 +28,7 @@ class NotificationState extends Equatable {
 
 List<NotificationEntity> fakeNotifs = [
   NotificationEntity(
-    logo: 'assets/icons/ichthys.svg',
+    // logo: 'assets/icons/ichthys.svg',
     title: 'Mise à jour',
     content:
         'Une mise à jour de l’application HelloBible+ est disponible. Mettez-la à jour en cliquant ici.',
@@ -38,7 +38,7 @@ List<NotificationEntity> fakeNotifs = [
     ),
   ),
   NotificationEntity(
-    logo: 'assets/icons/ichthys.svg',
+    // logo: 'assets/icons/ichthys.svg',
     title: 'Parole du jour',
     content:
         '"Soyez toujours joyeux. Priez sans cesse. Rendez grâce en toutes circonstances, car c\'est à votre égard la volonté de Dieu en Jésus-Christ."- 1 Thessaloniciens 5:16-18',
@@ -48,7 +48,7 @@ List<NotificationEntity> fakeNotifs = [
     ),
   ),
   NotificationEntity(
-    logo: 'assets/icons/ichthys.svg',
+    // logo: 'assets/icons/ichthys.svg',
     title: 'La Bible',
     content:
         'N’oubliez pas de consulter vos inspirations dans l’application aujourd’hui.',
@@ -58,7 +58,7 @@ List<NotificationEntity> fakeNotifs = [
     ),
   ),
   NotificationEntity(
-    logo: 'assets/icons/ichthys.svg',
+    // logo: 'assets/icons/ichthys.svg',
     title: 'Mise à jour',
     content:
         'Une mise à jour de l’application HelloBible+ est disponible. Mettez-la à jour en cliquant ici.',
@@ -68,7 +68,7 @@ List<NotificationEntity> fakeNotifs = [
     ),
   ),
   NotificationEntity(
-    logo: 'assets/icons/ichthys.svg',
+    // logo: 'assets/icons/ichthys.svg',
     title: 'Mise à jour',
     content:
         'Une mise à jour de l’application HelloBible+ est disponible. Mettez-la à jour en cliquant ici.',
@@ -78,7 +78,7 @@ List<NotificationEntity> fakeNotifs = [
     ),
   ),
   NotificationEntity(
-    logo: 'assets/icons/ichthys.svg',
+    // logo: 'assets/icons/ichthys.svg',
     title: 'Parole du jour',
     content:
         '"Soyez toujours joyeux. Priez sans cesse. Rendez grâce en toutes circonstances, car c\'est à votre égard la volonté de Dieu en Jésus-Christ."- 1 Thessaloniciens 5:16-18',
@@ -88,7 +88,7 @@ List<NotificationEntity> fakeNotifs = [
     ),
   ),
   NotificationEntity(
-    logo: 'assets/icons/ichthys.svg',
+    // logo: 'assets/icons/ichthys.svg',
     title: 'La Bible',
     content:
         'N’oubliez pas de consulter vos inspirations dans l’application aujourd’hui.',

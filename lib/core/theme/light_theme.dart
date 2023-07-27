@@ -3,7 +3,7 @@ part of 'theme.dart';
 ThemeData light = ThemeData(
   canvasColor: Colors.white,
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  fontFamily: 'SfProText',
+  fontFamily: 'Poppins',
   dividerColor: const Color(0xFFE3E6E8),
   dividerTheme: const DividerThemeData(
     color: Color(0xFFE3E6E8),
@@ -25,46 +25,9 @@ ThemeData light = ThemeData(
     // surface: Colors.black,
     onSurface: const Color(0xFF24282E),
   ),
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: const Color(0xFFF5F5F5),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Colors.white,
-  ),
-  timePickerTheme: const TimePickerThemeData(
-    dayPeriodShape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-      side: BorderSide.none,
-    ),
-    helpTextStyle: TextStyle(
-      color: Colors.black,
-    ),
-    backgroundColor: Colors.white,
-    dialTextStyle: TextStyle(
-      color: Colors.black,
-    ),
-    hourMinuteShape: RoundedRectangleBorder(
-      side: BorderSide(),
-      borderRadius: BorderRadius.all(
-        Radius.circular(4.0),
-      ),
-    ),
-    hourMinuteColor: Colors.grey,
-    inputDecorationTheme: InputDecorationTheme(
-      labelStyle: TextStyle(
-        color: Colors.black,
-      ),
-      helperStyle: TextStyle(
-        color: Colors.black,
-      ),
-      filled: true,
-      fillColor: Colors.grey,
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-        borderSide: BorderSide(color: Colors.black),
-      ),
-      contentPadding: EdgeInsets.all(0),
-    ),
   ),
   dialogBackgroundColor: Colors.white,
   dialogTheme: const DialogTheme(backgroundColor: Colors.white),
@@ -88,12 +51,14 @@ ThemeData light = ThemeData(
     fillColor: const Color(0xFFF3F5F7),
   ),
   textTheme: TextTheme(
-    bodyLarge: bodyLarge.copyWith(
-      color: const Color(0xFF223159).withOpacity(.6),
+    titleLarge: titleLarge.copyWith(
+      color: const Color(0xFF5AAB77),
     ),
-    // bodyMedium: ,
     titleMedium: titleMedium.copyWith(
-      color: Colors.black, // <-- TextFormField input color
+      color: Colors.black,
+    ),
+    titleSmall: titleSmall.copyWith(
+      color: const Color(0xFF0C0C0C),
     ),
     headlineLarge: headlineLarge.copyWith(
       color: const Color(0xFF101520),
@@ -103,13 +68,16 @@ ThemeData light = ThemeData(
         0xFF0C0C0C,
       ),
     ),
+    bodyLarge: bodyLarge.copyWith(
+      color: const Color(0xFF223159).withOpacity(.6),
+    ),
     labelLarge: labelLarge.copyWith(
       color: const Color(
         0xFF223159,
       ),
     ),
-    titleSmall: titleSmall.copyWith(
-      color: const Color(0xFF0C0C0C),
+    labelMedium: labelMedium.copyWith(
+      color: const Color(0xFF646F8B),
     ),
     labelSmall: labelSmall.copyWith(
       color: const Color(0xFF101520),

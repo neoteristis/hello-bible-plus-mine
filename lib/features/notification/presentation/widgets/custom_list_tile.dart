@@ -35,12 +35,13 @@ class CustomListTile extends StatelessWidget {
           //   ),
           // ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            description ?? '',
+        if (description != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              description!,
+            ),
           ),
-        ),
       ],
     );
   }

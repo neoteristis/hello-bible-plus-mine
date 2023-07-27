@@ -88,8 +88,8 @@ class App extends StatelessWidget {
                     theme: light,
                     darkTheme: dark,
                     debugShowCheckedModeBanner: false,
-                    themeMode: state.themeMode,
                     routerConfig: route,
+                    themeMode: ThemeMode.light,
                     localizationsDelegates:
                         AppLocalizations.localizationsDelegates,
                     supportedLocales: AppLocalizations.supportedLocales,

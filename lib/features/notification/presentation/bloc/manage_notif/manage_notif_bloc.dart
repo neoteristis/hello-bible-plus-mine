@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gpt/core/extension/time_of_day_extension.dart';
+import 'package:gpt/core/usecase/usecase.dart';
 
 import '../../../../../core/constants/status.dart';
 import '../../../../../l10n/function.dart';
@@ -14,15 +15,43 @@ part 'manage_notif_state.dart';
 class ManageNotifBloc extends Bloc<ManageNotifEvent, ManageNotifState> {
   final SwitchNotificationValueUsecase switchNotifValue;
   final ChangeNotifTimeUsecase changeNotifTime;
+  final FetchNotificationValuesByCatecoryUsecase notificationFetched;
   ManageNotifBloc({
     required this.switchNotifValue,
     required this.changeNotifTime,
+    required this.notificationFetched,
   }) : super(
-          ManageNotifState(
-            notifByCategory: notifCats,
-          ),
+          const ManageNotifState(),
         ) {
     on<ManageNotifTimeChanged>(_onManageNotifTimeChanged);
+    on<ManageNotifCategoryFetched>(_onManageNotifCategoryFetched);
+  }
+
+  void _onManageNotifCategoryFetched(
+    ManageNotifCategoryFetched event,
+    Emitter<ManageNotifState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        notifCategoryStatus: Status.loading,
+      ),
+    );
+    final res = await notificationFetched(
+      NoParams(),
+    );
+    res.fold(
+      (l) => emit(
+        state.copyWith(
+          notifCategoryStatus: Status.failed,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          notifByCategory: r,
+          notifCategoryStatus: Status.loaded,
+        ),
+      ),
+    );
   }
 
   void _onManageNotifTimeChanged(
@@ -47,7 +76,7 @@ class ManageNotifBloc extends Bloc<ManageNotifEvent, ManageNotifState> {
             ..insert(
               index,
               state.notifByCategory![index].copyWith(
-                time: heure.toFormattedString(),
+                time: heure.toDateTime,
               ),
             ),
           configureNotifStatus: Status.loading,

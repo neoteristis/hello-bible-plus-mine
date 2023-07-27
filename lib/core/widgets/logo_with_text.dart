@@ -7,12 +7,14 @@ class LogoWithText extends StatelessWidget {
   const LogoWithText({
     super.key,
     this.logoColor,
+    this.textColor,
     this.logoSize,
     this.textSize,
     this.center = true,
   });
 
   final Color? logoColor;
+  final Color? textColor;
   final Size? logoSize;
   final double? textSize;
   final bool? center;
@@ -36,14 +38,16 @@ class LogoWithText extends StatelessWidget {
             text: 'Hello',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontSize: textSize?.sp,
+                  color: textColor,
                 ),
             children: [
               TextSpan(
-                text: 'Bible +',
+                text: 'Bible',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontSize: textSize?.sp,
                       wordSpacing: -2.5,
                       fontWeight: FontWeight.w800,
+                      color: textColor,
                     ),
               )
             ],

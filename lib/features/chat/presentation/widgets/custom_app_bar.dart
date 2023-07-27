@@ -8,6 +8,7 @@ import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gpt/features/chat/presentation/widgets/custom_home_app_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
@@ -16,12 +17,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
     this.elevation,
+    this.height,
   }) : super(key: key);
 
   final double? elevation;
+  final double? height;
 
   @override
-  Size get preferredSize => const Size.fromHeight(60.0);
+  Size get preferredSize => Size.fromHeight(height ?? 100.0);
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +33,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           previous.conversation != current.conversation ||
           previous.chatToShare != current.chatToShare,
       builder: (context, state) {
+        if (state.conversation == null) {
+          return const CustomHomeAppBar();
+        }
         return AppBar(
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           foregroundColor: Colors.white,
           surfaceTintColor: Colors.white,
-          elevation: elevation ?? 11,
+          elevation: 0,
           titleSpacing: 0,
           shadowColor: Colors.black.withOpacity(0.4),
           leading: state.conversation != null

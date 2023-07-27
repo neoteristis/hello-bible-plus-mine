@@ -31,6 +31,7 @@ class ChatState extends Equatable {
     this.chatKey,
     this.firstLaunch = false,
     this.chatToShare,
+    this.readStatus = ReadStatus.init,
     // this.chatObserver,
   });
 
@@ -65,6 +66,7 @@ class ChatState extends Equatable {
   final bool? isUserTap;
   final bool? firstLaunch;
   final String? chatToShare;
+  final ReadStatus? readStatus;
   // final List<String>
   // final ChatScrollObserver? chatObserver;
 
@@ -102,6 +104,7 @@ class ChatState extends Equatable {
         listKey,
         chatKey,
         firstLaunch,
+        readStatus,
       ];
 
   ChatState copyWith({
@@ -139,6 +142,7 @@ class ChatState extends Equatable {
     bool? isUserTap,
     bool? firstLaunch,
     String? chatToShare,
+    ReadStatus? readStatus,
     // ChatScrollObserver? chatObserver,
   }) {
     return ChatState(
@@ -176,7 +180,15 @@ class ChatState extends Equatable {
       chatKey: chatKey ?? this.chatKey,
       firstLaunch: firstLaunch ?? this.firstLaunch,
       chatToShare: chatToShare ?? this.chatToShare,
+      readStatus: readStatus ?? this.readStatus,
       // chatObserver: chatObserver ?? this.chatObserver,
     );
   }
+}
+
+enum ReadStatus {
+  init,
+  play,
+  pause,
+  stop,
 }

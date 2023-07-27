@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/features/chat/presentation/widgets/category_item_widget.dart';
 
 import '../../domain/entities/entities.dart';
@@ -39,13 +40,10 @@ class CategoriesBySectionWidget extends StatelessWidget {
             // ),
             Text(
               sectionName!,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 14.sp,
-                // fontSize: 14,
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(.9),
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontSize: 17.sp,
+                    color: primaryColor,
+                  ),
             ),
           ],
         ),
@@ -110,10 +108,11 @@ class CategoriesBySectionWidget extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 11 / 7,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10),
+                maxCrossAxisExtent: 200,
+                childAspectRatio: 11 / 7,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
               itemCount: categories.length,
               itemBuilder: (BuildContext ctx, index) {
                 return CategoryItem2(

@@ -16,7 +16,7 @@ class NotificationRepositoryImp implements NotificationRepository {
     required this.remote,
   });
   @override
-  Future<Either<Failure, List<NotifByCategory>>>
+  Future<Either<Failure, List<NotificationTime>>>
       getValueNotifByCategory() async {
     if (await networkInfo.isConnected) {
       try {
@@ -32,7 +32,7 @@ class NotificationRepositoryImp implements NotificationRepository {
 
   @override
   Future<Either<Failure, dynamic>> switchNotifValue(
-      NotifByCategory notif) async {
+      NotificationTime notif) async {
     if (await networkInfo.isConnected) {
       try {
         final res = await remote.switchNotifValue(notif);
@@ -47,7 +47,7 @@ class NotificationRepositoryImp implements NotificationRepository {
 
   @override
   Future<Either<Failure, dynamic>> changeNotifTime(
-      NotifByCategory notif) async {
+      NotificationTime notif) async {
     if (await networkInfo.isConnected) {
       try {
         final res = await remote.changeNotifTime(notif);
