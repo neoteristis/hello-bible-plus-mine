@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gpt/core/routes/router.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/features/contact_us/presentation/bloc/contact_us_bloc.dart';
 import 'package:gpt/features/notification/presentation/bloc/manage_notif/manage_notif_bloc.dart';
 
 import 'core/bloc/obscure_text/obscure_text_cubit.dart';
-import 'core/routes/router.dart';
 import 'core/theme/bloc/theme_bloc.dart';
 import 'features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
@@ -74,36 +72,24 @@ class App extends StatelessWidget {
           create: (context) => getIt<ManageNotifBloc>(),
         ),
       ],
-      child: BlocBuilder<AuthBloc, AuthState>(
-        buildWhen: (previous, current) => previous.route != current.route,
-        builder: (context, authState) {
-          final route = authState.route;
-
-          return ScreenUtilInit(
-            designSize: const Size(375, 812),
-            minTextAdapt: true,
-            splitScreenMode: true,
-            builder: (context, child) {
-              return BlocBuilder<ThemeBloc, ThemeState>(
-                buildWhen: (previous, current) =>
-                    previous.themeMode != current.themeMode,
-                builder: (context, state) {
-                  return MaterialApp.router(
-                    title: 'hello bible +',
-                    theme: light,
-                    darkTheme: dark,
-                    debugShowCheckedModeBanner: false,
-                    themeMode: state.themeMode,
-                    routeInformationParser:
-                        routers[route]?.routeInformationParser,
-                    routerDelegate: routers[route]?.routerDelegate,
-                    routeInformationProvider:
-                        routers[route]?.routeInformationProvider,
-                    localizationsDelegates:
-                        AppLocalizations.localizationsDelegates,
-                    supportedLocales: AppLocalizations.supportedLocales,
-                  );
-                },
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return BlocBuilder<ThemeBloc, ThemeState>(
+            buildWhen: (previous, current) =>
+                previous.themeMode != current.themeMode,
+            builder: (context, state) {
+              return MaterialApp.router(
+                title: 'hello bible',
+                theme: light,
+                darkTheme: dark,
+                debugShowCheckedModeBanner: false,
+                themeMode: state.themeMode,
+                routerConfig: route(getIt.get<AuthBloc>()),
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
               );
             },
           );

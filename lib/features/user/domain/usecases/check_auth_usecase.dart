@@ -12,6 +12,7 @@ class CheckAuthUsecase extends Usecase<dynamic, NoParams> {
   );
   @override
   Future<Either<Failure, dynamic>> call(NoParams params) async {
+    await Future.delayed(const Duration(seconds: 3));
     return await repo.checkAuth();
   }
 }

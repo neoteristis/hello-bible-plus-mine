@@ -1,5 +1,7 @@
 part of 'auth_bloc.dart';
 
+enum AuthStatus { authenticated, unauthenticated, unknown }
+
 class AuthState extends Equatable {
   const AuthState({
     this.route = RouteName.splash,
@@ -11,8 +13,13 @@ class AuthState extends Equatable {
     this.passwordError,
     this.failure,
     this.goto = GoTo.init,
+    this.isLogged = false,
+    this.loggedStatus = AuthStatus.unknown,
   });
 
+  final AuthStatus loggedStatus;
+
+  ///
   final String? route;
   final Status? authStatus;
   final String? email;
@@ -22,6 +29,7 @@ class AuthState extends Equatable {
   final String? passwordError;
   final Failure? failure;
   final GoTo? goto;
+  final bool isLogged;
 
   @override
   List<Object?> get props => [
@@ -34,6 +42,8 @@ class AuthState extends Equatable {
         passwordError,
         failure,
         goto,
+        isLogged,
+        loggedStatus,
       ];
 
   AuthState copyWith({
@@ -47,6 +57,8 @@ class AuthState extends Equatable {
     bool clearPasswordError = false,
     Failure? failure,
     GoTo? goto,
+    bool? isLogged,
+    AuthStatus? loggedStatus,
   }) {
     return AuthState(
       route: route ?? this.route,
@@ -59,6 +71,8 @@ class AuthState extends Equatable {
           clearPasswordError ? null : passwordError ?? this.passwordError,
       failure: failure ?? this.failure,
       goto: goto ?? this.goto,
+      isLogged: isLogged ?? this.isLogged,
+      loggedStatus: loggedStatus ?? this.loggedStatus,
     );
   }
 }

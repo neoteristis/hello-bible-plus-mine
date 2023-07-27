@@ -114,7 +114,7 @@ class CustomDrawer extends StatelessWidget {
                                   ..read<AuthBloc>().add(AuthLogoutSubmitted())
                                   ..read<HistoricalBloc>()
                                       .add(HistoricalCleared())
-                                  ..go(RouteName.home);
+                                  ..go(RouteName.splash);
                               },
                             ),
                           ],

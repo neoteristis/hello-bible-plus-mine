@@ -1,9 +1,9 @@
 class RouteName {
   static const String login = 'Login';
   static const String logged = 'Logged';
-  static const String splash = 'Splash';
+  ///static const String splash = 'Splash';
   static const String landing = '/landing';
-  static const String home = '/';
+  static const String splash = '/';
   static const String registration = '/registration';
   static const String email = '/registration/email';
   static const String password = '/registration/email/password';
