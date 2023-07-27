@@ -25,7 +25,6 @@ import '../../../../../core/helper/custom_scroll_physics.dart';
 import '../../../../../core/helper/log.dart';
 import '../../../../../core/helper/text_to_speech.dart';
 import '../../../../../core/sse/sse.dart';
-import '../../../../../core/usecase/usecase.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../domain/usecases/usecases.dart';
 
@@ -34,8 +33,6 @@ part 'chat_event.dart';
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final FetchCategoriesUsecase fetchCategories;
-  final FetchCategoriesBySectionUsecase fetchCategoriesBySection;
   final ChangeConversationUsecase changeConversation;
   final SendMessagesUsecase sendMessage;
   final GetResponseMessagesUsecase getResponseMessages;
@@ -46,8 +43,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late StreamSubscription<SseMessage> streamSubscription;
 
   ChatBloc({
-    required this.fetchCategoriesBySection,
-    required this.fetchCategories,
     required this.changeConversation,
     required this.sendMessage,
     required this.getResponseMessages,
@@ -71,7 +66,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _onChatMessageSent,
       transformer: restartable(),
     );
-    on<ChatCategoriesBySectionFetched>(_onChatCategoriesBySectionFetched);
     on<ChatConversationChanged>(_onChatConversationChanged);
     on<ChatConversationCleared>(_onChatConversationCleared);
     on<ChatMessageAdded>(_onChatMessageAdded);
@@ -430,31 +424,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         ),
       );
     }
-  }
-
-  void _onChatCategoriesBySectionFetched(
-    ChatCategoriesBySectionFetched event,
-    Emitter<ChatState> emit,
-  ) async {
-    emit(state.copyWith(catStatus: Status.loading));
-    final res = await fetchCategoriesBySection(NoParams());
-
-    return res.fold(
-      (l) {
-        emit(
-          state.copyWith(
-            catStatus: Status.failed,
-            failure: l,
-          ),
-        );
-      },
-      (categoriesBySection) => emit(
-        state.copyWith(
-          categoriesBySection: categoriesBySection,
-          catStatus: Status.loaded,
-        ),
-      ),
-    );
   }
 
   void _onChatFocusNodeDisposed(

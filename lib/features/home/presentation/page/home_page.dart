@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_by_section_widget.dart';
 import 'package:gpt/features/chat/presentation/widgets/custom_home_app_bar.dart';
 
@@ -15,6 +14,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomHomeAppBar(),
@@ -22,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           return RefreshIndicator(
             onRefresh: () async {
-              context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
+              context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
             },
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
