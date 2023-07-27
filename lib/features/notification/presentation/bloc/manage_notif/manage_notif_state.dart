@@ -4,41 +4,29 @@ class ManageNotifState extends Equatable {
   const ManageNotifState({
     this.notifByCategory = const [],
     this.configureNotifStatus = Status.init,
+    this.notifCategoryStatus = Status.init,
   });
 
-  final List<NotifByCategory>? notifByCategory;
+  final List<NotificationTime>? notifByCategory;
   final Status? configureNotifStatus;
+  final Status? notifCategoryStatus;
 
   @override
   List<Object?> get props => [
         notifByCategory,
         configureNotifStatus,
+        notifCategoryStatus,
       ];
 
   ManageNotifState copyWith({
-    List<NotifByCategory>? notifByCategory,
+    List<NotificationTime>? notifByCategory,
     Status? configureNotifStatus,
+    Status? notifCategoryStatus,
   }) {
     return ManageNotifState(
       notifByCategory: notifByCategory ?? this.notifByCategory,
       configureNotifStatus: configureNotifStatus ?? this.configureNotifStatus,
+      notifCategoryStatus: notifCategoryStatus ?? this.notifCategoryStatus,
     );
   }
 }
-
-List<NotifByCategory> notifCats = const [
-  NotifByCategory(
-    id: '0',
-    time: '08:00',
-    title: 'Verset du jour',
-    value: true,
-    iconPath: 'assets/icons/verse_of_the_day.svg',
-  ),
-  NotifByCategory(
-    id: '1',
-    time: '10:00',
-    title: 'Mot d\'encouragement',
-    value: true,
-    iconPath: 'assets/icons/subscription.svg',
-  ),
-];

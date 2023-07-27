@@ -21,12 +21,12 @@ class NotificationItemWidget extends StatelessWidget {
     final createdAt = notificationEntity.createdAt;
     return Container(
       decoration: BoxDecoration(
-        color: !isRead!
-            ? const Color(
-                0xFFEDF2FE,
-              )
-            : null,
-      ),
+          // color: !isRead!
+          //     ? const Color(
+          //         0xFFEDF2FE,
+          //       )
+          //     : null,
+          ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         child: ListTile(
@@ -44,11 +44,13 @@ class NotificationItemWidget extends StatelessWidget {
           title: RichText(
             text: TextSpan(
               text: '$title : ',
-              style: const TextStyle(color: Color(0xFF646F8B), fontSize: 12),
+              style: Theme.of(context).textTheme.labelMedium,
               children: [
                 TextSpan(
                   text: content ?? '',
-                  style: const TextStyle(color: Colors.black, fontSize: 12),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 12),
                 )
               ],
             ),

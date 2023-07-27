@@ -103,15 +103,19 @@ final _routerForLogged = GoRouter(
           ],
         ),
         GoRoute(
-          path: 'notif',
-          builder: (context, state) => const NotificationsPage(),
-          routes: [
-            GoRoute(
-              path: 'manageNotif',
-              builder: (context, state) => const ManageNotificationsPage(),
-            ),
-          ],
+          path: 'manageNotif',
+          builder: (context, state) => const ManageNotificationsPage(),
         ),
+        // GoRoute(
+        //   path: 'notif',
+        //   builder: (context, state) => const NotificationsPage(),
+        //   routes: [
+        //     GoRoute(
+        //       path: 'manageNotif',
+        //       builder: (context, state) => const ManageNotificationsPage(),
+        //     ),
+        //   ],
+        // ),
         GoRoute(
           path: 'contact-us',
           builder: (context, state) => const ContactUsPage(),

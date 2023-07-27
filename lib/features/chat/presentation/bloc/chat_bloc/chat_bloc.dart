@@ -103,27 +103,41 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatReadingStatusChanged>(_onChatReadingStatusChanged);
 
     tts.tts
-      ..setInitHandler(() {
-        add(const ChatReadingStatusChanged(status: ReadStatus.init));
-      })
-      ..setStartHandler(() {
-        add(const ChatReadingStatusChanged(status: ReadStatus.play));
-      })
-      ..setCompletionHandler(() {
-        add(const ChatReadingStatusChanged(status: ReadStatus.stop));
-      })
-      ..setErrorHandler((msg) {
-        add(const ChatReadingStatusChanged(status: ReadStatus.stop));
-      })
-      ..setPauseHandler(() {
-        add(const ChatReadingStatusChanged(status: ReadStatus.pause));
-      })
-      ..setContinueHandler(() {
-        add(const ChatReadingStatusChanged(status: ReadStatus.play));
-      })
-      ..setCancelHandler(() {
-        add(const ChatReadingStatusChanged(status: ReadStatus.stop));
-      });
+      ..setInitHandler(
+        () {
+          add(const ChatReadingStatusChanged(status: ReadStatus.init));
+        },
+      )
+      ..setStartHandler(
+        () {
+          add(const ChatReadingStatusChanged(status: ReadStatus.play));
+        },
+      )
+      ..setCompletionHandler(
+        () {
+          add(const ChatReadingStatusChanged(status: ReadStatus.stop));
+        },
+      )
+      ..setErrorHandler(
+        (msg) {
+          add(const ChatReadingStatusChanged(status: ReadStatus.stop));
+        },
+      )
+      ..setPauseHandler(
+        () {
+          add(const ChatReadingStatusChanged(status: ReadStatus.pause));
+        },
+      )
+      ..setContinueHandler(
+        () {
+          add(const ChatReadingStatusChanged(status: ReadStatus.play));
+        },
+      )
+      ..setCancelHandler(
+        () {
+          add(const ChatReadingStatusChanged(status: ReadStatus.stop));
+        },
+      );
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -320,44 +334,44 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   //   ChatConversationFromNotificationInited event,
   //   Emitter<ChatState> emit,
   // ) async {
-  //   // state.textEditingController?.clear();
-  //   // emit(
-  //   //   state.copyWith(
-  //   //     conversationStatus: Status.loading,
-  //   //     conversation: const Conversation(),
-  //   //     messages: [],
-  //   //     clearNewMessage: true,
-  //   //   ),
-  //   // );
-  //   // final res = await getConversationById(event.conversationId);
+  //   state.textEditingController?.clear();
+  //   emit(
+  //     state.copyWith(
+  //       conversationStatus: Status.loading,
+  //       conversation: const Conversation(),
+  //       messages: [],
+  //       clearNewMessage: true,
+  //     ),
+  //   );
+  //   final res = await getConversationById(event.conversationId);
 
-  //   // return res.fold(
-  //   //   (l) => Logger().w(l),
-  //   //   (conversation) {
-  //   //     state.focusNode?.requestFocus();
-  //   //     emit(
-  //   //       state.copyWith(
-  //   //         conversation: conversation,
-  //   //         // theme: theme(conversation.category?.colorTheme),
-  //   //         conversationStatus: Status.loaded,
-  //   //       ),
-  //   //     );
-  //   //     final messages = conversation.messages;
-  //   //     if (messages != null) {
-  //   //       for (final message in messages) {
-  //   //         final author =
-  //   //             message.role == Role.user ? state.sender : state.receiver;
-  //   //         final text = types.TextMessage(
-  //   //           author: author!,
-  //   //           createdAt: message.createdAt?.millisecondsSinceEpoch,
-  //   //           id: _randomString(),
-  //   //           text: message.content ?? '',
-  //   //         );
-  //   //         add(ChatMessageAdded(textMessage: text));
-  //   //       }
-  //   //     }
-  //   //   },
-  //   // );
+  //   return res.fold(
+  //     (l) => Logger().w(l),
+  //     (conversation) {
+  //       state.focusNode?.requestFocus();
+  //       emit(
+  //         state.copyWith(
+  //           conversation: conversation,
+  //           // theme: theme(conversation.category?.colorTheme),
+  //           conversationStatus: Status.loaded,
+  //         ),
+  //       );
+  //       final messages = conversation.messages;
+  //       if (messages != null) {
+  //         for (final message in messages) {
+  //           final author =
+  //               message.role == Role.user ? state.sender : state.receiver;
+  //           final text = types.TextMessage(
+  //             author: author!,
+  //             createdAt: message.createdAt?.millisecondsSinceEpoch,
+  //             id: _randomString(),
+  //             text: message.content ?? '',
+  //           );
+  //           add(ChatMessageAdded(textMessage: text));
+  //         }
+  //       }
+  //     },
+  //   );
   // }
 
   void _onChatConversationInited(
@@ -402,11 +416,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     for (final message in historical.messages) {
       // Log.info(message);
       // final role = message.role == Role.user ? Role : state.receiver;
-      final text = TextMessage(
-        role: message.role,
-        createdAt: message.createdAt,
-        content: message.content ?? '',
-      );
+      // final text = TextMessage(
+      //   role: message.role,
+      //   createdAt: message.createdAt,
+      //   content: message.content ?? '',
+      // );
 
       add(
         ChatMessageAdded(

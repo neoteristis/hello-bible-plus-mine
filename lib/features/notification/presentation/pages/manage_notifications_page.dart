@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/helper/show_dialog.dart';
+import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 import '../../../../core/constants/status.dart';
@@ -21,6 +22,7 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
   @override
   void initState() {
     super.initState();
+    context.read<ManageNotifBloc>().add(ManageNotifCategoryFetched());
   }
 
   @override
@@ -33,13 +35,13 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
           case Status.loaded:
             await CustomDialog.success(
               context,
-              dict(context).changeNotSupported,
+              dict(context).modificationTakenIntoAccount,
             );
             break;
           case Status.failed:
             await CustomDialog.error(
               context,
-              dict(context).modificationTakenIntoAccount,
+              dict(context).changeNotSupported,
             );
             break;
           default:
@@ -51,38 +53,60 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
           context.pop();
         },
         title: dict(context).manageNotifications,
-        body: Padding(
-          padding: const EdgeInsets.only(
-            left: 15.0,
-            right: 15,
-            // top: 20,
-          ),
-          child: BlocBuilder<ManageNotifBloc, ManageNotifState>(
-            buildWhen: (previous, current) =>
-                previous.notifByCategory != current.notifByCategory,
-            builder: (context, state) {
-              final notifByCategory = state.notifByCategory;
-              return ListView.separated(
-                itemBuilder: (context, index) => NotifManageItem(
-                  notifByCategory[index],
-                  onTap: () {
-                    context.read<ManageNotifBloc>().add(
-                          ManageNotifTimeChanged(
-                            context: context,
-                            id: notifByCategory[index].id!,
-                          ),
-                        );
-                  },
-                ),
-                separatorBuilder: (context, index) => const CustomDivider(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 8.0,
+        body: BlocBuilder<ManageNotifBloc, ManageNotifState>(
+          buildWhen: (previous, current) =>
+              previous.notifCategoryStatus != current.notifCategoryStatus,
+          builder: (context, state) {
+            switch (state.notifCategoryStatus) {
+              case Status.loading:
+                return const Center(
+                  child: CustomProgressIndicator(),
+                );
+              case Status.loaded:
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15.0,
+                    right: 15,
+                    // top: 20,
                   ),
-                ),
-                itemCount: notifByCategory!.length,
-              );
-            },
-          ),
+                  child: BlocBuilder<ManageNotifBloc, ManageNotifState>(
+                    buildWhen: (previous, current) =>
+                        previous.notifByCategory != current.notifByCategory,
+                    builder: (context, state) {
+                      final notifByCategory = state.notifByCategory;
+                      if (notifByCategory != null && notifByCategory.isEmpty) {
+                        return const Center(
+                          child: Text('Aucune notification configurée'),
+                        );
+                      }
+                      return ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) => NotifManageItem(
+                          notifByCategory[index],
+                          onTap: () {
+                            context.read<ManageNotifBloc>().add(
+                                  ManageNotifTimeChanged(
+                                    context: context,
+                                    id: notifByCategory[index].id!,
+                                  ),
+                                );
+                          },
+                        ),
+                        separatorBuilder: (context, index) =>
+                            const CustomDivider(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8.0,
+                          ),
+                        ),
+                        itemCount: notifByCategory!.length,
+                      );
+                    },
+                  ),
+                );
+              default:
+                return const SizedBox.shrink();
+            }
+          },
         ),
       ),
     );

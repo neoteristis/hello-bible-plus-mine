@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:gpt/core/constants/api_constants.dart';
 import 'package:logger/logger.dart';
 import '../../../../core/db_services/db_services.dart';
 import '../../../../injections.dart';
+import '../../domain/entities/category.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../widgets/chat/chat_body_widget.dart';
 import '../widgets/container_categories_widget.dart';
@@ -46,7 +48,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
       (RemoteMessage message) {
         Logger().w('this has been taped : $message');
         getIt<StreamController<String?>>(instanceName: 'select_nofitication')
-            .add(message.messageId);
+            .add(message.data['theme']);
       },
     );
     _configureSelectNotificationSubject();
@@ -77,16 +79,23 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         .stream
         .listen(
       (String? payload) {
-        // context.go(RouteName.historical);
         if (payload != null) {
-          // context.read<ChatBloc>().add(
-          //       ChatConversationFromNotificationInited(
-          //         payload.substring(1, payload.length - 1),
-          //       ),
-          //     );
+          {
+            try {
+              final json = jsonDecode(payload);
 
-          Logger().i(payload);
-          Logger().w('a new notif selected : $payload');
+              final category = Category.fromJson(
+                json,
+              );
+              context.read<ChatBloc>().add(
+                    ChatConversationChanged(
+                      category: category,
+                    ),
+                  );
+            } catch (e) {
+              debugPrint(e.toString());
+            }
+          }
         }
       },
     );

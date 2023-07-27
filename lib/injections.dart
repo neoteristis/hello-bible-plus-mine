@@ -368,6 +368,7 @@ void bloc() {
     () => ManageNotifBloc(
       switchNotifValue: getIt(),
       changeNotifTime: getIt(),
+      notificationFetched: getIt(),
     ),
   );
 }
@@ -382,6 +383,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   Log.info('Handling a background message ${message.messageId}');
+  getIt<StreamController<String?>>(instanceName: 'select_nofitication')
+      .add(message.data['theme']);
 }
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
@@ -418,7 +421,12 @@ Future<void> setupFlutterNotifications() async {
 
   flutterLocalNotificationsPlugin
       .getNotificationAppLaunchDetails()
-      .then((value) => selectNotificationStream.add('heeeey'));
+      .then((value) {
+    final payload = value?.notificationResponse?.payload;
+    if (payload != null) {
+      selectNotificationStream.add(value!.notificationResponse!.payload);
+    }
+  });
 
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('mipmap/ic_launcher');
@@ -433,6 +441,8 @@ Future<void> setupFlutterNotifications() async {
     initializationSettings,
     onDidReceiveNotificationResponse:
         (NotificationResponse notificationResponse) {
+      Log.info('there we go : ${notificationResponse.payload}');
+      // print(notificationResponse.payload);
       selectNotificationStream.add(notificationResponse.payload);
     },
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
@@ -462,7 +472,7 @@ Future<void> setupFlutterNotifications() async {
 void showFlutterNotification(RemoteMessage message) {
   final RemoteNotification? notification = message.notification;
   final AndroidNotification? android = message.notification?.android;
-  Log.info(message);
+  Log.info('play here ${message.data}');
   onNewPushNotificationStream.add(message);
   if (notification != null && android != null && !kIsWeb) {
     flutterLocalNotificationsPlugin.show(
@@ -481,7 +491,7 @@ void showFlutterNotification(RemoteMessage message) {
           presentSound: true,
         ),
       ),
-      payload: message.data['idConversation'],
+      payload: message.data['theme'],
     );
   }
 }

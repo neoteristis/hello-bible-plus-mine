@@ -67,6 +67,9 @@ ThemeData dark = ThemeData(
     labelLarge: labelLarge.copyWith(
       color: Colors.white,
     ),
+    labelMedium: labelMedium.copyWith(
+      color: const Color(0xFF646F8B),
+    ),
     headlineMedium: headlineMedium.copyWith(
       color: Colors.white,
     ),

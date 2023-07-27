@@ -34,6 +34,11 @@ const labelLarge = TextStyle(
   ),
 );
 
+const labelMedium = TextStyle(
+  fontSize: 12,
+  color: Color(0xFF646F8B),
+);
+
 const titleSmall = TextStyle(
   fontWeight: FontWeight.w600,
 );

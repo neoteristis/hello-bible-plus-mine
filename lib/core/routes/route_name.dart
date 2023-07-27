@@ -15,8 +15,9 @@ class RouteName {
   static const String subscription = '/registration/subscription';
   static const String profile = '/profile';
   static const String editProfil = '/profile/edit-profile';
-  static const String notifications = '/notif';
-  static const String manageNotif = '/notif/manageNotif';
+  // static const String notifications = '/notif';
+  // static const String manageNotif = '/notif/manageNotif';
+  static const String manageNotif = '/manageNotif';
   static const String contactUs = '/contact-us';
   static const String about = '/about';
   static const String help = '/help';

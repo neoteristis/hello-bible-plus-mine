@@ -6,12 +6,12 @@ import '../../../../core/usecase/usecase.dart';
 import '../repositories/notification_repository.dart';
 
 class FetchNotificationValuesByCatecoryUsecase
-    implements Usecase<List<NotifByCategory>, NoParams> {
+    implements Usecase<List<NotificationTime>, NoParams> {
   final NotificationRepository repo;
 
   const FetchNotificationValuesByCatecoryUsecase(this.repo);
   @override
-  Future<Either<Failure, List<NotifByCategory>>> call(NoParams _) async {
+  Future<Either<Failure, List<NotificationTime>>> call(NoParams _) async {
     return await repo.getValueNotifByCategory();
   }
 }

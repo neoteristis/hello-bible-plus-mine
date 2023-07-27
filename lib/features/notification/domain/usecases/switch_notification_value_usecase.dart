@@ -7,7 +7,7 @@ import '../entities/notif_by_category.dart';
 import '../repositories/notification_repository.dart';
 
 class SwitchNotificationValueUsecase
-    implements Usecase<dynamic, NotifByCategory> {
+    implements Usecase<dynamic, NotificationTime> {
   final NotificationRepository repo;
 
   SwitchNotificationValueUsecase(this.repo);

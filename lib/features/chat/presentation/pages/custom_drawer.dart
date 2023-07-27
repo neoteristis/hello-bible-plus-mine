@@ -206,7 +206,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.notifications,
         ),
         onPressed: () {
-          context.go(RouteName.notifications);
+          context.go(RouteName.manageNotif);
         },
       ),
       DrawerTile(

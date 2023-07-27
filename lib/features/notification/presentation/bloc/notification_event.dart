@@ -10,7 +10,7 @@ abstract class NotificationEvent extends Equatable {
 class NotificationValuesByCategoryGotten extends NotificationEvent {}
 
 class NotificationValueSwitched extends NotificationEvent {
-  final NotifByCategory notif;
+  final NotificationTime notif;
   const NotificationValueSwitched(
     this.notif,
   );

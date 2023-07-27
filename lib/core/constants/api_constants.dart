@@ -39,7 +39,7 @@ class ApiConstants {
     return '$route/users/$uid';
   }
 
-  static String categoryNotif = '$route/notification-time';
+  static String categoryNotif = '$route/notifications';
 
   static String me = '$route/me';
 

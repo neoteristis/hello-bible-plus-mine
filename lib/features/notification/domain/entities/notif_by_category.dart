@@ -1,56 +1,48 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
-class NotifByCategory extends Equatable {
+class NotificationTime extends Equatable {
   final String? id;
-  final bool? value;
-  final String? iconPath;
   final String? title;
-  final String? time;
-  const NotifByCategory({
+  final DateTime? time;
+  const NotificationTime({
     this.id,
-    this.value,
-    this.iconPath,
     this.title,
     this.time,
   });
   @override
   List<Object?> get props => [
         id,
-        value,
-        iconPath,
         title,
         time,
       ];
 
-  NotifByCategory copyWith({
+  NotificationTime copyWith({
     String? id,
-    bool? value,
-    String? iconPath,
     String? title,
-    String? time,
+    DateTime? time,
   }) {
-    return NotifByCategory(
+    return NotificationTime(
       id: id ?? this.id,
-      value: value ?? this.value,
-      iconPath: iconPath ?? this.iconPath,
       title: title ?? this.title,
       time: time ?? this.time,
     );
   }
 
-  Map<String, dynamic> toJsonTime() {
-    return {
-      'type': title == 'Verset du jour' ? 'dailyVerse' : 'encouraging',
-      'time': time,
-    };
+  Map<String, dynamic>? toJsonTime() {
+    if (id != null && time != null) {
+      return {
+        id!: DateFormat('y-d-M HH:mm').format(time!),
+      };
+    }
+    return null;
   }
 
-  factory NotifByCategory.fromJson(Map<String, dynamic> map) {
-    return NotifByCategory(
-      value: map['value'],
-      iconPath: map['iconPath'],
+  factory NotificationTime.fromJson(Map<String, dynamic> map) {
+    return NotificationTime(
+      id: map['_id'],
       title: map['title'],
-      time: map['time'],
+      time: map['time'] != null ? DateTime.tryParse(map['time']) : null,
     );
   }
 }

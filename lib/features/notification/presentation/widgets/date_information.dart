@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DateInformation extends StatelessWidget {
   const DateInformation({
@@ -8,10 +9,11 @@ class DateInformation extends StatelessWidget {
   });
 
   final String label;
-  final String? info;
+  final DateTime? info;
 
   @override
   Widget build(BuildContext context) {
+    final hour = info?.toLocal();
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 10,
@@ -28,7 +30,16 @@ class DateInformation extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Text(info ?? ''),
+          if (hour != null)
+            Text(
+              DateFormat('HH:mm').format(hour),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          const Icon(Icons.arrow_drop_down_rounded),
         ],
       ),
     );
