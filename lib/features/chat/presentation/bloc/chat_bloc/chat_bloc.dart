@@ -184,7 +184,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
       emit(
         state.copyWith(
-          chatToShare: 'HelloBible+ \n\n${sharingChat.join('\n\n')}',
+          chatToShare: 'HelloBible \n\n${sharingChat.join('\n\n')}',
         ),
       );
     }

@@ -62,8 +62,9 @@ class EmptyChatWidget extends StatelessWidget {
                   buildWhen: (previous, current) =>
                       previous.suggestions != current.suggestions ||
                       previous.isLoading != current.isLoading ||
-                      previous.maintainScroll != current.maintainScroll ||
-                      previous.textFieldKey != current.textFieldKey,
+                      previous.maintainScroll != current.maintainScroll,
+                  // ||
+                  // previous.textFieldKey != current.textFieldKey,
                   builder: (context, state) {
                     final suggestions = state.suggestions;
                     if (suggestions == null ||
@@ -72,18 +73,18 @@ class EmptyChatWidget extends StatelessWidget {
                         state.maintainScroll!) {
                       return const SizedBox.shrink();
                     }
-                    final boxField = state.textFieldKey?.currentContext
-                        ?.findRenderObject() as RenderBox?;
-                    double? fieldHeight = 150.0;
-                    if (boxField != null && boxField.hasSize) {
-                      fieldHeight = boxField.size.height;
-                    }
+                    // final boxField = state.textFieldKey?.currentContext
+                    //     ?.findRenderObject() as RenderBox?;
+                    // double? fieldHeight = 150.0;
+                    // if (boxField != null && boxField.hasSize) {
+                    //   fieldHeight = boxField.size.height;
+                    // }
                     return Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 15,
                         right: 15,
                         top: 20,
-                        bottom: fieldHeight,
+                        bottom: 15,
                       ),
                       margin: const EdgeInsets.only(top: 15.0),
                       // width: double.infinity,

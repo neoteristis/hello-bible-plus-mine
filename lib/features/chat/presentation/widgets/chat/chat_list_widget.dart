@@ -21,9 +21,9 @@ class ChatListWidget extends StatelessWidget {
             final boxChat =
                 state.chatKey?.currentContext?.findRenderObject() as RenderBox?;
 
-            double? containerHeight = 0.0;
-            double? fieldHeight = 0.0;
-            double? chatHeight = 0.0;
+            double containerHeight = 0.0;
+            double fieldHeight = 0.0;
+            double chatHeight = 0.0;
             if (box != null && box.hasSize) {
               containerHeight = box.size.height;
               if (boxField != null && boxField.hasSize) {

@@ -42,14 +42,11 @@ class BottomChatLoadingWidget extends StatelessWidget {
               if (boxField != null && boxField.hasSize) {
                 fieldHeight = boxField.size.height;
               }
-              return Padding(
-                padding: EdgeInsets.only(bottom: fieldHeight),
-                child: CustomBubble(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  padding: EdgeInsets.zero,
-                  nip: BubbleNip.leftBottom,
-                  message: const TypingIndicatorWidget(),
-                ),
+              return CustomBubble(
+                color: Theme.of(context).colorScheme.onPrimary,
+                padding: EdgeInsets.zero,
+                nip: BubbleNip.leftBottom,
+                message: const TypingIndicatorWidget(),
               );
             },
           ),

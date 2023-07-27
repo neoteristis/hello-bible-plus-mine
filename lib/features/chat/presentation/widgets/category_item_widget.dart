@@ -37,9 +37,9 @@ class CategoryItemWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF202040).withOpacity(0.08),
-            offset: const Offset(0, 8),
-            blurRadius: 16,
-            spreadRadius: 0,
+            offset: const Offset(4, 4),
+            blurRadius: 5,
+            spreadRadius: 2,
           ),
         ],
       ),
@@ -88,6 +88,8 @@ class CategoryItemWidget extends StatelessWidget {
                     maxLines: 2,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           fontSize: 11.sp,
+                          letterSpacing: 0.0,
+                          height: 1.2,
                           // fontSize: 11,
                         ),
                     // style: TextStyle(
@@ -101,7 +103,7 @@ class CategoryItemWidget extends StatelessWidget {
               ),
             ),
             // SizedBox(
-            //   height: 4,
+            //   height: 2,
             // ),
             Expanded(
               flex: 3,
@@ -113,6 +115,7 @@ class CategoryItemWidget extends StatelessWidget {
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
+
                   // style: TextStyle(
                   //   fontWeight: FontWeight.w500,
                   //   fontSize: 11,
@@ -121,6 +124,8 @@ class CategoryItemWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w500,
                         fontSize: 11.sp,
+                        letterSpacing: 0.0,
+                        height: 1.2,
                         // fontSize: 11,
                       ),
                 ),

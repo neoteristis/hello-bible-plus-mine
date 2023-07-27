@@ -4,13 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
+import 'package:gpt/core/widgets/custom_hero_focused.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:selectable/selectable.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../features/chat/domain/entities/entities.dart';
+
+import 'custom_focused_menu.dart';
+
 import '../helper/show_text_selection.dart';
 
 class CustomBubble extends StatefulWidget {
@@ -108,7 +110,118 @@ class _CustomBubbleState extends State<CustomBubble> {
         vertical: 3,
       ),
       child: widget.nip == BubbleNip.leftBottom
-          ? FocusedMenuHolder(
+          ? CustomHeroFocused(
+              menuItems: <FocusedMenuItem>[
+                  if (widget.indexMessage != 0)
+                    FocusedMenuItem(
+                      title: const Text('Regénérer'),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      trailingIcon: const Icon(Icons.refresh_rounded),
+                      onPressed: () {
+                        context.read<ChatBloc>().add(
+                              ChatAnswerRegenerated(
+                                messsageId: widget.indexMessage,
+                              ),
+                            );
+                      },
+                    ),
+                  FocusedMenuItem(
+                    title: const Text('Lire'),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    trailingIcon: const Icon(Icons.volume_up_rounded),
+                    onPressed: () {
+                      context
+                          .read<ChatBloc>()
+                          .add(ChatMessageReadStarted(messsage: message));
+                    },
+                  ),
+                  if (message != null)
+                    FocusedMenuItem(
+                      title: const Text('Copier'),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      trailingIcon: const Icon(Icons.copy),
+                      onPressed: () {
+                        Clipboard.setData(
+                          ClipboardData(
+                            text: message,
+                          ),
+                        );
+                      },
+                    ),
+                  FocusedMenuItem(
+                    title: const Text(
+                      'Sélectionner le texte',
+                    ),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    trailingIcon: const Icon(Icons.crop_rounded),
+                    onPressed: () async {
+                      if (message != null) {
+                        showTextSelection(
+                          context: context,
+                          selectionController: selectionController,
+                          text: message,
+                        );
+                        await Future.delayed(
+                          const Duration(milliseconds: 500),
+                          () {
+                            // setState(() {
+                            selectionController.selectAll();
+                            // });
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  if (message != null)
+                    FocusedMenuItem(
+                      title: const Text('Partager'),
+                      trailingIcon: const Icon(Icons.share),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      onPressed: () async {
+                        await Share.share(
+                          message,
+                        );
+                      },
+                    ),
+                ],
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF000000)
+                          .withOpacity(0.1), // shadow color with opacity
+                      spreadRadius: 0, // spread radius
+                      blurRadius: 10, // blur radius
+                      offset: const Offset(0, 4), // offset in x and y direction
+                    ),
+                  ],
+                  border: !isLight
+                      ? Border.all(color: const Color(0xFF232628), width: 1)
+                      : Border.all(color: const Color(0xFFF5F5F5), width: 1),
+                  color: widget.color,
+                  borderRadius: borderRadius,
+                ),
+                child: Padding(
+                  padding: widget.padding ?? const EdgeInsets.all(10.0),
+                  child: widget.message ??
+                      Text(
+                        widget.textMessage?.content ?? '_',
+                        style: TextStyle(
+                          color: widget.textMessage?.role == Role.user
+                              ? senderContent
+                              : receiverContent,
+                          fontSize: 17.sp,
+                          height: 1.4,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                ),
+              ))
+
+          /*CustomFocusedMenuHolder(
               onPressed: () {},
               // menuWidth: MediaQuery.of(context).size.width * 0.50,
               blurSize: 5.0,
@@ -119,7 +232,9 @@ class _CustomBubbleState extends State<CustomBubble> {
                   Radius.circular(20.0),
                 ),
               ),
-              duration: const Duration(milliseconds: 100),
+              duration: const Duration(
+                milliseconds: 100,
+              ),
               animateMenuItems: true,
               blurBackgroundColor: Colors.black54,
               menuItems: <FocusedMenuItem>[
@@ -230,7 +345,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                       ),
                 ),
               ),
-            )
+            )*/
           : Container(
               decoration: BoxDecoration(
                 boxShadow: [

@@ -38,7 +38,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     tokenStream.listen(setToken);
 
-    FirebaseMessaging.instance.subscribeToTopic('topic');
+    // FirebaseMessaging.instance.subscribeToTopic('topic');
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
@@ -79,11 +79,11 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
       (String? payload) {
         // context.go(RouteName.historical);
         if (payload != null) {
-          context.read<ChatBloc>().add(
-                ChatConversationFromNotificationInited(
-                  payload.substring(1, payload.length - 1),
-                ),
-              );
+          // context.read<ChatBloc>().add(
+          //       ChatConversationFromNotificationInited(
+          //         payload.substring(1, payload.length - 1),
+          //       ),
+          //     );
 
           Logger().i(payload);
           Logger().w('a new notif selected : $payload');
@@ -96,19 +96,19 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
-        ///final isLight = Theme.of(context).brightness == Brightness.dark;
-        ///final backGroundColor = isLight
-         ///   ? Theme.of(context).scaffoldBackgroundColor
-          ////  : Theme.of(context).colorScheme.background;
+        final isLight = Theme.of(context).brightness == Brightness.dark;
+        final backGroundColor = isLight
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Theme.of(context).colorScheme.background;
         return Scaffold(
-          ///backgroundColor: backGroundColor,
+          backgroundColor: backGroundColor,
           key: context.read<ChatBloc>().scaffoldKey,
           resizeToAvoidBottomInset: true,
           appBar: const CustomAppBar(),
           endDrawer: const CustomDrawer(),
           body: state.conversation == null
               ? const ContainerCategoriesWidget()
-              : const ChatBody(),
+              : const ChatBodyWidget(),
         );
       },
     );

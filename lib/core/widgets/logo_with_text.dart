@@ -52,7 +52,7 @@ class LogoWithText extends StatelessWidget {
             // ),
             children: [
               TextSpan(
-                text: 'Bible +',
+                text: 'Bible',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontSize: textSize?.sp,
                       // fontSize: textSize,
