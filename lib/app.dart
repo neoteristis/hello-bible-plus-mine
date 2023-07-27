@@ -77,19 +77,24 @@ class App extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return BlocBuilder<ThemeBloc, ThemeState>(
-            buildWhen: (previous, current) =>
-                previous.themeMode != current.themeMode,
+          return BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              return MaterialApp.router(
-                title: 'hello bible',
-                theme: light,
-                darkTheme: dark,
-                debugShowCheckedModeBanner: false,
-                themeMode: state.themeMode,
-                routerConfig: route(getIt.get<AuthBloc>()),
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
+              return BlocBuilder<ThemeBloc, ThemeState>(
+                buildWhen: (previous, current) =>
+                    previous.themeMode != current.themeMode,
+                builder: (context, state) {
+                  return MaterialApp.router(
+                    title: 'hello bible',
+                    theme: light,
+                    darkTheme: dark,
+                    debugShowCheckedModeBanner: false,
+                    themeMode: state.themeMode,
+                    routerConfig: route,
+                    localizationsDelegates:
+                        AppLocalizations.localizationsDelegates,
+                    supportedLocales: AppLocalizations.supportedLocales,
+                  );
+                },
               );
             },
           );

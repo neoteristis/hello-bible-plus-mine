@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/helper/bloc_listenable.dart';
 import 'package:gpt/core/helper/log.dart';
@@ -23,10 +24,12 @@ import '../../features/user/presentation/pages/profile/profile_page.dart';
 import '../../features/user/presentation/pages/registration_page.dart';
 import '../../features/introduction/presentation/pages/landing_page.dart';
 import '../../splash_screen.dart';
+import 'go_router_refresh_stream.dart';
 
-GoRouter route(AuthBloc bloc) => GoRouter(
+GoRouter get route => GoRouter(
       initialLocation: '/',
-      refreshListenable: BlocListenable(bloc),
+      refreshListenable:
+          GoRouterRefreshStream(GetIt.instance.get<AuthBloc>().stream),
       redirect: (context, state) async {
         final loggedStatus = context.read<AuthBloc>().state.loggedStatus;
         Log.debug(loggedStatus);

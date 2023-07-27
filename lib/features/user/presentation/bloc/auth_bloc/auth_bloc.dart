@@ -121,7 +121,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(state.copyWith(authStatus: Status.loading));
     final res = await checkAuth(NoParams());
-    Log.debug(res);
     return res.fold(
       (l) => null,
       (r) {
