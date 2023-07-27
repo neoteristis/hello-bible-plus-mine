@@ -7,12 +7,14 @@ class LogoWithText extends StatelessWidget {
   const LogoWithText({
     super.key,
     this.logoColor,
+    this.textColor,
     this.logoSize,
     this.textSize,
     this.center = true,
   });
 
   final Color? logoColor;
+  final Color? textColor;
   final Size? logoSize;
   final double? textSize;
   final bool? center;
@@ -37,39 +39,17 @@ class LogoWithText extends StatelessWidget {
             // style: Theme.of(context).textTheme.,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontSize: textSize?.sp,
-                  // fontSize: textSize,
-
-                  // fontWeight: FontWeight.w500,
-                  // color: Color(
-                  //   0xFF0C0C0C,
-                  // ),
+                  color: textColor,
                 ),
-            // style: TextStyle(
-            //   fontWeight: FontWeight.w500,
-            //   fontSize: textSize?.sp ?? 31.sp,
-            //   // fontSize: textSize ?? 31,
-            //   color: Theme.of(context).colorScheme.tertiary,
-            // ),
             children: [
               TextSpan(
                 text: 'Bible',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontSize: textSize?.sp,
-                      // fontSize: textSize,
                       wordSpacing: -2.5,
                       fontWeight: FontWeight.w800,
-                      // fontWeight: FontWeight.w500,
-                      // color: Color(
-                      //   0xFF0C0C0C,
-                      // ),
+                      color: textColor,
                     ),
-                // style: TextStyle(
-                //   fontWeight: FontWeight.w800,
-                //   fontSize: textSize?.sp ?? 31.sp,
-                //   // fontSize: textSize ?? 31,
-                //   wordSpacing: -2.5,
-                //   color: Theme.of(context).colorScheme.tertiary,
-                // ),
               )
             ],
           ),
