@@ -52,7 +52,6 @@ class _CustomBubbleState extends State<CustomBubble> {
   @override
   Widget build(BuildContext context) {
     final BorderRadiusGeometry? borderRadius;
-
     switch (widget.nip) {
       case BubbleNip.leftBottom:
         borderRadius = BorderRadius.only(
@@ -104,86 +103,83 @@ class _CustomBubbleState extends State<CustomBubble> {
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 15,
-        vertical: 3,
+        vertical: 4,
       ),
       child: widget.nip == BubbleNip.leftBottom
           ? CustomHeroFocused(
               menuItems: <FocusedMenuItem>[
-                  if (widget.indexMessage != 0)
-                    FocusedMenuItem(
-                      title: const Text('Regénérer'),
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      trailingIcon: const Icon(Icons.refresh_rounded),
-                      onPressed: () {
-                        context.read<ChatBloc>().add(
-                              ChatAnswerRegenerated(
-                                messsageId: widget.indexMessage,
-                              ),
-                            );
-                      },
-                    ),
+                if (widget.indexMessage != 0)
                   FocusedMenuItem(
-                    title: const Text('Lire'),
+                    title: const Text('Regénérer'),
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    trailingIcon: const Icon(Icons.volume_up_rounded),
+                    trailingIcon: const Icon(Icons.refresh_rounded),
                     onPressed: () {
-                      context
-                          .read<ChatBloc>()
-                          .add(ChatMessageReadStarted(messsage: message));
+                      context.read<ChatBloc>().add(
+                            ChatAnswerRegenerated(
+                              messsageId: widget.indexMessage,
+                            ),
+                          );
                     },
                   ),
-                  if (message != null)
-                    FocusedMenuItem(
-                      title: const Text('Copier'),
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      trailingIcon: const Icon(Icons.copy),
-                      onPressed: () {
-                        Clipboard.setData(
-                          ClipboardData(
-                            text: message,
-                          ),
-                        );
-                      },
-                    ),
+                FocusedMenuItem(
+                  title: const Text('Lire'),
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  trailingIcon: const Icon(Icons.volume_up_rounded),
+                  onPressed: () {
+                    context
+                        .read<ChatBloc>()
+                        .add(ChatMessageReadStarted(messsage: message));
+                  },
+                ),
+                if (message != null)
                   FocusedMenuItem(
-                    title: const Text(
-                      'Sélectionner le texte',
-                    ),
+                    title: const Text('Copier'),
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    trailingIcon: const Icon(Icons.crop_rounded),
-                    onPressed: () async {
-                      if (message != null) {
-                        showTextSelection(
-                          context: context,
-                          selectionController: selectionController,
+                    trailingIcon: const Icon(Icons.copy),
+                    onPressed: () {
+                      Clipboard.setData(
+                        ClipboardData(
                           text: message,
-                        );
-                        await Future.delayed(
-                          const Duration(milliseconds: 500),
-                          () {
-                            // setState(() {
-                            selectionController.selectAll();
-                            // });
-                          },
-                        );
-                      }
+                        ),
+                      );
                     },
                   ),
-                  if (message != null)
-                    FocusedMenuItem(
-                      title: const Text('Partager'),
-                      trailingIcon: const Icon(Icons.share),
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      onPressed: () async {
-                        await Share.share(
-                          message,
-                        );
-                      },
-                    ),
-                ],
+                FocusedMenuItem(
+                  title: const Text(
+                    'Sélectionner le texte',
+                  ),
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  trailingIcon: const Icon(Icons.crop_rounded),
+                  onPressed: () async {
+                    if (message != null) {
+                      showTextSelection(
+                        context: context,
+                        selectionController: selectionController,
+                        text: message,
+                      );
+                      await Future.delayed(
+                        const Duration(milliseconds: 500),
+                        () {
+                          // setState(() {
+                          selectionController.selectAll();
+                          // });
+                        },
+                      );
+                    }
+                  },
+                ),
+                if (message != null)
+                  FocusedMenuItem(
+                    title: const Text('Partager'),
+                    trailingIcon: const Icon(Icons.share),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    onPressed: () async {
+                      await Share.share(
+                        message,
+                      );
+                    },
+                  ),
+              ],
               child: Container(
                 decoration: BoxDecoration(
                   boxShadow: [
@@ -196,8 +192,14 @@ class _CustomBubbleState extends State<CustomBubble> {
                     ),
                   ],
                   border: !isLight
-                      ? Border.all(color: const Color(0xFF232628), width: 1)
-                      : Border.all(color: const Color(0xFFF5F5F5), width: 1),
+                      ? Border.all(
+                          color: const Color(0xFF232628),
+                          width: 1,
+                        )
+                      : Border.all(
+                          color: const Color(0xFFF5F5F5),
+                          width: 1,
+                        ),
                   color: widget.color,
                   borderRadius: borderRadius,
                 ),
@@ -216,133 +218,8 @@ class _CustomBubbleState extends State<CustomBubble> {
                         ),
                       ),
                 ),
-              ))
-
-          /*CustomFocusedMenuHolder(
-              onPressed: () {},
-              // menuWidth: MediaQuery.of(context).size.width * 0.50,
-              blurSize: 5.0,
-              menuOffset: 10,
-              menuItemExtent: 45,
-              menuBoxDecoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.0),
-                ),
               ),
-              duration: const Duration(
-                milliseconds: 100,
-              ),
-              animateMenuItems: true,
-              blurBackgroundColor: Colors.black54,
-              menuItems: <FocusedMenuItem>[
-                if (widget.indexMessage != 0)
-                  FocusedMenuItem(
-                    title: const Text('Regénérer'),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    trailingIcon: const Icon(Icons.refresh_rounded),
-                    onPressed: () {
-                      context.read<ChatBloc>().add(
-                            ChatAnswerRegenerated(
-                              messsageId: widget.indexMessage,
-                            ),
-                          );
-                    },
-                  ),
-                if (message != null)
-                  FocusedMenuItem(
-                    title: const Text('Copier'),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    trailingIcon: const Icon(Icons.copy),
-                    onPressed: () {
-                      Clipboard.setData(
-                        ClipboardData(
-                          text: message,
-                        ),
-                      );
-                    },
-                  ),
-                if (message != null)
-                  FocusedMenuItem(
-                    title: const Text('Lire'),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    trailingIcon: const Icon(Icons.volume_up_rounded),
-                    onPressed: () {
-                      context
-                          .read<ChatBloc>()
-                          .add(ChatMessageReadStarted(messsage: message));
-                    },
-                  ),
-                FocusedMenuItem(
-                  title: const Text(
-                    'Sélectionner le texte',
-                  ),
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  trailingIcon: const Icon(Icons.crop_rounded),
-                  onPressed: () async {
-                    final text = widget.textMessage?.content;
-                    if (text != null) {
-                      showTextSelection(
-                        context: context,
-                        selectionController: selectionController,
-                        text: text,
-                      );
-                      await Future.delayed(
-                        const Duration(milliseconds: 500),
-                        () {
-                          // setState(() {
-                          selectionController.selectAll();
-                          // });
-                        },
-                      );
-                    }
-                  },
-                ),
-                if (widget.textMessage?.content != null)
-                  FocusedMenuItem(
-                    title: const Text('Partager'),
-                    trailingIcon: const Icon(Icons.share),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    onPressed: () async {
-                      await Share.share(
-                        widget.textMessage?.content ?? '',
-                      );
-                    },
-                  ),
-              ],
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF000000)
-                          .withOpacity(0.1), // shadow color with opacity
-                      spreadRadius: 0, // spread radius
-                      blurRadius: 10, // blur radius
-                      offset: const Offset(0, 4), // offset in x and y direction
-                    ),
-                  ],
-                  border: !isLight
-                      ? Border.all(color: const Color(0xFF232628), width: 1)
-                      : Border.all(color: const Color(0xFFF5F5F5), width: 1),
-                  color: widget.color,
-                  borderRadius: borderRadius,
-                ),
-                child: Padding(
-                  padding: widget.padding ?? const EdgeInsets.all(10.0),
-                  child: widget.message ??
-                      Text(
-                        widget.textMessage?.content ?? '_',
-                        style: TextStyle(
-                          color: widget.textMessage?.role == Role.user
-                              ? senderContent
-                              : receiverContent,
-                          fontSize: 17.sp,
-                          height: 1.4,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                ),
-              ),
-            )*/
+            )
           : Container(
               decoration: BoxDecoration(
                 boxShadow: [

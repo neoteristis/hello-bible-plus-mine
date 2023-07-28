@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:gpt/core/constants/status.dart';
+import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../widgets/chat/chat_body_widget.dart';
 import '../widgets/custom_app_bar.dart';
@@ -30,7 +31,22 @@ class _ChatPageState extends State<ChatPage> {
           resizeToAvoidBottomInset: true,
           appBar: const CustomAppBar(),
           endDrawer: const CustomDrawer(),
-          body: const ChatBodyWidget(),
+          body: BlocBuilder<ChatBloc, ChatState>(
+            buildWhen: (previous, current) =>
+                previous.conversationStatus != current.conversationStatus,
+            builder: (context, state) {
+              switch (state.conversationStatus) {
+                case Status.loading:
+                  return const Center(
+                    child: CustomProgressIndicator(),
+                  );
+                case Status.loaded:
+                  return const CustomChat();
+                default:
+                  return const SizedBox.shrink();
+              }
+            },
+          ),
         );
       },
     );
