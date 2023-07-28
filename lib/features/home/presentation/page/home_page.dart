@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gpt/core/helper/notifications.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 import 'package:gpt/core/widgets/custom_drawer.dart';
 import 'package:gpt/features/home/presentation/widgets/categories_by_section_widget.dart';
@@ -9,7 +10,6 @@ import '../../../../core/constants/status.dart';
 import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
-
   static const String route = 'home';
 
   const HomePage({super.key});
@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
+    configureNotification(context);
   }
 
   @override
