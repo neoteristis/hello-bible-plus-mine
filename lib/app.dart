@@ -79,7 +79,6 @@ class App extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.authenticationStatus != current.authenticationStatus,
         builder: (context, state) {
-          print('auth bloc main rebuild');
           return BlocBuilder<ThemeBloc, ThemeState>(
             buildWhen: (previous, current) =>
                 previous.themeMode != current.themeMode,
