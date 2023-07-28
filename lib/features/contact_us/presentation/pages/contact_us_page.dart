@@ -10,6 +10,7 @@ import '../../../../core/widgets/scaffold_with_background.dart';
 import '../../../../l10n/function.dart';
 
 class ContactUsPage extends StatelessWidget {
+  static const String route = 'contact';
   const ContactUsPage({super.key});
 
   @override

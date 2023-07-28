@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/helper/log.dart';
 import 'package:gpt/features/home/presentation/page/home_page.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
@@ -26,59 +25,60 @@ import '../../splash_screen.dart';
 import 'go_router_refresh_stream.dart';
 
 GoRouter get route => GoRouter(
-      initialLocation: '/',
+      initialLocation: SplashScreen.route,
       refreshListenable:
           GoRouterRefreshStream(GetIt.instance.get<AuthBloc>().stream),
       routes: [
         GoRoute(
-          path: '/',
+          path: SplashScreen.route,
           builder: (context, splash) => const SplashScreen(),
           redirect: (context, state) async {
-            final loggedStatus = context.read<AuthBloc>().state.loggedStatus;
-            if(state.fullPath == '/'){
+            final loggedStatus = context.read<AuthBloc>().state.authenticationStatus;
+            if (state.fullPath == SplashScreen.route) {
               switch (loggedStatus) {
                 case AuthStatus.authenticated:
-                  return '/home';
+                  return '${SplashScreen.route}${HomePage.route}';
                 case AuthStatus.unauthenticated:
-                  return '/landing';
+                  return '${SplashScreen.route}${LandingPage.route}';
                 default:
                   return null;
               }
             }
+            return null;
           },
           routes: [
             ///Unauthenticated
             GoRoute(
-              path: 'landing',
+              path: LandingPage.route,
               builder: (context, state) => const LandingPage(),
               routes: [
                 GoRoute(
-                  path: 'registration',
+                  path: RegistrationPage.route,
                   builder: (context, state) => const RegistrationPage(),
                   routes: [
                     GoRoute(
-                      path: 'email',
+                      path: EmailInputPage.route,
                       builder: (context, state) => const EmailInputPage(),
                       routes: [
                         GoRoute(
-                          path: 'password',
+                          path: PasswordInputPage.route,
                           builder: (context, state) =>
                               const PasswordInputPage(),
                         ),
                         GoRoute(
-                          path: 'newPassword',
+                          path: CreatePasswordInputPage.route,
                           builder: (context, state) =>
                               const CreatePasswordInputPage(),
                         ),
                         GoRoute(
-                          path: 'namePicture',
+                          path: NameAndPictureInputPage.route,
                           builder: (context, state) =>
                               const NameAndPictureInputPage(),
                         ),
                       ],
                     ),
                     GoRoute(
-                      path: 'subscription',
+                      path: SubscriptionPage.route,
                       builder: (context, state) => const SubscriptionPage(),
                     ),
                   ],
@@ -88,56 +88,56 @@ GoRouter get route => GoRouter(
 
             ///Authenticated
             GoRoute(
-              path: 'home',
+              path: HomePage.route,
               builder: (context, state) => const HomePage(),
               routes: [
                 GoRoute(
-                  path: 'chat',
+                  path: ChatPage.route,
                   builder: (context, state) => const ChatPage(),
                 ),
                 GoRoute(
-                  path: 'historical',
+                  path: HistoricalPage.route,
                   builder: (context, state) => const HistoricalPage(),
                 ),
                 GoRoute(
-                  path: 'subscribe',
+                  path: SubscriptionPage.route,
                   builder: (context, state) => const SubscriptionPage(),
                 ),
                 GoRoute(
-                  path: 'profile',
+                  path: ProfilePage.route,
                   builder: (context, state) => const ProfilePage(),
                   routes: [
                     GoRoute(
-                      path: 'edit-profile',
+                      path: EditProfilePage.route,
                       builder: (context, state) => const EditProfilePage(),
                     ),
                   ],
                 ),
                 GoRoute(
-                  path: 'notif',
+                  path: NotificationsPage.route,
                   builder: (context, state) => const NotificationsPage(),
                   routes: [
                     GoRoute(
-                      path: 'manageNotif',
+                      path: ManageNotificationsPage.route,
                       builder: (context, state) =>
                           const ManageNotificationsPage(),
                     ),
                   ],
                 ),
                 GoRoute(
-                  path: 'contact-us',
+                  path: ContactUsPage.route,
                   builder: (context, state) => const ContactUsPage(),
                 ),
                 GoRoute(
-                  path: 'about',
+                  path: AboutPage.route,
                   builder: (context, state) => const AboutPage(),
                 ),
                 GoRoute(
-                  path: 'help',
+                  path: HelpPage.route,
                   builder: (context, state) => const HelpPage(),
                 ),
                 GoRoute(
-                  path: 'usage-general-conditions',
+                  path: UsageGeneralConditionPage.route,
                   builder: (context, state) =>
                       const UsageGeneralConditionPage(),
                 ),

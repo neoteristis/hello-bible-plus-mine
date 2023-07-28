@@ -4,16 +4,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
+import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
+import 'package:gpt/features/contact_us/presentation/pages/contact_us_page.dart';
+import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/more/presentation/pages/about_page.dart';
+import 'package:gpt/features/more/presentation/pages/help_page.dart';
+import 'package:gpt/features/more/presentation/pages/usage_general_condition_page.dart';
+import 'package:gpt/features/notification/presentation/pages/notifications_page.dart';
+import 'package:gpt/features/subscription/presentation/pages/subscription_page.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../core/routes/route_name.dart';
-import '../../../../core/theme/bloc/theme_bloc.dart';
-import '../../../../core/widgets/custom_alert_dialog.dart';
-import '../../../../l10n/function.dart';
-import '../bloc/chat_bloc/chat_bloc.dart';
-import '../bloc/historical_bloc/historical_bloc.dart';
-import '../widgets/categories_widget.dart';
-import '../widgets/custom_app_bar.dart';
+import 'package:gpt/features/user/presentation/pages/profile/profile_page.dart';
+import 'package:gpt/splash_screen.dart';
+import '../routes/route_name.dart';
+import '../theme/bloc/theme_bloc.dart';
+import 'custom_alert_dialog.dart';
+import '../../l10n/function.dart';
+import '../../features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import '../../features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
+import '../../features/chat/presentation/widgets/categories_widget.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -89,8 +98,6 @@ class CustomDrawer extends StatelessWidget {
                         context: context,
                         builder: (context) => CustomAlertDialog(
                           height: 100,
-                          // shape: RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.circular(5)),
                           content: Center(
                             // padding: EdgeInsets.only(top: 20.0),
                             child: Padding(
@@ -177,14 +184,18 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         label: dict(context).myProfile,
         icon: const IconDrawerFromAsset('assets/icons/profil.svg'),
         onPressed: () {
-          context.go(RouteName.profile);
+          context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
+          context.go(
+              '${SplashScreen.route}${HomePage.route}/${ProfilePage.route}');
         },
       ),
       DrawerTile(
         label: dict(context).mySubscription,
         icon: const IconDrawerFromAsset('assets/icons/subscription.svg'),
         onPressed: () {
-          context.go(RouteName.subscribe);
+          context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
+          context.go(
+              '${SplashScreen.route}${HomePage.route}/${SubscriptionPage.route}');
         },
       ),
       DrawerTile(
@@ -194,7 +205,8 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
         onPressed: () {
           context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
-          context.go(RouteName.historical);
+          context.go(
+              '${SplashScreen.route}${HomePage.route}/${HistoricalPage.route}');
         },
       ),
       DrawerTile(
@@ -203,7 +215,8 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.notifications,
         ),
         onPressed: () {
-          context.go(RouteName.manageNotif);
+          context.go(
+              '${SplashScreen.route}${HomePage.route}/${NotificationsPage.route}');
         },
       ),
       DrawerTile(
@@ -247,7 +260,8 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.mail,
         ),
         onPressed: () {
-          context.go(RouteName.contactUs);
+          context.go(
+              '${SplashScreen.route}${HomePage.route}/${ContactUsPage.route}');
         },
       ),
       DrawerTile(
@@ -256,7 +270,8 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.help,
         ),
         onPressed: () {
-          context.go(RouteName.help);
+          context
+              .go('${SplashScreen.route}${HomePage.route}/${HelpPage.route}');
         },
       ),
       DrawerTile(
@@ -265,14 +280,16 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.info,
         ),
         onPressed: () {
-          context.go(RouteName.about);
+          context
+              .go('${SplashScreen.route}${HomePage.route}/${AboutPage.route}');
         },
       ),
       DrawerTile(
         label: dict(context).readOurConditions,
         icon: const IconDrawerFromAsset('assets/icons/cgu.svg'),
         onPressed: () {
-          context.go(RouteName.conditions);
+          context.go(
+              '${SplashScreen.route}${HomePage.route}/${UsageGeneralConditionPage.route}');
         },
       ),
       DrawerTile(

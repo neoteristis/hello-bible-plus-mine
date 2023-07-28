@@ -4,6 +4,7 @@ import 'package:gpt/l10n/function.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
 
 class AboutPage extends StatelessWidget {
+  static const String route = 'about';
   const AboutPage({super.key});
 
   @override

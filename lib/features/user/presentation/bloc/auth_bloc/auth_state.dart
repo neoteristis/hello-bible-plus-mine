@@ -14,10 +14,10 @@ class AuthState extends Equatable {
     this.failure,
     this.goto = GoTo.init,
     this.isLogged = false,
-    this.loggedStatus = AuthStatus.unknown,
+    this.authenticationStatus = AuthStatus.unknown,
   });
 
-  final AuthStatus loggedStatus;
+  final AuthStatus authenticationStatus;
 
   ///
   final String? route;
@@ -43,7 +43,7 @@ class AuthState extends Equatable {
         failure,
         goto,
         isLogged,
-        loggedStatus,
+        authenticationStatus,
       ];
 
   AuthState copyWith({
@@ -58,7 +58,7 @@ class AuthState extends Equatable {
     Failure? failure,
     GoTo? goto,
     bool? isLogged,
-    AuthStatus? loggedStatus,
+    AuthStatus? authenticationStatus,
   }) {
     return AuthState(
       route: route ?? this.route,
@@ -72,7 +72,7 @@ class AuthState extends Equatable {
       failure: failure ?? this.failure,
       goto: goto ?? this.goto,
       isLogged: isLogged ?? this.isLogged,
-      loggedStatus: loggedStatus ?? this.loggedStatus,
+      authenticationStatus: authenticationStatus ?? this.authenticationStatus,
     );
   }
 }

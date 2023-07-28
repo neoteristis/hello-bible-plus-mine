@@ -7,29 +7,20 @@ import 'core/constants/status.dart';
 import 'features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
+  static const String route = '/';
+
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        // BlocListener<ChatBloc, ChatState>(
-        //   listenWhen: (previous, current) =>
-        //       previous.catStatus != current.catStatus,
-        //   listener: (context, state) {
-        //     if ((state.catStatus == Status.loaded ||
-        //         state.catStatus == Status.failed)) {
-        //       context.read<AuthBloc>().add(AuthSuccessfullyLogged());
-        //     }
-        //   },
-        // ),
         BlocListener<AuthBloc, AuthState>(
           listenWhen: (previous, current) =>
               previous.authStatus != current.authStatus,
           listener: (context, state) {
             if (state.authStatus == Status.loaded) {
               context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
-              // context.read<HistoricalBloc>().add(HistoricalFetched());
             }
           },
         ),

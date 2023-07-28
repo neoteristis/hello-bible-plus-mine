@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gpt/core/helper/log.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
-import 'package:gpt/features/user/domain/usecases/check_auth_usecase.dart';
 import 'package:gpt/features/user/domain/usecases/usecases.dart';
 
 import '../../../../../core/constants/status.dart';
@@ -125,15 +124,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (l) => null,
       (r) {
         if (r == null) {
-          emit(state.copyWith(loggedStatus: AuthStatus.unauthenticated));
+          emit(state.copyWith(authenticationStatus: AuthStatus.unauthenticated));
           add(const AuthLoginForwarded(RouteName.login));
         } else {
           emit(state.copyWith(
             authStatus: Status.loaded,
             isLogged: true,
-            loggedStatus: AuthStatus.authenticated,
+            authenticationStatus: AuthStatus.authenticated,
           ));
-          Log.debug(state.loggedStatus);
+          Log.debug(state.authenticationStatus);
           ///add(const AuthLoginForwarded(RouteName.logged));
         }
       },
@@ -157,7 +156,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (r) {
         emit(
           state.copyWith(
-            route: RouteName.login,
+            authenticationStatus: AuthStatus.unauthenticated
           ),
         );
         add(AuthRegistrationPageWent());

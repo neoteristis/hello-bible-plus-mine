@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
-import 'package:gpt/features/chat/presentation/pages/custom_drawer.dart';
+import 'package:gpt/core/widgets/custom_drawer.dart';
 import 'package:gpt/features/home/presentation/widgets/categories_by_section_widget.dart';
-import 'package:gpt/features/chat/presentation/widgets/custom_home_app_bar.dart';
+import 'package:gpt/features/home/presentation/widgets/custom_home_app_bar.dart';
 
 import '../../../../core/constants/status.dart';
 import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
+
+  static const String route = 'home';
+
   const HomePage({super.key});
 
   @override
@@ -78,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                       return Column(
                         children: [
                           const SizedBox(
-                            height: 65,
+                            height: 30,
                           ),
                           CategoriesBySectionWidget(
                             data: state.categoriesBySection[0],

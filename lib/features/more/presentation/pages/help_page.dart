@@ -4,6 +4,8 @@ import '../../../../core/widgets/scaffold_with_background.dart';
 import '../../../../l10n/function.dart';
 
 class HelpPage extends StatelessWidget {
+
+  static const String route = 'help';
   const HelpPage({super.key});
 
   @override

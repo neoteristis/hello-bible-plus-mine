@@ -7,7 +7,9 @@ import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 
 class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomHomeAppBar({super.key});
+  const CustomHomeAppBar({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -114,26 +116,21 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
     );
   }
 
-  void submit(ChatState state){
+  void submit(ChatState state) {
     try {
       final category = state.categoriesBySection
-          .firstWhere(
-              (element) => element.id == '64ba9f74a8bccd0239a4b4e6')
+          .firstWhere((element) => element.id == '64ba9f74a8bccd0239a4b4e6')
           .categories
           ?.first;
-      context
-          .read<ChatBloc>()
-          .scaffoldKey
-          .currentState
-          ?.closeDrawer();
+      context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
       unfocusKeyboard();
       if (category != null) {
         context.read<ChatBloc>().add(
-          ChatConversationChanged(
-            category: category,
-            firstMessage: controller.text,
-          ),
-        );
+              ChatConversationChanged(
+                category: category,
+                firstMessage: controller.text,
+              ),
+            );
       }
     } catch (_) {
       print(_);

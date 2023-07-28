@@ -6,14 +6,15 @@ import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.da
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/logo.dart';
 import '../../../../l10n/function.dart';
-import '../../../user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import '../widgets/widgets.dart';
 
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
 
 class SubscriptionPage extends StatefulWidget {
+
+  static const String route = 'subscription';
+
   const SubscriptionPage({super.key});
 
   @override

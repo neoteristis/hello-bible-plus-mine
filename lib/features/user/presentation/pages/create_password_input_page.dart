@@ -12,6 +12,9 @@ import 'custom_password_input.dart';
 import 'input_base_page.dart';
 
 class CreatePasswordInputPage extends StatelessWidget {
+
+  static const String route = 'create-new-password';
+
   const CreatePasswordInputPage({super.key});
 
   @override
