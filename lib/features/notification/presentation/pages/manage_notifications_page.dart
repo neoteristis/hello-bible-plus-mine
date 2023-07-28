@@ -62,6 +62,27 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
                 return const Center(
                   child: CustomProgressIndicator(),
                 );
+              case Status.failed:
+                return Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      context.read<ManageNotifBloc>().add(
+                            ManageNotifCategoryFetched(),
+                          );
+                    },
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('Rafraichir'),
+                        Icon(
+                          Icons.refresh_rounded,
+                          // size: 50,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               case Status.loaded:
                 return Padding(
                   padding: const EdgeInsets.only(

@@ -89,10 +89,7 @@ class CustomDrawer extends StatelessWidget {
                         context: context,
                         builder: (context) => CustomAlertDialog(
                           height: 100,
-                          // shape: RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.circular(5)),
                           content: Center(
-                            // padding: EdgeInsets.only(top: 20.0),
                             child: Padding(
                               padding: const EdgeInsets.only(top: 20.0),
                               child: Text(

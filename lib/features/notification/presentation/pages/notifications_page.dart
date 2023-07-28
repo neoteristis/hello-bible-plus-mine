@@ -4,13 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 import 'package:gpt/features/notification/presentation/widgets/notification_item_widget.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/extension/datetime_extension.dart';
 import '../../../../core/routes/route_name.dart';
-import '../../../../l10n/function.dart';
-import '../../domain/entities/notification_entity.dart';
 import '../bloc/notification_bloc.dart';
-import '../widgets/notif_manage_item_widget.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});

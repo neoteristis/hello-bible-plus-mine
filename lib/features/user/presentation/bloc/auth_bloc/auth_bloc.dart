@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
-import 'package:gpt/features/user/domain/usecases/check_auth_usecase.dart';
 import 'package:gpt/features/user/domain/usecases/usecases.dart';
 
 import '../../../../../core/constants/status.dart';

@@ -429,7 +429,7 @@ Future<void> setupFlutterNotifications() async {
   });
 
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('mipmap/ic_launcher');
+      AndroidInitializationSettings('mipmap/notif_icon');
   const DarwinInitializationSettings initializationSettingsDarwin =
       DarwinInitializationSettings(
           onDidReceiveLocalNotification: onDidReceiveLocalNotification);

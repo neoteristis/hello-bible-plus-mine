@@ -62,6 +62,10 @@ class RegistrationRepositoryImp implements RegistrationRepository {
   @override
   Future<Either<Failure, dynamic>> deleteAuth() async {
     try {
+      final userRes = await local.getUser();
+      if (userRes != null) {
+        await remote.unregisterUserTopic(userRes);
+      }
       return Right(await local.deleteAuth());
     } catch (e) {
       return const Left(CacheFailure());

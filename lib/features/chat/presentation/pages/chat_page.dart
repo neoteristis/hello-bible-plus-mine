@@ -4,10 +4,14 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gpt/core/base_repository/base_repository.dart';
 import 'package:gpt/core/constants/api_constants.dart';
+import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:logger/logger.dart';
 import '../../../../core/db_services/db_services.dart';
+import '../../../../core/helper/log.dart';
+import '../../../../core/routes/route_name.dart';
 import '../../../../injections.dart';
 import '../../domain/entities/category.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
@@ -23,7 +27,7 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
+class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     FirebaseMessaging.instance.getInitialMessage().then(
@@ -56,11 +60,6 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     super.initState();
   }
 
-  @override
-  void didChangeLocales(List<Locale>? locales) {
-    print('didlanguagechanged');
-  }
-
   void _actOnNewNotificationComing() {
     getIt<StreamController<RemoteMessage?>>(
             instanceName: 'new_push_notification')
@@ -83,10 +82,15 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           {
             try {
               final json = jsonDecode(payload);
-
               final category = Category.fromJson(
                 json,
               );
+              context.go(RouteName.home);
+              context
+                  .read<ChatBloc>()
+                  .scaffoldKey
+                  .currentState
+                  ?.closeEndDrawer();
               context.read<ChatBloc>().add(
                     ChatConversationChanged(
                       category: category,

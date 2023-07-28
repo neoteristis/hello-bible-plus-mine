@@ -20,6 +20,7 @@ abstract class RegistrationRemoteDatasources {
   Future<UserResponse> socialConnect(User user);
   Future<UserResponse> appleConnect(Map<String, String> queryParams);
   Future sendFirebaseToken(User user);
+  Future unregisterUserTopic(User user);
   Future<User> getUser();
 }
 
@@ -223,6 +224,21 @@ class RegistrationRemoteDatasourcesImp
           ? MessageResponse.fromJson(res?.data).message
           : e.toString();
       throw ServerException(message: message);
+    }
+  }
+
+  @override
+  Future unregisterUserTopic(User user) async {
+    final uid = user.idString;
+    if (uid != null) {
+      try {
+        FirebaseMessaging.instance.unsubscribeFromTopic('hello_bible_topic');
+        FirebaseMessaging.instance.unsubscribeFromTopic(uid);
+      } catch (e) {
+        if (kDebugMode) {
+          print(e.toString());
+        }
+      }
     }
   }
 }

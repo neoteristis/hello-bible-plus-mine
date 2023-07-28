@@ -62,6 +62,7 @@ class ManageNotifBloc extends Bloc<ManageNotifEvent, ManageNotifState> {
     final heure = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.input,
       cancelText: dict(context).cancel,
       hourLabelText: dict(context).hour,
       helpText: dict(context).chooseHour,
