@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/base_repository/base_repository.dart';
 import 'package:gpt/core/constants/api_constants.dart';
+import 'package:gpt/core/helper/notifications.dart';
 import 'package:logger/logger.dart';
 import '../../../../core/db_services/db_services.dart';
 import '../../../../injections.dart';
 import '../../domain/entities/category.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../widgets/chat/chat_body_widget.dart';
-import '../widgets/container_categories_widget.dart';
 import '../widgets/custom_app_bar.dart';
 import 'custom_drawer.dart';
 
@@ -83,7 +83,6 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           {
             try {
               final json = jsonDecode(payload);
-
               final category = Category.fromJson(
                 json,
               );
@@ -109,27 +108,10 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           key: context.read<ChatBloc>().scaffoldKey,
           resizeToAvoidBottomInset: true,
-          appBar: CustomAppBar(
-            height: state.conversation != null ? 60 : null,
-          ),
+          appBar: const CustomAppBar(),
           endDrawer: const CustomDrawer(),
-          body: state.conversation == null
-              ? const ContainerCategoriesWidget()
-              : const ChatBodyWidget(),
+          body: const ChatBodyWidget(),
         );
-      },
-    );
-  }
-}
-
-Future setToken(String? token) async {
-  final user = await getIt<DbService>().getUser();
-  final id = user?.idString;
-  if (id != null) {
-    await getIt<BaseRepository>().patch(
-      ApiConstants.registration(),
-      body: {
-        'deviceToken': token,
       },
     );
   }

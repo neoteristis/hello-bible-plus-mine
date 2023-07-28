@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/theme/theme.dart';
-import 'package:gpt/features/chat/presentation/widgets/category_item_widget.dart';
+import 'package:gpt/features/home/presentation/widgets/category_item_widget.dart';
 
-import '../../domain/entities/entities.dart';
+import '../../../chat/domain/entities/entities.dart';
 import 'dart:math' as math;
 
-import 'category_item2.dart';
+import '../../../chat/presentation/widgets/category_item2.dart';
 
 class CategoriesBySectionWidget extends StatelessWidget {
   const CategoriesBySectionWidget({super.key, this.data, required this.index});
@@ -34,10 +34,6 @@ class CategoriesBySectionWidget extends StatelessWidget {
             const SizedBox(
               width: 20,
             ),
-            // iconLeadings(context)[index < 3 ? index : index % 3],
-            // const SizedBox(
-            //   width: 5,
-            // ),
             Text(
               sectionName!,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(

@@ -8,6 +8,8 @@ import '../bloc/historical_bloc/historical_bloc.dart';
 import 'categories_widget.dart';
 import 'historical/historical_item_widget.dart';
 
+
+/***
 class ContainerCategoriesWidget extends StatelessWidget {
   const ContainerCategoriesWidget({
     super.key,
@@ -20,6 +22,8 @@ class ContainerCategoriesWidget extends StatelessWidget {
     );
   }
 }
+
+    ***/
 
 /**
 class LastHistoricWidget extends StatelessWidget {

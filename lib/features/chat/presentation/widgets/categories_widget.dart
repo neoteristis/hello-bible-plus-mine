@@ -8,7 +8,7 @@ import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
-import 'categories_by_section_widget.dart';
+import '../../../home/presentation/widgets/categories_by_section_widget.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({

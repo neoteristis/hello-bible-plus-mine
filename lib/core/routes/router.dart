@@ -29,24 +29,25 @@ GoRouter get route => GoRouter(
       initialLocation: '/',
       refreshListenable:
           GoRouterRefreshStream(GetIt.instance.get<AuthBloc>().stream),
-      redirect: (context, state) async {
-        final loggedStatus = context.read<AuthBloc>().state.loggedStatus;
-        Log.debug(loggedStatus);
-        switch (loggedStatus) {
-          case AuthStatus.authenticated:
-            return '/home';
-          case AuthStatus.unauthenticated:
-            return '/landing';
-          default:
-            return null;
-        }
-      },
       routes: [
         GoRoute(
           path: '/',
           builder: (context, splash) => const SplashScreen(),
+          redirect: (context, state) async {
+            final loggedStatus = context.read<AuthBloc>().state.loggedStatus;
+            if(state.fullPath == '/'){
+              switch (loggedStatus) {
+                case AuthStatus.authenticated:
+                  return '/home';
+                case AuthStatus.unauthenticated:
+                  return '/landing';
+                default:
+                  return null;
+              }
+            }
+          },
           routes: [
-            ///Not logged
+            ///Unauthenticated
             GoRoute(
               path: 'landing',
               builder: (context, state) => const LandingPage(),
@@ -85,7 +86,7 @@ GoRouter get route => GoRouter(
               ],
             ),
 
-            ///Logged
+            ///Authenticated
             GoRoute(
               path: 'home',
               builder: (context, state) => const HomePage(),
