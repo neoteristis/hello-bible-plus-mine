@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
@@ -168,7 +166,7 @@ class BottomContainer extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       // fontSize: 12,
                       color: contentColor,
                     ),
@@ -179,7 +177,7 @@ class BottomContainer extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: contentColor,
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       // fontSize: 12,
                     ),
                   ),

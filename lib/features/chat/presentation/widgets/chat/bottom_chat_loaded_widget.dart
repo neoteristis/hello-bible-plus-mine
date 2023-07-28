@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/features/chat/presentation/widgets/chat/suggestion_item.dart';
 
 import '../../../../../core/widgets/custom_bubble.dart';
@@ -66,7 +65,7 @@ class BottomChatLoadedWidget extends StatelessWidget {
                       state.incoming ?? '',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 17.sp,
+                        fontSize: 17,
                         // fontSize: 17,
                         height: 1.4,
                         fontWeight: FontWeight.w400,

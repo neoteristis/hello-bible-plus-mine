@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../domain/entities/entities.dart';
@@ -61,7 +60,7 @@ class CategoryItem2 extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: 14,
                           // fontSize: 14,
                         ),
                     // style: TextStyle(
@@ -90,7 +89,7 @@ class CategoryItem2 extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w500,
                           // fontSize: 11,
-                          fontSize: 11.sp,
+                          fontSize: 11,
                         ),
                     textAlign: TextAlign.center,
                   ),

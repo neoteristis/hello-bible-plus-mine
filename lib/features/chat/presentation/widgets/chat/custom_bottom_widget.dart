@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/widgets/typing_indicator.dart';
 import 'package:lottie/lottie.dart';
@@ -122,7 +121,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                                 const EdgeInsets.symmetric(horizontal: 20),
                             hintText: state.conversation?.category?.placeholder,
                             hintStyle: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 14,
                               // fontSize: 14,
                               color: hintColor,
                             ),
@@ -141,7 +140,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                                   const BorderRadius.all(Radius.circular(24)),
                               borderSide: BorderSide(
                                 color: Theme.of(context).primaryColor,
-                                width: 2.w,
+                                width: 2,
                                 // width: 2,
                               ),
                             ),
@@ -150,7 +149,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                                   const BorderRadius.all(Radius.circular(24)),
                               borderSide: BorderSide(
                                 color: Theme.of(context).primaryColor,
-                                width: 2.w,
+                                width: 2,
                                 // width: 2,
                               ),
                             ),
@@ -188,7 +187,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                                     Icons.send_rounded,
                                     color:
                                         Theme.of(context).colorScheme.onPrimary,
-                                    size: 16.w,
+                                    size: 16,
                                     // size: 16,
                                   ),
                                 );

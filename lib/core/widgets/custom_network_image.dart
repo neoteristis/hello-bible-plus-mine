@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomNetworkImage extends StatelessWidget {
@@ -17,13 +16,13 @@ class CustomNetworkImage extends StatelessWidget {
     return url.contains('svg')
         ? SvgPicture.network(
             url,
-            width: 20.sp,
+            width: 20,
             // width: 25,
             color: color,
           )
         : Image.network(
             url,
-            width: 20.sp,
+            width: 20,
             // width: 25,
             color: color,
           );

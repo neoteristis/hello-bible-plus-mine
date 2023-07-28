@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/widgets/custom_hero_focused.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:selectable/selectable.dart';
@@ -213,7 +212,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                           color: widget.textMessage?.role == Role.user
                               ? senderContent
                               : receiverContent,
-                          fontSize: 17.sp,
+                          fontSize: 17,
                           height: 1.4,
                           fontWeight: FontWeight.w400,
                         ),
@@ -373,7 +372,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                         color: widget.textMessage?.role == Role.user
                             ? senderContent
                             : receiverContent,
-                        fontSize: 17.sp,
+                        fontSize: 17,
                         height: 1.4,
                         fontWeight: FontWeight.w400,
                       ),

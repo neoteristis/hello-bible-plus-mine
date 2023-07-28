@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/features/home/presentation/widgets/category_item_widget.dart';
 
@@ -37,7 +36,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
             Text(
               sectionName!,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontSize: 17.sp,
+                    fontSize: 17,
                     color: primaryColor,
                   ),
             ),

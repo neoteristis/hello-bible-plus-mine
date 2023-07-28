@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
@@ -65,7 +64,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               AppLocalizations.of(context)!.loading,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             // fontSize: 14,
                             color: Theme.of(context).colorScheme.tertiary,
                           ),
@@ -77,7 +76,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 11.sp,
+                            fontSize: 11,
                             // fontSize: 11,
                             color: Theme.of(context).colorScheme.tertiary,
                           ),

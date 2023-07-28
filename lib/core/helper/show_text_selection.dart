@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:selectable/selectable.dart';
 
 Future showTextSelection({
@@ -33,8 +32,8 @@ Future showTextSelection({
                   ),
                   child: Text(
                     text,
-                    style: TextStyle(
-                      fontSize: 17.sp,
+                    style: const TextStyle(
+                      fontSize: 17,
                       height: 1.4,
                       fontWeight: FontWeight.w400,
                     ),
