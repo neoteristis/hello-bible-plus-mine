@@ -10,6 +10,7 @@ import 'package:gpt/features/home/presentation/page/home_page.dart';
 import 'package:gpt/features/more/presentation/pages/about_page.dart';
 import 'package:gpt/features/more/presentation/pages/help_page.dart';
 import 'package:gpt/features/more/presentation/pages/usage_general_condition_page.dart';
+import 'package:gpt/features/notification/presentation/pages/manage_notifications_page.dart';
 import 'package:gpt/features/notification/presentation/pages/notifications_page.dart';
 import 'package:gpt/features/subscription/presentation/pages/subscription_page.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -210,7 +211,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
           context.go(
-              '${SplashScreen.route}${HomePage.route}/${NotificationsPage.route}');
+              '${SplashScreen.route}${HomePage.route}/${NotificationsPage.route}/${ManageNotificationsPage.route}');
         },
       ),
       DrawerTile(
