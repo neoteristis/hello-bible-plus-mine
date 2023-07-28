@@ -26,43 +26,46 @@ class ScaffoldWithBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        persistentFooterButtons: persistentFooterButtons,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: hasAppBar
-            ? AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                centerTitle: false,
-                title: Visibility(
-                  visible: onPop != null,
-                  child: GestureDetector(
-                    onTap: onPop,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back_ios,
-                          size: 20,
+    return Scaffold(
+      persistentFooterButtons: persistentFooterButtons,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      appBar: hasAppBar
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              automaticallyImplyLeading: false,
+              centerTitle: false,
+              title: Visibility(
+                visible: onPop != null,
+                child: GestureDetector(
+                  onTap: onPop,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_back_ios,
+                        size: 20,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      Text(
+                        title ?? dict(context).goback,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
-                        Text(
-                          title ?? dict(context).goback,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                actions: actions,
-              )
-            : null,
-        body: Stack(
+              ),
+              actions: actions,
+            )
+          : null,
+      body: SafeArea(
+        child: Stack(
           children: [
             if (addBackgroundImage ?? true)
               const Positioned(

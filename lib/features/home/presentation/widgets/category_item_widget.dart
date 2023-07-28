@@ -29,7 +29,6 @@ class CategoryItemWidget extends StatelessWidget {
         horizontal: 4.0,
       ),
       onTap: () {
-        print('click...');
         context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
         unfocusKeyboard();
         context.read<ChatBloc>().add(
@@ -79,7 +78,7 @@ class CategoryItemWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Expanded(

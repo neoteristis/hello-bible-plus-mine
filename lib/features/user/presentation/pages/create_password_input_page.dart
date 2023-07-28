@@ -4,27 +4,44 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/helper/show_dialog.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/core/models/required_input.dart';
+import 'package:gpt/features/introduction/presentation/pages/landing_page.dart';
+import 'package:gpt/features/user/presentation/pages/email_input_page.dart';
+import 'package:gpt/features/user/presentation/pages/name_and_picture_input_page.dart';
+import 'package:gpt/features/user/presentation/pages/registration_page.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../l10n/function.dart';
 import '../bloc/registration_bloc/registration_bloc.dart';
 import 'custom_password_input.dart';
 import 'input_base_page.dart';
 
-class CreatePasswordInputPage extends StatelessWidget {
-
+class CreatePasswordInputPage extends StatefulWidget {
   static const String route = 'create-new-password';
 
   const CreatePasswordInputPage({super.key});
 
   @override
+  State<CreatePasswordInputPage> createState() =>
+      _CreatePasswordInputPageState();
+}
+
+class _CreatePasswordInputPageState extends State<CreatePasswordInputPage> {
+  late final FocusNode confirmPsdFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    confirmPsdFocusNode = FocusNode();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final FocusNode _confirmPsdFocusNode = FocusNode();
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         switch (state.status) {
           case Status.loaded:
-            ////context.go(RouteName.namePicture);
+            context.go('/${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}/${NameAndPictureInputPage.route}');
             break;
           case Status.failed:
             CustomDialog.error(context, state.failure?.message);
@@ -54,7 +71,7 @@ class CreatePasswordInputPage extends StatelessWidget {
                         : null,
                     onFieldSubmitted: (_) {
                       unfocusKeyboard();
-                      FocusScope.of(context).requestFocus(_confirmPsdFocusNode);
+                      FocusScope.of(context).requestFocus(confirmPsdFocusNode);
                     },
                   );
                 },
@@ -68,7 +85,7 @@ class CreatePasswordInputPage extends StatelessWidget {
                     previous.confirmPassordError != current.confirmPassordError,
                 builder: (context, state) {
                   return CustomPasswordInput(
-                    focusNode: _confirmPsdFocusNode,
+                    focusNode: confirmPsdFocusNode,
                     label: dict(context).confirmTheNewPassword,
                     onChanged: (value) => context.read<RegistrationBloc>().add(
                           RegistrationConfirmPasswordChanged(value),

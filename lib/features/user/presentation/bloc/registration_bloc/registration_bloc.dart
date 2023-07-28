@@ -198,7 +198,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       ),
       (isEmailExist) {
         if (isEmailExist) {
+          emit(state.copyWith(nextStep: Goto.login));
         } else {
+          emit(state.copyWith(nextStep: Goto.registration));
         }
       },
     );

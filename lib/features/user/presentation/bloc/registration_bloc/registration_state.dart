@@ -1,5 +1,7 @@
 part of 'registration_bloc.dart';
 
+enum Goto { login, registration }
+
 class RegistrationState extends Equatable {
   const RegistrationState({
     this.registrationInputs = const RegistrationInputs(),
@@ -17,8 +19,10 @@ class RegistrationState extends Equatable {
     this.failure,
     this.emailCheckStatus = Status.init,
     this.pickPictureStatus = Status.init,
+    this.nextStep,
   });
 
+  final Goto? nextStep;
   final RegistrationInputs registrationInputs;
   final RoundedLoadingButtonController? registrationBtnController;
   final Status? status;
@@ -52,6 +56,7 @@ class RegistrationState extends Equatable {
         failure,
         emailCheckStatus,
         pickPictureStatus,
+        nextStep,
       ];
 
   RegistrationState copyWith({
@@ -71,6 +76,7 @@ class RegistrationState extends Equatable {
     Failure? failure,
     Status? emailCheckStatus,
     Status? pickPictureStatus,
+    Goto? nextStep,
   }) {
     return RegistrationState(
       email: email ?? this.email,
@@ -93,6 +99,7 @@ class RegistrationState extends Equatable {
       failure: failure ?? this.failure,
       emailCheckStatus: emailCheckStatus ?? this.emailCheckStatus,
       pickPictureStatus: pickPictureStatus ?? this.pickPictureStatus,
+      nextStep: nextStep ?? this.nextStep,
     );
   }
 }

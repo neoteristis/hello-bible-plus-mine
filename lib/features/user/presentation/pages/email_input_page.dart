@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gpt/core/helper/show_dialog.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
+import 'package:gpt/features/introduction/presentation/pages/landing_page.dart';
 
 import 'package:gpt/features/user/data/models/email_input.dart';
+import 'package:gpt/features/user/presentation/pages/create_password_input_page.dart';
+import 'package:gpt/features/user/presentation/pages/passwod_input_page.dart';
+import 'package:gpt/features/user/presentation/pages/registration_page.dart';
 
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_text_field.dart';
@@ -19,25 +24,20 @@ class EmailInputPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: TextFormField(),
-    );
-
     return MultiBlocListener(
       listeners: [
-        /**BlocListener<RegistrationBloc, RegistrationState>(
-            listenWhen: (previous, current) => previous.goto != current.goto,
-            listener: (context, state) {
-            switch (state.goto) {
-            case GoTo.login:
-            return context.go(RouteName.password);
-            case GoTo.registration:
-            return context.go(RouteName.newPassword);
-            default:
+        BlocListener<RegistrationBloc, RegistrationState>(
+          listenWhen: (previous, current) => previous.nextStep != current.nextStep,
+          listener: (context, state) {
+            switch (state.nextStep) {
+              case Goto.login:
+                return context.go('/${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}/${PasswordInputPage.route}');
+              case Goto.registration:
+                return context.go('/${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}/${CreatePasswordInputPage.route}');
+              default:
             }
-            },
-            ),
-         **/
+          },
+        ),
         BlocListener<RegistrationBloc, RegistrationState>(
           listenWhen: (previous, current) =>
               previous.emailCheckStatus != current.emailCheckStatus,
