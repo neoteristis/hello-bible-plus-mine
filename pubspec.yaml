@@ -75,6 +75,7 @@ dependencies:
   selectable: ^0.3.0
   flutter_tts: ^3.7.0
   neumorphic_button: ^0.0.1+2
+  measure_size: ^4.0.0
   # focused_menu_custom: ^1.2.0
   # scrollview_observer: ^1.14.2
 
