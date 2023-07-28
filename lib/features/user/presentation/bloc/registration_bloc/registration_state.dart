@@ -5,7 +5,6 @@ class RegistrationState extends Equatable {
     this.registrationInputs = const RegistrationInputs(),
     this.registrationBtnController,
     this.status = Status.init,
-    this.goto = GoTo.init,
     this.checkEmailBtnController,
     this.confirmPassordError,
     this.updateStatus = Status.init,
@@ -23,7 +22,6 @@ class RegistrationState extends Equatable {
   final RegistrationInputs registrationInputs;
   final RoundedLoadingButtonController? registrationBtnController;
   final Status? status;
-  final GoTo? goto;
   final RoundedLoadingButtonController? checkEmailBtnController;
   final RoundedLoadingButtonController? updateUserBtnController;
   final String? confirmPassordError;
@@ -42,7 +40,6 @@ class RegistrationState extends Equatable {
         registrationInputs,
         registrationBtnController,
         status,
-        goto,
         checkEmailBtnController,
         confirmPassordError,
         updateStatus,
@@ -61,7 +58,6 @@ class RegistrationState extends Equatable {
     RegistrationInputs? registrationInputs,
     RoundedLoadingButtonController? registrationBtnController,
     Status? status,
-    GoTo? goto,
     RoundedLoadingButtonController? checkEmailBtnController,
     bool clearConfirmPasswordError = false,
     String? confirmPassordError,
@@ -85,7 +81,6 @@ class RegistrationState extends Equatable {
       registrationBtnController:
           registrationBtnController ?? this.registrationBtnController,
       status: status ?? this.status,
-      goto: goto ?? this.goto,
       checkEmailBtnController:
           checkEmailBtnController ?? this.checkEmailBtnController,
       confirmPassordError: clearConfirmPasswordError

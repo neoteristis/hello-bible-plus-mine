@@ -4,7 +4,6 @@ enum AuthStatus { authenticated, unauthenticated, unknown }
 
 class AuthState extends Equatable {
   const AuthState({
-    this.route = RouteName.splash,
     this.authStatus = Status.init,
     this.email,
     this.password,
@@ -12,15 +11,11 @@ class AuthState extends Equatable {
     this.loginBtnController,
     this.passwordError,
     this.failure,
-    this.goto = GoTo.init,
     this.isLogged = false,
     this.authenticationStatus = AuthStatus.unknown,
   });
 
   final AuthStatus authenticationStatus;
-
-  ///
-  final String? route;
   final Status? authStatus;
   final String? email;
   final String? password;
@@ -28,12 +23,10 @@ class AuthState extends Equatable {
   final RoundedLoadingButtonController? loginBtnController;
   final String? passwordError;
   final Failure? failure;
-  final GoTo? goto;
   final bool isLogged;
 
   @override
   List<Object?> get props => [
-        route,
         authStatus,
         email,
         password,
@@ -41,7 +34,6 @@ class AuthState extends Equatable {
         loginBtnController,
         passwordError,
         failure,
-        goto,
         isLogged,
         authenticationStatus,
       ];
@@ -56,12 +48,10 @@ class AuthState extends Equatable {
     String? passwordError,
     bool clearPasswordError = false,
     Failure? failure,
-    GoTo? goto,
     bool? isLogged,
     AuthStatus? authenticationStatus,
   }) {
     return AuthState(
-      route: route ?? this.route,
       authStatus: authStatus ?? this.authStatus,
       email: email ?? this.email,
       password: password ?? this.password,
@@ -70,7 +60,6 @@ class AuthState extends Equatable {
       passwordError:
           clearPasswordError ? null : passwordError ?? this.passwordError,
       failure: failure ?? this.failure,
-      goto: goto ?? this.goto,
       isLogged: isLogged ?? this.isLogged,
       authenticationStatus: authenticationStatus ?? this.authenticationStatus,
     );

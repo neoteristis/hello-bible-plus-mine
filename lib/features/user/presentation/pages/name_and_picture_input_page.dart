@@ -12,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:gpt/core/models/required_input.dart';
 
 import '../../../../core/constants/status.dart';
-import '../../../../core/routes/route_name.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/icon_text_row_recognizer.dart';
 import '../../../../l10n/function.dart';
@@ -53,15 +52,6 @@ class NameAndPictureInputPage extends StatelessWidget {
           listener: (context, state) {
             if (state.pickPictureStatus == Status.failed) {
               CustomDialog.error(context, state.failure?.message);
-            }
-          },
-        ),
-        BlocListener<AuthBloc, AuthState>(
-          listenWhen: (previous, current) => previous.goto != current.goto,
-          listener: (context, state) {
-            if (state.goto == GoTo.registration) {
-              // go to the first page after logout
-              context.go(RouteName.registration);
             }
           },
         ),

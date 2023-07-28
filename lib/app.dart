@@ -82,6 +82,7 @@ class App extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return BlocBuilder<AuthBloc, AuthState>(
+            buildWhen: (previous, current) => previous.authenticationStatus != current.authenticationStatus,
             builder: (context, state) {
               return BlocBuilder<ThemeBloc, ThemeState>(
                 buildWhen: (previous, current) =>
@@ -89,9 +90,9 @@ class App extends StatelessWidget {
                 builder: (context, state) {
                   return MaterialApp.router(
                     title: 'hello bible',
+                    debugShowCheckedModeBanner: false,
                     theme: light,
                     darkTheme: dark,
-                    debugShowCheckedModeBanner: false,
                     routerConfig: route,
                     themeMode: ThemeMode.light,
                     localizationsDelegates:

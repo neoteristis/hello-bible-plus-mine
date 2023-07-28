@@ -8,7 +8,6 @@ import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:gpt/l10n/function.dart';
 
 import '../../../../core/constants/status.dart';
-import '../../../../core/routes/route_name.dart';
 import 'custom_password_input.dart';
 import 'input_base_page.dart';
 
@@ -37,15 +36,6 @@ class PasswordInputPage extends StatelessWidget {
                 CustomDialog.error(context, state.failure?.message);
                 break;
               default:
-            }
-          },
-        ),
-        BlocListener<AuthBloc, AuthState>(
-          listenWhen: (previous, current) => previous.goto != current.goto,
-          listener: (context, state) {
-            // go to the first page after logout
-            if (state.goto == GoTo.registration) {
-              context.go(RouteName.registration);
             }
           },
         ),

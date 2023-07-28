@@ -26,15 +26,15 @@ class InputBasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasePage(
       onPop: () {
-        context.pop();
+        ///context.pop();
       },
-      goBackSocialConnect: goBackSocialConnect,
+     /// goBackSocialConnect: goBackSocialConnect,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
             field,
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             CustomButtonWidget(ButtonType.black).build(
@@ -43,7 +43,7 @@ class InputBasePage extends StatelessWidget {
               onPressed: onContinue,
               label: dict(context).keepup,
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
           ],

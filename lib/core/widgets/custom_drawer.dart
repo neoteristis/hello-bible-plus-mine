@@ -16,7 +16,6 @@ import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gpt/features/user/presentation/pages/profile/profile_page.dart';
 import 'package:gpt/splash_screen.dart';
-import '../routes/route_name.dart';
 import '../theme/bloc/theme_bloc.dart';
 import 'custom_alert_dialog.dart';
 import '../../l10n/function.dart';
@@ -118,7 +117,7 @@ class CustomDrawer extends StatelessWidget {
                                   ..read<AuthBloc>().add(AuthLogoutSubmitted())
                                   ..read<HistoricalBloc>()
                                       .add(HistoricalCleared())
-                                  ..go(RouteName.splash);
+                                  ..go(SplashScreen.route);
                               },
                             ),
                           ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -127,7 +126,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       }
                       break;
                     case 1:
-                      context.go(RouteName.historical);
+                      ///context.go(RouteName.historical);
                       break;
                     case 2:
                       await Share.share(

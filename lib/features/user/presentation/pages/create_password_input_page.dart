@@ -5,7 +5,6 @@ import 'package:gpt/core/helper/show_dialog.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/core/models/required_input.dart';
 import '../../../../core/constants/status.dart';
-import '../../../../core/routes/route_name.dart';
 import '../../../../l10n/function.dart';
 import '../bloc/registration_bloc/registration_bloc.dart';
 import 'custom_password_input.dart';
@@ -25,7 +24,7 @@ class CreatePasswordInputPage extends StatelessWidget {
       listener: (context, state) {
         switch (state.status) {
           case Status.loaded:
-            context.go(RouteName.namePicture);
+            ////context.go(RouteName.namePicture);
             break;
           case Status.failed:
             CustomDialog.error(context, state.failure?.message);

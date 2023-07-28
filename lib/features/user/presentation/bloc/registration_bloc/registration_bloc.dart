@@ -13,7 +13,6 @@ import '../../../../../core/error/failure.dart';
 import '../../../../../core/helper/formz.dart';
 import '../../../../../core/models/required_input.dart';
 import '../../../../../core/models/unrequired_input.dart';
-import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../../data/models/email_input.dart';
 import '../../../data/models/first_name_input.dart';
@@ -184,7 +183,6 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     state.checkEmailBtnController?.start();
     emit(
       state.copyWith(
-        goto: GoTo.init,
         emailCheckStatus: Status.loading,
       ),
     );
@@ -200,9 +198,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       ),
       (isEmailExist) {
         if (isEmailExist) {
-          emit(state.copyWith(goto: GoTo.login));
         } else {
-          emit(state.copyWith(goto: GoTo.registration));
         }
       },
     );
