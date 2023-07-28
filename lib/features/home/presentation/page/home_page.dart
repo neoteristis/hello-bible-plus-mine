@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
-
     configureNotification(context);
   }
 

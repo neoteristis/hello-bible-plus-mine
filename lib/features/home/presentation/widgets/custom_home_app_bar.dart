@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+
+import '../../../chat/presentation/pages/chat_page.dart';
+import '../bloc/home_bloc.dart';
+import '../page/home_page.dart';
 
 class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomHomeAppBar({
@@ -75,7 +80,7 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
         width: 2,
       ),
     );
-    return BlocBuilder<ChatBloc, ChatState>(
+    return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return Transform.translate(
           offset: const Offset(0, 20),
@@ -104,9 +109,12 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
                 border: border,
                 enabledBorder: border,
                 focusedBorder: border,
-                suffixIcon: const Icon(
-                  Icons.search,
-                  color: primaryColor,
+                suffixIcon: GestureDetector(
+                  onTap: () => submit(state),
+                  child: const Icon(
+                    Icons.search,
+                    color: primaryColor,
+                  ),
                 ),
               ),
             ),
@@ -116,15 +124,19 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
     );
   }
 
-  void submit(ChatState state) {
+  void submit(HomeState state) {
     try {
+      print('heeeeeere');
+
       final category = state.categoriesBySection
           .firstWhere((element) => element.id == '64ba9f74a8bccd0239a4b4e6')
           .categories
           ?.first;
-      context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
+      // context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
       unfocusKeyboard();
+      print('heeeeeere');
       if (category != null) {
+        context.go('/${HomePage.route}/${ChatPage.route}');
         context.read<ChatBloc>().add(
               ChatConversationChanged(
                 category: category,
