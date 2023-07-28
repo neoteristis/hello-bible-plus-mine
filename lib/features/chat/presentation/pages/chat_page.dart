@@ -82,7 +82,8 @@ class _ChatPageState extends State<ChatPage> {
               final category = Category.fromJson(
                 json,
               );
-              context.go('/${HomePage.route}');
+
+              context.go('/${HomePage.route}/${ChatPage.route}');
               context
                   .read<ChatBloc>()
                   .scaffoldKey
