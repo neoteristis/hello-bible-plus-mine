@@ -12,6 +12,7 @@ class ScaffoldWithBackground extends StatelessWidget {
     this.addBackgroundImage = true,
     this.actions,
     this.persistentFooterButtons,
+    this.hasAppBar = true,
   });
 
   final Widget body;
@@ -19,47 +20,48 @@ class ScaffoldWithBackground extends StatelessWidget {
   final String? title;
   final bool? addBackgroundImage;
   final List<Widget>? actions;
+  final bool hasAppBar;
 
   final List<Widget>? persistentFooterButtons;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         persistentFooterButtons: persistentFooterButtons,
-        // extendBody: true,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // extendBodyBehindAppBar: true,
-        // resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          centerTitle: false,
-          title: Visibility(
-            visible: onPop != null,
-            child: GestureDetector(
-              onTap: onPop,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.arrow_back_ios,
-                    size: 20,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  Text(
-                    title ?? dict(context).goback,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17,
-                      color: Theme.of(context).colorScheme.onSurface,
+        appBar: hasAppBar
+            ? AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                centerTitle: false,
+                title: Visibility(
+                  visible: onPop != null,
+                  child: GestureDetector(
+                    onTap: onPop,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_back_ios,
+                          size: 20,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        Text(
+                          title ?? dict(context).goback,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          actions: actions,
-        ),
+                ),
+                actions: actions,
+              )
+            : null,
         body: Stack(
           children: [
             if (addBackgroundImage ?? true)

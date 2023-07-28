@@ -11,6 +11,8 @@ import 'dart:io' show Platform;
 import 'base_page.dart';
 
 class RegistrationPage extends StatelessWidget {
+  static const String route = 'registration';
+
   const RegistrationPage({super.key});
 
   @override
@@ -34,6 +36,7 @@ class RegistrationPage extends StatelessWidget {
       },
       child: BasePage(
         goBackSocialConnect: false,
+        hasAppBar: false,
         body: Column(
           children: [
             if (Platform.isIOS) const AppleConnectButton(),

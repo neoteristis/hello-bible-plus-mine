@@ -6,7 +6,6 @@ import '../../../../../core/constants/status.dart';
 import '../../../../../core/widgets/custom_progress_indicator.dart';
 import '../../bloc/chat_bloc/chat_bloc.dart';
 import 'chat_list_widget.dart';
-import '../container_categories_widget.dart';
 
 class ChatBodyWidget extends StatelessWidget {
   const ChatBodyWidget({
@@ -26,8 +25,6 @@ class ChatBodyWidget extends StatelessWidget {
             );
           case Status.loaded:
             return const CustomChat();
-          case Status.failed:
-            return const ContainerCategoriesWidget();
           default:
             return const SizedBox.shrink();
         }
@@ -49,7 +46,9 @@ class CustomChat extends StatelessWidget {
         return Column(
           key: state.chatKey,
           children: const [
-            Expanded(child: ChatListWidget()),
+            Expanded(
+              child: ChatListWidget(),
+            ),
             CustomBottomWidget(),
           ],
         );

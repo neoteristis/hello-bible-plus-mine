@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/logo.dart';
-import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gpt/features/chat/presentation/widgets/custom_home_app_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
-import '../bloc/historical_bloc/historical_bloc.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
-    this.elevation,
-    this.height,
   }) : super(key: key);
 
-  final double? elevation;
-  final double? height;
-
   @override
-  Size get preferredSize => Size.fromHeight(height ?? 100.0);
+  Size get preferredSize => const Size.fromHeight(60);
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +24,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           previous.conversation != current.conversation ||
           previous.chatToShare != current.chatToShare,
       builder: (context, state) {
-        if (state.conversation == null) {
-          return const CustomHomeAppBar();
-        }
         return AppBar(
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           foregroundColor: Colors.white,
@@ -43,45 +31,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           elevation: 0,
           titleSpacing: 0,
           shadowColor: Colors.black.withOpacity(0.4),
-          leading: state.conversation != null
-              ? IconButton(
-                  constraints: const BoxConstraints(),
-                  padding: const EdgeInsets.all(0),
-                  onPressed: () {
-                    unfocusKeyboard();
-
-                    if (state.readOnly!) {
-                      context.go(RouteName.historical);
-                    } else {
-                      context
-                          .read<HistoricalBloc>()
-                          .add(const HistoricalFetched(isRefresh: true));
-                      context.read<ChatBloc>().add(ChatStreamCanceled());
-                    }
-                    context.read<ChatBloc>().add(ChatConversationCleared());
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_rounded,
-                  ),
-                )
-              : null,
-          iconTheme:
-              IconThemeData(color: Theme.of(context).colorScheme.tertiary),
+          leading: IconButton(
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            onPressed: () {
+              unfocusKeyboard();
+              context.pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_rounded,
+            ),
+          ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           automaticallyImplyLeading: false,
           centerTitle: false,
           title: BlocBuilder<ChatBloc, ChatState>(
             builder: (context, state) {
-              // return const LogoWidget();
-              if (state.conversation == null) {
-                return const Padding(
-                  padding: EdgeInsets.only(left: 15.0),
-                  child: LogoWithText(
-                    logoSize: Size(24, 24),
-                    textSize: 17.55,
-                    center: false,
-                  ),
-                );
-              }
               return Row(
                 children: [
                   const Logo(
@@ -140,94 +107,76 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Scaffold.of(context).openEndDrawer();
                 }
               },
-              icon: Visibility(
-                visible: state.conversation == null,
-                replacement: PopupMenuButton<int>(
-                  position: PopupMenuPosition.under,
-                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  // Callback that sets the selected popup menu item.
-                  onSelected: (int item) async {
-                    switch (item) {
-                      case 0:
-                        final category = state.conversation?.category;
-                        if (category != null) {
-                          context.read<ChatBloc>().add(
-                                ChatConversationChanged(category: category),
-                              );
-                        }
-                        break;
-                      case 1:
-                        context.go(RouteName.historical);
-                        break;
-                      case 2:
-                        await Share.share(
-                          state.chatToShare ?? '',
-                        );
-                        break;
-                      default:
-                    }
-                  },
-                  itemBuilder: (BuildContext context) {
-                    final list = <PopupMenuEntry<int>>[];
-                    list.add(
-                      const PopupMenuItem<int>(
-                        value: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Nouvelle conversation'),
-                            Icon(Icons.add),
-                          ],
-                        ),
-                      ),
-                    );
-                    list.add(
-                      const PopupMenuItem<int>(
-                        value: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Historique'),
-                            Icon(Icons.history_rounded),
-                          ],
-                        ),
-                      ),
-                    );
-                    list.add(
-                      const PopupMenuItem<int>(
-                        value: 2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Partager'),
-                            Icon(Icons.share),
-                          ],
-                        ),
-                      ),
-                    );
-                    return list;
-                  },
+              icon: PopupMenuButton<int>(
+                position: PopupMenuPosition.under,
+                surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
-                child: SvgPicture.asset(
-                  'assets/icons/more_vert.svg',
-                  width: 20,
-                  height: 20,
-                  colorFilter: ColorFilter.mode(
-                    context
-                            .read<ChatBloc>()
-                            .scaffoldKey
-                            .currentState!
-                            .isEndDrawerOpen
-                        ? Theme.of(context).primaryColor
-                        : Theme.of(context).colorScheme.tertiary,
-                    BlendMode.srcIn,
-                  ),
-                ),
+                // Callback that sets the selected popup menu item.
+                onSelected: (int item) async {
+                  switch (item) {
+                    case 0:
+                      final category = state.conversation?.category;
+                      if (category != null) {
+                        context.read<ChatBloc>().add(
+                              ChatConversationChanged(category: category),
+                            );
+                      }
+                      break;
+                    case 1:
+                      context.go(RouteName.historical);
+                      break;
+                    case 2:
+                      await Share.share(
+                        state.chatToShare ?? '',
+                      );
+                      break;
+                    default:
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  final list = <PopupMenuEntry<int>>[];
+                  list.add(
+                    const PopupMenuItem<int>(
+                      value: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Nouvelle conversation'),
+                          Icon(Icons.add),
+                        ],
+                      ),
+                    ),
+                  );
+                  list.add(
+                    const PopupMenuItem<int>(
+                      value: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Historique'),
+                          Icon(Icons.history_rounded),
+                        ],
+                      ),
+                    ),
+                  );
+                  list.add(
+                    const PopupMenuItem<int>(
+                      value: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Partager'),
+                          Icon(Icons.share),
+                        ],
+                      ),
+                    ),
+                  );
+                  return list;
+                },
               ),
             ),
           ],

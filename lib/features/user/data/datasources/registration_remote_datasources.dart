@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
+import 'package:gpt/core/helper/notifications.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
@@ -13,13 +13,21 @@ import '../../domain/entities/entities.dart';
 
 abstract class RegistrationRemoteDatasources {
   Future<UserResponse> registration(User user);
+
   Future<UserResponse> login(User user);
+
   Future<bool> checkEmail(String email);
+
   Future<User> updateUser(User user);
+
   Future<Token> refreshToken(String refresh);
+
   Future<UserResponse> socialConnect(User user);
+
   Future<UserResponse> appleConnect(Map<String, String> queryParams);
+
   Future sendFirebaseToken(User user);
+
   Future<User> getUser();
 }
 
@@ -28,6 +36,7 @@ class RegistrationRemoteDatasourcesImp
   final BaseRepository baseRepo;
 
   const RegistrationRemoteDatasourcesImp(this.baseRepo);
+
   @override
   Future<UserResponse> registration(User user) async {
     try {

@@ -11,6 +11,8 @@ import '../bloc/manage_notif/manage_notif_bloc.dart';
 import '../widgets/notif_manage_item_widget.dart';
 
 class ManageNotificationsPage extends StatefulWidget {
+
+  static const String route = 'manage-notification-page';
   const ManageNotificationsPage({super.key});
 
   @override

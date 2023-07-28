@@ -15,6 +15,8 @@ import '../bloc/registration_bloc/registration_bloc.dart';
 import 'input_base_page.dart';
 
 class EmailInputPage extends StatelessWidget {
+
+  static const String route = 'email-input';
   const EmailInputPage({super.key});
 
   @override

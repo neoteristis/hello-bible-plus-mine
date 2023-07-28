@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/logo.dart';
+import 'package:gpt/features/introduction/presentation/pages/landing_page.dart';
+import 'package:gpt/features/user/presentation/pages/email_input_page.dart';
+import 'package:gpt/features/user/presentation/pages/registration_page.dart';
 import 'package:gpt/l10n/function.dart';
+import 'package:gpt/splash_screen.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
 import '../widgets/registrations/registrations.dart';
 
@@ -15,6 +19,7 @@ class BasePage extends StatelessWidget {
     this.goBackSocialConnect = true,
     this.titleLarge,
     this.bodyLarge,
+    this.hasAppBar,
   });
 
   final Widget body;
@@ -23,11 +28,13 @@ class BasePage extends StatelessWidget {
   final String? titleLarge;
   final bool? goBackSocialConnect;
   final Widget? bodyLarge;
+  final bool? hasAppBar;
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithBackground(
       onPop: onPop,
+      hasAppBar: hasAppBar ?? true,
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: SizedBox(
@@ -84,9 +91,9 @@ class BasePage extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             if (goBackSocialConnect ?? true) {
-                              context.go(RouteName.registration);
+                              context.go('${SplashScreen.route}${LandingPage.route}/${RegistrationPage.route}');
                             } else {
-                              context.go(RouteName.email);
+                              context.go('${SplashScreen.route}${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}');
                             }
                           },
                           style: TextButton.styleFrom(
