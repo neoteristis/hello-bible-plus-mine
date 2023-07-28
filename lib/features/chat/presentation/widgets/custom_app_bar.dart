@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
+import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/splash_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
 
@@ -66,7 +67,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               AppLocalizations.of(context)!.loading,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             // fontSize: 14,
                             color: Theme.of(context).colorScheme.tertiary,
                           ),
@@ -78,7 +79,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
-                            fontSize: 11.sp,
+                            fontSize: 11,
                             // fontSize: 11,
                             color: Theme.of(context).colorScheme.tertiary,
                           ),
@@ -115,7 +116,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Icons.more_vert,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
-                // Callback that sets the selected popup menu item.
                 onSelected: (int item) async {
                   switch (item) {
                     case 0:
@@ -127,7 +127,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       }
                       break;
                     case 1:
-                      context.go(RouteName.historical);
+                      context.go(
+                          '${SplashScreen.route}${HomePage.route}/${HistoricalPage.route}');
                       break;
                     case 2:
                       await Share.share(

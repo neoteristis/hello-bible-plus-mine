@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
+import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/subscription/presentation/pages/subscription_page.dart';
+import 'package:gpt/features/user/presentation/pages/profile/edit_profile_page.dart';
 import 'package:gpt/l10n/function.dart';
+import 'package:gpt/splash_screen.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/constants/status.dart';
@@ -37,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
         CustomButtonWidget(ButtonType.black).build(
           context: context,
           onPressed: () {
-            context.go(RouteName.subscribe);
+            context.go('${SplashScreen.route}${HomePage.route}/${SubscriptionPage.route}');
           },
           color: const Color(0xFF24282E),
           label: dict(context).updateSubscription,
@@ -54,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: GestureDetector(
             onTap: () {
               context
-                ..go(RouteName.editProfil)
+                ..go('${SplashScreen.route}${HomePage.route}/${ProfilePage.route}/${EditProfilePage.route}')
                 ..read<ProfileBloc>().add(ProfileUpdateStarted());
             },
             child: Row(

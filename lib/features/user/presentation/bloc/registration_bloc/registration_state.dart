@@ -1,11 +1,12 @@
 part of 'registration_bloc.dart';
 
+enum Goto { login, registration }
+
 class RegistrationState extends Equatable {
   const RegistrationState({
     this.registrationInputs = const RegistrationInputs(),
     this.registrationBtnController,
     this.status = Status.init,
-    this.goto = GoTo.init,
     this.checkEmailBtnController,
     this.confirmPassordError,
     this.updateStatus = Status.init,
@@ -18,12 +19,13 @@ class RegistrationState extends Equatable {
     this.failure,
     this.emailCheckStatus = Status.init,
     this.pickPictureStatus = Status.init,
+    this.nextStep,
   });
 
+  final Goto? nextStep;
   final RegistrationInputs registrationInputs;
   final RoundedLoadingButtonController? registrationBtnController;
   final Status? status;
-  final GoTo? goto;
   final RoundedLoadingButtonController? checkEmailBtnController;
   final RoundedLoadingButtonController? updateUserBtnController;
   final String? confirmPassordError;
@@ -42,7 +44,6 @@ class RegistrationState extends Equatable {
         registrationInputs,
         registrationBtnController,
         status,
-        goto,
         checkEmailBtnController,
         confirmPassordError,
         updateStatus,
@@ -55,13 +56,13 @@ class RegistrationState extends Equatable {
         failure,
         emailCheckStatus,
         pickPictureStatus,
+        nextStep,
       ];
 
   RegistrationState copyWith({
     RegistrationInputs? registrationInputs,
     RoundedLoadingButtonController? registrationBtnController,
     Status? status,
-    GoTo? goto,
     RoundedLoadingButtonController? checkEmailBtnController,
     bool clearConfirmPasswordError = false,
     String? confirmPassordError,
@@ -75,6 +76,7 @@ class RegistrationState extends Equatable {
     Failure? failure,
     Status? emailCheckStatus,
     Status? pickPictureStatus,
+    Goto? nextStep,
   }) {
     return RegistrationState(
       email: email ?? this.email,
@@ -85,7 +87,6 @@ class RegistrationState extends Equatable {
       registrationBtnController:
           registrationBtnController ?? this.registrationBtnController,
       status: status ?? this.status,
-      goto: goto ?? this.goto,
       checkEmailBtnController:
           checkEmailBtnController ?? this.checkEmailBtnController,
       confirmPassordError: clearConfirmPasswordError
@@ -98,6 +99,7 @@ class RegistrationState extends Equatable {
       failure: failure ?? this.failure,
       emailCheckStatus: emailCheckStatus ?? this.emailCheckStatus,
       pickPictureStatus: pickPictureStatus ?? this.pickPictureStatus,
+      nextStep: nextStep ?? this.nextStep,
     );
   }
 }

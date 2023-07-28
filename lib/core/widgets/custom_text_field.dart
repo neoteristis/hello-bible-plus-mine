@@ -33,8 +33,6 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLight =
-        Theme.of(context).colorScheme.brightness == Brightness.light;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,9 +41,7 @@ class CustomTextField extends StatelessWidget {
           Text(
             label!,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: isLight
-                      ? Theme.of(context).colorScheme.onSurface.withOpacity(.6)
-                      : Theme.of(context).textTheme.bodyLarge?.color,
+
                 ),
           ),
         if (label != null)

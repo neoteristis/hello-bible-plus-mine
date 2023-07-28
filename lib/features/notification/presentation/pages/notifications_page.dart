@@ -7,9 +7,7 @@ import 'package:gpt/features/home/presentation/page/home_page.dart';
 import 'package:gpt/features/notification/presentation/pages/manage_notifications_page.dart';
 import 'package:gpt/features/notification/presentation/widgets/notification_item_widget.dart';
 import '../../../../core/extension/datetime_extension.dart';
-import '../../../../core/routes/route_name.dart';
 import 'package:gpt/splash_screen.dart';
-import '../../../../core/extension/datetime_extension.dart';
 
 import '../bloc/notification_bloc.dart';
 
@@ -67,7 +65,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   'Non lues (0)',
                 ),
                 TextButton(
-                  child: const Text('Tout marquer comme lue'),
+                  child: const Text(
+                    'Tout marquer comme lue',
+                  ),
                   onPressed: () {},
                 ),
               ],

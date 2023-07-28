@@ -16,11 +16,9 @@ import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gpt/features/user/presentation/pages/profile/profile_page.dart';
 import 'package:gpt/splash_screen.dart';
-import '../routes/route_name.dart';
 import '../theme/bloc/theme_bloc.dart';
 import 'custom_alert_dialog.dart';
 import '../../l10n/function.dart';
-import '../../features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import '../../features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import '../../features/chat/presentation/widgets/categories_widget.dart';
 
@@ -41,11 +39,7 @@ class CustomDrawer extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                context
-                    .read<ChatBloc>()
-                    .scaffoldKey
-                    .currentState
-                    ?.closeEndDrawer();
+                Scaffold.of(context).closeEndDrawer();
               },
             ),
           ),
@@ -117,7 +111,7 @@ class CustomDrawer extends StatelessWidget {
                                   ..read<AuthBloc>().add(AuthLogoutSubmitted())
                                   ..read<HistoricalBloc>()
                                       .add(HistoricalCleared())
-                                  ..go(RouteName.splash);
+                                  ..go(SplashScreen.route);
                               },
                             ),
                           ],
@@ -183,7 +177,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         label: dict(context).myProfile,
         icon: const IconDrawerFromAsset('assets/icons/profil.svg'),
         onPressed: () {
-          context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
+          Scaffold.of(context).closeEndDrawer();
           context.go(
               '${SplashScreen.route}${HomePage.route}/${ProfilePage.route}');
         },
@@ -192,7 +186,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         label: dict(context).mySubscription,
         icon: const IconDrawerFromAsset('assets/icons/subscription.svg'),
         onPressed: () {
-          context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
+          Scaffold.of(context).closeEndDrawer();
           context.go(
               '${SplashScreen.route}${HomePage.route}/${SubscriptionPage.route}');
         },
@@ -203,7 +197,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.history,
         ),
         onPressed: () {
-          context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
+          Scaffold.of(context).closeEndDrawer();
           context.go(
               '${SplashScreen.route}${HomePage.route}/${HistoricalPage.route}');
         },
@@ -214,6 +208,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.notifications,
         ),
         onPressed: () {
+          Scaffold.of(context).closeEndDrawer();
           context.go(
               '${SplashScreen.route}${HomePage.route}/${NotificationsPage.route}');
         },
@@ -259,6 +254,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.mail,
         ),
         onPressed: () {
+          Scaffold.of(context).closeEndDrawer();
           context.go(
               '${SplashScreen.route}${HomePage.route}/${ContactUsPage.route}');
         },
@@ -269,6 +265,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.help,
         ),
         onPressed: () {
+          Scaffold.of(context).closeEndDrawer();
           context
               .go('${SplashScreen.route}${HomePage.route}/${HelpPage.route}');
         },
@@ -279,6 +276,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.info,
         ),
         onPressed: () {
+          Scaffold.of(context).closeEndDrawer();
           context
               .go('${SplashScreen.route}${HomePage.route}/${AboutPage.route}');
         },
@@ -287,6 +285,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         label: dict(context).readOurConditions,
         icon: const IconDrawerFromAsset('assets/icons/cgu.svg'),
         onPressed: () {
+          Scaffold.of(context).closeEndDrawer();
           context.go(
               '${SplashScreen.route}${HomePage.route}/${UsageGeneralConditionPage.route}');
         },

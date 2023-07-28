@@ -1,13 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:gpt/core/helper/log.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/usecases/usecases.dart';
 
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/error/failure.dart';
-import '../../../../../core/routes/route_name.dart';
 import '../../../../../core/usecase/usecase.dart';
 import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../../../../l10n/function.dart';
@@ -40,11 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthRegistrationPageWent event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(goto: GoTo.init));
     await Future.delayed(const Duration(milliseconds: 10));
-    emit(state.copyWith(
-      goto: GoTo.registration,
-    ));
   }
 
   void _onAuthSubmitted(
@@ -111,29 +105,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         seconds: 3,
       ),
     );
-    emit(state.copyWith(route: event.route));
+    emit(state.copyWith(
+      route: event.route,
+    ));
   }
 
   void _onAuthStarted(
     AuthStarted event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(authStatus: Status.loading));
+    emit(state.copyWith(
+      authStatus: Status.loading,
+    ));
     final res = await checkAuth(NoParams());
     return res.fold(
-      (l) => null,
+      (l) => emit(state.copyWith(
+        authenticationStatus: AuthStatus.unknown,
+      )),
       (r) {
         if (r == null) {
-          emit(state.copyWith(authenticationStatus: AuthStatus.unauthenticated));
-          add(const AuthLoginForwarded(RouteName.login));
+          emit(state.copyWith(
+            authenticationStatus: AuthStatus.unauthenticated,
+          ));
         } else {
           emit(state.copyWith(
             authStatus: Status.loaded,
             isLogged: true,
             authenticationStatus: AuthStatus.authenticated,
           ));
-          Log.debug(state.authenticationStatus);
-          ///add(const AuthLoginForwarded(RouteName.logged));
         }
       },
     );
@@ -155,11 +154,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (l) => null,
       (r) {
         emit(
-          state.copyWith(
-            authenticationStatus: AuthStatus.unauthenticated
-          ),
+          state.copyWith(authenticationStatus: AuthStatus.unauthenticated),
         );
-        add(AuthRegistrationPageWent());
+
+        ///add(AuthRegistrationPageWent());
       },
     );
   }

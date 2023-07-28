@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'logo.dart';
 
@@ -37,14 +36,14 @@ class LogoWithText extends StatelessWidget {
           text: TextSpan(
             text: 'Hello',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontSize: textSize?.sp,
+                  fontSize: textSize,
                   color: textColor,
                 ),
             children: [
               TextSpan(
                 text: 'Bible',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontSize: textSize?.sp,
+                      fontSize: textSize,
                       wordSpacing: -2.5,
                       fontWeight: FontWeight.w800,
                       color: textColor,

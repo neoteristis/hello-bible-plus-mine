@@ -6,17 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/base_repository/base_repository.dart';
-import 'package:gpt/core/constants/api_constants.dart';
-import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/features/home/presentation/page/home_page.dart';
 import 'package:logger/logger.dart';
-import '../../../../core/db_services/db_services.dart';
-import '../../../../core/helper/log.dart';
-import '../../../../core/routes/route_name.dart';
 
 import 'package:gpt/core/helper/notifications.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../injections.dart';
 import '../../domain/entities/category.dart';

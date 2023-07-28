@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.authStatus != current.authStatus,
           listener: (context, state) {
-            if (state.authStatus == Status.loaded) {
+            if (state.authenticationStatus == AuthStatus.authenticated) {
               context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
             }
           },

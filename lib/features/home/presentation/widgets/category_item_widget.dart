@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_network_image.dart';
 import 'package:neumorphic_button/neumorphic_button.dart';
@@ -30,7 +29,6 @@ class CategoryItemWidget extends StatelessWidget {
         horizontal: 4.0,
       ),
       onTap: () {
-        print('click...');
         context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
         unfocusKeyboard();
         context.read<ChatBloc>().add(
@@ -40,7 +38,7 @@ class CategoryItemWidget extends StatelessWidget {
             );
         context.go('/home/chat');
       },
-      borderRadius: 12.sp,
+      borderRadius: 12,
       backgroundColor: category?.colorTheme ?? const Color(0xFFF6F6F6),
       topLeftShadowBlurRadius: 10,
       topLeftShadowSpreadRadius: 3,
@@ -75,13 +73,13 @@ class CategoryItemWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      fontSize: 11.sp,
+                      fontSize: 11,
                     ),
               ),
             ),
           ),
-          SizedBox(
-            height: 8.h,
+          const SizedBox(
+            height: 8,
           ),
           Expanded(
             flex: 2,
@@ -93,7 +91,7 @@ class CategoryItemWidget extends StatelessWidget {
               maxLines: 2,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w500,
-                    fontSize: 10.sp,
+                    fontSize: 10,
                     color: const Color(0xFF7B7B7B),
                   ),
             ),
