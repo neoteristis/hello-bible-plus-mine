@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/routes/route_name.dart';
 import 'package:gpt/features/user/presentation/pages/registration_page.dart';
 import 'package:gpt/splash_screen.dart';
 

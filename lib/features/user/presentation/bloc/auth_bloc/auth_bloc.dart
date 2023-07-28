@@ -143,7 +143,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthSuccessfullyLogged event,
     Emitter<AuthState> emit,
   ) {
-    emit(state.copyWith(route: RouteName.logged));
+    emit(state.copyWith(authenticationStatus: AuthStatus.authenticated));
   }
 
   void _onAuthLogoutSubmitted(
