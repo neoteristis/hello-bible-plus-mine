@@ -13,6 +13,9 @@ import '../../bloc/profile_bloc/profile_bloc.dart';
 import '../../widgets/profile/profiles.dart';
 
 class ProfilePage extends StatefulWidget {
+
+  static const String route = 'profile';
+
   const ProfilePage({super.key});
 
   @override

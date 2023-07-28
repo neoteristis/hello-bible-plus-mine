@@ -12,6 +12,9 @@ import '../bloc/historical_bloc/historical_bloc.dart';
 import '../widgets/historical/historical_item_widget.dart';
 
 class HistoricalPage extends StatefulWidget {
+
+  static const String route = 'history';
+
   const HistoricalPage({super.key});
 
   @override

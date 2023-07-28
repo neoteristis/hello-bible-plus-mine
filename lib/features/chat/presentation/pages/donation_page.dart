@@ -6,6 +6,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../core/constants/status.dart';
 
 class DonationPage extends StatefulWidget {
+  static const String route = 'donation';
   const DonationPage({super.key});
 
   @override

@@ -17,6 +17,7 @@ import '../../bloc/profile_bloc/profile_bloc.dart';
 import '../../widgets/profile/profiles.dart';
 
 class EditProfilePage extends StatelessWidget {
+  static const String route = 'edit-profile';
   const EditProfilePage({super.key});
 
   @override

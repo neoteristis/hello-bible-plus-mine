@@ -7,45 +7,31 @@ import 'core/constants/status.dart';
 import 'features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
+  static const String route = '/';
+
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isLight =
-        Theme.of(context).colorScheme.brightness == Brightness.light;
     return MultiBlocListener(
       listeners: [
-        // BlocListener<ChatBloc, ChatState>(
-        //   listenWhen: (previous, current) =>
-        //       previous.catStatus != current.catStatus,
-        //   listener: (context, state) {
-        //     if ((state.catStatus == Status.loaded ||
-        //         state.catStatus == Status.failed)) {
-        //       context.read<AuthBloc>().add(AuthSuccessfullyLogged());
-        //     }
-        //   },
-        // ),
         BlocListener<AuthBloc, AuthState>(
           listenWhen: (previous, current) =>
               previous.authStatus != current.authStatus,
           listener: (context, state) {
             if (state.authStatus == Status.loaded) {
               context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
-              // context.read<HistoricalBloc>().add(HistoricalFetched());
             }
           },
         ),
       ],
       child: Scaffold(
-        backgroundColor: isLight
-            ? Theme.of(context).primaryColor
-            : Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         body: Stack(
           children: [
             Center(
               child: LogoWithText(
-                logoColor:
-                    isLight ? Colors.white : Theme.of(context).primaryColor,
+                logoColor: Theme.of(context).colorScheme.secondary,
               ),
             ),
             Positioned(
@@ -60,10 +46,9 @@ class SplashScreen extends StatelessWidget {
                   children: [
                     Center(
                       child: Text(
-                        'HelloBible+ - Copyright 2023',
+                        'HelloBible - Copyright 2023',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: !isLight ? Colors.white : Colors.black),
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                     ),
                   ],

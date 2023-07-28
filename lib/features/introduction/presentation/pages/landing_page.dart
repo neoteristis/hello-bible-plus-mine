@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/core/routes/route_name.dart';
+import 'package:gpt/features/user/presentation/pages/registration_page.dart';
+import 'package:gpt/splash_screen.dart';
 
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/custom_dots_indicator.dart';
@@ -10,8 +10,11 @@ import '../../../../core/widgets/logo_with_text.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
 import '../../../../l10n/function.dart';
 import '../bloc/introduction_bloc.dart';
+import '../widgets/page_view_child.dart';
 
 class LandingPage extends StatelessWidget {
+  static const String route = 'landing';
+
   const LandingPage({super.key});
 
   @override
@@ -86,7 +89,7 @@ class LandingPage extends StatelessWidget {
                           context
                               .read<IntroductionBloc>()
                               .add(IntroductionTerminated());
-                          context.go(RouteName.registration);
+                          context.go('${SplashScreen.route}${LandingPage.route}/${RegistrationPage.route}');
                         } else {
                           context
                               .read<IntroductionBloc>()
@@ -101,68 +104,6 @@ class LandingPage extends StatelessWidget {
                 },
               )
             ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PageViewChild extends StatelessWidget {
-  const PageViewChild({
-    super.key,
-    required this.images,
-    required this.title,
-    required this.body,
-    this.extendImage = true,
-  });
-
-  final List<String> images;
-  final String title;
-  final String body;
-  final bool? extendImage;
-
-  @override
-  Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          const Spacer(
-            flex: 1,
-          ),
-          SvgPicture.asset(
-            images.first,
-            // width: extendImage! ? MediaQuery.of(context).size.width : null,
-            height: height * 0.4,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          const Spacer(
-            flex: 2,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 28,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Text(
-                  body,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
-            ),
           ),
         ],
       ),

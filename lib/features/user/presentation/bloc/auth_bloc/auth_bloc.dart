@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:gpt/core/helper/log.dart';
 import 'package:gpt/features/user/domain/entities/user.dart';
 import 'package:gpt/features/user/domain/usecases/usecases.dart';
 
@@ -12,12 +13,14 @@ import '../../../../../core/widgets/rounded_loading_button.dart';
 import '../../../../../l10n/function.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CheckAuthUsecase checkAuth;
   final DeleteAuthUsecase deleteAuth;
   final LoginUsecase login;
+
   AuthBloc({
     required this.checkAuth,
     required this.deleteAuth,
@@ -121,11 +124,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (l) => null,
       (r) {
         if (r == null) {
+          emit(state.copyWith(authenticationStatus: AuthStatus.unauthenticated));
           add(const AuthLoginForwarded(RouteName.login));
         } else {
-          emit(state.copyWith(authStatus: Status.loaded));
-          add(const AuthLoginForwarded(RouteName.logged));
-          // emit(state.copyWith(route: RouteName.logged));
+          emit(state.copyWith(
+            authStatus: Status.loaded,
+            isLogged: true,
+            authenticationStatus: AuthStatus.authenticated,
+          ));
+          Log.debug(state.authenticationStatus);
+          ///add(const AuthLoginForwarded(RouteName.logged));
         }
       },
     );
@@ -135,7 +143,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthSuccessfullyLogged event,
     Emitter<AuthState> emit,
   ) {
-    emit(state.copyWith(route: RouteName.logged));
+    emit(state.copyWith(authenticationStatus: AuthStatus.authenticated));
   }
 
   void _onAuthLogoutSubmitted(
@@ -148,7 +156,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (r) {
         emit(
           state.copyWith(
-            route: RouteName.login,
+            authenticationStatus: AuthStatus.unauthenticated
           ),
         );
         add(AuthRegistrationPageWent());

@@ -21,6 +21,7 @@ import '../bloc/registration_bloc/registration_bloc.dart';
 import 'base_page.dart';
 
 class NameAndPictureInputPage extends StatelessWidget {
+  static const String route = 'named-and-picture-input-page';
   const NameAndPictureInputPage({super.key});
 
   @override

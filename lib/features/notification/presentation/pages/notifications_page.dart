@@ -3,12 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
+import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/notification/presentation/pages/manage_notifications_page.dart';
 import 'package:gpt/features/notification/presentation/widgets/notification_item_widget.dart';
 import '../../../../core/extension/datetime_extension.dart';
 import '../../../../core/routes/route_name.dart';
+import 'package:gpt/splash_screen.dart';
+import '../../../../core/extension/datetime_extension.dart';
+
 import '../bloc/notification_bloc.dart';
 
 class NotificationsPage extends StatefulWidget {
+  static const String route = 'notification';
+
   const NotificationsPage({super.key});
 
   @override
@@ -34,7 +41,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
           padding: const EdgeInsets.only(right: 8.0),
           child: GestureDetector(
             onTap: () {
-              context.go(RouteName.manageNotif);
+              context.go(
+                  '${SplashScreen.route}${HomePage.route}/${NotificationsPage.route}/${ManageNotificationsPage.route}');
             },
             child: const Row(
               children: [
@@ -115,7 +123,10 @@ class HeadingSeparatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 25,
+        vertical: 18,
+      ),
       child: Text(
         text,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(

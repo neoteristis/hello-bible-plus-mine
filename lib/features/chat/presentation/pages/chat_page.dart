@@ -4,23 +4,30 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/base_repository/base_repository.dart';
 import 'package:gpt/core/constants/api_constants.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
+import 'package:gpt/features/home/presentation/page/home_page.dart';
 import 'package:logger/logger.dart';
 import '../../../../core/db_services/db_services.dart';
 import '../../../../core/helper/log.dart';
 import '../../../../core/routes/route_name.dart';
+
+import 'package:gpt/core/helper/notifications.dart';
+import 'package:logger/logger.dart';
+
 import '../../../../injections.dart';
 import '../../domain/entities/category.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../widgets/chat/chat_body_widget.dart';
-import '../widgets/container_categories_widget.dart';
 import '../widgets/custom_app_bar.dart';
-import 'custom_drawer.dart';
+import '../../../../core/widgets/custom_drawer.dart';
 
 class ChatPage extends StatefulWidget {
+  static const String route = 'chat';
+
   const ChatPage({super.key});
 
   @override
@@ -38,13 +45,10 @@ class _ChatPageState extends State<ChatPage> {
         }
       },
     );
-    // context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
 
     Stream<String> tokenStream;
     tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     tokenStream.listen(setToken);
-
-    // FirebaseMessaging.instance.subscribeToTopic('topic');
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
@@ -85,7 +89,7 @@ class _ChatPageState extends State<ChatPage> {
               final category = Category.fromJson(
                 json,
               );
-              context.go(RouteName.home);
+              context.go('/${HomePage.route}');
               context
                   .read<ChatBloc>()
                   .scaffoldKey
@@ -110,30 +114,12 @@ class _ChatPageState extends State<ChatPage> {
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           key: context.read<ChatBloc>().scaffoldKey,
           resizeToAvoidBottomInset: true,
-          appBar: CustomAppBar(
-            height: state.conversation != null ? 60 : null,
-          ),
+          appBar: const CustomAppBar(),
           endDrawer: const CustomDrawer(),
-          body: state.conversation == null
-              ? const ContainerCategoriesWidget()
-              : const ChatBodyWidget(),
+          body: const ChatBodyWidget(),
         );
-      },
-    );
-  }
-}
-
-Future setToken(String? token) async {
-  final user = await getIt<DbService>().getUser();
-  final id = user?.idString;
-  if (id != null) {
-    await getIt<BaseRepository>().patch(
-      ApiConstants.registration(),
-      body: {
-        'deviceToken': token,
       },
     );
   }

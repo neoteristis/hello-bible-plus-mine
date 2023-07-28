@@ -4,11 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
-import '../../../../core/helper/unfocus_keyboard.dart';
-import '../../../../core/theme/theme.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
-import 'categories_by_section_widget.dart';
+import '../../../home/presentation/widgets/categories_by_section_widget.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({
@@ -17,7 +15,6 @@ class CategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         switch (state.catStatus) {
@@ -51,10 +48,6 @@ class CategoriesWidget extends StatelessWidget {
               ),
             );
           case Status.loaded:
-            final hintColor = Theme.of(context)
-                .colorScheme
-                .onBackground
-                .withOpacity(isLight(context) ? 1 : .7);
             return RefreshIndicator(
               onRefresh: () async {
                 context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());

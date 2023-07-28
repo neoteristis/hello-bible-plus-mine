@@ -36,7 +36,6 @@ class LogoWithText extends StatelessWidget {
         RichText(
           text: TextSpan(
             text: 'Hello',
-            // style: Theme.of(context).textTheme.,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontSize: textSize?.sp,
                   color: textColor,

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_network_image.dart';
 import 'package:neumorphic_button/neumorphic_button.dart';
 
 import '../../../../core/helper/unfocus_keyboard.dart';
-import '../../domain/entities/entities.dart';
-import '../bloc/chat_bloc/chat_bloc.dart';
+import '../../../chat/domain/entities/entities.dart';
+import '../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 
 class CategoryItemWidget extends StatelessWidget {
   const CategoryItemWidget({
@@ -20,12 +21,16 @@ class CategoryItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final logo = category?.logo;
     final contentColor = Theme.of(context).colorScheme.secondary;
-
     if (category == null) {
       return const SizedBox.shrink();
     }
     return NeumorphicButton(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 4.0,
+      ),
       onTap: () {
+        print('click...');
         context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
         unfocusKeyboard();
         context.read<ChatBloc>().add(
@@ -33,9 +38,10 @@ class CategoryItemWidget extends StatelessWidget {
                 category: category!,
               ),
             );
+        context.go('/home/chat');
       },
       borderRadius: 12.sp,
-      backgroundColor: const Color(0xFFF6F6F6),
+      backgroundColor: category?.colorTheme ?? const Color(0xFFF6F6F6),
       topLeftShadowBlurRadius: 10,
       topLeftShadowSpreadRadius: 3,
       topLeftShadowColor: Colors.white,
@@ -84,7 +90,7 @@ class CategoryItemWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
-              maxLines: 3,
+              maxLines: 2,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w500,
                     fontSize: 10.sp,

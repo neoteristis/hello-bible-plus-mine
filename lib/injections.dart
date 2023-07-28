@@ -14,6 +14,12 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gpt/features/chat/domain/repositories/chat_repository.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'package:gpt/features/home/data/datasources/home_remote_data_source.dart';
+import 'package:gpt/features/home/data/datasources/home_remote_data_source_impl.dart';
+import 'package:gpt/features/home/data/repositories/home_repository_impl.dart';
+import 'package:gpt/features/home/domain/repositories/home_repository.dart';
+import 'package:gpt/features/home/domain/usecases/fetch_categories_usecase.dart';
+import 'package:gpt/features/home/presentation/bloc/home_bloc.dart';
 import 'package:gpt/features/introduction/presentation/bloc/introduction_bloc.dart';
 import 'package:gpt/features/notification/data/repositories/notification_repository_imp.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
@@ -41,6 +47,7 @@ import 'features/chat/domain/usecases/usecases.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import 'features/contact_us/presentation/bloc/contact_us_bloc.dart';
+import 'features/home/domain/usecases/fetch_categories_by_section.dart';
 import 'features/notification/data/datasources/notification_remote_datasource.dart';
 import 'features/notification/domain/repositories/notification_repository.dart';
 import 'features/notification/domain/usecases/usecases.dart';
@@ -159,6 +166,8 @@ Future external() async {
 }
 
 void dataSource() {
+  getIt.registerLazySingleton<HomeRemoteDataSource>(
+      () => HomeRemoteDataSourceImpl(getIt()));
   getIt.registerLazySingleton<ChatRemoteDatasources>(
       () => ChatRemoteDatasourcesImp(getIt()));
 
@@ -183,6 +192,13 @@ void repository() {
   getIt.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImp(
         remote: getIt(), networkInfo: getIt(), local: getIt()),
+  );
+
+  getIt.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(
+      remote: getIt(),
+      networkInfo: getIt(),
+    ),
   );
 
   getIt.registerLazySingleton<RegistrationRepository>(
@@ -210,8 +226,8 @@ void repository() {
 }
 
 void usecase() {
-  getIt.registerLazySingleton(
-      () => FetchCategoriesUsecase(chatRepository: getIt()));
+  getIt
+      .registerLazySingleton(() => FetchCategoriesUsecase(repository: getIt()));
   getIt.registerLazySingleton(() => ChangeConversationUsecase(getIt()));
   getIt.registerLazySingleton(() => SendMessagesUsecase(getIt()));
   getIt.registerLazySingleton(() => GetResponseMessagesUsecase(getIt()));
@@ -270,12 +286,16 @@ void usecase() {
 
 void bloc() {
   getIt.registerFactory(
-    () => ChatBloc(
+    () => HomeBloc(
+      fetchCategoriesBySection: getIt(),
       fetchCategories: getIt(),
+    ),
+  );
+  getIt.registerFactory(
+    () => ChatBloc(
       changeConversation: getIt(),
       sendMessage: getIt(),
       getResponseMessages: getIt(),
-      fetchCategoriesBySection: getIt(),
       getConversationById: getIt(),
       getSuggestionMessages: getIt(),
       cancelMessageComing: getIt(),

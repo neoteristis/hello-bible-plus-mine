@@ -12,6 +12,7 @@ class ScaffoldWithBackground extends StatelessWidget {
     this.addBackgroundImage = true,
     this.actions,
     this.persistentFooterButtons,
+    this.hasAppBar = true,
   });
 
   final Widget body;
@@ -19,8 +20,10 @@ class ScaffoldWithBackground extends StatelessWidget {
   final String? title;
   final bool? addBackgroundImage;
   final List<Widget>? actions;
+  final bool hasAppBar;
 
   final List<Widget>? persistentFooterButtons;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
