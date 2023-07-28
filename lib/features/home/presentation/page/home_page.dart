@@ -1,7 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/helper/notifications.dart';
@@ -11,13 +8,6 @@ import 'package:gpt/features/home/presentation/widgets/categories_by_section_wid
 import 'package:gpt/features/home/presentation/widgets/custom_home_app_bar.dart';
 
 import '../../../../core/constants/status.dart';
-import '../../../../core/helper/log.dart';
-import '../../../../core/helper/notifications.dart';
-import '../../../../injections.dart';
-import '../../../chat/domain/entities/entities.dart';
-import '../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart'
-    hide ChatCategoriesBySectionFetched;
-import '../../../chat/presentation/pages/chat_page.dart';
 import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
-
     configureNotification(context);
   }
 

@@ -29,9 +29,9 @@ class SplashScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
         body: Stack(
           children: [
-            Center(
+            const Center(
               child: LogoWithText(
-                logoColor: Theme.of(context).colorScheme.secondary,
+                logoColor: Colors.white,
               ),
             ),
             Positioned(
