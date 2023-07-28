@@ -24,9 +24,6 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final drawerTiles = getDrawerTiles(context);
     return Scaffold(
-      appBar: const CustomAppBar(
-        elevation: 0.2,
-      ),
       backgroundColor: Colors.transparent,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.end,
