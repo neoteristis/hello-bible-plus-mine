@@ -1,12 +1,13 @@
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/error/exception.dart';
+import '../../../../core/helper/log.dart';
 import '../../domain/entities/notif_by_category.dart';
 
 abstract class NotificationRemoteDatasource {
   Future<List<NotificationTime>> getValueNotifByCategory();
   Future switchNotifValue(NotificationTime notif);
-  Future changeNotifTime(NotificationTime notif);
+  Future changeNotifTime(List<NotificationTime> notif);
 }
 
 class NotificationRemoteDatasourceImp implements NotificationRemoteDatasource {
@@ -40,10 +41,21 @@ class NotificationRemoteDatasourceImp implements NotificationRemoteDatasource {
   }
 
   @override
-  Future changeNotifTime(NotificationTime notif) async {
+  Future changeNotifTime(List<NotificationTime> notif) async {
     try {
-      final res = await baseRepo.patch(ApiConstants.registration(),
-          body: notif.toJsonTime());
+      final objects = {};
+      for (final no in notif) {
+        final notif = no.toJsonTime();
+        if (notif != null) {
+          objects.addAll(notif);
+        }
+      }
+
+      Log.info(objects);
+      final res = await baseRepo.patch(
+        ApiConstants.registration(),
+        body: {'notificationTimes': objects},
+      );
       return res.data;
     } catch (e) {
       print(e.toString());

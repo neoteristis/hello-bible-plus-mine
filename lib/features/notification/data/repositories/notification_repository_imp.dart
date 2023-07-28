@@ -47,10 +47,10 @@ class NotificationRepositoryImp implements NotificationRepository {
 
   @override
   Future<Either<Failure, dynamic>> changeNotifTime(
-      NotificationTime notif) async {
+      List<NotificationTime> notifs) async {
     if (await networkInfo.isConnected) {
       try {
-        final res = await remote.changeNotifTime(notif);
+        final res = await remote.changeNotifTime(notifs);
         return Right(res);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));

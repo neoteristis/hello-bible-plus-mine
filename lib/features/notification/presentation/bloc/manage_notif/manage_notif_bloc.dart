@@ -76,15 +76,15 @@ class ManageNotifBloc extends Bloc<ManageNotifEvent, ManageNotifState> {
             ..insert(
               index,
               state.notifByCategory![index].copyWith(
-                time: heure.toDateTime,
+                time: heure.toDateTime.toUtc(),
               ),
             ),
           configureNotifStatus: Status.loading,
         ),
       );
       final res = await changeNotifTime(
-        state.notifByCategory![index],
-      );
+          // state.notifByCategory![index],
+          state.notifByCategory ?? []);
       return res.fold(
         (l) => emit(
           state.copyWith(

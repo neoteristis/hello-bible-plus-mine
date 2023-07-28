@@ -32,7 +32,7 @@ class NotificationTime extends Equatable {
   Map<String, dynamic>? toJsonTime() {
     if (id != null && time != null) {
       return {
-        id!: DateFormat('y-d-M HH:mm').format(time!),
+        id!: time!.toUtc().toIso8601String(),
       };
     }
     return null;

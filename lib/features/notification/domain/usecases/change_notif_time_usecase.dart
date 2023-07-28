@@ -6,7 +6,8 @@ import '../../../../core/usecase/usecase.dart';
 import '../entities/notif_by_category.dart';
 import '../repositories/notification_repository.dart';
 
-class ChangeNotifTimeUsecase implements Usecase<dynamic, NotificationTime> {
+class ChangeNotifTimeUsecase
+    implements Usecase<dynamic, List<NotificationTime>> {
   final NotificationRepository repo;
 
   ChangeNotifTimeUsecase(this.repo);
