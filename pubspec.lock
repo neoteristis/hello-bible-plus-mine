@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      sha256: "9c695cc963bf1d04a47bd6021f68befce8970bcd61d24938e1fb0918cf5d9c42"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.1"
   characters:
     dependency: transitive
     description:
@@ -1045,14 +1053,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  neumorphic_button:
-    dependency: "direct main"
-    description:
-      name: neumorphic_button
-      sha256: "6ebc849871592e4081fb80cddad35551142e1ca0a50703136d5b2f4422ffe12f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1+2"
   objectbox:
     dependency: "direct main"
     description:

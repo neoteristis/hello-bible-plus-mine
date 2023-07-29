@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/helper/notifications.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 import 'package:gpt/core/widgets/custom_drawer.dart';
-import 'package:gpt/features/home/presentation/widgets/categories_by_section_widget.dart';
+import 'package:gpt/features/home/presentation/widgets/caroussel_section_slider.dart';
+import 'package:gpt/features/home/presentation/widgets/grid_section_widget.dart';
 import 'package:gpt/features/home/presentation/widgets/custom_home_app_bar.dart';
 
 import '../../../../core/constants/status.dart';
@@ -85,17 +85,23 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(
                             height: 30,
                           ),
-                          CategoriesBySectionWidget(
+                          CarousselSectionWidget(
+                            section: state.categoriesBySection[1],
+                          ),
+                          GridSectionWidget(
                             data: state.categoriesBySection[0],
                             index: index,
                           ),
                         ],
                       );
                     }
+                    if (index == 1) {
+                      return Container();
+                    }
                     if (index == state.categoriesBySection.length - 1) {
                       return Column(
                         children: [
-                          CategoriesBySectionWidget(
+                          GridSectionWidget(
                             data: state.categoriesBySection[index],
                             index: index,
                           ),
@@ -105,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       );
                     }
-                    return CategoriesBySectionWidget(
+                    return GridSectionWidget(
                       data: state.categoriesBySection[index],
                       index: index,
                     );

@@ -8,6 +8,7 @@ const primaryColor = Color(0xFF22B573);
 
 const titleLarge = TextStyle(
   fontSize: 25.5,
+  fontWeight: FontWeight.w700,
 );
 
 const titleMedium = TextStyle(

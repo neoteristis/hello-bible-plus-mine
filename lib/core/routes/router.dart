@@ -33,6 +33,7 @@ GoRouter get route => GoRouter(
           path: SplashScreen.route,
           builder: (context, splash) => const SplashScreen(),
           redirect: (context, state) async {
+
             final authenticationStatus = context.read<AuthBloc>().state.authenticationStatus;
             if (state.fullPath == SplashScreen.route) {
               switch (authenticationStatus) {

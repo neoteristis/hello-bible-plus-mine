@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_network_image.dart';
-import 'package:neumorphic_button/neumorphic_button.dart';
+import 'package:gpt/core/widgets/neumorphic_button.dart';
 
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../chat/domain/entities/entities.dart';
@@ -25,7 +25,7 @@ class CategoryItemWidget extends StatelessWidget {
     }
     return NeumorphicButton(
       padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
+        vertical: 14,
         horizontal: 4.0,
       ),
       onTap: () {
@@ -39,17 +39,18 @@ class CategoryItemWidget extends StatelessWidget {
         context.go('/home/chat');
       },
       borderRadius: 12,
-      backgroundColor: category?.colorTheme ?? const Color(0xFFF6F6F6),
+      splashColor: const Color(0xFFF4F4F4),
+      backgroundColor: const Color(0xFFF6F6F6),
       topLeftShadowBlurRadius: 10,
-      topLeftShadowSpreadRadius: 3,
-      topLeftShadowColor: Colors.white,
+      topLeftShadowSpreadRadius: 0,
+      topLeftShadowColor: const Color(0xFFFFFFFF),
+      topLeftOffset: const Offset(-7, -7),
       bottomRightShadowBlurRadius: 20,
       bottomRightShadowSpreadRadius: 0,
       bottomRightShadowColor: const Color(0xFFD9D9D9),
+      bottomRightOffset: const Offset(3, 3),
       height: 80,
       width: 80,
-      bottomRightOffset: const Offset(3, 3),
-      topLeftOffset: const Offset(-7, -7),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,34 +66,35 @@ class CategoryItemWidget extends StatelessWidget {
             ),
           Expanded(
             flex: 2,
-            child: Center(
-              child: Text(
-                category?.name ?? '',
-                textAlign: TextAlign.center,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      fontSize: 11,
-                    ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Expanded(
-            flex: 2,
             child: Text(
-              category?.welcomePhrase ?? '',
+              (category?.name ?? '').replaceAll(r'\n', '\n'),
               textAlign: TextAlign.center,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 10,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                height: 1.2,
+                  ),
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              (category?.welcomePhrase ?? '').replaceAll(r'\n', '\n'),
+              textAlign: TextAlign.center,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 11,
                     color: const Color(0xFF7B7B7B),
+                    letterSpacing: 0.2,
                   ),
             ),
           ),

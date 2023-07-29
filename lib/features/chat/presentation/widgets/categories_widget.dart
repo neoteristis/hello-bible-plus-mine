@@ -4,7 +4,7 @@ import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
-import '../../../home/presentation/widgets/categories_by_section_widget.dart';
+import '../../../home/presentation/widgets/grid_section_widget.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({
@@ -63,7 +63,7 @@ class CategoriesWidget extends StatelessWidget {
                         const SizedBox(
                           height: 25,
                         ),
-                        CategoriesBySectionWidget(
+                        GridSectionWidget(
                           data: state.categoriesBySection[0],
                           index: index,
                         ),
@@ -73,7 +73,7 @@ class CategoriesWidget extends StatelessWidget {
                   if (index == state.categoriesBySection.length - 1) {
                     return Column(
                       children: [
-                        CategoriesBySectionWidget(
+                        GridSectionWidget(
                           data: state.categoriesBySection[index],
                           index: index,
                         ),
@@ -83,7 +83,7 @@ class CategoriesWidget extends StatelessWidget {
                       ],
                     );
                   }
-                  return CategoriesBySectionWidget(
+                  return GridSectionWidget(
                     data: state.categoriesBySection[index],
                     index: index,
                   );

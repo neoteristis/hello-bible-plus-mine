@@ -53,6 +53,7 @@ ThemeData light = ThemeData(
   textTheme: TextTheme(
     titleLarge: titleLarge.copyWith(
       color: const Color(0xFF5AAB77),
+
     ),
     titleMedium: titleMedium.copyWith(
       color: Colors.black,

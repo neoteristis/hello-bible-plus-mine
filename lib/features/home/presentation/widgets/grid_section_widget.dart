@@ -7,8 +7,12 @@ import 'dart:math' as math;
 
 import '../../../chat/presentation/widgets/category_item2.dart';
 
-class CategoriesBySectionWidget extends StatelessWidget {
-  const CategoriesBySectionWidget({super.key, this.data, required this.index});
+class GridSectionWidget extends StatelessWidget {
+  const GridSectionWidget({
+    super.key,
+    this.data,
+    required this.index,
+  });
 
   final CategoriesBySection? data;
   final int index;
@@ -38,6 +42,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontSize: 17,
                     color: primaryColor,
+                fontWeight: FontWeight.w500,
                   ),
             ),
           ],
@@ -49,7 +54,9 @@ class CategoriesBySectionWidget extends StatelessWidget {
             categories.isNotEmpty &&
             sectionId != '646b6b8e70c60193c897fc3d')
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+            ),
             child: GridView.builder(
               // separatorBuilder: (context, index) => const SizedBox(
               //   width: 8,
@@ -60,7 +67,7 @@ class CategoriesBySectionWidget extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 6 / 6,
-                crossAxisSpacing: 10,
+                crossAxisSpacing: 4,
                 mainAxisSpacing: 10,
               ),
               itemCount: categories.length,

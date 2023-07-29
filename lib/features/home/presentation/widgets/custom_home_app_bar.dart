@@ -28,8 +28,8 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: LogoWithText(
           logoColor: Colors.white,
           textColor: Colors.white,
-          logoSize: Size(24, 24),
-          textSize: 17.55,
+          logoSize: Size(38, 38),
+          textSize: 19,
           center: false,
         ),
       ),

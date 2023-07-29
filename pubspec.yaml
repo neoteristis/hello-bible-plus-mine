@@ -74,8 +74,8 @@ dependencies:
   share_plus: ^7.0.2
   selectable: ^0.3.0
   flutter_tts: ^3.7.0
-  neumorphic_button: ^0.0.1+2
   measure_size: ^4.0.0
+  carousel_slider: ^4.2.1
   # focused_menu_custom: ^1.2.0
   # scrollview_observer: ^1.14.2
 
@@ -115,8 +115,10 @@ flutter:
     - family: Poppins
       fonts:
         - asset: assets/fonts/poppins/Poppins-Regular.ttf
-        - asset: assets/fonts/poppins/Poppins-Medium.ttf
+        - asset: assets/fonts/poppins/Poppins-Regular.ttf
           weight: 500
+        - asset: assets/fonts/poppins/Poppins-Medium.ttf
+          weight: 600
         - asset: assets/fonts/poppins/Poppins-Light.ttf
           weight: 300
 
