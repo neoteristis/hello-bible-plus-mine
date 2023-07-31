@@ -18,6 +18,7 @@ import 'package:gpt/features/container/pages/home/data/datasources/home_remote_d
 import 'package:gpt/features/container/pages/home/data/datasources/home_remote_data_source_impl.dart';
 import 'package:gpt/features/container/pages/home/domain/usecases/fetch_categories_usecase.dart';
 import 'package:gpt/features/container/pages/home/presentation/bloc/home_bloc.dart';
+import 'package:gpt/features/container/pages/section/domain/usecases/fetch_welcome_theme_usecase.dart';
 import 'package:gpt/features/introduction/presentation/bloc/introduction_bloc.dart';
 import 'package:gpt/features/notification/data/repositories/notification_repository_imp.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
@@ -48,6 +49,11 @@ import 'features/contact_us/presentation/bloc/contact_us_bloc.dart';
 import 'features/container/pages/home/data/repositories/home_repository_impl.dart';
 import 'features/container/pages/home/domain/repositories/home_repository.dart';
 import 'features/container/pages/home/domain/usecases/fetch_categories_by_section.dart';
+import 'features/container/pages/section/data/datasources/section_remote_data_source.dart';
+import 'features/container/pages/section/data/datasources/section_remote_data_source_impl.dart';
+import 'features/container/pages/section/data/repositories/section_repository_impl.dart';
+import 'features/container/pages/section/domain/repositories/section_repository.dart';
+import 'features/container/pages/section/presentation/bloc/section_bloc.dart';
 import 'features/notification/data/datasources/notification_remote_datasource.dart';
 import 'features/notification/domain/repositories/notification_repository.dart';
 import 'features/notification/domain/usecases/usecases.dart';
@@ -184,6 +190,8 @@ void dataSource() {
       () => SubscriptionRemoteDatasourcesImp(getIt()));
   getIt.registerLazySingleton<NotificationRemoteDatasource>(
       () => NotificationRemoteDatasourceImp(getIt()));
+  getIt.registerLazySingleton<SectionRemoteDataSource>(
+      () => SectionRemoteDataSourceImpl(getIt()));
 }
 
 void repository() {
@@ -219,6 +227,13 @@ void repository() {
 
   getIt.registerLazySingleton<NotificationRepository>(
     () => NotificationRepositoryImp(
+      networkInfo: getIt(),
+      remote: getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton<SectionRepository>(
+    () => SectionRepositoryImpl(
       networkInfo: getIt(),
       remote: getIt(),
     ),
@@ -282,6 +297,7 @@ void usecase() {
   getIt.registerLazySingleton(() => ChangeNotifTimeUsecase(getIt()));
   // getIt.registerLazySingleton(() => ChangeNotifTimeUsecase(getIt()));
   getIt.registerLazySingleton(() => CancelMessageComingUsecase(getIt()));
+  getIt.registerLazySingleton(() => FetchWelcomeThemeUsecase(getIt()));
 }
 
 void bloc() {
@@ -389,6 +405,20 @@ void bloc() {
       switchNotifValue: getIt(),
       changeNotifTime: getIt(),
       notificationFetched: getIt(),
+    ),
+  );
+
+  // getIt.registerFactory(
+  //   () => ManageNotifBloc(
+  //     switchNotifValue: getIt(),
+  //     changeNotifTime: getIt(),
+  //     notificationFetched: getIt(),
+  //   ),
+  // );
+
+  getIt.registerFactory(
+    () => SectionBloc(
+      fetchWelcomeTheme: getIt(),
     ),
   );
 }

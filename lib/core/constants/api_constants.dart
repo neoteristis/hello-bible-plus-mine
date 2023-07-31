@@ -58,4 +58,6 @@ class ApiConstants {
   static String code(String code) => '$route/access-code/check/$code';
 
   static const String cancelSubscription = '$route/users/cancel-subscription';
+
+  static const String welcomeTheme = '$route/categories_home';
 }

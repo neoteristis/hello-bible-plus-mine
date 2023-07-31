@@ -12,6 +12,7 @@ import 'core/theme/bloc/theme_bloc.dart';
 import 'features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'features/chat/presentation/bloc/donation_bloc/donation_bloc.dart';
 import 'features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
+import 'features/container/pages/section/presentation/bloc/section_bloc.dart';
 import 'features/introduction/presentation/bloc/introduction_bloc.dart';
 import 'features/notification/presentation/bloc/notification_bloc.dart';
 import 'features/subscription/presentation/bloc/subscription_bloc.dart';
@@ -28,6 +29,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<SectionBloc>()..add(SectionWelcomThemeFetched()),
+        ),
         BlocProvider(
           create: (context) => getIt<ThemeBloc>()..add(ThemeStarted()),
         ),
