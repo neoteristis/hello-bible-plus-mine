@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
+import 'package:gpt/features/home/presentation/page/home_page.dart';
 
 import '../../../../core/constants/pagination_const.dart';
 import '../../../../core/constants/status.dart';
@@ -12,7 +14,6 @@ import '../bloc/historical_bloc/historical_bloc.dart';
 import '../widgets/historical/historical_item_widget.dart';
 
 class HistoricalPage extends StatefulWidget {
-
   static const String route = 'history';
 
   const HistoricalPage({super.key});
@@ -148,26 +149,28 @@ class HistoryLoaded extends StatelessWidget {
               ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 controller: state.scrollController,
-                itemBuilder: (context, index) =>
-                    index >= historicalCount && historicalCount >= itemNumber
-                        ? const BottomLoader()
-                        : GestureDetector(
-                            onTap: () {
-                              context.read<ChatBloc>().add(
-                                  ChatConversationInited(
-                                      historical: historicals[index]));
-                              context.pop();
-                            },
-                            child: HistoricalItemWidget(
-                              historic: historicals[index],
-                            ),
-                          ),
+                itemBuilder: (context, index) => index >= historicalCount &&
+                        historicalCount >= itemNumber
+                    ? const BottomLoader()
+                    : GestureDetector(
+                        onTap: () {
+                          context.read<ChatBloc>().add(ChatConversationInited(
+                                historical: historicals[index],
+                              ));
+                          context.go('/${HomePage.route}/${ChatPage.route}');
+                        },
+                        child: HistoricalItemWidget(
+                          historic: historicals[index],
+                        ),
+                      ),
                 itemCount: state.hasReachedMax! || historicalCount < itemNumber
                     ? state.historicals!.length
                     : state.historicals!.length + 1,
               ),
               state.isRefresh!
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
                   : Container(),
             ],
           ),

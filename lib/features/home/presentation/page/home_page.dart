@@ -29,103 +29,106 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomHomeAppBar(),
-      endDrawer: const CustomDrawer(),
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          switch (state.status) {
-            case Status.loading:
-              return const Center(
-                child: CustomProgressIndicator(),
-              );
-            case Status.failed:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Une erreur s\'est produite',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        context
-                            .read<HomeBloc>()
-                            .add(ChatCategoriesBySectionFetched());
-                      },
-                      icon: Icon(Icons.refresh_rounded,
-                          color: Theme.of(context).primaryColor),
-                      label: Text(
-                        'Rafraichir',
+    return WillPopScope(
+      child: Scaffold(
+        appBar: const CustomHomeAppBar(),
+        endDrawer: const CustomDrawer(),
+        body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            switch (state.status) {
+              case Status.loading:
+                return const Center(
+                  child: CustomProgressIndicator(),
+                );
+              case Status.failed:
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Une erreur s\'est produite',
                         style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).colorScheme.error,
                         ),
                       ),
-                    )
-                  ],
-                ),
-              );
-            case Status.loaded:
-              return RefreshIndicator(
-                onRefresh: () async {
-                  context
-                      .read<HomeBloc>()
-                      .add(ChatCategoriesBySectionFetched());
-                },
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: state.categoriesBySection.length,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 30,
+                      TextButton.icon(
+                        onPressed: () {
+                          context
+                              .read<HomeBloc>()
+                              .add(ChatCategoriesBySectionFetched());
+                        },
+                        icon: Icon(Icons.refresh_rounded,
+                            color: Theme.of(context).primaryColor),
+                        label: Text(
+                          'Rafraichir',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
                           ),
-                          CarousselSectionWidget(
-                            section: state.categoriesBySection[1],
-                          ),
-                          GridSectionWidget(
-                            data: state.categoriesBySection[0],
-                            index: index,
-                          ),
-                        ],
-                      );
-                    }
-                    if (index == 1) {
-                      return Container();
-                    }
-                    if (index == state.categoriesBySection.length - 1) {
-                      return Column(
-                        children: [
-                          GridSectionWidget(
-                            data: state.categoriesBySection[index],
-                            index: index,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          )
-                        ],
-                      );
-                    }
-                    return GridSectionWidget(
-                      data: state.categoriesBySection[index],
-                      index: index,
-                    );
-                  },
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 10,
+                        ),
+                      )
+                    ],
                   ),
-                ),
-              );
-            default:
-              return const SizedBox.shrink();
-          }
-        },
+                );
+              case Status.loaded:
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context
+                        .read<HomeBloc>()
+                        .add(ChatCategoriesBySectionFetched());
+                  },
+                  child: ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: state.categoriesBySection.length,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Column(
+                          children: [
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            CarousselSectionWidget(
+                              section: state.categoriesBySection[1],
+                            ),
+                            GridSectionWidget(
+                              data: state.categoriesBySection[0],
+                              index: index,
+                            ),
+                          ],
+                        );
+                      }
+                      if (index == 1) {
+                        return Container();
+                      }
+                      if (index == state.categoriesBySection.length - 1) {
+                        return Column(
+                          children: [
+                            GridSectionWidget(
+                              data: state.categoriesBySection[index],
+                              index: index,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            )
+                          ],
+                        );
+                      }
+                      return GridSectionWidget(
+                        data: state.categoriesBySection[index],
+                        index: index,
+                      );
+                    },
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 10,
+                    ),
+                  ),
+                );
+              default:
+                return const SizedBox.shrink();
+            }
+          },
+        ),
       ),
+      onWillPop: () => Future.value(false),
     );
   }
 }

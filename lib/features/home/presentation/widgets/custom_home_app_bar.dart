@@ -19,11 +19,11 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: primaryColor,
+      backgroundColor: Theme.of(context).primaryColor,
       automaticallyImplyLeading: false,
       title: const Padding(
         padding: EdgeInsets.only(
-          left: 16.0,
+          left: 4.0,
         ),
         child: LogoWithText(
           logoColor: Colors.white,
@@ -42,6 +42,7 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           onPressed: () {
             Scaffold.of(context).openEndDrawer();
           },

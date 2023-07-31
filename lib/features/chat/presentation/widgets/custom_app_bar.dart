@@ -63,8 +63,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          state.conversation!.category?.name ??
-                              AppLocalizations.of(context)!.loading,
+                          (state.conversation!.category?.name ??
+                              AppLocalizations.of(context)!.loading).replaceAll(r'\n', ''),
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
@@ -73,7 +73,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         Text(
-                          state.conversation!.category?.welcomePhrase ?? '',
+                          (state.conversation!.category?.welcomePhrase ?? '').replaceAll(r'\n', ''),
                           softWrap: false,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
