@@ -8,8 +8,6 @@ import 'package:gpt/features/chat/presentation/widgets/category_item2.dart';
 
 import 'category_item_widget.dart';
 
-
-
 class GridSectionWidget extends StatelessWidget {
   const GridSectionWidget({
     super.key,
@@ -35,30 +33,30 @@ class GridSectionWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            const SizedBox(
-              width: 20,
-            ),
-            Text(
-              sectionName!,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontSize: 17,
-                    color: primaryColor,
-                fontWeight: FontWeight.w500,
-                  ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 20,
+              ),
+              Text(
+                sectionName!,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontSize: 17,
+                      color: primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+            ],
+          ),
         ),
         if (categories != null &&
             categories.isNotEmpty &&
             sectionId != '646b6b8e70c60193c897fc3d')
           Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
+              horizontal: 10.0,
             ),
             child: GridView.builder(
               // separatorBuilder: (context, index) => const SizedBox(
@@ -108,7 +106,9 @@ class GridSectionWidget extends StatelessWidget {
             categories.isNotEmpty &&
             sectionId == '646b6b8e70c60193c897fc3d')
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+            ),
             child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,

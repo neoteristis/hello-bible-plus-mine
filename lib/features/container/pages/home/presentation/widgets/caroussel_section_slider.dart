@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/core/extension/string_extension.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/features/chat/domain/entities/entities.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
@@ -42,6 +43,8 @@ class CarousselSectionWidget extends StatelessWidget {
           options: CarouselOptions(
             aspectRatio: 4 / 3,
             height: 100,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 2)
           ),
         )
       ],
@@ -82,14 +85,14 @@ class CarousselItemWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                category.name ?? '',
+                (category.name ?? '').removeBackSlashN,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
               ),
               Text(
-                category.welcomePhrase ?? '',
+                (category.welcomePhrase ?? '').removeBackSlashN,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w300,
                       letterSpacing: 0.3,

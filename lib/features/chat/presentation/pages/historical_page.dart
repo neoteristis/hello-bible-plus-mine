@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_drawer.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
-import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 
 import '../../../../core/constants/pagination_const.dart';
 import '../../../../core/constants/status.dart';
@@ -168,7 +167,7 @@ class HistoryLoaded extends StatelessWidget {
                           context.read<ChatBloc>().add(ChatConversationInited(
                                 historical: historicals[index],
                               ));
-                          context.go('/${HomePage.route}/${ChatPage.route}');
+                          context.go('/${ChatPage.route}');
                         },
                         child: HistoricalItemWidget(
                           historic: historicals[index],
