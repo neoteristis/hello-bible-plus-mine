@@ -207,7 +207,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                   padding: widget.padding ?? const EdgeInsets.all(10.0),
                   child: widget.message ??
                       Text(
-                        widget.textMessage?.content ?? '_',
+                        widget.textMessage?.content ?? '',
                         style: TextStyle(
                           color: widget.textMessage?.role == Role.user
                               ? senderContent
@@ -241,7 +241,7 @@ class _CustomBubbleState extends State<CustomBubble> {
                 padding: widget.padding ?? const EdgeInsets.all(10.0),
                 child: widget.message ??
                     SelectableText(
-                      widget.textMessage?.content ?? '_',
+                      widget.textMessage?.content ?? '',
                       cursorColor: Colors.grey,
                       style: TextStyle(
                         color: widget.textMessage?.role == Role.user

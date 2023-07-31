@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/extension/string_extension.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
 import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 import 'package:gpt/splash_screen.dart';
@@ -40,6 +39,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               unfocusKeyboard();
               context.go('/home');
+              context.read<ChatBloc>()
+                ..add(ChatStreamCanceled())
+                ..add(ChatConversationCleared());
             },
             icon: const Icon(
               Icons.arrow_back_ios_rounded,
@@ -65,7 +67,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          (state.conversation!.category?.name ??
+                          (state.conversation?.category?.name ??
                                   dict(context).loading)
                               .removeBackSlashN,
                           style: TextStyle(
@@ -75,7 +77,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         Text(
-                          (state.conversation!.category?.welcomePhrase ?? '')
+                          (state.conversation?.category?.welcomePhrase ?? '')
                               .removeBackSlashN,
                           softWrap: false,
                           maxLines: 1,

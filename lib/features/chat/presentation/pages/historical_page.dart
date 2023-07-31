@@ -26,6 +26,7 @@ class _HistoricalPageState extends State<HistoricalPage> {
   @override
   void initState() {
     super.initState();
+    context.read<HistoricalBloc>().add(const HistoricalFetched());
   }
 
   @override
