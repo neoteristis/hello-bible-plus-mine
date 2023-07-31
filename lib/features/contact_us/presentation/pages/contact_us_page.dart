@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_text_field.dart';
 import 'package:gpt/features/contact_us/presentation/bloc/contact_us_bloc.dart';
+import 'package:gpt/features/container/pages/section/presentation/pages/section_page.dart';
 
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
@@ -26,7 +27,7 @@ class ContactUsPage extends StatelessWidget {
         ),
       ],
       onPop: () {
-        context.pop();
+        context.go('/${SectionPage.route}');
       },
       title: dict(context).contactUs,
       body: Padding(

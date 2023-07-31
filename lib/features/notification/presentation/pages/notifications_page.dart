@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
-import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/section/presentation/pages/section_page.dart';
 import 'package:gpt/features/notification/presentation/pages/manage_notifications_page.dart';
 import 'package:gpt/features/notification/presentation/widgets/notification_item_widget.dart';
 import '../../../../core/extension/datetime_extension.dart';
@@ -30,7 +30,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return ScaffoldWithBackground(
       addBackgroundImage: false,
       onPop: () {
-        context.pop();
+        context.go('/${SectionPage.route}');
       },
       title: 'Mes notifications',
       actions: [
@@ -39,7 +39,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           child: GestureDetector(
             onTap: () {
               context.go(
-                  '/${HomePage.route}/${NotificationsPage.route}/${ManageNotificationsPage.route}');
+                  '/${NotificationsPage.route}/${ManageNotificationsPage.route}');
             },
             child: const Row(
               children: [

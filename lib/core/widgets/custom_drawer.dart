@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
-import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
 import 'package:gpt/features/contact_us/presentation/pages/contact_us_page.dart';
-import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 import 'package:gpt/features/more/presentation/pages/about_page.dart';
 import 'package:gpt/features/more/presentation/pages/help_page.dart';
 import 'package:gpt/features/more/presentation/pages/usage_general_condition_page.dart';
@@ -190,16 +188,18 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           context.go('/${SubscriptionPage.route}');
         },
       ),
-      DrawerTile(
-        label: dict(context).myHistory,
-        icon: const IconDrawerTiles(
+
+      /**
+          DrawerTile(
+          label: dict(context).myHistory,
+          icon: const IconDrawerTiles(
           Icons.history,
-        ),
-        onPressed: () {
+          ),
+          onPressed: () {
           Scaffold.of(context).closeEndDrawer();
           context.go('/${HistoricalPage.route}');
-        },
-      ),
+          },
+          ),***/
       DrawerTile(
         label: dict(context).manageNotifications,
         icon: const IconDrawerTiles(
@@ -213,7 +213,9 @@ List<Widget> getDrawerTiles(BuildContext context) => [
       ),
       DrawerTile(
         label: AppLocalizations.of(context)!.darkMode,
-        icon: const IconDrawerFromAsset('assets/icons/brightness.svg'),
+        icon: const IconDrawerFromAsset(
+          'assets/icons/brightness.svg',
+        ),
         trailing: Transform.scale(
           scale: 0.8,
           child: BlocBuilder<ThemeBloc, ThemeState>(

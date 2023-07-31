@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
+import 'package:gpt/features/container/pages/section/presentation/pages/section_page.dart';
 import 'package:gpt/features/subscription/presentation/bloc/subscription_bloc.dart';
 
 import '../../../../core/constants/status.dart';
@@ -33,7 +34,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     return ScaffoldWithBackground(
       addBackgroundImage: false,
       onPop: () {
-        context.pop();
+        context.go('/${SectionPage.route}');
       },
       title: dict(context).subscribe,
       body: BlocBuilder<SubscriptionBloc, SubscriptionState>(
@@ -114,10 +115,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    SubscriptionsListWidget(),
+                    const SubscriptionsListWidget(),
                     // const SubscriptionItem(
                     //   isActive: true,
                     //   interval: 'Abonnement Annuel',
