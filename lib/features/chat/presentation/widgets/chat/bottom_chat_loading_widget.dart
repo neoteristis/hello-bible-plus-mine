@@ -32,23 +32,11 @@ class BottomChatLoadingWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.topLeft,
-          child: BlocBuilder<ChatBloc, ChatState>(
-            buildWhen: (previous, current) =>
-                previous.textFieldKey != current.textFieldKey,
-            builder: (context, state) {
-              final boxField = state.textFieldKey?.currentContext
-                  ?.findRenderObject() as RenderBox?;
-              double? fieldHeight = 0.0;
-              if (boxField != null && boxField.hasSize) {
-                fieldHeight = boxField.size.height;
-              }
-              return CustomBubble(
-                color: Theme.of(context).colorScheme.onPrimary,
-                padding: EdgeInsets.zero,
-                nip: BubbleNip.leftBottom,
-                message: const TypingIndicatorWidget(),
-              );
-            },
+          child: CustomBubble(
+            color: Theme.of(context).colorScheme.onPrimary,
+            padding: EdgeInsets.zero,
+            nip: BubbleNip.leftBottom,
+            message: const TypingIndicatorWidget(),
           ),
         ),
       ],

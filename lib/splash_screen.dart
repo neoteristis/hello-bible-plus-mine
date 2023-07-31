@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
-import 'features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'features/home/presentation/bloc/home_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String route = '/';
@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
               previous.authStatus != current.authStatus,
           listener: (context, state) {
             if (state.authenticationStatus == AuthStatus.authenticated) {
-              context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
+              context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
             }
           },
         ),

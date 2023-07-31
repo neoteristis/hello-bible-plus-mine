@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt/core/widgets/typing_indicator.dart';
 import 'package:lottie/lottie.dart';
 // import 'package:gpt/features/flutter_chat_lib/src/models/bubble_rtl_alignment.dart';
@@ -37,14 +37,14 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
       buildWhen: (previous, current) =>
           previous.focusNode != current.focusNode ||
           previous.isLoading != current.isLoading ||
-          previous.readOnly != current.readOnly ||
+          // previous.readOnly != current.readOnly ||
           previous.textFieldKey != current.textFieldKey ||
           previous.messageStatus != current.messageStatus ||
           previous.readStatus != current.readStatus,
       builder: (context, state) {
-        if (state.readOnly == true) {
-          return const SizedBox.shrink();
-        }
+        // if (state.readOnly == true) {
+        //   return const SizedBox.shrink();
+        // }
         return Column(
           key: state.textFieldKey,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +107,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                               unfocusKeyboard();
                               context.read<ChatBloc>().add(
                                     ChatMessageSent(
-                                      textEditingController!.text,
+                                      textMessage: textEditingController!.text,
                                     ),
                                   );
 
@@ -172,7 +172,8 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                                 unfocusKeyboard();
                                 context.read<ChatBloc>().add(
                                       ChatMessageSent(
-                                        textEditingController!.text,
+                                        textMessage:
+                                            textEditingController!.text,
                                       ),
                                     );
                                 textEditingController!.clear();

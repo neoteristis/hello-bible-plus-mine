@@ -25,7 +25,7 @@ class SuggestionItem extends StatelessWidget {
             unfocusKeyboard();
             context.read<ChatBloc>().add(
                   ChatMessageSent(
-                    text,
+                    textMessage: text,
                   ),
                 );
             if (state.scrollController!.hasClients) {

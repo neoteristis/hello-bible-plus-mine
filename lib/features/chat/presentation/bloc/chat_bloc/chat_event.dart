@@ -10,12 +10,15 @@ abstract class ChatEvent extends Equatable {
 class ChatMessageSent extends ChatEvent {
   // final types.PartialText? message;
   final String textMessage;
-  const ChatMessageSent(
-    this.textMessage,
-  );
+  final Role? role;
+  const ChatMessageSent({
+    required this.textMessage,
+    this.role = Role.system,
+  });
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         textMessage,
+        role,
       ];
 }
 
@@ -79,11 +82,16 @@ class ChatTypingStatusChanged extends ChatEvent {
 
 class ChatMessageJoined extends ChatEvent {
   final String newMessage;
+  final Role? role;
   const ChatMessageJoined({
     required this.newMessage,
+    this.role = Role.system,
   });
   @override
-  List<Object> get props => [newMessage];
+  List<Object?> get props => [
+        newMessage,
+        role,
+      ];
 }
 
 class ChatMessageAnswerGot extends ChatEvent {
@@ -113,12 +121,17 @@ class ChatMessageModChanged extends ChatEvent {
 
 class ChatIncomingMessageLoaded extends ChatEvent {
   final String message;
+  final Role? role;
   const ChatIncomingMessageLoaded({
     required this.message,
+    this.role = Role.system,
   });
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [
+        message,
+        role,
+      ];
 }
 
 class ChatFocusNodeDisposed extends ChatEvent {}

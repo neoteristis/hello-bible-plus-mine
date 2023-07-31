@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/features/chat/presentation/widgets/chat/suggestion_item.dart';
 
+import '../../../../../core/helper/log.dart';
 import '../../../../../core/widgets/custom_bubble.dart';
 import '../../../domain/entities/message_by_role.dart';
 import '../../../domain/entities/text_message.dart';
@@ -18,23 +19,15 @@ class BottomChatLoadedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
-      buildWhen: (previous, current) =>
-      previous.isLoading != current.isLoading ||
-          previous.textFieldKey != current.textFieldKey,
+      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
       builder: (context, state) {
-        final boxField = state.textFieldKey?.currentContext?.findRenderObject()
-        as RenderBox?;
-        double? fieldHeight = 0.0;
-        if (boxField != null && boxField.hasSize) {
-          fieldHeight = boxField.size.height;
-        }
         return Column(
           children: [
             Align(
               alignment: Alignment.bottomRight,
               child: BlocBuilder<ChatBloc, ChatState>(
                 buildWhen: (previous, current) =>
-                previous.messages != current.messages,
+                    previous.messages != current.messages,
                 builder: (context, state) {
                   return CustomBubbleBuilder(
                     message: state.messages![lastIndex],
@@ -45,32 +38,28 @@ class BottomChatLoadedWidget extends StatelessWidget {
             ),
             BlocBuilder<ChatBloc, ChatState>(
               buildWhen: (previous, current) =>
-              previous.incoming != current.incoming ||
+                  previous.incoming != current.incoming ||
                   previous.containerKey != current.containerKey ||
                   previous.suggestions != current.suggestions ||
                   previous.isLoading != current.isLoading,
               builder: (context, state) {
-                final suggestions = state.suggestions;
                 return Align(
                   alignment: Alignment.bottomLeft,
                   child: CustomBubble(
                     key: state.containerKey,
                     color: Theme.of(context).colorScheme.onPrimary,
                     nip: BubbleNip.leftBottom,
-                    textMessage: TextMessage(
-                      content: state.incoming,
-                      role: Role.system,
-                    ),
-                    message: Text(
-                      state.incoming ?? '',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 17,
-                        // fontSize: 17,
-                        height: 1.4,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    textMessage: state.incoming,
+                    //TODO eeeeeeeeeeeeeeeeeto
+                    // message: Text(
+                    //   state.incoming ?? '',
+                    //   style: TextStyle(
+                    //     color: Theme.of(context).colorScheme.secondary,
+                    //     fontSize: 17,
+                    //     height: 1.4,
+                    //     fontWeight: FontWeight.w400,
+                    //   ),
+                    // ),
                   ),
                 );
               },
@@ -80,7 +69,7 @@ class BottomChatLoadedWidget extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: BlocBuilder<ChatBloc, ChatState>(
                   buildWhen: (previous, current) =>
-                  previous.suggestions != current.suggestions,
+                      previous.suggestions != current.suggestions,
                   builder: (context, state) {
                     final suggestions = state.suggestions;
                     if (suggestions == null || suggestions.isEmpty) {
@@ -104,7 +93,7 @@ class BottomChatLoadedWidget extends StatelessWidget {
                       child: Column(
                         children: [
                           ...suggestions.map(
-                                (e) => SuggestionItem(e),
+                            (e) => SuggestionItem(e),
                           ),
                         ],
                       ),

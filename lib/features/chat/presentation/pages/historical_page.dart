@@ -154,9 +154,11 @@ class HistoryLoaded extends StatelessWidget {
                     ? const BottomLoader()
                     : GestureDetector(
                         onTap: () {
-                          context.read<ChatBloc>().add(ChatConversationInited(
-                                historical: historicals[index],
-                              ));
+                          context.read<ChatBloc>().add(
+                                ChatConversationInited(
+                                  historical: historicals[index],
+                                ),
+                              );
                           context.go('/${HomePage.route}/${ChatPage.route}');
                         },
                         child: HistoricalItemWidget(

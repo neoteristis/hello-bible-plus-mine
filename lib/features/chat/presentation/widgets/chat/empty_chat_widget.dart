@@ -30,22 +30,24 @@ class EmptyChatWidget extends StatelessWidget {
                 constraints: const BoxConstraints(),
                 child: CustomBubble(
                   indexMessage: 0,
-                  textMessage: TextMessage(
-                    content: state.incoming,
-                    role: Role.system,
-                  ),
+                  textMessage: state.incoming,
+
+                  // textMessage: TextMessage(
+                  //   content: state.incoming,
+                  //   role: Role.system,
+                  // ),
                   color: Theme.of(context).colorScheme.onPrimary,
                   nip: BubbleNip.leftBottom,
-                  message: Text(
-                    state.incoming ?? '',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 17,
-                      // fontSize: 15,
-                      height: 1.4,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  // message: Text(
+                  //   state.incoming ?? '',
+                  //   style: TextStyle(
+                  //     color: Theme.of(context).colorScheme.secondary,
+                  //     fontSize: 17,
+                  //     // fontSize: 15,
+                  //     height: 1.4,
+                  //     fontWeight: FontWeight.w400,
+                  //   ),
+                  // ),
                 ),
               ),
             );

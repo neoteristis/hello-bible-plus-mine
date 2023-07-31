@@ -10,11 +10,9 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gpt/core/extension/string_extension.dart';
 
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:logger/logger.dart';
 import 'package:vibration/vibration.dart';
 // import 'package:scrollview_observer/scrollview_observer.dart';
 
@@ -274,7 +272,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
     add(
       ChatMessageJoined(
-        newMessage: state.incoming ?? '',
+        newMessage: state.incoming?.content ?? '',
       ),
     );
     if (state.conversation != null && state.isLoading!) {
@@ -380,49 +378,44 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         conversation: const Conversation(),
         messages: [],
         clearNewMessage: true,
-        readOnly: true,
+        messageStatus: Status.loaded,
+        // readOnly: true,
       ),
     );
-    // state.focusNode?.requestFocus();
-    Category? categorySelected;
-    for (final CategoriesBySection catSection in state.categoriesBySection) {
-      if (catSection.categories != null) {
-        for (final Category category in catSection.categories!) {
-          if (category.id == historical.category?.id) {
-            categorySelected = category;
-            break;
-          }
-        }
-      }
-    }
     final conversation = Conversation(
       id: historical.idString,
-      category: categorySelected,
+      category: historical.category,
     );
     emit(
       state.copyWith(
         conversation: conversation,
-        // theme: theme(conversation.category?.colorTheme),
         conversationStatus: Status.loaded,
       ),
     );
-    // Log.info(historical.messages.length);
-    for (final message in historical.messages) {
-      // Log.info(message);
-      // final role = message.role == Role.user ? Role : state.receiver;
-      // final text = TextMessage(
-      //   role: message.role,
-      //   createdAt: message.createdAt,
-      //   content: message.content ?? '',
-      // );
-
-      add(
-        ChatMessageAdded(
-          textMessage: message.content ?? '',
-          createdAt: message.createdAt,
-          role: message.role,
-        ),
-      );
+    final messages = historical.messages;
+    for (int i = 0; i < historical.messages.length; i++) {
+      if (i == historical.messages.length - 1) {
+        add(
+          ChatIncomingMessageLoaded(
+            message: messages[i].content ?? '',
+            role: messages[i].role,
+          ),
+        );
+        add(
+          ChatMessageJoined(
+            newMessage: messages[i].content ?? '',
+            role: messages[i].role,
+          ),
+        );
+      } else {
+        add(
+          ChatMessageAdded(
+            textMessage: messages[i].content ?? '',
+            createdAt: messages[i].createdAt,
+            role: messages[i].role,
+          ),
+        );
+      }
     }
   }
 
@@ -437,7 +430,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatIncomingMessageLoaded event,
     Emitter<ChatState> emit,
   ) {
-    emit(state.copyWith(incoming: event.message));
+    emit(
+      state.copyWith(
+        incoming: TextMessage(
+          content: event.message,
+          role: event.role,
+        ),
+      ),
+    );
   }
 
   void _onChatMessageAnswerGot(
@@ -498,7 +498,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                 ),
               );
               if (trunck.contains(endMessageMarker)) {
-                // debugPrint(messageJoined);
                 // mark that the stream is finished
                 add(
                   const ChatLoadingChanged(
@@ -570,7 +569,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(
       state.copyWith(
         messages: List.of(state.messages!)..add(textMessage),
-        messageStatus: Status.init,
+        // messageStatus: Status.init,
       ),
     );
   }
@@ -607,8 +606,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         // emit an empty conversation to go the chat screen
         conversation: Conversation(category: event.category),
         clearNewMessage: true,
-        incoming: '',
-        readOnly: false,
+        incoming: const TextMessage(),
+        // readOnly: false,
         firstLaunch: true,
       ),
     );
@@ -658,7 +657,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           //     messageStatus: Status.loading,
           //   ),
           // );
-          add(ChatMessageSent(event.firstMessage ?? ''));
+          add(ChatMessageSent(textMessage: event.firstMessage ?? ''));
         }
       },
     );
@@ -680,7 +679,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       state.textEditingController?.clear();
       final textAnswer = TextMessage(
-        role: Role.system,
+        role: event.role,
         createdAt: DateTime.now(),
         content: state.newMessage ?? '',
       );

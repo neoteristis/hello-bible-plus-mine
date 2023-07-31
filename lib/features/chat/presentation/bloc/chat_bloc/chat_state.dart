@@ -14,7 +14,7 @@ class ChatState extends Equatable {
     this.isTyping = false,
     this.newMessage = '',
     this.theme,
-    this.incoming = '',
+    this.incoming,
     this.focusNode,
     this.suggestions = const [],
     this.scrollController,
@@ -23,7 +23,7 @@ class ChatState extends Equatable {
     this.scrollPhysics,
     this.maintainScroll = false,
     this.suggestionLoaded = false,
-    this.readOnly = false,
+    // this.readOnly = false,
     this.containerKey,
     this.isUserTap = false,
     this.textFieldKey,
@@ -49,7 +49,7 @@ class ChatState extends Equatable {
   final bool? isTyping;
   final String? newMessage;
   final ThemeData? theme;
-  final String? incoming;
+  final TextMessage? incoming;
   final FocusNode? focusNode;
   final List<String>? suggestions;
   final ScrollController? scrollController;
@@ -58,7 +58,7 @@ class ChatState extends Equatable {
   final ScrollPhysics? scrollPhysics;
   final bool? maintainScroll;
   final bool? suggestionLoaded;
-  final bool? readOnly;
+  // final bool? readOnly;
   final GlobalKey? containerKey;
   final GlobalKey? textFieldKey;
   final GlobalKey? listKey;
@@ -97,7 +97,7 @@ class ChatState extends Equatable {
         showSuggestions,
         scrollPhysics,
         maintainScroll,
-        readOnly,
+        // readOnly,
         containerKey,
         textFieldKey,
         isUserTap,
@@ -124,7 +124,7 @@ class ChatState extends Equatable {
     String? newMessage,
     bool clearNewMessage = false,
     ThemeData? theme,
-    String? incoming,
+    TextMessage? incoming,
     FocusNode? focusNode,
     List<String>? suggestions,
     ScrollController? scrollController,
@@ -134,7 +134,7 @@ class ChatState extends Equatable {
     bool clearScrollPhysics = false,
     bool? maintainScroll,
     bool? suggestionLoaded,
-    bool? readOnly,
+    // bool? readOnly,
     GlobalKey? containerKey,
     GlobalKey? textFieldKey,
     GlobalKey? listKey,
@@ -172,7 +172,7 @@ class ChatState extends Equatable {
           clearScrollPhysics ? null : scrollPhysics ?? this.scrollPhysics,
       maintainScroll: maintainScroll ?? this.maintainScroll,
       suggestionLoaded: suggestionLoaded ?? this.suggestionLoaded,
-      readOnly: readOnly ?? this.readOnly,
+      // readOnly: readOnly ?? this.readOnly,
       containerKey: containerKey ?? this.containerKey,
       isUserTap: isUserTap ?? this.isUserTap,
       textFieldKey: textFieldKey ?? this.textFieldKey,

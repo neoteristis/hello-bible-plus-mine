@@ -81,14 +81,14 @@ class ChatListWidget extends StatelessWidget {
                     );
                   }
                   if (index == messages.length - 1 || messages.length == 1) {
-                    if (!state.readOnly!) {
-                      return ListBottomChatWidget(index);
-                    }
-                    return CustomBubbleBuilder(
-                      message: messages[index],
-                      context: context,
-                      index: index,
-                    );
+                    // if (!state.readOnly!) {
+                    return ListBottomChatWidget(index);
+                    // }
+                    // return CustomBubbleBuilder(
+                    //   message: messages[index],
+                    //   context: context,
+                    //   index: index,
+                    // );
                   } else {
                     return CustomBubbleBuilder(
                       message: messages[index],
