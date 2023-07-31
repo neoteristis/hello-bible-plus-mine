@@ -78,6 +78,14 @@ extension StringExtension on String {
 
     return false;
   }
+
+  String get removeBackSlashN {
+    return replaceAll(r'\n', '');
+  }
+
+  String get nextLine {
+    return replaceAll(r'\n', '\n');
+  }
 }
 
 bool hasMatch(String? value, String pattern) {

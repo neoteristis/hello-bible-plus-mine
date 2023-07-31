@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/core/extension/string_extension.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -64,7 +65,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       children: [
                         Text(
                           (state.conversation!.category?.name ??
-                              AppLocalizations.of(context)!.loading).replaceAll(r'\n', ''),
+                              AppLocalizations.of(context)!.loading).removeBackSlashN,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
@@ -73,7 +74,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         Text(
-                          (state.conversation!.category?.welcomePhrase ?? '').replaceAll(r'\n', ''),
+                          (state.conversation!.category?.welcomePhrase ?? '').removeBackSlashN,
                           softWrap: false,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpt/core/extension/string_extension.dart';
 
 import '../../../domain/entities/entities.dart';
 
@@ -13,12 +14,12 @@ class HistoricalItemWidget extends StatelessWidget {
     return ListTile(
       leading: const Icon(Icons.history_rounded),
       title: Text(
-        historic.title ?? historic.idString ?? 'historique',
+        (historic.title ?? historic.idString ?? 'historique').removeBackSlashN,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        catName ?? '',
+        (catName ?? '').removeBackSlashN,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

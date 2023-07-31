@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/core/extension/string_extension.dart';
 import 'package:gpt/core/widgets/custom_network_image.dart';
 import 'package:gpt/core/widgets/neumorphic_button.dart';
 
@@ -67,7 +68,7 @@ class CategoryItemWidget extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              (category?.name ?? '').replaceAll(r'\n', '\n'),
+              (category?.name ?? '').nextLine,
               textAlign: TextAlign.center,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
@@ -85,7 +86,7 @@ class CategoryItemWidget extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              (category?.welcomePhrase ?? '').replaceAll(r'\n', '\n'),
+              (category?.welcomePhrase ?? '').nextLine,
               textAlign: TextAlign.center,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
