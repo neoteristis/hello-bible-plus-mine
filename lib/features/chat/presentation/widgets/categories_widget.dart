@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gpt/features/container/pages/home/presentation/widgets/grid_section_widget.dart';
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
-import '../../../home/presentation/widgets/grid_section_widget.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({

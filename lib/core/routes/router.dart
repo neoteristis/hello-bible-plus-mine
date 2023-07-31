@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/section/presentation/pages/section_page.dart';
+import 'package:gpt/features/container/widgets/scaffold_with_navbar.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
 import '../../features/chat/presentation/pages/chat_page.dart';
@@ -24,6 +27,9 @@ import '../../features/introduction/presentation/pages/landing_page.dart';
 import '../../splash_screen.dart';
 import 'go_router_refresh_stream.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _sectionNavigatorKey = GlobalKey<NavigatorState>();
+
 GoRouter get route => GoRouter(
       initialLocation: SplashScreen.route,
       refreshListenable:
@@ -34,11 +40,12 @@ GoRouter get route => GoRouter(
           path: SplashScreen.route,
           builder: (context, splash) => const SplashScreen(),
           redirect: (context, state) async {
-            final authenticationStatus = context.read<AuthBloc>().state.authenticationStatus;
+            final authenticationStatus =
+                context.read<AuthBloc>().state.authenticationStatus;
             if (state.fullPath == SplashScreen.route) {
               switch (authenticationStatus) {
                 case AuthStatus.authenticated:
-                  return '${SplashScreen.route}${HomePage.route}';
+                  return '${SplashScreen.route}${SectionPage.route}';
                 case AuthStatus.unauthenticated:
                   return '${SplashScreen.route}${LandingPage.route}';
                 default:
@@ -49,6 +56,7 @@ GoRouter get route => GoRouter(
           },
           routes: [
             ///Unauthenticated
+            ///
             GoRoute(
               path: LandingPage.route,
               builder: (context, state) => const LandingPage(),
@@ -88,61 +96,87 @@ GoRouter get route => GoRouter(
             ),
 
             ///Authenticated
-            GoRoute(
-              path: HomePage.route,
-              builder: (context, state) => const HomePage(),
-              routes: [
-                GoRoute(
-                  path: ChatPage.route,
-                  builder: (context, state) => const ChatPage(),
-                ),
-                GoRoute(
-                  path: HistoricalPage.route,
-                  builder: (context, state) => const HistoricalPage(),
-                ),
-                GoRoute(
-                  path: SubscriptionPage.route,
-                  builder: (context, state) => const SubscriptionPage(),
-                ),
-                GoRoute(
-                  path: ProfilePage.route,
-                  builder: (context, state) => const ProfilePage(),
-                  routes: [
+            StatefulShellRoute.indexedStack(
+              builder: (context, state, navigationShell) {
+                return ScaffoldWithNavbar(navigationShell);
+              },
+              branches: [
+                StatefulShellBranch(
+                  navigatorKey: _sectionNavigatorKey,
+                  routes: <RouteBase>[
                     GoRoute(
-                      path: EditProfilePage.route,
-                      builder: (context, state) => const EditProfilePage(),
+                      path: SectionPage.route,
+                      builder: (context, state) => const SectionPage(),
                     ),
                   ],
                 ),
-                GoRoute(
-                  path: NotificationsPage.route,
-                  builder: (context, state) => const NotificationsPage(),
-                  routes: [
+                StatefulShellBranch(
+                  routes: <RouteBase>[
                     GoRoute(
-                      path: ManageNotificationsPage.route,
-                      builder: (context, state) =>
-                          const ManageNotificationsPage(),
+                      path: HomePage.route,
+                      builder: (context, state) => const HomePage(),
                     ),
                   ],
                 ),
-                GoRoute(
-                  path: ContactUsPage.route,
-                  builder: (context, state) => const ContactUsPage(),
-                ),
-                GoRoute(
-                  path: AboutPage.route,
-                  builder: (context, state) => const AboutPage(),
-                ),
-                GoRoute(
-                  path: HelpPage.route,
-                  builder: (context, state) => const HelpPage(),
-                ),
-                GoRoute(
-                  path: UsageGeneralConditionPage.route,
-                  builder: (context, state) =>
-                      const UsageGeneralConditionPage(),
+                StatefulShellBranch(
+                  routes: <RouteBase>[
+                    GoRoute(
+                      path: HistoricalPage.route,
+                      builder: (context, state) => const HistoricalPage(),
+                    ),
+                  ],
                 ),
               ],
+            ),
+            GoRoute(
+              path: ChatPage.route,
+              builder: (context, state) => const ChatPage(),
+            ),
+            GoRoute(
+              path: HistoricalPage.route,
+              builder: (context, state) => const HistoricalPage(),
+            ),
+            GoRoute(
+              path: SubscriptionPage.route,
+              builder: (context, state) => const SubscriptionPage(),
+            ),
+            GoRoute(
+              path: ProfilePage.route,
+              builder: (context, state) => const ProfilePage(),
+              routes: [
+                GoRoute(
+                  path: EditProfilePage.route,
+                  builder: (context, state) => const EditProfilePage(),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: NotificationsPage.route,
+              builder: (context, state) => const NotificationsPage(),
+              routes: [
+                GoRoute(
+                  path: ManageNotificationsPage.route,
+                  builder: (context, state) =>
+                  const ManageNotificationsPage(),
+                ),
+              ],
+            ),
+            GoRoute(
+              path: ContactUsPage.route,
+              builder: (context, state) => const ContactUsPage(),
+            ),
+            GoRoute(
+              path: AboutPage.route,
+              builder: (context, state) => const AboutPage(),
+            ),
+            GoRoute(
+              path: HelpPage.route,
+              builder: (context, state) => const HelpPage(),
+            ),
+            GoRoute(
+              path: UsageGeneralConditionPage.route,
+              builder: (context, state) =>
+              const UsageGeneralConditionPage(),
             ),
           ],
         ),

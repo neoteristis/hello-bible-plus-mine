@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
-import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 import 'package:gpt/features/notification/presentation/pages/manage_notifications_page.dart';
 import 'package:gpt/features/notification/presentation/widgets/notification_item_widget.dart';
 import '../../../../core/extension/datetime_extension.dart';
-import 'package:gpt/splash_screen.dart';
 
 import '../bloc/notification_bloc.dart';
 
@@ -40,7 +39,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           child: GestureDetector(
             onTap: () {
               context.go(
-                  '${SplashScreen.route}${HomePage.route}/${NotificationsPage.route}/${ManageNotificationsPage.route}');
+                  '/${HomePage.route}/${NotificationsPage.route}/${ManageNotificationsPage.route}');
             },
             child: const Row(
               children: [

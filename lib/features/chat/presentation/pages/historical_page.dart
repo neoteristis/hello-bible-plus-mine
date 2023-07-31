@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gpt/core/widgets/custom_drawer.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
-import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 
 import '../../../../core/constants/pagination_const.dart';
 import '../../../../core/constants/status.dart';
-import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/shimmer_widget.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
@@ -31,20 +32,28 @@ class _HistoricalPageState extends State<HistoricalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const CustomDrawer(),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text('Mon historique'),
-        leading: IconButton(
-          constraints: const BoxConstraints(),
-          padding: const EdgeInsets.all(0),
-          onPressed: () {
-            unfocusKeyboard();
-            context.pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
-          ),
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
+        centerTitle: false,
+        title: Text(
+          'Mon historique',
+          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                color: Colors.white,
+              ),
         ),
+        actions: [
+          IconButton(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            onPressed: () {
+              Scaffold.of(context).openEndDrawer();
+            },
+            icon: SvgPicture.asset('assets/images/menu.svg'),
+          )
+        ],
       ),
       body: BlocBuilder<HistoricalBloc, HistoricalState>(
         buildWhen: (previous, current) => previous.status != current.status,
@@ -54,7 +63,9 @@ class _HistoricalPageState extends State<HistoricalPage> {
               return const HistoryLoaded();
             case Status.failed:
               return const Center(
-                child: Text('Une erreur s\'est produite'),
+                child: Text(
+                  'Une erreur s\'est produite',
+                ),
               );
             default:
               return const Center(

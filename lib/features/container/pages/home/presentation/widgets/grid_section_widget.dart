@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gpt/core/theme/theme.dart';
-import 'package:gpt/features/home/presentation/widgets/category_item_widget.dart';
 
-import '../../../chat/domain/entities/entities.dart';
 import 'dart:math' as math;
 
-import '../../../chat/presentation/widgets/category_item2.dart';
+import 'package:gpt/features/chat/domain/entities/entities.dart';
+import 'package:gpt/features/chat/presentation/widgets/category_item2.dart';
+
+import 'category_item_widget.dart';
+
+
 
 class GridSectionWidget extends StatelessWidget {
   const GridSectionWidget({

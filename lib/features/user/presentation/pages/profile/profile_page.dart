@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
-import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 import 'package:gpt/features/subscription/presentation/pages/subscription_page.dart';
 import 'package:gpt/features/user/presentation/pages/profile/edit_profile_page.dart';
 import 'package:gpt/l10n/function.dart';

@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_button_widget.dart';
 import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
 import 'package:gpt/features/contact_us/presentation/pages/contact_us_page.dart';
-import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 import 'package:gpt/features/more/presentation/pages/about_page.dart';
 import 'package:gpt/features/more/presentation/pages/help_page.dart';
 import 'package:gpt/features/more/presentation/pages/usage_general_condition_page.dart';
@@ -179,8 +179,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         icon: const IconDrawerFromAsset('assets/icons/profil.svg'),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context.go(
-              '${SplashScreen.route}${HomePage.route}/${ProfilePage.route}');
+          context.go('/${ProfilePage.route}');
         },
       ),
       DrawerTile(
@@ -188,8 +187,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         icon: const IconDrawerFromAsset('assets/icons/subscription.svg'),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context.go(
-              '${SplashScreen.route}${HomePage.route}/${SubscriptionPage.route}');
+          context.go('/${SubscriptionPage.route}');
         },
       ),
       DrawerTile(
@@ -199,8 +197,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context.go(
-              '${SplashScreen.route}${HomePage.route}/${HistoricalPage.route}');
+          context.go('/${HistoricalPage.route}');
         },
       ),
       DrawerTile(
@@ -211,7 +208,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
           context.go(
-              '${SplashScreen.route}${HomePage.route}/${NotificationsPage.route}/${ManageNotificationsPage.route}');
+              '/${NotificationsPage.route}/${ManageNotificationsPage.route}');
         },
       ),
       DrawerTile(
@@ -256,8 +253,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context.go(
-              '${SplashScreen.route}${HomePage.route}/${ContactUsPage.route}');
+          context.go('/${ContactUsPage.route}');
         },
       ),
       DrawerTile(
@@ -267,8 +263,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context
-              .go('${SplashScreen.route}${HomePage.route}/${HelpPage.route}');
+          context.go('/${HelpPage.route}');
         },
       ),
       DrawerTile(
@@ -278,8 +273,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context
-              .go('${SplashScreen.route}${HomePage.route}/${AboutPage.route}');
+          context.go('/${AboutPage.route}');
         },
       ),
       DrawerTile(
@@ -287,8 +281,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         icon: const IconDrawerFromAsset('assets/icons/cgu.svg'),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context.go(
-              '${SplashScreen.route}${HomePage.route}/${UsageGeneralConditionPage.route}');
+          context.go('/${UsageGeneralConditionPage.route}');
         },
       ),
       DrawerTile(

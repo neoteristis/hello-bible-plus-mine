@@ -6,7 +6,7 @@ import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
-import 'package:gpt/features/home/presentation/page/home_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 import 'package:gpt/splash_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.all(0),
             onPressed: () {
               unfocusKeyboard();
-              context.pop();
+              context.go('/home');
             },
             icon: const Icon(
               Icons.arrow_back_ios_rounded,
@@ -65,7 +65,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       children: [
                         Text(
                           (state.conversation!.category?.name ??
-                              AppLocalizations.of(context)!.loading).removeBackSlashN,
+                                  AppLocalizations.of(context)!.loading)
+                              .removeBackSlashN,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
@@ -74,7 +75,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         Text(
-                          (state.conversation!.category?.welcomePhrase ?? '').removeBackSlashN,
+                          (state.conversation!.category?.welcomePhrase ?? '')
+                              .removeBackSlashN,
                           softWrap: false,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
