@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gpt/core/constants/status.dart';
-import 'package:gpt/features/home/domain/usecases/fetch_categories_by_section.dart';
-import 'package:gpt/features/home/domain/usecases/fetch_categories_usecase.dart';
+import 'package:gpt/features/chat/domain/entities/category_by_section.dart';
 
-import '../../../../core/usecase/usecase.dart';
-import '../../../chat/domain/entities/entities.dart';
+import '../../../../../../core/usecase/usecase.dart';
+import '../../domain/usecases/fetch_categories_by_section.dart';
+import '../../domain/usecases/fetch_categories_usecase.dart';
 
 part 'home_event.dart';
 

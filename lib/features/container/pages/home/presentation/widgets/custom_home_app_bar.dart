@@ -6,10 +6,9 @@ import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
 
-import '../../../chat/presentation/pages/chat_page.dart';
 import '../bloc/home_bloc.dart';
-import '../page/home_page.dart';
 
 class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomHomeAppBar({
@@ -42,7 +41,9 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
           onPressed: () {
             Scaffold.of(context).openEndDrawer();
           },
@@ -137,7 +138,7 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
       unfocusKeyboard();
       print('heeeeeere');
       if (category != null) {
-        context.go('/${HomePage.route}/${ChatPage.route}');
+        context.go('/${ChatPage.route}');
         context.read<ChatBloc>().add(
               ChatConversationChanged(
                 category: category,

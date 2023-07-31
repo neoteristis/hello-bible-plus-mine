@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 
-import 'features/home/presentation/bloc/home_bloc.dart';
+import 'features/container/pages/home/presentation/bloc/home_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String route = '/';

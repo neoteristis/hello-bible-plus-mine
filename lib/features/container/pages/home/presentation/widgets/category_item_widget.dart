@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/extension/string_extension.dart';
+import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/core/widgets/custom_network_image.dart';
 import 'package:gpt/core/widgets/neumorphic_button.dart';
-
-import '../../../../core/helper/unfocus_keyboard.dart';
-import '../../../chat/domain/entities/entities.dart';
-import '../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'package:gpt/features/chat/domain/entities/entities.dart';
+import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
 
 class CategoryItemWidget extends StatelessWidget {
   const CategoryItemWidget({
@@ -37,7 +37,7 @@ class CategoryItemWidget extends StatelessWidget {
                 category: category!,
               ),
             );
-        context.go('/home/chat');
+        context.go('/${ChatPage.route}');
       },
       borderRadius: 12,
       splashColor: const Color(0xFFF4F4F4),
@@ -76,7 +76,7 @@ class CategoryItemWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                height: 1.2,
+                    height: 1.2,
                   ),
             ),
           ),

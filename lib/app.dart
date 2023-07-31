@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gpt/core/routes/router.dart';
 import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/features/contact_us/presentation/bloc/contact_us_bloc.dart';
-import 'package:gpt/features/home/presentation/bloc/home_bloc.dart';
+import 'package:gpt/features/container/pages/home/presentation/bloc/home_bloc.dart';
 import 'package:gpt/features/notification/presentation/bloc/manage_notif/manage_notif_bloc.dart';
 
 import 'core/bloc/obscure_text/obscure_text_cubit.dart';

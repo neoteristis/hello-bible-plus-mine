@@ -3,7 +3,8 @@ import 'package:gpt/core/constants/api_constants.dart';
 import 'package:gpt/core/error/exception.dart';
 import 'package:gpt/features/chat/domain/entities/category.dart';
 import 'package:gpt/features/chat/domain/entities/category_by_section.dart';
-import 'package:gpt/features/home/data/datasources/home_remote_data_source.dart';
+
+import 'home_remote_data_source.dart';
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   final BaseRepository baseRepo;
