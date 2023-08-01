@@ -246,6 +246,7 @@ class _SectionPageState extends State<SectionPage> {
                                                                     .sentences,
                                                             decoration:
                                                                 InputDecoration(
+                                                              hintMaxLines: 1,
                                                               filled: true,
                                                               fillColor: Theme.of(
                                                                       context)
@@ -277,7 +278,11 @@ class _SectionPageState extends State<SectionPage> {
                                                               hintStyle: Theme.of(
                                                                       context)
                                                                   .textTheme
-                                                                  .bodyMedium,
+                                                                  .bodyMedium
+                                                                  ?.copyWith(
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis),
                                                               hintText: welcomeTheme
                                                                   .category
                                                                   ?.placeholder,
