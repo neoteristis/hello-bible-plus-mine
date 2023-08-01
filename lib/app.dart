@@ -32,7 +32,6 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               getIt<SectionBloc>()..add(SectionWelcomThemeFetched()),
-              lazy: false,
         ),
         BlocProvider(
           create: (context) => getIt<ThemeBloc>()..add(ThemeStarted()),

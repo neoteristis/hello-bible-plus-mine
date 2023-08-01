@@ -87,7 +87,7 @@ class _SectionPageState extends State<SectionPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             'Vide',
                             // style: TextStyle(
                             //   color: Theme.of(context).colorScheme.error,
