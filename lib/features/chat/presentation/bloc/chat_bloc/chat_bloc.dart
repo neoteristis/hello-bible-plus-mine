@@ -439,7 +439,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         }
       }
     } else {
-      if (conversationId != null && historical == null) {
+      if (conversationId != null) {
         add(ChatMessageAnswerGot(conversationId: conversationId));
       }
     }
