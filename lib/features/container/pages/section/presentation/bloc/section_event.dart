@@ -8,3 +8,13 @@ abstract class SectionEvent extends Equatable {
 }
 
 class SectionWelcomThemeFetched extends SectionEvent {}
+
+class SectionFirstMessageGot extends SectionEvent {
+  final String conversationId;
+  const SectionFirstMessageGot({
+    required this.conversationId,
+  });
+
+  @override
+  List<Object> get props => [conversationId];
+}

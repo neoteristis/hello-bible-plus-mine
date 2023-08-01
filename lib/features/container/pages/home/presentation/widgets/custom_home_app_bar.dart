@@ -107,7 +107,7 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
                   horizontal: 20,
                 ),
                 hintText: 'Chercher dans la Bible',
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(),
+                hintStyle: Theme.of(context).textTheme.bodyMedium,
                 border: border,
                 enabledBorder: border,
                 focusedBorder: border,
@@ -136,7 +136,6 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
           ?.first;
       // context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
       unfocusKeyboard();
-      print('heeeeeere');
       if (category != null) {
         context.go('/${ChatPage.route}');
         context.read<ChatBloc>().add(

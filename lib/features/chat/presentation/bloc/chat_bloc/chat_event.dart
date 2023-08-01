@@ -137,13 +137,18 @@ class ChatIncomingMessageLoaded extends ChatEvent {
 class ChatFocusNodeDisposed extends ChatEvent {}
 
 class ChatConversationInited extends ChatEvent {
-  final HistoricalConversation historical;
+  final HistoricalConversation? historical;
+  final WelcomeTheme? welcomeTheme;
   const ChatConversationInited({
-    required this.historical,
+    this.historical,
+    this.welcomeTheme,
   });
 
   @override
-  List<Object> get props => [historical];
+  List<Object?> get props => [
+        historical,
+        welcomeTheme,
+      ];
 }
 
 class ChatConversationFromNotificationInited extends ChatEvent {
