@@ -116,6 +116,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                           },
                           decoration: InputDecoration(
                             filled: true,
+                            hintMaxLines: 1,
                             fillColor: Theme.of(context).colorScheme.onPrimary,
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 20),
@@ -123,6 +124,7 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                             hintStyle: TextStyle(
                               fontSize: 14,
                               // fontSize: 14,
+                              overflow: TextOverflow.ellipsis,
                               color: hintColor,
                             ),
                             suffixIcon: state.isLoading!
