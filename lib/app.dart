@@ -30,8 +30,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              getIt<SectionBloc>()..add(SectionWelcomThemeFetched()),
+          create: (context) => getIt<SectionBloc>(),
         ),
         BlocProvider(
           create: (context) => getIt<ThemeBloc>()..add(ThemeStarted()),

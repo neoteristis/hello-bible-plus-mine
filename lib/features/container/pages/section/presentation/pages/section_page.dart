@@ -23,6 +23,13 @@ class SectionPage extends StatefulWidget {
 
 class _SectionPageState extends State<SectionPage> {
   final TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<SectionBloc>().add(SectionWelcomThemeFetched());
+  }
+
   @override
   Widget build(BuildContext context) {
     const border = OutlineInputBorder(
