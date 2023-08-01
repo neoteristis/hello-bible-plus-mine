@@ -131,8 +131,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       }
                       break;
                     case 1:
-                      context.go(
-                          '${SplashScreen.route}${HomePage.route}/${HistoricalPage.route}');
+                      context.go('/${HistoricalPage.route}');
                       break;
                     case 2:
                       await Share.share(

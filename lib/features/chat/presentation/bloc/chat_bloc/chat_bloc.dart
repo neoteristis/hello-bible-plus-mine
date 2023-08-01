@@ -23,6 +23,7 @@ import '../../../../../core/helper/custom_scroll_physics.dart';
 import '../../../../../core/helper/log.dart';
 import '../../../../../core/helper/text_to_speech.dart';
 import '../../../../../core/sse/sse.dart';
+import '../../../../container/pages/section/domain/entities/welcome_theme.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../domain/usecases/usecases.dart';
 
@@ -256,7 +257,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     // if (await Vibration.hasVibrator() ?? false) {
     try {
       Vibration.vibrate(duration: 10, amplitude: -1);
-    } catch (e) {}
+    } catch (_) {}
 // }
   }
 
@@ -264,20 +265,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatStreamCanceled event,
     Emitter<ChatState> emit,
   ) async {
-    streamSubscription.cancel();
-    add(
-      const ChatLoadingChanged(
-        false,
-      ),
-    );
-    add(
-      ChatMessageJoined(
-        newMessage: state.incoming?.content ?? '',
-      ),
-    );
-    if (state.conversation != null && state.isLoading!) {
-      cancelMessageComing(state.conversation!);
-    }
+    try {
+      streamSubscription.cancel();
+      add(
+        const ChatLoadingChanged(
+          false,
+        ),
+      );
+      add(
+        ChatMessageJoined(
+          newMessage: state.incoming?.content ?? '',
+        ),
+      );
+      if (state.conversation != null && state.isLoading!) {
+        cancelMessageComing(state.conversation!);
+      }
+    } catch (_) {}
   }
 
   void _onChatFirstLaunchStateChanged(
@@ -370,8 +373,26 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatConversationInited event,
     Emitter<ChatState> emit,
   ) async {
+    String? conversationId;
+    Category? category;
+    List<MessageByRole>? messages;
     final historical = event.historical;
+    final welcomeTheme = event.welcomeTheme;
     state.textEditingController?.clear();
+    if (historical != null) {
+      conversationId = historical.idString;
+      category = historical.category;
+      messages = historical.messages;
+    } else if (welcomeTheme != null) {
+      conversationId = welcomeTheme.converstionId;
+      category = welcomeTheme.category;
+      // messages = [
+      //   MessageByRole(
+      //     role: Role.system,
+      //     content: welcomeTheme.message,
+      //   ),
+      // ];
+    }
     emit(
       state.copyWith(
         conversationStatus: Status.loading,
@@ -383,8 +404,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
     );
     final conversation = Conversation(
-      id: historical.idString,
-      category: historical.category,
+      id: conversationId,
+      category: category,
     );
     emit(
       state.copyWith(
@@ -392,29 +413,34 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         conversationStatus: Status.loaded,
       ),
     );
-    final messages = historical.messages;
-    for (int i = 0; i < historical.messages.length; i++) {
-      if (i == historical.messages.length - 1) {
-        add(
-          ChatIncomingMessageLoaded(
-            message: messages[i].content ?? '',
-            role: messages[i].role,
-          ),
-        );
-        add(
-          ChatMessageJoined(
-            newMessage: messages[i].content ?? '',
-            role: messages[i].role,
-          ),
-        );
-      } else {
-        add(
-          ChatMessageAdded(
-            textMessage: messages[i].content ?? '',
-            createdAt: messages[i].createdAt,
-            role: messages[i].role,
-          ),
-        );
+    if (messages != null && messages.isNotEmpty) {
+      for (int i = 0; i < messages.length; i++) {
+        if (i == messages.length - 1) {
+          add(
+            ChatIncomingMessageLoaded(
+              message: messages[i].content ?? '',
+              role: messages[i].role,
+            ),
+          );
+          add(
+            ChatMessageJoined(
+              newMessage: messages[i].content ?? '',
+              role: messages[i].role,
+            ),
+          );
+        } else {
+          add(
+            ChatMessageAdded(
+              textMessage: messages[i].content ?? '',
+              createdAt: messages[i].createdAt,
+              role: messages[i].role,
+            ),
+          );
+        }
+      }
+    } else {
+      if (conversationId != null && historical == null) {
+        add(ChatMessageAnswerGot(conversationId: conversationId));
       }
     }
   }
@@ -510,8 +536,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                   ),
                 );
                 add(ChatSharingTextGenerated(lastMessage: messageJoined));
-              }
-              if (trunck != endMessageMarker) {
+              } else if (trunck != endMessageMarker) {
                 add(
                   const ChatLoadingChanged(
                     true,
@@ -590,6 +615,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         clearConversation: true,
         suggestions: [],
         clearNewMessage: true,
+        incoming: const TextMessage(),
       ),
     );
   }

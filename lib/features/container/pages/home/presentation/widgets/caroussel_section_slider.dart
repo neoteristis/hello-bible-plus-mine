@@ -41,11 +41,10 @@ class CarousselSectionWidget extends StatelessWidget {
                   ))
               .toList(),
           options: CarouselOptions(
-            aspectRatio: 4 / 3,
-            height: 100,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 2)
-          ),
+              aspectRatio: 4 / 3,
+              height: 100,
+              autoPlay: true,
+              autoPlayInterval: Duration(seconds: 2)),
         )
       ],
     );
@@ -71,7 +70,7 @@ class CarousselItemWidget extends StatelessWidget {
                 category: category,
               ),
             );
-        context.go('/home/chat');
+        context.go('/chat');
       },
       child: Container(
         width: size.width * 0.7,
