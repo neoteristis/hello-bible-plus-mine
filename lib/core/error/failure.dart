@@ -90,3 +90,7 @@ class UnprocessableContentFailure extends Failure {
   const UnprocessableContentFailure({String? message, int? code})
       : super(message: message ?? 'Unprocessable content', code: 422);
 }
+
+class WarningWordFailure extends Failure {
+  const WarningWordFailure() : super(message: 'Un mot interdit prononcé');
+}

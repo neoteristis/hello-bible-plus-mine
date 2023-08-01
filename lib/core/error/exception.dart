@@ -17,6 +17,8 @@ class UndefinedException implements Exception {}
 
 class CacheException implements Exception {}
 
+class WarningWordException implements Exception {}
+
 
 // import 'package:dio/dio.dart';
 

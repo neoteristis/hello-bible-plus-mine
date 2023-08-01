@@ -694,7 +694,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) async {
     // add(const ChatSuggestionViewChanged(false));
-
+    emit(state.copyWith(goBackHome: false));
     if (state.newMessage != null) {
       /*
         the last message on the screen is still the customMessage build from the listbottomWidget,
@@ -750,7 +750,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     return res.fold(
       (l) {
-        emit(
+        if (l is WarningWordFailure) {
+          return emit(state.copyWith(goBackHome: true));
+        }
+        return emit(
           state.copyWith(
             messageStatus: Status.failed,
             failure: l,

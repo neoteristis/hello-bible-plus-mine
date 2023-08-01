@@ -72,6 +72,8 @@ class ChatRepositoryImp implements ChatRepository {
       try {
         final res = await remote.sendMessage(param);
         return Right(res);
+      } on WarningWordException catch (_) {
+        return const Left(WarningWordFailure());
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));
       }

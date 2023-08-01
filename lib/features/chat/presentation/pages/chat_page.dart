@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gpt/core/constants/status.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
+import '../../../../core/helper/unfocus_keyboard.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../widgets/chat/chat_body_widget.dart';
 import '../widgets/custom_app_bar.dart';
@@ -24,7 +26,18 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatBloc, ChatState>(
+    return BlocConsumer<ChatBloc, ChatState>(
+      listenWhen: (previous, current) =>
+          previous.goBackHome != current.goBackHome,
+      listener: (context, state) {
+        if (state.goBackHome!) {
+          unfocusKeyboard();
+          context.go('/home');
+          context.read<ChatBloc>()
+            ..add(ChatStreamCanceled())
+            ..add(ChatConversationCleared());
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           key: context.read<ChatBloc>().scaffoldKey,

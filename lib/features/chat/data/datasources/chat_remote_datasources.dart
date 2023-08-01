@@ -84,6 +84,12 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
           body: param.toJson());
       final message = Message.fromJson(res.data);
       return message;
+    } on DioError catch (e) {
+      final res = e.response;
+      if (res?.statusCode == 400) {
+        throw WarningWordException();
+      }
+      throw ServerException();
     } catch (e) {
       throw ServerException(message: e.toString());
     }
