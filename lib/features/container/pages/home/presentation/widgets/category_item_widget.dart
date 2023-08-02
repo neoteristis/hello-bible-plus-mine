@@ -37,7 +37,8 @@ class CategoryItemWidget extends StatelessWidget {
                 category: category!,
               ),
             );
-        context.go('/${ChatPage.route}');
+        final route = '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
+        context.go(route);
       },
       borderRadius: 12,
       splashColor: const Color(0xFFF4F4F4),

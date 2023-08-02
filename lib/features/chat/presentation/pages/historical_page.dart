@@ -168,7 +168,8 @@ class HistoryLoaded extends StatelessWidget {
                           context.read<ChatBloc>().add(ChatConversationInited(
                                 historical: historicals[index],
                               ));
-                          context.go('/${ChatPage.route}');
+                          final route = '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
+                          context.go(route);
                         },
                         child: HistoricalItemWidget(
                           historic: historicals[index],
