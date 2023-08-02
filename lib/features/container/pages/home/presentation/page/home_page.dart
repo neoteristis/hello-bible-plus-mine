@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                   physics: const BouncingScrollPhysics(),
                   itemCount: state.categoriesBySection.length,
                   itemBuilder: (context, index) {
-                    if (index == 0) {
+                    /***if (index == 0) {
                       return Column(
                         children: [
                           const SizedBox(
@@ -94,12 +94,15 @@ class _HomePageState extends State<HomePage> {
                         ],
                       );
                     }
-                    if (index == 1) {
+
+                        **/
+                    if (index == 0) {
                       return Container();
                     }
                     if (index == state.categoriesBySection.length - 1) {
                       return Column(
                         children: [
+
                           GridSectionWidget(
                             data: state.categoriesBySection[index],
                             index: index,
