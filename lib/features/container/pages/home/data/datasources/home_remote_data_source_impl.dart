@@ -34,11 +34,10 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
     try {
       final res =
           await baseRepo.get(ApiConstants.categoriesBySection, addToken: true);
-      final lists = (res.data as List)
+
+      return (res.data as List)
           .map((m) => CategoriesBySection.fromJson(m))
           .toList();
-      Log.info(lists);
-      return lists;
     } catch (e) {
       print(e.toString());
       throw ServerException(message: e.toString());

@@ -130,7 +130,11 @@ GoRouter get route => GoRouter(
             ),
             GoRoute(
               path: ChatPage.route,
-              builder: (context, state) => const ChatPage(),
+              builder: (context, state) {
+                return ChatPage(
+                  previousPage: state.uri.queryParameters['previousPage'],
+                );
+              },
             ),
             GoRoute(
               path: HistoricalPage.route,

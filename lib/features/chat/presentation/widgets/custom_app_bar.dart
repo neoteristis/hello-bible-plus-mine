@@ -12,7 +12,10 @@ import '../../../../l10n/function.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
+    required this.previousPage,
   }) : super(key: key);
+
+  final String previousPage;
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
@@ -36,7 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.all(0),
             onPressed: () {
               unfocusKeyboard();
-              context.go('/home');
+              context.go('/$previousPage');
               context.read<ChatBloc>()
                 ..add(ChatStreamCanceled())
                 ..add(ChatConversationCleared());

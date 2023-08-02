@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/extension/string_extension.dart';
+import 'package:gpt/core/helper/log.dart';
 import 'package:gpt/core/helper/unfocus_keyboard.dart';
 import 'package:gpt/features/chat/domain/entities/entities.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 
 class CarousselSectionWidget extends StatelessWidget {
   const CarousselSectionWidget({
@@ -44,7 +47,7 @@ class CarousselSectionWidget extends StatelessWidget {
               aspectRatio: 4 / 3,
               height: 100,
               autoPlay: true,
-              autoPlayInterval: Duration(seconds: 2)),
+              autoPlayInterval: const Duration(seconds: 2)),
         )
       ],
     );
@@ -70,7 +73,9 @@ class CarousselItemWidget extends StatelessWidget {
                 category: category,
               ),
             );
-        context.go('/chat');
+
+        final route = '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
+        context.go(route);
       },
       child: Container(
         width: size.width * 0.7,

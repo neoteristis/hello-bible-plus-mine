@@ -17,15 +17,15 @@ class ScaffoldWithNavbar extends StatelessWidget {
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                label: 'Accueil',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.dashboard),
-                label: 'Section',
+                label: 'Découvrir',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.history_sharp),
-                label: 'History',
+                label: 'Historique',
               ),
             ],
             onTap: _onTap,

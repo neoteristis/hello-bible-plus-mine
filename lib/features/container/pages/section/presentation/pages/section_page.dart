@@ -162,7 +162,7 @@ class _SectionPageState extends State<SectionPage> {
                                                           ),
                                                         );
                                                     context.go(
-                                                        '/${ChatPage.route}');
+                                                        '/chat?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}');
                                                   }
                                                 : null,
                                             child: Container(
