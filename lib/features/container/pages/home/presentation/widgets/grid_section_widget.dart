@@ -29,105 +29,110 @@ class GridSectionWidget extends StatelessWidget {
     if (sectionId == '64ba9f74a8bccd0239a4b4e6') {
       return const SizedBox.shrink();
     }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 20,
-              ),
-              Text(
-                sectionName!,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontSize: 17,
-                      color: primaryColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-            ],
-          ),
-        ),
-        if (categories != null &&
-            categories.isNotEmpty &&
-            sectionId != '646b6b8e70c60193c897fc3d')
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 10.0,
+              vertical: 10,
             ),
-            child: GridView.builder(
-              // separatorBuilder: (context, index) => const SizedBox(
-              //   width: 8,
-              // ),
-              // scrollDirection: Axis.horizontal,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 6 / 6,
-                crossAxisSpacing: 4,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                // if (index == 0) {
-                //   return Row(
-                //     children: [
-                //       const SizedBox(
-                //         width: 20,
-                //       ),
-                //       CategoryItemWidget(
-                //         category: categories[index],
-                //       )
-                //     ],
-                //   );
-                // } else if (index == categories.length - 1) {
-                //   return Row(
-                //     children: [
-                //       CategoryItemWidget(
-                //         category: categories[index],
-                //       ),
-                //       const SizedBox(
-                //         width: 20,
-                //       ),
-                //     ],
-                //   );
-                // }
-                return CategoryItemWidget(
-                  category: categories[index],
-                );
-              },
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  sectionName!,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontSize: 17,
+                        color: primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+              ],
             ),
           ),
-        if (categories != null &&
-            categories.isNotEmpty &&
-            sectionId == '646b6b8e70c60193c897fc3d')
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10.0,
-            ),
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                childAspectRatio: 11 / 7,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
+          if (categories != null &&
+              categories.isNotEmpty &&
+              sectionId != '646b6b8e70c60193c897fc3d')
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
               ),
-              itemCount: categories.length,
-              itemBuilder: (BuildContext ctx, index) {
-                return CategoryItem2(
-                  category: categories[index],
-                  // image: images[index],
-                );
-              },
+              child: GridView.builder(
+                // separatorBuilder: (context, index) => const SizedBox(
+                //   width: 8,
+                // ),
+                // scrollDirection: Axis.horizontal,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 6 / 6,
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  // if (index == 0) {
+                  //   return Row(
+                  //     children: [
+                  //       const SizedBox(
+                  //         width: 20,
+                  //       ),
+                  //       CategoryItemWidget(
+                  //         category: categories[index],
+                  //       )
+                  //     ],
+                  //   );
+                  // } else if (index == categories.length - 1) {
+                  //   return Row(
+                  //     children: [
+                  //       CategoryItemWidget(
+                  //         category: categories[index],
+                  //       ),
+                  //       const SizedBox(
+                  //         width: 20,
+                  //       ),
+                  //     ],
+                  //   );
+                  // }
+                  return CategoryItemWidget(
+                    category: categories[index],
+                  );
+                },
+              ),
             ),
-          ),
-      ],
+          if (categories != null &&
+              categories.isNotEmpty &&
+              sectionId == '646b6b8e70c60193c897fc3d')
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+              ),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  childAspectRatio: 11 / 7,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: categories.length,
+                itemBuilder: (BuildContext ctx, index) {
+                  return CategoryItem2(
+                    category: categories[index],
+                    // image: images[index],
+                  );
+                },
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
