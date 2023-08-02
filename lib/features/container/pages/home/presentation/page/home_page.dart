@@ -85,10 +85,10 @@ class _HomePageState extends State<HomePage> {
                             height: 30,
                           ),
                           CarousselSectionWidget(
-                            section: state.categoriesBySection[1],
+                            section: state.categoriesBySection[0],
                           ),
                           GridSectionWidget(
-                            data: state.categoriesBySection[0],
+                            data: state.categoriesBySection[1],
                             index: index,
                           ),
                         ],

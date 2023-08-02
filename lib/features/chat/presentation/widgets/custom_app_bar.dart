@@ -5,8 +5,6 @@ import 'package:gpt/core/extension/string_extension.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
-import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
-import 'package:gpt/splash_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../l10n/function.dart';
