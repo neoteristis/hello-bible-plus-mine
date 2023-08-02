@@ -156,8 +156,7 @@ GoRouter get route => GoRouter(
               routes: [
                 GoRoute(
                   path: ManageNotificationsPage.route,
-                  builder: (context, state) =>
-                  const ManageNotificationsPage(),
+                  builder: (context, state) => const ManageNotificationsPage(),
                 ),
               ],
             ),
@@ -175,8 +174,7 @@ GoRouter get route => GoRouter(
             ),
             GoRoute(
               path: UsageGeneralConditionPage.route,
-              builder: (context, state) =>
-              const UsageGeneralConditionPage(),
+              builder: (context, state) => const UsageGeneralConditionPage(),
             ),
           ],
         ),
