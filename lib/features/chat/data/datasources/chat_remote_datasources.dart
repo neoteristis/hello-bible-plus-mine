@@ -144,7 +144,7 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
     try {
       final res =
           await baseRepo.get(ApiConstants.historical(param), addToken: true);
-
+      Log.info(res.data);
       return (res.data as List)
           .map((m) => HistoricalConversation.fromJson(m))
           .toList();

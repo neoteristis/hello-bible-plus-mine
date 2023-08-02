@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpt/core/extension/string_extension.dart';
+import 'package:intl/intl.dart';
 
 import '../../../domain/entities/entities.dart';
 
@@ -18,13 +19,35 @@ class HistoricalItemWidget extends StatelessWidget {
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: Text(
-        (catName ?? '').removeBackSlashN,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            (catName ?? '').removeBackSlashN,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+          if (historic.createdAt != null)
+            Text(
+              DateFormat('dd/MM/y HH:mm').format(historic.createdAt!),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+        ],
       ),
       subtitleTextStyle: const TextStyle(
         fontWeight: FontWeight.w500,
+        color: Colors.grey,
+      ),
+      titleTextStyle: const TextStyle(
+        fontWeight: FontWeight.w500,
+        color: Colors.black,
       ),
       // subtitle: historic.messages.isNotEmpty
       //     ? Text(

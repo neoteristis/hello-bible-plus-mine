@@ -11,6 +11,7 @@ class HistoricalConversation extends Equatable {
   final String? user;
   final List<MessageByRole> messages;
   final String? title;
+  final DateTime? createdAt;
   const HistoricalConversation({
     this.idString,
     this.idInt,
@@ -18,6 +19,7 @@ class HistoricalConversation extends Equatable {
     this.user,
     required this.messages,
     this.title,
+    this.createdAt,
   });
   @override
   List<Object?> get props => [
@@ -27,6 +29,7 @@ class HistoricalConversation extends Equatable {
         user,
         messages,
         title,
+        createdAt,
       ];
 
   HistoricalConversation copyWith({
@@ -36,6 +39,7 @@ class HistoricalConversation extends Equatable {
     String? user,
     List<MessageByRole>? messages,
     String? title,
+    DateTime? createdAt,
   }) {
     return HistoricalConversation(
       idString: idString ?? this.idString,
@@ -44,6 +48,7 @@ class HistoricalConversation extends Equatable {
       user: user ?? this.user,
       messages: messages ?? this.messages,
       title: title ?? this.title,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -55,6 +60,9 @@ class HistoricalConversation extends Equatable {
           map['category'] != null ? Category.fromJson(map['category']) : null,
       user: map['user'],
       title: map['title'],
+      createdAt: map['createdAt'] != null
+          ? DateTime.tryParse(map['createdAt'])?.toLocal()
+          : null,
       messages: List<MessageByRole>.from(
         (map['messages'] as List).map((x) => MessageByRole.fromMap(x)).toList(),
       ),
