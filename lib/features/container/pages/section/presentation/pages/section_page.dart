@@ -90,219 +90,204 @@ class _SectionPageState extends State<SectionPage> {
                 builder: (context, state) {
                   final welcomeThemes = state.welcomeThemes;
                   if (welcomeThemes == null || welcomeThemes.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Vide',
-                            // style: TextStyle(
-                            //   color: Theme.of(context).colorScheme.error,
-                            // ),
-                          ),
-                          TextButton.icon(
-                            onPressed: () {
-                              context
-                                  .read<SectionBloc>()
-                                  .add(SectionWelcomThemeFetched());
-                            },
-                            icon: Icon(
-                              Icons.refresh_rounded,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            label: Text(
-                              'Rafraichir',
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      right: 10,
-                      top: 20,
-                    ),
-                    child: LayoutBuilder(
-                      builder: (context, constraint) {
-                        return RefreshIndicator(
-                          onRefresh: () async {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Vide',
+                          // style: TextStyle(
+                          //   color: Theme.of(context).colorScheme.error,
+                          // ),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {
                             context
                                 .read<SectionBloc>()
                                 .add(SectionWelcomThemeFetched());
                           },
-                          child: Column(
-                            children: [
-                              ...welcomeThemes.map(
-                                (e) {
-                                  final welcomeTheme = e;
-                                  final firstMessage = welcomeTheme.message;
-                                  return Expanded(
-                                    // fit: FlexFit.loose,
-                                    child: GestureDetector(
-                                      onTap: firstMessage != null
-                                          ? () {
-                                              context.read<ChatBloc>().add(
-                                                    ChatConversationInited(
-                                                      welcomeTheme:
-                                                          welcomeTheme,
-                                                    ),
-                                                  );
-                                              context.go(
-                                                  '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}');
-                                            }
-                                          : null,
-                                      child: Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 4,
+                          icon: Icon(
+                            Icons.refresh_rounded,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          label: Text(
+                            'Rafraichir',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10.0,
+                        right: 10,
+                        top: 20,
+                      ),
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          context
+                              .read<SectionBloc>()
+                              .add(SectionWelcomThemeFetched());
+                        },
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            ...welcomeThemes.map(
+                              (e) {
+                                final welcomeTheme = e;
+                                final firstMessage = welcomeTheme.message;
+                                return GestureDetector(
+                                  onTap: firstMessage != null
+                                      ? () {
+                                          context.read<ChatBloc>().add(
+                                                ChatConversationInited(
+                                                  welcomeTheme: welcomeTheme,
+                                                ),
+                                              );
+                                          context.go(
+                                              '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}');
+                                        }
+                                      : null,
+                                  child: Container(
+                                    width: double.infinity,
+                                    height:
+                                        MediaQuery.sizeOf(context).height * .22,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 4,
+                                    ),
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                            welcomeTheme.category?.name ?? '',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium
+                                                ?.copyWith(
+                                                  fontSize: 23,
+                                                ),
+                                          ),
                                         ),
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .primaryColor
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Text(
-                                                welcomeTheme.category?.name ??
-                                                    '',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium
-                                                    ?.copyWith(
-                                                      fontSize: 23,
-                                                    ),
-                                              ),
+                                        if (firstMessage != null)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 4.0,
                                             ),
-                                            if (firstMessage != null)
+                                            child: Text(
+                                              firstMessage,
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.justify,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            ),
+                                          ),
+                                        if (firstMessage == null)
+                                          Column(
+                                            children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                   top: 4.0,
+                                                  bottom: 4.0,
                                                 ),
                                                 child: Text(
-                                                  firstMessage,
-                                                  maxLines: 4,
+                                                  welcomeTheme.category
+                                                          ?.welcomePhrase ??
+                                                      '',
+                                                  maxLines: 2,
+                                                  textAlign: TextAlign.center,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.justify,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium,
                                                 ),
                                               ),
-                                            if (firstMessage == null)
-                                              Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      top: 4.0,
-                                                      bottom: 4.0,
-                                                    ),
-                                                    child: Text(
-                                                      welcomeTheme.category
-                                                              ?.welcomePhrase ??
-                                                          '',
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 4.0,
+                                                  horizontal: 18.0,
+                                                ),
+                                                child: TextField(
+                                                  controller: controller,
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .tertiary,
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      vertical: 4.0,
-                                                      horizontal: 18.0,
+                                                  textCapitalization:
+                                                      TextCapitalization
+                                                          .sentences,
+                                                  decoration: InputDecoration(
+                                                    hintMaxLines: 1,
+                                                    filled: true,
+                                                    fillColor: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                      horizontal: 20,
                                                     ),
-                                                    child: TextField(
-                                                      controller: controller,
-                                                      style: TextStyle(
+                                                    suffixIcon: GestureDetector(
+                                                      onTap: () => submit(
+                                                          welcomeTheme
+                                                              .category),
+                                                      child: Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
                                                         color: Theme.of(context)
-                                                            .colorScheme
-                                                            .tertiary,
+                                                            .primaryColor,
                                                       ),
-                                                      textCapitalization:
-                                                          TextCapitalization
-                                                              .sentences,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        hintMaxLines: 1,
-                                                        filled: true,
-                                                        fillColor:
-                                                            Theme.of(context)
-                                                                .colorScheme
-                                                                .onPrimary,
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 20,
-                                                        ),
-                                                        suffixIcon:
-                                                            GestureDetector(
-                                                          onTap: () => submit(
-                                                              welcomeTheme
-                                                                  .category),
-                                                          child: Icon(
-                                                            Icons
-                                                                .arrow_forward_ios_rounded,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                          ),
-                                                        ),
-                                                        border: border,
-                                                        enabledBorder: border,
-                                                        focusedBorder: border,
-                                                        hintStyle:
-                                                            Theme.of(context)
-                                                                .textTheme
-                                                                .bodyMedium
-                                                                ?.copyWith(
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                        hintText: welcomeTheme
-                                                            .category
-                                                            ?.placeholder,
-                                                      ),
-                                                      onSubmitted: (_) {
-                                                        submit(welcomeTheme
-                                                            .category);
-                                                      },
                                                     ),
+                                                    border: border,
+                                                    enabledBorder: border,
+                                                    focusedBorder: border,
+                                                    hintStyle: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                    hintText: welcomeTheme
+                                                        .category?.placeholder,
                                                   ),
-                                                ],
+                                                  onSubmitted: (_) {
+                                                    submit(
+                                                        welcomeTheme.category);
+                                                  },
+                                                ),
                                               ),
-                                          ],
-                                        ),
-                                      ),
+                                            ],
+                                          ),
+                                      ],
                                     ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 },
