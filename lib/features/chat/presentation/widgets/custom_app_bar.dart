@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gpt/core/extension/string_extension.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import 'package:gpt/features/chat/presentation/bloc/historical_bloc/historical_bloc.dart';
 import 'package:gpt/features/chat/presentation/pages/historical_page.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
@@ -43,6 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               context.read<ChatBloc>()
                 ..add(ChatStreamCanceled())
                 ..add(ChatConversationCleared());
+              context.read<HistoricalBloc>().add(const HistoricalFetched(isRefresh: true));
             },
             icon: const Icon(
               Icons.arrow_back_ios_rounded,

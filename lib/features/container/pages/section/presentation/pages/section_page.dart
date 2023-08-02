@@ -154,7 +154,7 @@ class _SectionPageState extends State<SectionPage> {
                                   child: Container(
                                     width: double.infinity,
                                     height:
-                                        MediaQuery.sizeOf(context).height * .22,
+                                        MediaQuery.sizeOf(context).height * .20,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 10,
                                       vertical: 4,
