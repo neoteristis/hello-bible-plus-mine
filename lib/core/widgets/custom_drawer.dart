@@ -207,8 +207,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
         ),
         onPressed: () {
           Scaffold.of(context).closeEndDrawer();
-          context.go(
-              '/${NotificationsPage.route}/${ManageNotificationsPage.route}');
+          context.go('/${ManageNotificationsPage.route}');
         },
       ),
       DrawerTile(

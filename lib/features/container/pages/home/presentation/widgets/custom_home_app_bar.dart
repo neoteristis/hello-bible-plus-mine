@@ -8,6 +8,7 @@ import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
 
+import '../../../../../chat/domain/entities/category.dart';
 import '../bloc/home_bloc.dart';
 
 class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -83,7 +84,16 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
       ),
     );
     return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.categoriesBySection != current.categoriesBySection,
       builder: (context, state) {
+        Category? category;
+        try {
+          category = state.categoriesBySection
+              .firstWhere((element) => element.id == '64ba9f74a8bccd0239a4b4e6')
+              .categories
+              ?.first;
+        } catch (_) {}
         return Transform.translate(
           offset: const Offset(0, 20),
           child: Padding(
@@ -98,7 +108,7 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
                 color: Theme.of(context).colorScheme.tertiary,
               ),
               onSubmitted: (String value) {
-                submit(state);
+                submit(category);
               },
               decoration: InputDecoration(
                 filled: true,
@@ -106,13 +116,13 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 20,
                 ),
-                hintText: 'Chercher dans la Bible',
+                hintText: category?.placeholder,
                 hintStyle: Theme.of(context).textTheme.bodyMedium,
                 border: border,
                 enabledBorder: border,
                 focusedBorder: border,
                 suffixIcon: GestureDetector(
-                  onTap: () => submit(state),
+                  onTap: () => submit(category),
                   child: const Icon(
                     Icons.search,
                     color: primaryColor,
@@ -126,27 +136,17 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
     );
   }
 
-  void submit(HomeState state) {
-    try {
-      print('heeeeeere');
-
-      final category = state.categoriesBySection
-          .firstWhere((element) => element.id == '64ba9f74a8bccd0239a4b4e6')
-          .categories
-          ?.first;
-      // context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
+  void submit(Category? category) {
+    if (category != null) {
       unfocusKeyboard();
-      if (category != null) {
-        context.go('/${ChatPage.route}');
-        context.read<ChatBloc>().add(
-              ChatConversationChanged(
-                category: category,
-                firstMessage: controller.text,
-              ),
-            );
-      }
-    } catch (_) {
-      print(_);
+
+      context.go('/${ChatPage.route}');
+      context.read<ChatBloc>().add(
+            ChatConversationChanged(
+              category: category,
+              firstMessage: controller.text,
+            ),
+          );
     }
   }
 }

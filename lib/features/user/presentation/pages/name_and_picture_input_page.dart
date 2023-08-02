@@ -15,7 +15,7 @@ import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/icon_text_row_recognizer.dart';
 import '../../../../l10n/function.dart';
-import '../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
+import '../../../container/pages/home/presentation/bloc/home_bloc.dart';
 import '../bloc/registration_bloc/registration_bloc.dart';
 import 'base_page.dart';
 
@@ -35,7 +35,7 @@ class NameAndPictureInputPage extends StatelessWidget {
               case Status.loaded:
                 context
                   ..read<AuthBloc>().add(AuthSuccessfullyLogged())
-                  ..read<ChatBloc>().add(
+                  ..read<HomeBloc>().add(
                     ChatCategoriesBySectionFetched(),
                   );
                 break;

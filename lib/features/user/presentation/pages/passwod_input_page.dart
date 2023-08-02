@@ -7,11 +7,11 @@ import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:gpt/l10n/function.dart';
 
 import '../../../../core/constants/status.dart';
+import '../../../container/pages/home/presentation/bloc/home_bloc.dart';
 import 'custom_password_input.dart';
 import 'input_base_page.dart';
 
 class PasswordInputPage extends StatelessWidget {
-
   static const String route = 'password-input-page';
   const PasswordInputPage({super.key});
 
@@ -27,7 +27,7 @@ class PasswordInputPage extends StatelessWidget {
               case Status.loaded:
                 context
                   ..read<AuthBloc>().add(AuthSuccessfullyLogged())
-                  ..read<ChatBloc>().add(
+                  ..read<HomeBloc>().add(
                     ChatCategoriesBySectionFetched(),
                   );
                 break;

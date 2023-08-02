@@ -27,7 +27,7 @@ class _SectionPageState extends State<SectionPage> {
   @override
   void initState() {
     super.initState();
-    context.read<SectionBloc>().add(SectionWelcomThemeFetched());
+    // context.read<SectionBloc>().add(SectionWelcomThemeFetched());
   }
 
   @override
@@ -332,15 +332,17 @@ class _SectionPageState extends State<SectionPage> {
   }
 
   void submit(Category? category) {
-    unfocusKeyboard();
-    if (category != null) {
-      context.go('/${ChatPage.route}');
-      context.read<ChatBloc>().add(
-            ChatConversationChanged(
-              category: category,
-              firstMessage: controller.text,
-            ),
-          );
+    if (controller.text.isNotEmpty) {
+      unfocusKeyboard();
+      if (category != null) {
+        context.go('/${ChatPage.route}');
+        context.read<ChatBloc>().add(
+              ChatConversationChanged(
+                category: category,
+                firstMessage: controller.text,
+              ),
+            );
+      }
     }
   }
 }

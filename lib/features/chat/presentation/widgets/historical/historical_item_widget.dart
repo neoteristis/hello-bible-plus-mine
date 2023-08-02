@@ -14,7 +14,7 @@ class HistoricalItemWidget extends StatelessWidget {
     return ListTile(
       leading: const Icon(Icons.history_rounded),
       title: Text(
-        (historic.title ?? historic.idString ?? 'historique').removeBackSlashN,
+        (historic.title ?? 'historique').removeBackSlashN,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),

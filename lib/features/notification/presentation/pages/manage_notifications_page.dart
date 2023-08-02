@@ -7,11 +7,11 @@ import 'package:gpt/core/widgets/scaffold_with_background.dart';
 import 'package:gpt/features/chat/presentation/widgets/categories_widget.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../l10n/function.dart';
+import '../../../container/pages/section/presentation/pages/section_page.dart';
 import '../bloc/manage_notif/manage_notif_bloc.dart';
 import '../widgets/notif_manage_item_widget.dart';
 
 class ManageNotificationsPage extends StatefulWidget {
-
   static const String route = 'manage-notification-page';
   const ManageNotificationsPage({super.key});
 
@@ -52,7 +52,7 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
       child: ScaffoldWithBackground(
         addBackgroundImage: false,
         onPop: () {
-          context.pop();
+          context.go('/${SectionPage.route}');
         },
         title: dict(context).manageNotifications,
         body: BlocBuilder<ManageNotifBloc, ManageNotifState>(

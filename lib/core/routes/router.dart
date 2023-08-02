@@ -155,15 +155,19 @@ GoRouter get route => GoRouter(
               ],
             ),
             GoRoute(
-              path: NotificationsPage.route,
-              builder: (context, state) => const NotificationsPage(),
-              routes: [
-                GoRoute(
-                  path: ManageNotificationsPage.route,
-                  builder: (context, state) => const ManageNotificationsPage(),
-                ),
-              ],
+              path: ManageNotificationsPage.route,
+              builder: (context, state) => const ManageNotificationsPage(),
             ),
+            // GoRoute(
+            //   path: NotificationsPage.route,
+            //   builder: (context, state) => const NotificationsPage(),
+            //   routes: [
+            //     GoRoute(
+            //       path: ManageNotificationsPage.route,
+            //       builder: (context, state) => const ManageNotificationsPage(),
+            //     ),
+            //   ],
+            // ),
             GoRoute(
               path: ContactUsPage.route,
               builder: (context, state) => const ContactUsPage(),

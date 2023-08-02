@@ -30,7 +30,8 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<SectionBloc>(),
+          create: (context) =>
+              getIt<SectionBloc>()..add(SectionWelcomThemeFetched()),
         ),
         BlocProvider(
           create: (context) => getIt<ThemeBloc>()..add(ThemeStarted()),
@@ -60,7 +61,8 @@ class App extends StatelessWidget {
           create: (context) => getIt<ObscureTextCubit>(),
         ),
         BlocProvider(
-          create: (context) => getIt<HomeBloc>(),
+          create: (context) =>
+              getIt<HomeBloc>()..add(ChatCategoriesBySectionFetched()),
         ),
         BlocProvider(
           create: (context) => getIt<SocialConnectBloc>(),

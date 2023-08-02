@@ -30,8 +30,6 @@ class ChatSuggestionsRequested extends ChatEvent {
   List<Object> get props => [message];
 }
 
-class ChatCategoriesBySectionFetched extends ChatEvent {}
-
 class ChatConversationChanged extends ChatEvent {
   final Category category;
   final String? firstMessage;

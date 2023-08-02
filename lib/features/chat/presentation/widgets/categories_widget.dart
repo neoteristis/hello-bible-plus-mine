@@ -4,6 +4,7 @@ import 'package:gpt/features/container/pages/home/presentation/widgets/grid_sect
 import '../../../../core/constants/color_constants.dart';
 import '../../../../core/constants/status.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
+import '../../../container/pages/home/presentation/bloc/home_bloc.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 
 class CategoriesWidget extends StatelessWidget {
@@ -32,7 +33,7 @@ class CategoriesWidget extends StatelessWidget {
                   TextButton.icon(
                     onPressed: () {
                       context
-                          .read<ChatBloc>()
+                          .read<HomeBloc>()
                           .add(ChatCategoriesBySectionFetched());
                     },
                     icon: Icon(Icons.refresh_rounded,
@@ -48,7 +49,7 @@ class CategoriesWidget extends StatelessWidget {
           case Status.loaded:
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<ChatBloc>().add(ChatCategoriesBySectionFetched());
+                context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
               },
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),
