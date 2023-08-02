@@ -121,12 +121,10 @@ class _CustomBottomWidgetState extends State<CustomBottomWidget> {
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 20),
                             hintText: state.conversation?.category?.placeholder,
-                            hintStyle: TextStyle(
-                              fontSize: 14,
-                              // fontSize: 14,
-                              overflow: TextOverflow.ellipsis,
-                              color: hintColor,
-                            ),
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(overflow: TextOverflow.ellipsis),
                             suffixIcon: state.isLoading!
                                 ? const TypingIndicatorWidget()
                                 : (state.readStatus == ReadStatus.play)
