@@ -76,6 +76,7 @@ dependencies:
   flutter_tts: ^3.7.0
   measure_size: ^4.0.0
   carousel_slider: ^4.2.1
+  flutter_keyboard_visibility: ^5.4.1
   # focused_menu_custom: ^1.2.0
   # scrollview_observer: ^1.14.2
 
