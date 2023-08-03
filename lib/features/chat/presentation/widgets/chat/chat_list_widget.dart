@@ -8,6 +8,7 @@ import 'list_bottom_chat_widget.dart';
 
 class ChatListWidget extends StatelessWidget {
   const ChatListWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatBloc, ChatState>(
@@ -54,51 +55,68 @@ class ChatListWidget extends StatelessWidget {
                 }
                 return false;
               },
-              child: ListView.builder(
-                key: state.listKey,
-                controller: state.scrollController,
-                itemBuilder: (ctx, index) {
-                  if (messages == null || messages.isEmpty) {
-                    return const EmptyChatWidget();
-                  }
+              child: Stack(
+                children: [
+                  ListView.builder(
+                    key: state.listKey,
+                    controller: state.scrollController,
+                    itemCount: messages == null || messages.isEmpty
+                        ? 1
+                        : messages.length,
+                    itemBuilder: (ctx, index) {
+                      if (messages == null || messages.isEmpty) {
+                        return const EmptyChatWidget();
+                      }
 
-                  if (index == 0 && messages.length > 1) {
-                    // the first item on the list
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: CustomBubbleBuilder(
-                            message: messages[index],
-                            context: context,
-                            index: index,
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  if (index == messages.length - 1 || messages.length == 1) {
-                    // if (!state.readOnly!) {
-                    return ListBottomChatWidget(index);
-                    // }
-                    // return CustomBubbleBuilder(
-                    //   message: messages[index],
-                    //   context: context,
-                    //   index: index,
-                    // );
-                  } else {
-                    return CustomBubbleBuilder(
-                      message: messages[index],
-                      context: context,
-                      index: index,
-                    );
-                  }
-                },
-                itemCount:
-                    messages == null || messages.isEmpty ? 1 : messages.length,
+                      if (index == 0 && messages.length > 1) {
+                        // the first item on the list
+                        return Column(
+                          children: [
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: CustomBubbleBuilder(
+                                message: messages[index],
+                                context: context,
+                                index: index,
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      if (index == messages.length - 1 ||
+                          messages.length == 1) {
+                        // if (!state.readOnly!) {
+                        return ListBottomChatWidget(index);
+                        // }
+                        // return CustomBubbleBuilder(
+                        //   message: messages[index],
+                        //   context: context,
+                        //   index: index,
+                        // );
+                      } else {
+                        return CustomBubbleBuilder(
+                          message: messages[index],
+                          context: context,
+                          index: index,
+                        );
+                      }
+                    },
+                  ),
+                  if (state.scrollController!.hasClients &&
+                      state.scrollController?.position.pixels ==
+                          state.scrollController?.position.maxScrollExtent)
+                    Positioned(
+                      bottom: 0,
+                      right: 8,
+                      child: FloatingActionButton.small(
+                        onPressed: () {},
+                        child: const Icon(Icons.expand_circle_down_outlined),
+                      ),
+                    )
+                ],
               ),
             );
           },
