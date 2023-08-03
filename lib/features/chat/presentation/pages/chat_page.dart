@@ -5,6 +5,7 @@ import 'package:gpt/core/constants/status.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 import 'package:gpt/features/container/pages/section/presentation/pages/section_page.dart';
 import '../../../../core/helper/unfocus_keyboard.dart';
+import '../../../container/pages/home/presentation/page/home_page.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../widgets/chat/chat_body_widget.dart';
 import '../widgets/custom_app_bar.dart';
@@ -38,10 +39,14 @@ class _ChatPageState extends State<ChatPage> {
       listener: (context, state) {
         if (state.goBackHome!) {
           unfocusKeyboard();
-          context.pop();
+          context.go('/${HomePage.route}');
           context.read<ChatBloc>()
-            ..add(ChatStreamCanceled())
-            ..add(ChatConversationCleared());
+            ..add(
+              ChatStreamCanceled(),
+            )
+            ..add(
+              ChatConversationCleared(),
+            );
         }
       },
       builder: (context, state) {

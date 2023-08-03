@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gpt/core/widgets/shimmer_widget.dart';
 
 import '../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../core/theme/theme.dart';
@@ -62,6 +63,60 @@ class SuggestionItem extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class SuggestionItemLoading extends StatelessWidget {
+  const SuggestionItemLoading({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(
+        bottom: 10,
+      ),
+      child: const Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: ShimmerWidget.rectangular(
+          //         height: 8,
+          //         width: double.infinity,
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       width: 5,
+          //     ),
+          //     Expanded(
+          //       child: ShimmerWidget.rectangular(
+          //         height: 8,
+          //         width: double.infinity,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          ShimmerWidget.rectangular(
+            height: 8,
+            width: double.infinity,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          ShimmerWidget.rectangular(
+            height: 8,
+            width: 100,
+          ),
+        ],
+      ),
     );
   }
 }

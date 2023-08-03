@@ -5,7 +5,6 @@ import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 
 import 'bottom_chat_loaded_widget.dart';
 import 'bottom_chat_loading_widget.dart';
-import 'chat_body_widget.dart';
 
 class ListBottomChatWidget extends StatelessWidget {
   const ListBottomChatWidget(this.lastIndex, {super.key});

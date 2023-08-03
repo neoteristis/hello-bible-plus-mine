@@ -108,19 +108,19 @@ class _CustomBubbleState extends State<CustomBubble> {
       child: widget.nip == BubbleNip.leftBottom
           ? CustomHeroFocused(
               menuItems: <FocusedMenuItem>[
-                if (widget.indexMessage != 0)
-                  FocusedMenuItem(
-                    title: const Text('Regénérer'),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    trailingIcon: const Icon(Icons.refresh_rounded),
-                    onPressed: () {
-                      context.read<ChatBloc>().add(
-                            ChatAnswerRegenerated(
-                              messsageId: widget.indexMessage,
-                            ),
-                          );
-                    },
-                  ),
+                // if (widget.indexMessage != 0)
+                FocusedMenuItem(
+                  title: const Text('Regénérer'),
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  trailingIcon: const Icon(Icons.refresh_rounded),
+                  onPressed: () {
+                    context.read<ChatBloc>().add(
+                          ChatAnswerRegenerated(
+                            messsageId: widget.indexMessage,
+                          ),
+                        );
+                  },
+                ),
                 FocusedMenuItem(
                   title: const Text('Lire'),
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,

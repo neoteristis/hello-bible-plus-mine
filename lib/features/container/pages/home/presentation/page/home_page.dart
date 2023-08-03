@@ -5,7 +5,6 @@ import 'package:gpt/core/helper/notifications.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 import 'package:gpt/core/widgets/custom_drawer.dart';
 import '../bloc/home_bloc.dart';
-import '../widgets/caroussel_section_slider.dart';
 import '../widgets/custom_home_app_bar.dart';
 import '../widgets/grid_section_widget.dart';
 
@@ -75,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                       .add(ChatCategoriesBySectionFetched());
                 },
                 child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: state.categoriesBySection.length,
                   itemBuilder: (context, index) {
                     /***if (index == 0) {
@@ -97,12 +96,13 @@ class _HomePageState extends State<HomePage> {
 
                         **/
                     if (index == 0) {
-                      return Container();
+                      return const SizedBox(
+                        height: 25,
+                      );
                     }
                     if (index == state.categoriesBySection.length - 1) {
                       return Column(
                         children: [
-
                           GridSectionWidget(
                             data: state.categoriesBySection[index],
                             index: index,

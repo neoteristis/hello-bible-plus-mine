@@ -140,11 +140,13 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
 
   @override
   Future<List<HistoricalConversation>> fetchHistoricalConversation(
-      PHistorical param) async {
+    PHistorical param,
+  ) async {
     try {
-      final res =
-          await baseRepo.get(ApiConstants.historical(param), addToken: true);
-      Log.info(res.data);
+      final res = await baseRepo.get(
+        ApiConstants.historical(param),
+        addToken: true,
+      );
       return (res.data as List)
           .map((m) => HistoricalConversation.fromJson(m))
           .toList();

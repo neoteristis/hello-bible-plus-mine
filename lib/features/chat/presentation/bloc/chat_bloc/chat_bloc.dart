@@ -51,7 +51,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required this.tts,
   }) : super(
           ChatState(
-            textEditingController: TextEditingController(),
+            // textEditingController: TextEditingController(),
             focusNode: FocusNode(),
             scrollController: ScrollController(),
             scrollPhysics: const PositionRetainedScrollPhysics(),
@@ -203,8 +203,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ) {
     state.scrollController?.jumpTo(
       state.scrollController!.position.maxScrollExtent,
-      // duration: const Duration(milliseconds: 500),
-      // curve: Curves.ease,
     );
     if (state.newMessage != null) {
       /*
@@ -214,7 +212,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       //first clear the text controller
 
-      state.textEditingController?.clear();
+      // state.textEditingController?.clear();
       final textAnswer = TextMessage(
         role: Role.system,
         createdAt: DateTime.now(),
@@ -236,6 +234,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           messageId: event.messsageId != null ? event.messsageId! - 1 : null,
         ),
       );
+    } else {
+      Log.info('there is no conversation');
     }
     if (event.messsageId != null) {
       emit(
@@ -309,16 +309,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     emit(
       state.copyWith(
         suggestions: [],
-        suggestionLoaded: false,
+        suggestionStatus: Status.loading,
       ),
     );
     final res = await getSuggestionMessages(event.message);
     return res.fold(
-      (l) => Log.info(l),
+      (l) => emit(
+        state.copyWith(
+          suggestionStatus: Status.failed,
+        ),
+      ),
       (suggestions) async {
-        emit(
+        return emit(
           state.copyWith(
             suggestions: suggestions,
+            suggestionStatus: Status.loaded,
           ),
         );
       },
@@ -378,7 +383,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     List<MessageByRole>? messages;
     final historical = event.historical;
     final welcomeTheme = event.welcomeTheme;
-    state.textEditingController?.clear();
+    // state.textEditingController?.clear();
     if (historical != null) {
       conversationId = historical.idString;
       category = historical.category;
@@ -488,7 +493,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (rs) async {
         String messageJoined = '';
         add(const ChatUserTapChanged(false));
-        print(rs.data);
+        emit(state.copyWith(incoming: const TextMessage()));
         try {
           streamSubscription = rs.data?.stream
               .transform(unit8Transformer)
@@ -542,8 +547,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                     true,
                   ),
                 );
-                state.textEditingController?.text =
-                    '${state.textEditingController?.text}$trunck';
+                // state.textEditingController?.text =
+                //     '${state.textEditingController?.text}$trunck';
 
                 messageJoined = '$messageJoined$trunck';
                 add(
@@ -624,7 +629,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatConversationChanged event,
     Emitter<ChatState> emit,
   ) async {
-    state.textEditingController?.clear();
+    // state.textEditingController?.clear();
 
     emit(
       state.copyWith(
@@ -703,7 +708,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       //first clear the text controller
 
-      state.textEditingController?.clear();
+      // state.textEditingController?.clear();
       final textAnswer = TextMessage(
         role: event.role,
         createdAt: DateTime.now(),

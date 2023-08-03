@@ -10,7 +10,7 @@ class ChatState extends Equatable {
     this.conversationStatus = Status.init,
     this.messageStatus = Status.init,
     this.failure,
-    this.textEditingController,
+    // this.textEditingController,
     this.isTyping = false,
     this.newMessage = '',
     this.theme,
@@ -19,10 +19,11 @@ class ChatState extends Equatable {
     this.suggestions = const [],
     this.scrollController,
     this.isLoading = false,
-    this.showSuggestions = false,
+    // this.showSuggestions = false,
     this.scrollPhysics,
     this.maintainScroll = false,
-    this.suggestionLoaded = false,
+    // this.suggestionLoaded = false,
+    this.suggestionStatus = Status.init,
     // this.readOnly = false,
     this.containerKey,
     this.isUserTap = false,
@@ -46,7 +47,7 @@ class ChatState extends Equatable {
   final Status? conversationStatus;
   final Status? messageStatus;
   final Failure? failure;
-  final TextEditingController? textEditingController;
+  // final TextEditingController? textEditingController;
   final bool? isTyping;
   final String? newMessage;
   final ThemeData? theme;
@@ -55,10 +56,11 @@ class ChatState extends Equatable {
   final List<String>? suggestions;
   final ScrollController? scrollController;
   final bool? isLoading;
-  final bool? showSuggestions;
+  // final bool? showSuggestions;
   final ScrollPhysics? scrollPhysics;
   final bool? maintainScroll;
-  final bool? suggestionLoaded;
+  // final bool? suggestionLoaded;
+  final Status? suggestionStatus;
   // final bool? readOnly;
   final GlobalKey? containerKey;
   final GlobalKey? textFieldKey;
@@ -76,7 +78,7 @@ class ChatState extends Equatable {
   List<Object?> get props => [
         // chatObserver,
         chatToShare,
-        suggestionLoaded,
+        // suggestionLoaded,
         categoriesBySection,
         newMessage,
         messages,
@@ -88,7 +90,7 @@ class ChatState extends Equatable {
         conversationStatus,
         messageStatus,
         failure,
-        textEditingController,
+        // textEditingController,
         isTyping,
         theme,
         incoming,
@@ -96,7 +98,7 @@ class ChatState extends Equatable {
         suggestions,
         scrollController,
         isLoading,
-        showSuggestions,
+        // showSuggestions,
         scrollPhysics,
         maintainScroll,
         // readOnly,
@@ -108,6 +110,7 @@ class ChatState extends Equatable {
         firstLaunch,
         readStatus,
         goBackHome,
+        suggestionStatus,
       ];
 
   ChatState copyWith({
@@ -122,7 +125,7 @@ class ChatState extends Equatable {
     Status? conversationStatus,
     Status? messageStatus,
     Failure? failure,
-    TextEditingController? textEditingController,
+    // TextEditingController? textEditingController,
     bool? isTyping,
     String? newMessage,
     bool clearNewMessage = false,
@@ -132,11 +135,11 @@ class ChatState extends Equatable {
     List<String>? suggestions,
     ScrollController? scrollController,
     bool? isLoading,
-    bool? showSuggestions,
+    // bool? showSuggestions,
     ScrollPhysics? scrollPhysics,
     bool clearScrollPhysics = false,
     bool? maintainScroll,
-    bool? suggestionLoaded,
+    // bool? suggestionLoaded,
     // bool? readOnly,
     GlobalKey? containerKey,
     GlobalKey? textFieldKey,
@@ -147,6 +150,7 @@ class ChatState extends Equatable {
     String? chatToShare,
     ReadStatus? readStatus,
     bool? goBackHome,
+    Status? suggestionStatus,
     // ChatScrollObserver? chatObserver,
   }) {
     return ChatState(
@@ -161,8 +165,8 @@ class ChatState extends Equatable {
       conversationStatus: conversationStatus ?? this.conversationStatus,
       messageStatus: messageStatus ?? this.messageStatus,
       failure: failure ?? this.failure,
-      textEditingController:
-          textEditingController ?? this.textEditingController,
+      // textEditingController:
+      //     textEditingController ?? this.textEditingController,
       isTyping: isTyping ?? this.isTyping,
       newMessage: clearNewMessage ? null : newMessage ?? this.newMessage,
       theme: theme ?? this.theme,
@@ -171,11 +175,11 @@ class ChatState extends Equatable {
       suggestions: suggestions ?? this.suggestions,
       scrollController: scrollController ?? this.scrollController,
       isLoading: isLoading ?? this.isLoading,
-      showSuggestions: showSuggestions ?? this.showSuggestions,
+      // showSuggestions: showSuggestions ?? this.showSuggestions,
       scrollPhysics:
           clearScrollPhysics ? null : scrollPhysics ?? this.scrollPhysics,
       maintainScroll: maintainScroll ?? this.maintainScroll,
-      suggestionLoaded: suggestionLoaded ?? this.suggestionLoaded,
+      // suggestionLoaded: suggestionLoaded ?? this.suggestionLoaded,
       // readOnly: readOnly ?? this.readOnly,
       containerKey: containerKey ?? this.containerKey,
       isUserTap: isUserTap ?? this.isUserTap,
@@ -186,6 +190,7 @@ class ChatState extends Equatable {
       chatToShare: chatToShare ?? this.chatToShare,
       readStatus: readStatus ?? this.readStatus,
       goBackHome: goBackHome ?? this.goBackHome,
+      suggestionStatus: suggestionStatus ?? this.suggestionStatus,
       // chatObserver: chatObserver ?? this.chatObserver,
     );
   }

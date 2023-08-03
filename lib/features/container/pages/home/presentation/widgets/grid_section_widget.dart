@@ -55,9 +55,10 @@ class GridSectionWidget extends StatelessWidget {
               ],
             ),
           ),
-          if (categories != null &&
-              categories.isNotEmpty &&
-              sectionId != '646b6b8e70c60193c897fc3d')
+          if (categories != null && categories.isNotEmpty
+              // &&
+              //     sectionId != '646b6b8e70c60193c897fc3d'
+              )
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10.0,
@@ -106,31 +107,31 @@ class GridSectionWidget extends StatelessWidget {
                 },
               ),
             ),
-          if (categories != null &&
-              categories.isNotEmpty &&
-              sectionId == '646b6b8e70c60193c897fc3d')
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-              ),
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 11 / 7,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: categories.length,
-                itemBuilder: (BuildContext ctx, index) {
-                  return CategoryItem2(
-                    category: categories[index],
-                    // image: images[index],
-                  );
-                },
-              ),
-            ),
+          // if (categories != null &&
+          //     categories.isNotEmpty &&
+          //     sectionId == '646b6b8e70c60193c897fc3d')
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(
+          //       horizontal: 10.0,
+          //     ),
+          //     child: GridView.builder(
+          //       physics: const NeverScrollableScrollPhysics(),
+          //       shrinkWrap: true,
+          //       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          //         maxCrossAxisExtent: 200,
+          //         childAspectRatio: 11 / 7,
+          //         crossAxisSpacing: 10,
+          //         mainAxisSpacing: 10,
+          //       ),
+          //       itemCount: categories.length,
+          //       itemBuilder: (BuildContext ctx, index) {
+          //         return CategoryItem2(
+          //           category: categories[index],
+          //           // image: images[index],
+          //         );
+          //       },
+          //     ),
+          //   ),
         ],
       ),
     );

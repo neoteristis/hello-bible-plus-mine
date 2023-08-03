@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gpt/features/chat/presentation/widgets/chat/suggestion_item.dart';
-
-import '../../../../../core/helper/log.dart';
 import '../../../../../core/widgets/custom_bubble.dart';
-import '../../../domain/entities/message_by_role.dart';
-import '../../../domain/entities/text_message.dart';
 import '../../bloc/chat_bloc/chat_bloc.dart';
+import 'suggestions.dart';
 
 class BottomChatLoadedWidget extends StatelessWidget {
   const BottomChatLoadedWidget({
@@ -19,7 +15,9 @@ class BottomChatLoadedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(
-      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+      buildWhen: (previous, current) =>
+          previous.isLoading != current.isLoading ||
+          previous.suggestionStatus != current.suggestionStatus,
       builder: (context, state) {
         return Column(
           children: [
@@ -38,10 +36,11 @@ class BottomChatLoadedWidget extends StatelessWidget {
             ),
             BlocBuilder<ChatBloc, ChatState>(
               buildWhen: (previous, current) =>
-                  previous.incoming != current.incoming ||
-                  previous.containerKey != current.containerKey ||
-                  previous.suggestions != current.suggestions ||
-                  previous.isLoading != current.isLoading,
+                  previous.incoming != current.incoming,
+              // ||
+              // previous.containerKey != current.containerKey ||
+              // previous.suggestions != current.suggestions ||
+              // previous.isLoading != current.isLoading,
               builder: (context, state) {
                 return Align(
                   alignment: Alignment.bottomLeft,
@@ -50,57 +49,15 @@ class BottomChatLoadedWidget extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                     nip: BubbleNip.leftBottom,
                     textMessage: state.incoming,
-                    //TODO eeeeeeeeeeeeeeeeeto
-                    // message: Text(
-                    //   state.incoming ?? '',
-                    //   style: TextStyle(
-                    //     color: Theme.of(context).colorScheme.secondary,
-                    //     fontSize: 17,
-                    //     height: 1.4,
-                    //     fontWeight: FontWeight.w400,
-                    //   ),
-                    // ),
                   ),
                 );
               },
             ),
-            if (!state.isLoading!)
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: BlocBuilder<ChatBloc, ChatState>(
-                  buildWhen: (previous, current) =>
-                      previous.suggestions != current.suggestions,
-                  builder: (context, state) {
-                    final suggestions = state.suggestions;
-                    if (suggestions == null || suggestions.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    return Container(
-                      padding: const EdgeInsets.only(
-                        left: 15,
-                        right: 15,
-                        top: 20,
-                      ),
-                      margin: const EdgeInsets.only(top: 15.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        border: Border(
-                          top: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                          ),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          ...suggestions.map(
-                            (e) => SuggestionItem(e),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+            // if (!state.isLoading!)
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: Suggestions(),
+            ),
           ],
         );
       },

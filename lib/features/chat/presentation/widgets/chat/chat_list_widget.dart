@@ -63,7 +63,6 @@ class ChatListWidget extends StatelessWidget {
                   }
 
                   if (index == 0 && messages.length > 1) {
-                    // the first item on the list
                     return Column(
                       children: [
                         const SizedBox(
@@ -81,14 +80,7 @@ class ChatListWidget extends StatelessWidget {
                     );
                   }
                   if (index == messages.length - 1 || messages.length == 1) {
-                    // if (!state.readOnly!) {
                     return ListBottomChatWidget(index);
-                    // }
-                    // return CustomBubbleBuilder(
-                    //   message: messages[index],
-                    //   context: context,
-                    //   index: index,
-                    // );
                   } else {
                     return CustomBubbleBuilder(
                       message: messages[index],

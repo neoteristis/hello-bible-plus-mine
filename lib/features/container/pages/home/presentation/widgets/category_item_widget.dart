@@ -37,7 +37,8 @@ class CategoryItemWidget extends StatelessWidget {
                 category: category!,
               ),
             );
-        final route = '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
+        final route =
+            '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
         context.go(route);
       },
       borderRadius: 12,
@@ -75,7 +76,7 @@ class CategoryItemWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     height: 1.2,
                   ),
@@ -94,8 +95,8 @@ class CategoryItemWidget extends StatelessWidget {
               maxLines: 2,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w300,
-                    fontSize: 11,
-                    color: const Color(0xFF7B7B7B),
+                    fontSize: 12,
+                    color: Colors.black87,
                     letterSpacing: 0.2,
                   ),
             ),
