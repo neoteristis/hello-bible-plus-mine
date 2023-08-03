@@ -31,7 +31,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _sectionNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter get route => GoRouter(
-      initialLocation: SplashScreen.route,
+      initialLocation: '/home',
       refreshListenable:
           GoRouterRefreshStream(GetIt.instance.get<AuthBloc>().stream),
       routerNeglect: true,
