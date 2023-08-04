@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import '../../../../../core/widgets/custom_bubble.dart';
 import '../../bloc/chat_bloc/chat_bloc.dart';
@@ -55,68 +56,80 @@ class ChatListWidget extends StatelessWidget {
                 }
                 return false;
               },
-              child: Stack(
-                children: [
-                  ListView.builder(
-                    key: state.listKey,
-                    controller: state.scrollController,
-                    itemCount: messages == null || messages.isEmpty
-                        ? 1
-                        : messages.length,
-                    itemBuilder: (ctx, index) {
-                      if (messages == null || messages.isEmpty) {
-                        return const EmptyChatWidget();
-                      }
-                      if (index == 0 && messages.length > 1) {
-                        // the first item on the list
-                        return Column(
-                          children: [
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: CustomBubbleBuilder(
-                                message: messages[index],
-                                context: context,
-                                index: index,
+              child: KeyboardVisibilityBuilder(builder: (context, isVisible) {
+                return Stack(
+                  children: [
+                    ListView.builder(
+                      key: state.listKey,
+                      controller: state.scrollController,
+                      itemCount: messages == null || messages.isEmpty
+                          ? 1
+                          : messages.length,
+                      itemBuilder: (ctx, index) {
+                        if (messages == null || messages.isEmpty) {
+                          return const EmptyChatWidget();
+                        }
+                        if (index == 0 && messages.length > 1) {
+                          // the first item on the list
+                          return Column(
+                            children: [
+                              const SizedBox(
+                                height: 8,
                               ),
-                            ),
-                          ],
-                        );
-                      }
-                      if (index == messages.length - 1 ||
-                          messages.length == 1) {
-                        // if (!state.readOnly!) {
-                        return ListBottomChatWidget(index);
-                        // }
-                        // return CustomBubbleBuilder(
-                        //   message: messages[index],
-                        //   context: context,
-                        //   index: index,
-                        // );
-                      } else {
-                        return CustomBubbleBuilder(
-                          message: messages[index],
-                          context: context,
-                          index: index,
-                        );
-                      }
-                    },
-                  ),
-                  if (state.scrollController!.hasClients &&
-                      state.scrollController?.position.pixels ==
-                          state.scrollController?.position.maxScrollExtent)
-                    Positioned(
-                      bottom: 0,
-                      right: 8,
-                      child: FloatingActionButton.small(
-                        onPressed: () {},
-                        child: const Icon(Icons.expand_circle_down_outlined),
-                      ),
-                    )
-                ],
-              ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: CustomBubbleBuilder(
+                                  message: messages[index],
+                                  context: context,
+                                  index: index,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        if (index == messages.length - 1 ||
+                            messages.length == 1) {
+                          // if (!state.readOnly!) {
+                          return ListBottomChatWidget(index);
+                          // }
+                          // return CustomBubbleBuilder(
+                          //   message: messages[index],
+                          //   context: context,
+                          //   index: index,
+                          // );
+                        } else {
+                          return CustomBubbleBuilder(
+                            message: messages[index],
+                            context: context,
+                            index: index,
+                          );
+                        }
+                      },
+                    ),
+                    if (state.scrollController!.hasClients && !isVisible &&
+                        state.scrollController!.position.pixels <
+                            state.scrollController!.position.maxScrollExtent)
+                      Positioned(
+                        bottom: 0,
+                        right: 8,
+                        child: FloatingActionButton.small(
+                          onPressed: () {
+                            state.scrollController?.animateTo(
+                              state.scrollController?.position
+                                      .maxScrollExtent ??
+                                  0,
+                              duration: Duration(microseconds: 300),
+                              curve: Curves.ease,
+                            );
+                          },
+                          child: const Icon(
+                            Icons.expand_circle_down_outlined,
+                          ),
+                        ),
+                      )
+                  ],
+                );
+              }),
             );
           },
         );
