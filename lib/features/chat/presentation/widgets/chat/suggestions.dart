@@ -19,9 +19,7 @@ class Suggestions extends StatelessWidget {
       builder: (context, state) {
         final suggestions = state.suggestions;
         final isChatGenerating = state.isLoading;
-        if (suggestions == null ||
-            isChatGenerating == true ||
-            suggestions.isEmpty) {
+        if (suggestions == null || isChatGenerating!) {
           return const SizedBox.shrink();
         }
         return Container(
