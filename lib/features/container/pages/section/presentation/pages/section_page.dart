@@ -6,6 +6,7 @@ import 'package:gpt/core/widgets/custom_progress_indicator.dart';
 import 'package:gpt/features/container/pages/home/presentation/widgets/custom_home_app_bar.dart';
 
 import '../../../../../../core/constants/status.dart';
+import '../../../../../../core/helper/notifications.dart';
 import '../../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../chat/domain/entities/category.dart';
 import '../../../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
@@ -27,6 +28,7 @@ class _SectionPageState extends State<SectionPage> {
   @override
   void initState() {
     super.initState();
+
     // context.read<SectionBloc>().add(SectionWelcomThemeFetched());
   }
 
@@ -119,174 +121,169 @@ class _SectionPageState extends State<SectionPage> {
                       ],
                     );
                   }
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10.0,
-                        right: 10,
-                        top: 20,
-                      ),
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          context
-                              .read<SectionBloc>()
-                              .add(SectionWelcomThemeFetched());
-                        },
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: [
-                            ...welcomeThemes.map(
-                              (e) {
-                                final welcomeTheme = e;
-                                final firstMessage = welcomeTheme.message;
-                                return GestureDetector(
-                                  onTap: firstMessage != null
-                                      ? () {
-                                          context.read<ChatBloc>().add(
-                                                ChatConversationInited(
-                                                  welcomeTheme: welcomeTheme,
-                                                ),
-                                              );
-                                          context.go(
-                                              '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}');
-                                        }
-                                      : null,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height:
-                                        MediaQuery.sizeOf(context).height * .20,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 4,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                      vertical: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      right: 10,
+                      top: 30,
+                    ),
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        context
+                            .read<SectionBloc>()
+                            .add(SectionWelcomThemeFetched());
+                      },
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          ...welcomeThemes.map(
+                            (e) {
+                              final welcomeTheme = e;
+                              final firstMessage = welcomeTheme.message;
+                              return GestureDetector(
+                                onTap: firstMessage != null
+                                    ? () {
+                                        context.read<ChatBloc>().add(
+                                              ChatConversationInited(
+                                                welcomeTheme: welcomeTheme,
+                                              ),
+                                            );
+                                        context.go(
+                                          '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}',
+                                        );
+                                      }
+                                    : null,
+                                child: Container(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.sizeOf(context).height * .20,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 4,
+                                  ),
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Text(
+                                          welcomeTheme.category?.name ?? '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium
+                                              ?.copyWith(
+                                                fontSize: 23,
+                                              ),
+                                        ),
+                                      ),
+                                      if (firstMessage != null)
                                         Padding(
-                                          padding: const EdgeInsets.all(4.0),
+                                          padding: const EdgeInsets.only(
+                                            top: 4.0,
+                                          ),
                                           child: Text(
-                                            welcomeTheme.category?.name ?? '',
+                                            firstMessage,
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.justify,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headlineMedium
-                                                ?.copyWith(
-                                                  fontSize: 23,
-                                                ),
+                                                .bodyMedium,
                                           ),
                                         ),
-                                        if (firstMessage != null)
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 4.0,
-                                            ),
-                                            child: Text(
-                                              firstMessage,
-                                              maxLines: 4,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.justify,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium,
-                                            ),
-                                          ),
-                                        if (firstMessage == null)
-                                          Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  top: 4.0,
-                                                  bottom: 4.0,
-                                                ),
-                                                child: Text(
-                                                  welcomeTheme.category
-                                                          ?.welcomePhrase ??
-                                                      '',
-                                                  maxLines: 2,
-                                                  textAlign: TextAlign.center,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
+                                      if (firstMessage == null)
+                                        Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 4.0,
+                                                bottom: 4.0,
                                               ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: 4.0,
-                                                  horizontal: 18.0,
+                                              child: Text(
+                                                welcomeTheme.category
+                                                        ?.welcomePhrase ??
+                                                    '',
+                                                maxLines: 2,
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 4.0,
+                                                horizontal: 18.0,
+                                              ),
+                                              child: TextField(
+                                                controller: controller,
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
                                                 ),
-                                                child: TextField(
-                                                  controller: controller,
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiary,
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
+                                                decoration: InputDecoration(
+                                                  hintMaxLines: 1,
+                                                  filled: true,
+                                                  fillColor: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary,
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    horizontal: 20,
                                                   ),
-                                                  textCapitalization:
-                                                      TextCapitalization
-                                                          .sentences,
-                                                  decoration: InputDecoration(
-                                                    hintMaxLines: 1,
-                                                    filled: true,
-                                                    fillColor: Theme.of(context)
-                                                        .colorScheme
-                                                        .onPrimary,
-                                                    contentPadding:
-                                                        const EdgeInsets
-                                                            .symmetric(
-                                                      horizontal: 20,
+                                                  suffixIcon: GestureDetector(
+                                                    onTap: () => submit(
+                                                        welcomeTheme.category),
+                                                    child: Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_rounded,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
                                                     ),
-                                                    suffixIcon: GestureDetector(
-                                                      onTap: () => submit(
-                                                          welcomeTheme
-                                                              .category),
-                                                      child: Icon(
-                                                        Icons
-                                                            .arrow_forward_ios_rounded,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
+                                                  ),
+                                                  border: border,
+                                                  enabledBorder: border,
+                                                  focusedBorder: border,
+                                                  hintStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
-                                                    ),
-                                                    border: border,
-                                                    enabledBorder: border,
-                                                    focusedBorder: border,
-                                                    hintStyle: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium
-                                                        ?.copyWith(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                    hintText: welcomeTheme
-                                                        .category?.placeholder,
-                                                  ),
-                                                  onSubmitted: (_) {
-                                                    submit(
-                                                        welcomeTheme.category);
-                                                  },
+                                                  hintText: welcomeTheme
+                                                      .category?.placeholder,
                                                 ),
+                                                onSubmitted: (_) {
+                                                  submit(welcomeTheme.category);
+                                                },
                                               ),
-                                            ],
-                                          ),
-                                      ],
-                                    ),
+                                            ),
+                                          ],
+                                        ),
+                                    ],
                                   ),
-                                );
-                              },
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
                     ),
                   );

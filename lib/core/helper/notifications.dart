@@ -81,7 +81,7 @@ void _configureSelectNotificationSubject(BuildContext context) {
               json,
             );
 
-            context.go('/${HomePage.route}/${ChatPage.route}');
+            context.go('/${ChatPage.route}');
             context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
             context.read<ChatBloc>().add(
                   ChatConversationChanged(

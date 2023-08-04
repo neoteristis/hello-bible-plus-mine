@@ -14,7 +14,6 @@ import '../../features/more/presentation/pages/about_page.dart';
 import '../../features/more/presentation/pages/help_page.dart';
 import '../../features/more/presentation/pages/usage_general_condition_page.dart';
 import '../../features/notification/presentation/pages/manage_notifications_page.dart';
-import '../../features/notification/presentation/pages/notifications_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/user/presentation/pages/create_password_input_page.dart';
 import '../../features/user/presentation/pages/email_input_page.dart';
@@ -31,7 +30,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _sectionNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter get route => GoRouter(
-      initialLocation: '/home',
+      initialLocation: SplashScreen.route,
       refreshListenable:
           GoRouterRefreshStream(GetIt.instance.get<AuthBloc>().stream),
       routerNeglect: true,
@@ -56,7 +55,6 @@ GoRouter get route => GoRouter(
           },
           routes: [
             ///Unauthenticated
-            ///
             GoRoute(
               path: LandingPage.route,
               builder: (context, state) => const LandingPage(),

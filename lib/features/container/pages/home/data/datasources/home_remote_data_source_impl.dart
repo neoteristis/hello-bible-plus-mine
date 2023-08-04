@@ -4,7 +4,6 @@ import 'package:gpt/core/error/exception.dart';
 import 'package:gpt/features/chat/domain/entities/category.dart';
 import 'package:gpt/features/chat/domain/entities/category_by_section.dart';
 
-import '../../../../../../core/helper/log.dart';
 import 'home_remote_data_source.dart';
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {

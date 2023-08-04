@@ -138,13 +138,6 @@ class GridSectionWidget extends StatelessWidget {
   }
 }
 
-// const images = [
-//   'assets/images/pray.jpg',
-//   'assets/images/pray_3.jpg',
-//   'assets/images/pray_2.webp',
-//   'assets/images/pray_4.jpg',
-// ];
-
 const double iconSize = 16;
 
 List<Widget> iconLeadings(BuildContext context) => [
