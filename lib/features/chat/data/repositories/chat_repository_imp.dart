@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gpt/core/error/exception.dart';
 
 import 'package:gpt/core/error/failure.dart';
@@ -87,9 +86,10 @@ class ChatRepositoryImp implements ChatRepository {
       PGetResponseMessage param) async {
     if (await networkInfo.isConnected) {
       try {
-        final token = await local.getToken();
         final res = await remote.getResponseMessages(
-            param.idConversation, token, param.messageId);
+          param.idConversation,
+          param.messageId,
+        );
         return Right(res);
       } on ServerException catch (e) {
         return Left(ServerFailure(info: e.message));

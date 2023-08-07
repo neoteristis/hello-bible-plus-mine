@@ -65,7 +65,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _onChatMessageSent,
       transformer: restartable(),
     );
-    on<ChatConversationChanged>(_onChatConversationChanged);
+    on<ChatConversationChanged>(
+      _onChatConversationChanged,
+      transformer: restartable(),
+    );
     on<ChatConversationCleared>(_onChatConversationCleared);
     on<ChatMessageAdded>(_onChatMessageAdded);
     on<ChatTypingStatusChanged>(_onChatTypingStatusChanged);
@@ -306,28 +309,33 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatSuggestionsRequested event,
     Emitter<ChatState> emit,
   ) async {
-    emit(
-      state.copyWith(
-        suggestions: [],
-        suggestionStatus: Status.loading,
-      ),
-    );
-    final res = await getSuggestionMessages(event.message);
-    return res.fold(
-      (l) => emit(
+    Log.info(state.conversation?.category?.hasSuggestions);
+    final hasSuggestion = state.conversation?.category?.hasSuggestions;
+    if (hasSuggestion != null && hasSuggestion) {
+      Log.info('has suggestion');
+      emit(
         state.copyWith(
-          suggestionStatus: Status.failed,
+          suggestions: [],
+          suggestionStatus: Status.loading,
         ),
-      ),
-      (suggestions) async {
-        return emit(
+      );
+      final res = await getSuggestionMessages(event.message);
+      return res.fold(
+        (l) => emit(
           state.copyWith(
-            suggestions: suggestions,
-            suggestionStatus: Status.loaded,
+            suggestionStatus: Status.failed,
           ),
-        );
-      },
-    );
+        ),
+        (suggestions) async {
+          return emit(
+            state.copyWith(
+              suggestions: suggestions,
+              suggestionStatus: Status.loaded,
+            ),
+          );
+        },
+      );
+    }
   }
 
   // void _onChatConversationFromNotificationInited(
@@ -743,14 +751,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         messageParams,
       ),
     );
-    // if (state.scrollController!.hasClients) {
     await Future.delayed(const Duration(milliseconds: 200));
     state.scrollController?.jumpTo(
       state.scrollController!.position.maxScrollExtent,
-      // duration: const Duration(milliseconds: 500),
-      // curve: Curves.ease,
     );
-    // }
     final res = await sendMessage(messageParams);
 
     return res.fold(
@@ -779,20 +783,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             );
           }
         }
-
-        // // going here if the message answer isn't stream ***** this functionnality has been removed
-        // final textMessage = types.TextMessage(
-        //   author: state.receiver!,
-        //   createdAt: DateTime.now().millisecondsSinceEpoch,
-        //   id: _randomString(),
-        //   text: message.response?.trim() ?? '',
-        // );
-        // emit(
-        //   state.copyWith(
-        //     messages: List.of(state.messages!)..insert(0, textMessage),
-        //     messageStatus: Status.init,
-        //   ),
-        // );
       },
     );
   }

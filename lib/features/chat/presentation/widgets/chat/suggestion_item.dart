@@ -82,7 +82,7 @@ class SuggestionItemLoading extends StatelessWidget {
       margin: const EdgeInsets.only(
         bottom: 10,
       ),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           // Row(
@@ -107,13 +107,15 @@ class SuggestionItemLoading extends StatelessWidget {
           ShimmerWidget.rectangular(
             height: 8,
             width: double.infinity,
+            borderRadius: BorderRadius.circular(20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           ShimmerWidget.rectangular(
             height: 8,
             width: 100,
+            borderRadius: BorderRadius.circular(20),
           ),
         ],
       ),

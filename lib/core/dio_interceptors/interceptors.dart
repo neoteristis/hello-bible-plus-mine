@@ -3,16 +3,18 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:logger/logger.dart';
 
 import '../base_repository/base_repository.dart';
 import '../db_services/db_services.dart';
 import '../entities/token.dart';
+import '../helper/log.dart';
 
 class LoggingInterceptors extends Interceptor {
   @override
   FutureOr<dynamic> onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) {
     if (kDebugMode) {
       print(
           '--> ${options.method.toUpperCase()} ${options.baseUrl}${options.path}');
@@ -89,7 +91,6 @@ class AppInterceptors extends Interceptor {
 
       if (jwt != null) {
         final DateTime expirationDate = JwtDecoder.getExpirationDate(jwt);
-        print(expirationDate);
         final int diff = expirationDate.difference(DateTime.now()).inMinutes;
         print(diff);
         if (JwtDecoder.isExpired(jwt)) {

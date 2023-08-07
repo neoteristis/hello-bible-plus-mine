@@ -16,6 +16,7 @@ class Category extends Equatable {
     this.section,
     this.logo,
     this.placeholder,
+    this.hasSuggestions,
   });
 
   final String? id;
@@ -27,22 +28,30 @@ class Category extends Equatable {
   final Section? section;
   final String? logo;
   final String? placeholder;
+  final bool? hasSuggestions;
 
   factory Category.fromJson(Map<String, dynamic> json) {
     final logo = json['logo'];
+    print('${json['name']} : ${json['nbPromptQuestion']}');
     return Category(
-        id: json['_id'],
-        name: json['name'],
-        prompt: json['prompt'],
-        model: json['model'],
-        welcomePhrase: json['welcomePhrase'],
-        placeholder: json['placeholder'],
-        colorTheme: json['colorCode'] == null || json['colorCode'] == ''
-            ? null
-            : (json['colorCode'] as String).hexToColor,
-        logo: logo != null && logo != 'null' && logo != 'undefined'
-            ? '${dotenv.env['BASE_URL']!}/${json['logo']}'
-            : null);
+      id: json['_id'],
+      name: json['name'],
+      prompt: json['prompt'],
+      model: json['model'],
+      welcomePhrase: json['welcomePhrase'],
+      placeholder: json['placeholder'],
+      colorTheme: json['colorCode'] == null || json['colorCode'] == ''
+          ? null
+          : (json['colorCode'] as String).hexToColor,
+      hasSuggestions: json['nbPromptQuestion'] != null
+          ? (json['nbPromptQuestion'] is int)
+              ? json['nbPromptQuestion'] != 0
+              : false
+          : false,
+      logo: logo != null && logo != 'null' && logo != 'undefined'
+          ? '${dotenv.env['BASE_URL']!}/${json['logo']}'
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -61,5 +70,6 @@ class Category extends Equatable {
         welcomePhrase,
         colorTheme,
         placeholder,
+        hasSuggestions,
       ];
 }

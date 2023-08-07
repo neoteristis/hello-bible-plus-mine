@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
@@ -17,8 +18,7 @@ abstract class ChatRemoteDatasources {
     String? conversationId,
   });
   Future<Message> sendMessage(MessageParam param);
-  Future getResponseMessages(
-      String idConversation, Token token, int? idMessage);
+  Future getResponseMessages(String idConversation, int? idMessage);
   Future<List<CategoriesBySection>> fetchCategoriesBySection();
   Future<List<HistoricalConversation>> fetchHistoricalConversation(
       PHistorical param);
@@ -96,25 +96,19 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
   }
 
   @override
-  Future getResponseMessages(
-      String idConversation, Token token, int? idMessage) async {
+  Future getResponseMessages(String idConversation, int? idMessage) async {
     try {
       final res = await baseRepo.get(
         ApiConstants.answer(idConversation, idMessage),
-        // queryParameters: idMessage != null
-        //     ? {
-        //         'messageId': idMessage,
-        //       }
-        //     : null,
         options: Options(
           headers: {
             'Accept': 'text/event-stream',
             'Cache-Control': 'no-cache',
-            'Authorization': 'Bearer ${token.token}',
+            // 'Authorization': 'Bearer ${token.token}',
           },
           responseType: ResponseType.stream,
+          extra: {'add_token': true},
         ),
-        addToken: true,
       );
       return res;
     } catch (e) {

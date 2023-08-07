@@ -106,7 +106,8 @@ class ChatListWidget extends StatelessWidget {
                         }
                       },
                     ),
-                    if (state.scrollController!.hasClients && !isVisible &&
+                    if (state.scrollController!.hasClients &&
+                        !isVisible &&
                         state.scrollController!.position.pixels <
                             state.scrollController!.position.maxScrollExtent)
                       Positioned(
@@ -118,7 +119,7 @@ class ChatListWidget extends StatelessWidget {
                               state.scrollController?.position
                                       .maxScrollExtent ??
                                   0,
-                              duration: Duration(microseconds: 300),
+                              duration: const Duration(microseconds: 300),
                               curve: Curves.ease,
                             );
                           },

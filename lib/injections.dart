@@ -29,6 +29,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
 
 import 'core/base_repository/base_repository.dart';
 import 'core/base_repository/base_repository_imp.dart';
@@ -428,6 +429,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Logger().w('handling background');
   await setupFlutterNotifications();
   // showFlutterNotification(message);
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -548,6 +550,7 @@ void showFlutterNotification(RemoteMessage message) {
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
+  Logger().w('tap back ground 2');
   getIt<StreamController<String?>>(instanceName: 'select_nofitication')
       .add(notificationResponse.payload);
   if (notificationResponse.input?.isNotEmpty ?? false) {
@@ -559,6 +562,7 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
 
 void onDidReceiveLocalNotification(
     int id, String? title, String? body, String? payload) {
+  Logger().w('tap back ground 3');
   getIt<StreamController<String?>>(instanceName: 'select_nofitication')
       .add(payload);
 }

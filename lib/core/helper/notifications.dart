@@ -12,7 +12,6 @@ import 'package:gpt/core/helper/log.dart';
 import 'package:gpt/features/chat/domain/entities/category.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
-import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 import 'package:gpt/injections.dart';
 
 Future setToken(String? token) async {
