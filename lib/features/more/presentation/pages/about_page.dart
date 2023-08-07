@@ -6,6 +6,7 @@ import '../../../container/pages/section/presentation/pages/section_page.dart';
 
 class AboutPage extends StatelessWidget {
   static const String route = 'about';
+
   const AboutPage({super.key});
 
   @override
@@ -13,7 +14,7 @@ class AboutPage extends StatelessWidget {
     return ScaffoldWithBackground(
       addBackgroundImage: false,
       onPop: () {
-        context.go('/${SectionPage.route}');
+        context.pop();
       },
       title: dict(context).about,
       body: Padding(
@@ -21,7 +22,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomText('HelloBible+'),
+            const CustomText('HelloBible'),
             CustomText('${dict(context).version} : 1.0'),
             CustomText(
               dict(context).appliDescription,

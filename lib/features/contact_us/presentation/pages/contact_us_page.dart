@@ -10,13 +10,20 @@ import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/scaffold_with_background.dart';
 import '../../../../l10n/function.dart';
 
-class ContactUsPage extends StatelessWidget {
+class ContactUsPage extends StatefulWidget {
   static const String route = 'contact';
+
   const ContactUsPage({super.key});
 
   @override
+  State<ContactUsPage> createState() => _ContactUsPageState();
+}
+
+class _ContactUsPageState extends State<ContactUsPage> {
+  final FocusNode _messageFocusNode = FocusNode();
+
+  @override
   Widget build(BuildContext context) {
-    final FocusNode _messageFocusNode = FocusNode();
     return ScaffoldWithBackground(
       addBackgroundImage: false,
       persistentFooterButtons: [
@@ -27,7 +34,7 @@ class ContactUsPage extends StatelessWidget {
         ),
       ],
       onPop: () {
-        context.go('/${SectionPage.route}');
+        context.pop();
       },
       title: dict(context).contactUs,
       body: Padding(
