@@ -58,6 +58,7 @@ class ChatListWidget extends StatelessWidget {
               },
               child: KeyboardVisibilityBuilder(builder: (context, isVisible) {
                 return Stack(
+                  alignment: Alignment.center,
                   children: [
                     ListView.builder(
                       key: state.listKey,
@@ -112,14 +113,18 @@ class ChatListWidget extends StatelessWidget {
                             state.scrollController!.position.maxScrollExtent)
                       Positioned(
                         bottom: 0,
-                        right: 8,
                         child: FloatingActionButton.small(
+                          backgroundColor:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
+                          elevation: 1,
                           onPressed: () {
                             state.scrollController?.animateTo(
                               state.scrollController?.position
                                       .maxScrollExtent ??
                                   0,
-                              duration: const Duration(microseconds: 300),
+                              duration: const Duration(
+                                microseconds: 300,
+                              ),
                               curve: Curves.ease,
                             );
                           },
