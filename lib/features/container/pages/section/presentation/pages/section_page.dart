@@ -192,7 +192,7 @@ class _SectionPageState extends State<SectionPage> {
                                             firstMessage,
                                             maxLines: 4,
                                             overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.justify,
+                                            textAlign: TextAlign.center,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyMedium,
@@ -235,8 +235,11 @@ class _SectionPageState extends State<SectionPage> {
                                                   hintMaxLines: 1,
                                                   filled: true,
                                                   fillColor: Theme.of(context)
-                                                      .colorScheme
-                                                      .onPrimary,
+                                                      .primaryColor
+                                                      .withOpacity(0.1),
+                                                  // fillColor: Theme.of(context)
+                                                  //     .colorScheme
+                                                  //     .onPrimary,
                                                   contentPadding:
                                                       const EdgeInsets
                                                           .symmetric(
