@@ -55,19 +55,12 @@ class GridSectionWidget extends StatelessWidget {
               ],
             ),
           ),
-          if (categories != null && categories.isNotEmpty
-              // &&
-              //     sectionId != '646b6b8e70c60193c897fc3d'
-              )
+          if (categories != null && categories.isNotEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10.0,
               ),
               child: GridView.builder(
-                // separatorBuilder: (context, index) => const SizedBox(
-                //   width: 8,
-                // ),
-                // scrollDirection: Axis.horizontal,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

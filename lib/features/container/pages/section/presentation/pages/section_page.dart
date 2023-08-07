@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_drawer.dart';
 import 'package:gpt/core/widgets/custom_progress_indicator.dart';
+import 'package:gpt/features/chat/domain/entities/entities.dart';
 import 'package:gpt/features/container/pages/home/presentation/widgets/custom_home_app_bar.dart';
 
 import '../../../../../../core/constants/status.dart';
-import '../../../../../../core/helper/notifications.dart';
 import '../../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../chat/domain/entities/category.dart';
 import '../../../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
@@ -28,8 +28,6 @@ class _SectionPageState extends State<SectionPage> {
   @override
   void initState() {
     super.initState();
-
-    // context.read<SectionBloc>().add(SectionWelcomThemeFetched());
   }
 
   @override
@@ -149,7 +147,7 @@ class _SectionPageState extends State<SectionPage> {
                                               ),
                                             );
                                         context.go(
-                                          '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}',
+                                          '/${SectionPage.route}/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}',
                                         );
                                       }
                                     : null,
@@ -301,7 +299,7 @@ class _SectionPageState extends State<SectionPage> {
     if (controller.text.isNotEmpty) {
       unfocusKeyboard();
       if (category != null) {
-        context.go('/${ChatPage.route}');
+        context.go('/${SectionPage.route}/${ChatPage.route}');
         context.read<ChatBloc>().add(
               ChatConversationChanged(
                 category: category,

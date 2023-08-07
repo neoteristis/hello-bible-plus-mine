@@ -8,6 +8,7 @@ import 'package:gpt/core/widgets/neumorphic_button.dart';
 import 'package:gpt/features/chat/domain/entities/entities.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 
 class CategoryItemWidget extends StatelessWidget {
   const CategoryItemWidget({
@@ -38,7 +39,7 @@ class CategoryItemWidget extends StatelessWidget {
               ),
             );
         final route =
-            '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
+            '/${HomePage.route}/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
         context.go(route);
       },
       borderRadius: 12,

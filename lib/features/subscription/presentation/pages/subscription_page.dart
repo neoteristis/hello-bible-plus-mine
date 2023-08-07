@@ -34,7 +34,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     return ScaffoldWithBackground(
       addBackgroundImage: false,
       onPop: () {
-        context.go('/${SectionPage.route}');
+        context.pop();
       },
       title: dict(context).subscribe,
       body: BlocBuilder<SubscriptionBloc, SubscriptionState>(

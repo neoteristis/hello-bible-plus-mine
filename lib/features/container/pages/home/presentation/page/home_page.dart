@@ -21,7 +21,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // context.read<HomeBloc>().add(ChatCategoriesBySectionFetched());
   }
 
   @override
@@ -76,24 +75,6 @@ class _HomePageState extends State<HomePage> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: state.categoriesBySection.length,
                   itemBuilder: (context, index) {
-                    /***if (index == 0) {
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          CarousselSectionWidget(
-                            section: state.categoriesBySection[0],
-                          ),
-                          GridSectionWidget(
-                            data: state.categoriesBySection[1],
-                            index: index,
-                          ),
-                        ],
-                      );
-                    }
-
-                        **/
                     if (index == 0) {
                       return const SizedBox(
                         height: 25,

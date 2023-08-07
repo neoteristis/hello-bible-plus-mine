@@ -110,15 +110,6 @@ class HistoryLoaded extends StatelessWidget {
             ],
           ));
         }
-        // final List old = [];
-        // final List todays = [];
-        // for (final e in historicals) {
-        //   if (!e.messages.last.createdAt!.isAtSameDateAsNow) {
-        //     old.add(e);
-        //   } else {
-        //     todays.add(e);
-        //   }
-        // }
         final historicalCount = state.historicals!.length;
         return RefreshIndicator(
           onRefresh: () async {
@@ -128,35 +119,6 @@ class HistoryLoaded extends StatelessWidget {
           },
           child: Stack(
             children: [
-              // ListView(
-              //   controller: state.scrollController,
-              //   physics: const AlwaysScrollableScrollPhysics(),
-              //   children: [
-              //     if (todays.isNotEmpty)
-              //       const HeadingSeparatorWidget('Aujourd\'hui'),
-              //     if (todays.isNotEmpty)
-              //       ...todays.map(
-              //         (e) {
-              //           return HistoricalItemWidget(
-              //             historic: e!,
-              //           );
-              //         },
-              //       ),
-              //     if (old.isNotEmpty)
-              //       const HeadingSeparatorWidget('Anciennes'),
-              //     if (old.isNotEmpty)
-              //       ...old.map(
-              //         (e) {
-              //           if (e != null) {
-              //             return HistoricalItemWidget(
-              //               historic: e,
-              //             );
-              //           }
-              //           return const SizedBox.shrink();
-              //         },
-              //       ),
-              //   ],
-              // ),
               ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 controller: state.scrollController,
@@ -168,8 +130,8 @@ class HistoryLoaded extends StatelessWidget {
                           context.read<ChatBloc>().add(ChatConversationInited(
                                 historical: historicals[index],
                               ));
-                          final route = '/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
-                          context.go(route);
+                          context
+                              .go('/${HistoricalPage.route}/${ChatPage.route}');
                         },
                         child: HistoricalItemWidget(
                           historic: historicals[index],

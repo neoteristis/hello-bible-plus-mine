@@ -105,6 +105,7 @@ GoRouter get route => GoRouter(
                     GoRoute(
                       path: SectionPage.route,
                       builder: (context, state) => const SectionPage(),
+                      routes: _children,
                     ),
                   ],
                 ),
@@ -113,6 +114,7 @@ GoRouter get route => GoRouter(
                     GoRoute(
                       path: HomePage.route,
                       builder: (context, state) => const HomePage(),
+                      routes: _children,
                     ),
                   ],
                 ),
@@ -121,68 +123,54 @@ GoRouter get route => GoRouter(
                     GoRoute(
                       path: HistoricalPage.route,
                       builder: (context, state) => const HistoricalPage(),
+                      routes: _children,
                     ),
                   ],
                 ),
               ],
             ),
-            GoRoute(
-              path: ChatPage.route,
-              builder: (context, state) {
-                return ChatPage(
-                  previousPage: state.uri.queryParameters['previousPage'],
-                );
-              },
-            ),
-            GoRoute(
-              path: HistoricalPage.route,
-              builder: (context, state) => const HistoricalPage(),
-            ),
-            GoRoute(
-              path: SubscriptionPage.route,
-              builder: (context, state) => const SubscriptionPage(),
-            ),
-            GoRoute(
-              path: ProfilePage.route,
-              builder: (context, state) => const ProfilePage(),
-              routes: [
-                GoRoute(
-                  path: EditProfilePage.route,
-                  builder: (context, state) => const EditProfilePage(),
-                ),
-              ],
-            ),
-            GoRoute(
-              path: ManageNotificationsPage.route,
-              builder: (context, state) => const ManageNotificationsPage(),
-            ),
-            // GoRoute(
-            //   path: NotificationsPage.route,
-            //   builder: (context, state) => const NotificationsPage(),
-            //   routes: [
-            //     GoRoute(
-            //       path: ManageNotificationsPage.route,
-            //       builder: (context, state) => const ManageNotificationsPage(),
-            //     ),
-            //   ],
-            // ),
-            GoRoute(
-              path: ContactUsPage.route,
-              builder: (context, state) => const ContactUsPage(),
-            ),
-            GoRoute(
-              path: AboutPage.route,
-              builder: (context, state) => const AboutPage(),
-            ),
-            GoRoute(
-              path: HelpPage.route,
-              builder: (context, state) => const HelpPage(),
-            ),
-            GoRoute(
-              path: UsageGeneralConditionPage.route,
-              builder: (context, state) => const UsageGeneralConditionPage(),
-            ),
           ],
         ),
       ],
     );
+
+List<GoRoute> _children = [
+  GoRoute(
+    path: ChatPage.route,
+    builder: (context, state) => const ChatPage(),
+  ),
+  GoRoute(
+    path: SubscriptionPage.route,
+    builder: (context, state) => const SubscriptionPage(),
+  ),
+  GoRoute(
+    path: ProfilePage.route,
+    builder: (context, state) => const ProfilePage(),
+    routes: [
+      GoRoute(
+        path: EditProfilePage.route,
+        builder: (context, state) => const EditProfilePage(),
+      ),
+    ],
+  ),
+  GoRoute(
+    path: ManageNotificationsPage.route,
+    builder: (context, state) => const ManageNotificationsPage(),
+  ),
+  GoRoute(
+    path: ContactUsPage.route,
+    builder: (context, state) => const ContactUsPage(),
+  ),
+  GoRoute(
+    path: AboutPage.route,
+    builder: (context, state) => const AboutPage(),
+  ),
+  GoRoute(
+    path: HelpPage.route,
+    builder: (context, state) => const HelpPage(),
+  ),
+  GoRoute(
+    path: UsageGeneralConditionPage.route,
+    builder: (context, state) => const UsageGeneralConditionPage(),
+  ),
+];

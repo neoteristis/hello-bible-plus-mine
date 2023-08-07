@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ],
       onPop: () {
-        context.go('/${SectionPage.route}');
+        context.pop();
       },
       title: dict(context).myAccount,
       actions: [

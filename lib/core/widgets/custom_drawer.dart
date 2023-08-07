@@ -9,7 +9,6 @@ import 'package:gpt/features/more/presentation/pages/about_page.dart';
 import 'package:gpt/features/more/presentation/pages/help_page.dart';
 import 'package:gpt/features/more/presentation/pages/usage_general_condition_page.dart';
 import 'package:gpt/features/notification/presentation/pages/manage_notifications_page.dart';
-import 'package:gpt/features/notification/presentation/pages/notifications_page.dart';
 import 'package:gpt/features/subscription/presentation/pages/subscription_page.dart';
 import 'package:gpt/features/user/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -171,43 +170,36 @@ class DrawerTile extends StatelessWidget {
   }
 }
 
+void goTo(BuildContext context, String route) {
+  Scaffold.of(context).closeEndDrawer();
+  final path = GoRouterState.of(context).fullPath;
+  if (path != null) {
+    context.go('$path/$route');
+  }
+}
+
 List<Widget> getDrawerTiles(BuildContext context) => [
       DrawerTile(
         label: dict(context).myProfile,
         icon: const IconDrawerFromAsset('assets/icons/profil.svg'),
         onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${ProfilePage.route}');
+          goTo(context, ProfilePage.route);
         },
       ),
       DrawerTile(
         label: dict(context).mySubscription,
         icon: const IconDrawerFromAsset('assets/icons/subscription.svg'),
         onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${SubscriptionPage.route}');
+          goTo(context, SubscriptionPage.route);
         },
       ),
-
-      /**
-          DrawerTile(
-          label: dict(context).myHistory,
-          icon: const IconDrawerTiles(
-          Icons.history,
-          ),
-          onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${HistoricalPage.route}');
-          },
-          ),***/
       DrawerTile(
         label: dict(context).manageNotifications,
         icon: const IconDrawerTiles(
           Icons.notifications,
         ),
         onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${ManageNotificationsPage.route}');
+          goTo(context, ManageNotificationsPage.route);
         },
       ),
       DrawerTile(
@@ -253,8 +245,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.mail,
         ),
         onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${ContactUsPage.route}');
+          goTo(context, ContactUsPage.route);
         },
       ),
       DrawerTile(
@@ -263,8 +254,7 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.help,
         ),
         onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${HelpPage.route}');
+          goTo(context, HelpPage.route);
         },
       ),
       DrawerTile(
@@ -273,16 +263,14 @@ List<Widget> getDrawerTiles(BuildContext context) => [
           Icons.info,
         ),
         onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${AboutPage.route}');
+          goTo(context, AboutPage.route);
         },
       ),
       DrawerTile(
         label: dict(context).readOurConditions,
         icon: const IconDrawerFromAsset('assets/icons/cgu.svg'),
         onPressed: () {
-          Scaffold.of(context).closeEndDrawer();
-          context.go('/${UsageGeneralConditionPage.route}');
+          goTo(context, UsageGeneralConditionPage.route);
         },
       ),
       DrawerTile(
