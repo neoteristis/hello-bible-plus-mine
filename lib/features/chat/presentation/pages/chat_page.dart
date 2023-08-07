@@ -16,10 +16,7 @@ class ChatPage extends StatefulWidget {
 
   const ChatPage({
     super.key,
-    this.previousPage,
   });
-
-  final String? previousPage;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -53,9 +50,7 @@ class _ChatPageState extends State<ChatPage> {
         return Scaffold(
           key: context.read<ChatBloc>().scaffoldKey,
           resizeToAvoidBottomInset: true,
-          appBar: CustomAppBar(
-            previousPage: widget.previousPage ?? SectionPage.route,
-          ),
+          appBar: const CustomAppBar(),
           endDrawer: const CustomDrawer(),
           body: BlocBuilder<ChatBloc, ChatState>(
             buildWhen: (previous, current) =>

@@ -7,6 +7,7 @@ import 'package:gpt/core/theme/theme.dart';
 import 'package:gpt/core/widgets/logo_with_text.dart';
 import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
+import 'package:gpt/features/container/pages/home/presentation/page/home_page.dart';
 
 import '../../../../../chat/domain/entities/category.dart';
 import '../bloc/home_bloc.dart';
@@ -139,8 +140,7 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
   void submit(Category? category) {
     if (category != null) {
       unfocusKeyboard();
-
-      context.go('/${ChatPage.route}');
+      context.go('/${HomePage.route}/${ChatPage.route}');
       context.read<ChatBloc>().add(
             ChatConversationChanged(
               category: category,

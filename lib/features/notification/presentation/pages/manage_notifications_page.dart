@@ -52,7 +52,7 @@ class _ManageNotificationsPageState extends State<ManageNotificationsPage> {
       child: ScaffoldWithBackground(
         addBackgroundImage: false,
         onPop: () {
-          context.go('/${SectionPage.route}');
+          context.pop();
         },
         title: dict(context).manageNotifications,
         body: BlocBuilder<ManageNotifBloc, ManageNotifState>(
