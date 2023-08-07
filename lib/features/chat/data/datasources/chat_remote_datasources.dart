@@ -1,12 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
-import '../../../../core/entities/token.dart';
 import '../../../../core/error/exception.dart';
-import '../../../../core/helper/log.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/fetch_historical_usecase.dart';
 
