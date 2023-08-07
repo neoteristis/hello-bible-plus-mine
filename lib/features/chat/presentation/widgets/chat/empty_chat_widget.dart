@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/constants/status.dart';
+import '../../../../../core/helper/log.dart';
 import '../../../../../core/widgets/custom_bubble.dart';
 import '../../bloc/chat_bloc/chat_bloc.dart';
 import 'suggestions.dart';
@@ -36,7 +36,24 @@ class EmptyChatWidget extends StatelessWidget {
             );
           },
         ),
-        const Suggestions(),
+
+        BlocBuilder<ChatBloc, ChatState>(
+          buildWhen: (previous, current) =>
+              previous.conversation != current.conversation,
+          builder: (context, state) {
+            final showFirstSuggestions =
+                state.conversation?.category?.showFirstSuggestions;
+            final hasSuggestions = state.conversation?.category?.hasSuggestions;
+            if (showFirstSuggestions != null &&
+                hasSuggestions != null &&
+                showFirstSuggestions &&
+                hasSuggestions) {
+              Log.info('show first suggestions');
+              return const Suggestions();
+            }
+            return const SizedBox.shrink();
+          },
+        ),
         // BlocBuilder<ChatBloc, ChatState>(
         //   // buildWhen: (previous, current) =>
         //   //     previous.messageStatus != current.messageStatus,

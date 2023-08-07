@@ -17,6 +17,7 @@ class Category extends Equatable {
     this.logo,
     this.placeholder,
     this.hasSuggestions,
+    this.showFirstSuggestions,
   });
 
   final String? id;
@@ -29,6 +30,7 @@ class Category extends Equatable {
   final String? logo;
   final String? placeholder;
   final bool? hasSuggestions;
+  final bool? showFirstSuggestions;
 
   factory Category.fromJson(Map<String, dynamic> json) {
     final logo = json['logo'];
@@ -48,6 +50,7 @@ class Category extends Equatable {
               ? json['nbPromptQuestion'] != 0
               : false
           : false,
+      showFirstSuggestions: json['isGetFirstPrompt'],
       logo: logo != null && logo != 'null' && logo != 'undefined'
           ? '${dotenv.env['BASE_URL']!}/${json['logo']}'
           : null,
@@ -71,5 +74,6 @@ class Category extends Equatable {
         colorTheme,
         placeholder,
         hasSuggestions,
+        showFirstSuggestions,
       ];
 }
