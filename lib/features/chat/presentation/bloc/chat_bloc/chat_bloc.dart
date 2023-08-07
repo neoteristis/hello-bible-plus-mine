@@ -53,7 +53,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ChatState(
             // textEditingController: TextEditingController(),
             focusNode: FocusNode(),
-            scrollController: ScrollController(),
+            // scrollController: ScrollController(),
             scrollPhysics: const PositionRetainedScrollPhysics(),
             containerKey: GlobalKey(),
             textFieldKey: GlobalKey(),
@@ -204,9 +204,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatAnswerRegenerated event,
     Emitter<ChatState> emit,
   ) {
-    state.scrollController?.jumpTo(
-      state.scrollController!.position.maxScrollExtent,
-    );
+    // state.scrollController?.jumpTo(
+    //   state.scrollController!.position.maxScrollExtent,
+    // );
     if (state.newMessage != null) {
       /*
         the last message on the screen is still the customMessage build from the listbottomWidget,
@@ -752,9 +752,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ),
     );
     await Future.delayed(const Duration(milliseconds: 200));
-    state.scrollController?.jumpTo(
-      state.scrollController!.position.maxScrollExtent,
-    );
+    // state.scrollController?.jumpTo(
+    //   state.scrollController!.position.maxScrollExtent,
+    // );
     final res = await sendMessage(messageParams);
 
     return res.fold(
@@ -787,13 +787,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
   }
 
-  @override
-  Future<void> close() {
-    if (state.scrollController != null) {
-      state.scrollController!.dispose();
-    }
-    return super.close();
-  }
+  // @override
+  // Future<void> close() {
+  //   if (state.scrollController != null) {
+  //     state.scrollController!.dispose();
+  //   }
+  //   return super.close();
+  // }
 
   StreamTransformer<Uint8List, List<int>> unit8Transformer =
       StreamTransformer.fromHandlers(

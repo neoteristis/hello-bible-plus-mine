@@ -17,7 +17,7 @@ class ChatState extends Equatable {
     this.incoming,
     this.focusNode,
     this.suggestions = const [],
-    this.scrollController,
+    // this.scrollController,
     this.isLoading = false,
     // this.showSuggestions = false,
     this.scrollPhysics,
@@ -54,7 +54,7 @@ class ChatState extends Equatable {
   final TextMessage? incoming;
   final FocusNode? focusNode;
   final List<String>? suggestions;
-  final ScrollController? scrollController;
+  // final ScrollController? scrollController;
   final bool? isLoading;
   // final bool? showSuggestions;
   final ScrollPhysics? scrollPhysics;
@@ -96,7 +96,7 @@ class ChatState extends Equatable {
         incoming,
         focusNode,
         suggestions,
-        scrollController,
+        // scrollController,
         isLoading,
         // showSuggestions,
         scrollPhysics,
@@ -133,7 +133,7 @@ class ChatState extends Equatable {
     TextMessage? incoming,
     FocusNode? focusNode,
     List<String>? suggestions,
-    ScrollController? scrollController,
+    // ScrollController? scrollController,
     bool? isLoading,
     // bool? showSuggestions,
     ScrollPhysics? scrollPhysics,
@@ -173,7 +173,7 @@ class ChatState extends Equatable {
       incoming: incoming ?? this.incoming,
       focusNode: focusNode ?? this.focusNode,
       suggestions: suggestions ?? this.suggestions,
-      scrollController: scrollController ?? this.scrollController,
+      // scrollController: scrollController ?? this.scrollController,
       isLoading: isLoading ?? this.isLoading,
       // showSuggestions: showSuggestions ?? this.showSuggestions,
       scrollPhysics:
