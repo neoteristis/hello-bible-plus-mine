@@ -101,7 +101,6 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                           return const EmptyChatWidget();
                         }
                         if (index == 0 && messages.length > 1) {
-                          // the first item on the list
                           return Column(
                             children: [
                               const SizedBox(
