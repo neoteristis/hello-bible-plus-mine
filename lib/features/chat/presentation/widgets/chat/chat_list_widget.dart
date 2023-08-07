@@ -7,15 +7,46 @@ import '../../bloc/chat_bloc/chat_bloc.dart';
 import 'empty_chat_widget.dart';
 import 'list_bottom_chat_widget.dart';
 
-class ChatListWidget extends StatelessWidget {
+class ChatListWidget extends StatefulWidget {
   const ChatListWidget({super.key});
+
+  @override
+  State<ChatListWidget> createState() => _ChatListWidgetState();
+}
+
+class _ChatListWidgetState extends State<ChatListWidget> {
+  final ScrollController controller = ScrollController();
+
+  bool showScrollToBottom = false;
+
+  Size containerSize = const Size(0, 0);
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      if (!showScrollToBottom) {
+        setState(() {
+          showScrollToBottom = true;
+        });
+      }
+      if (controller.position.atEdge) {
+        bool isTop = controller.position.pixels == 0;
+        if (!isTop) {
+          setState(() {
+            showScrollToBottom = false;
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state.isLoading!) {
-          if (state.scrollController!.hasClients) {
+          if (controller.hasClients) {
             final box = state.containerKey?.currentContext?.findRenderObject()
                 as RenderBox?;
             final boxField = state.textFieldKey?.currentContext
@@ -37,8 +68,7 @@ class ChatListWidget extends StatelessWidget {
               final chatViewArea = chatHeight - fieldHeight;
               if (!state.isUserTap!) {
                 if (containerHeight < chatViewArea) {
-                  state.scrollController!
-                      .jumpTo(state.scrollController!.position.maxScrollExtent);
+                  controller.jumpTo(controller.position.maxScrollExtent);
                 }
               }
             }
@@ -58,10 +88,11 @@ class ChatListWidget extends StatelessWidget {
               },
               child: KeyboardVisibilityBuilder(builder: (context, isVisible) {
                 return Stack(
+                  alignment: Alignment.center,
                   children: [
                     ListView.builder(
                       key: state.listKey,
-                      controller: state.scrollController,
+                      controller: controller,
                       itemCount: messages == null || messages.isEmpty
                           ? 1
                           : messages.length,
@@ -89,14 +120,7 @@ class ChatListWidget extends StatelessWidget {
                         }
                         if (index == messages.length - 1 ||
                             messages.length == 1) {
-                          // if (!state.readOnly!) {
                           return ListBottomChatWidget(index);
-                          // }
-                          // return CustomBubbleBuilder(
-                          //   message: messages[index],
-                          //   context: context,
-                          //   index: index,
-                          // );
                         } else {
                           return CustomBubbleBuilder(
                             message: messages[index],
@@ -106,20 +130,19 @@ class ChatListWidget extends StatelessWidget {
                         }
                       },
                     ),
-                    if (state.scrollController!.hasClients &&
-                        !isVisible &&
-                        state.scrollController!.position.pixels <
-                            state.scrollController!.position.maxScrollExtent)
+                    if (showScrollToBottom)
                       Positioned(
                         bottom: 0,
-                        right: 8,
                         child: FloatingActionButton.small(
+                          backgroundColor:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
+                          elevation: 1,
                           onPressed: () {
-                            state.scrollController?.animateTo(
-                              state.scrollController?.position
-                                      .maxScrollExtent ??
-                                  0,
-                              duration: const Duration(microseconds: 300),
+                            controller.animateTo(
+                              controller.position.maxScrollExtent,
+                              duration: const Duration(
+                                microseconds: 300,
+                              ),
                               curve: Curves.ease,
                             );
                           },
