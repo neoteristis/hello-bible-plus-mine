@@ -4,7 +4,6 @@ import 'package:gpt/core/theme/theme.dart';
 import 'dart:math' as math;
 
 import 'package:gpt/features/chat/domain/entities/entities.dart';
-import 'package:gpt/features/chat/presentation/widgets/category_item2.dart';
 
 import 'category_item_widget.dart';
 
@@ -20,7 +19,10 @@ class GridSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (data == null) {
+    if (data == null){
+      return const SizedBox.shrink();
+    }
+    if (data!.categories!.isEmpty) {
       return const SizedBox.shrink();
     }
     final categories = data?.categories;
@@ -71,60 +73,12 @@ class GridSectionWidget extends StatelessWidget {
                 ),
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
-                  // if (index == 0) {
-                  //   return Row(
-                  //     children: [
-                  //       const SizedBox(
-                  //         width: 20,
-                  //       ),
-                  //       CategoryItemWidget(
-                  //         category: categories[index],
-                  //       )
-                  //     ],
-                  //   );
-                  // } else if (index == categories.length - 1) {
-                  //   return Row(
-                  //     children: [
-                  //       CategoryItemWidget(
-                  //         category: categories[index],
-                  //       ),
-                  //       const SizedBox(
-                  //         width: 20,
-                  //       ),
-                  //     ],
-                  //   );
-                  // }
                   return CategoryItemWidget(
                     category: categories[index],
                   );
                 },
               ),
             ),
-          // if (categories != null &&
-          //     categories.isNotEmpty &&
-          //     sectionId == '646b6b8e70c60193c897fc3d')
-          //   Padding(
-          //     padding: const EdgeInsets.symmetric(
-          //       horizontal: 10.0,
-          //     ),
-          //     child: GridView.builder(
-          //       physics: const NeverScrollableScrollPhysics(),
-          //       shrinkWrap: true,
-          //       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          //         maxCrossAxisExtent: 200,
-          //         childAspectRatio: 11 / 7,
-          //         crossAxisSpacing: 10,
-          //         mainAxisSpacing: 10,
-          //       ),
-          //       itemCount: categories.length,
-          //       itemBuilder: (BuildContext ctx, index) {
-          //         return CategoryItem2(
-          //           category: categories[index],
-          //           // image: images[index],
-          //         );
-          //       },
-          //     ),
-          //   ),
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../l10n/function.dart';
-import 'background_image_full.dart';
 
 class ScaffoldWithBackground extends StatelessWidget {
   const ScaffoldWithBackground({
@@ -26,56 +26,60 @@ class ScaffoldWithBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      persistentFooterButtons: persistentFooterButtons,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      appBar: hasAppBar
-          ? AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              scrolledUnderElevation: 0,
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              actions: actions,
-              title: Visibility(
-                visible: onPop != null,
-                child: GestureDetector(
-                  onTap: onPop,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_back_ios,
-                        size: 20,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                      Text(
-                        title ?? dict(context).goback,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 17,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
+    final size = MediaQuery.sizeOf(context);
+    final appBar = AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      automaticallyImplyLeading: false,
+      centerTitle: false,
+      actions: actions,
+      title: Visibility(
+        visible: onPop != null,
+        child: GestureDetector(
+          onTap: onPop,
+          child: Row(
+            children: [
+              Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              Text(
+                title ?? dict(context).goback,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
-            )
-          : null,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            if (addBackgroundImage ?? true)
-              const Positioned(
-                bottom: 10,
-                left: 10,
-                child: BackgroundImageFull(),
-              ),
-            body,
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+    return Container(
+      width: size.width,
+      height: size.height,
+      color: Colors.white,
+      child: Stack(
+        children: [
+          Positioned(
+            bottom: 10,
+            left: 10,
+            child: SvgPicture.asset(
+              'assets/images/background_image.svg',
+            ),
+          ),
+          Scaffold(
+            persistentFooterButtons: persistentFooterButtons,
+            backgroundColor: Colors.transparent,
+            extendBody: true,
+            extendBodyBehindAppBar: true,
+            appBar: hasAppBar ? appBar : null,
+            body: SafeArea(child: body),
+          ),
+        ],
       ),
     );
   }

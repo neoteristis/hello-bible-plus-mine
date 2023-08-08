@@ -21,6 +21,7 @@ import 'base_page.dart';
 
 class NameAndPictureInputPage extends StatelessWidget {
   static const String route = 'named-and-picture-input-page';
+
   const NameAndPictureInputPage({super.key});
 
   @override
@@ -59,9 +60,12 @@ class NameAndPictureInputPage extends StatelessWidget {
       child: BasePage(
         titleLarge: dict(context).youAreAlmostThere,
         title: dict(context).pleaseEnterYourFirstAndLastName,
-        onPop: () => context.pop(),
+        hasAppBar: false,
         bodyLarge: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 30,
+            vertical: 10,
+          ),
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

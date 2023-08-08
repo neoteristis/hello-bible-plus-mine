@@ -43,6 +43,15 @@ class _ChatListWidgetState extends State<ChatListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
+      final isMaxScrolled = controller.position.pixels != controller.position.maxScrollExtent;
+      if(isMaxScrolled){
+        setState(() {
+          showScrollToBottom = true;
+        });
+      }
+
+    });
     return BlocConsumer<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state.isLoading!) {
