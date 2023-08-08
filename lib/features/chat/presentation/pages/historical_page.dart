@@ -12,6 +12,7 @@ import '../../../../core/widgets/custom_alert_dialog.dart';
 import '../../../../core/widgets/custom_focused_menu.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/shimmer_widget.dart';
+import '../../domain/entities/historical_conversation.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
 import '../bloc/historical_bloc/historical_bloc.dart';
 import '../widgets/historical/historical_item_widget.dart';
@@ -26,7 +27,6 @@ class HistoricalPage extends StatefulWidget {
 }
 
 class _HistoricalPageState extends State<HistoricalPage> {
-
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -129,103 +129,106 @@ class HistoryLoaded extends StatelessWidget {
               ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 controller: state.scrollController,
-                itemBuilder: (context, index) => index >= historicalCount &&
-                        historicalCount >= itemNumber
-                    ? const BottomLoader()
-                    : CustomHeroFocused(
-                        onTap: () {
-                          context.read<ChatBloc>().add(
-                                ChatConversationInited(
-                                  historical: historicals[index],
-                                ),
-                              );
-                          context
-                              .go('/${HistoricalPage.route}/${ChatPage.route}');
-                        },
-                        menuItems: [
-                          FocusedMenuItem(
-                            title: const Text('Renommer'),
-                            backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                            trailingIcon: const Icon(
-                              Icons.edit,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  final TextEditingController controller =
-                                      TextEditingController();
-                                  controller.text =
-                                      historicals[index].title ?? '';
-                                  return CustomAlertDialog(
-                                    content: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Center(
-                                          child: TextFormField(
-                                            maxLines: 4,
-                                            controller: controller,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          context.pop();
-                                        },
-                                        child: const Text('Annuler'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          context.read<HistoricalBloc>().add(
-                                                HistoricalEdited(
-                                                  historicalConversation:
-                                                      historicals[index],
-                                                  title: controller.text,
-                                                ),
-                                              );
-                                          context.pop();
-                                        },
-                                        child: const Text('Ok'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                itemBuilder: (context, index) =>
+                    index >= historicalCount && historicalCount >= itemNumber
+                        ? const BottomLoader()
+                        : HistoricalSlidableItem(
+                            historic: historicals[index],
                           ),
-                          FocusedMenuItem(
-                            title: const Text(
-                              'Effacer',
-                              style: TextStyle(
-                                color: Colors.red,
-                              ),
-                            ),
-                            backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                            trailingIcon: const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                            onPressed: () {
-                              context.read<HistoricalBloc>().add(
-                                    HistoricalDeleted(
-                                      historicals[index],
-                                    ),
-                                  );
-                            },
-                          ),
-                        ],
-                        child: HistoricalItemWidget(
-                          historic: historicals[index],
-                        ),
-                      ),
+                // : CustomHeroFocused(
+                //     onTap: () {
+                //       context.read<ChatBloc>().add(
+                //             ChatConversationInited(
+                //               historical: historicals[index],
+                //             ),
+                //           );
+                //       context
+                //           .go('/${HistoricalPage.route}/${ChatPage.route}');
+                //     },
+                //     menuItems: [
+                //       FocusedMenuItem(
+                //         title: const Text('Renommer'),
+                //         backgroundColor:
+                //             Theme.of(context).scaffoldBackgroundColor,
+                //         trailingIcon: const Icon(
+                //           Icons.edit,
+                //           color: Colors.grey,
+                //         ),
+                //         onPressed: () {
+                //           showDialog(
+                //             context: context,
+                //             builder: (context) {
+                //               final TextEditingController controller =
+                //                   TextEditingController();
+                //               controller.text =
+                //                   historicals[index].title ?? '';
+                //               return CustomAlertDialog(
+                //                 content: Column(
+                //                   mainAxisAlignment:
+                //                       MainAxisAlignment.spaceAround,
+                //                   crossAxisAlignment:
+                //                       CrossAxisAlignment.start,
+                //                   children: [
+                //                     Center(
+                //                       child: TextFormField(
+                //                         maxLines: 4,
+                //                         controller: controller,
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 actions: [
+                //                   TextButton(
+                //                     onPressed: () {
+                //                       context.pop();
+                //                     },
+                //                     child: const Text('Annuler'),
+                //                   ),
+                //                   TextButton(
+                //                     onPressed: () {
+                //                       context.read<HistoricalBloc>().add(
+                //                             HistoricalEdited(
+                //                               historicalConversation:
+                //                                   historicals[index],
+                //                               title: controller.text,
+                //                             ),
+                //                           );
+                //                       context.pop();
+                //                     },
+                //                     child: const Text('Ok'),
+                //                   ),
+                //                 ],
+                //               );
+                //             },
+                //           );
+                //         },
+                //       ),
+                //       FocusedMenuItem(
+                //         title: const Text(
+                //           'Effacer',
+                //           style: TextStyle(
+                //             color: Colors.red,
+                //           ),
+                //         ),
+                //         backgroundColor:
+                //             Theme.of(context).scaffoldBackgroundColor,
+                //         trailingIcon: const Icon(
+                //           Icons.delete,
+                //           color: Colors.red,
+                //         ),
+                //         onPressed: () {
+                //           context.read<HistoricalBloc>().add(
+                //                 HistoricalDeleted(
+                //                   historicals[index],
+                //                 ),
+                //               );
+                //         },
+                //       ),
+                //     ],
+                //     child: HistoricalItemWidget(
+                //       historic: historicals[index],
+                //     ),
+                //   ),
                 itemCount: state.hasReachedMax! || historicalCount < itemNumber
                     ? state.historicals!.length
                     : state.historicals!.length + 1,
@@ -257,6 +260,142 @@ class BottomLoader extends StatelessWidget {
       subtitle: ShimmerWidget.rectangular(
         height: 10,
         width: MediaQuery.sizeOf(context).width * .5,
+      ),
+    );
+  }
+}
+
+class HistoricalSlidableItem extends StatefulWidget {
+  const HistoricalSlidableItem({super.key, required this.historic});
+
+  final HistoricalConversation historic;
+
+  @override
+  State<HistoricalSlidableItem> createState() => _HistoricalSlidableItemState();
+}
+
+class _HistoricalSlidableItemState extends State<HistoricalSlidableItem> {
+  final ScrollController _scrollController = ScrollController();
+
+  bool atEndOfList = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        atEndOfList = true;
+      } else {
+        atEndOfList = false;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final historic = widget.historic;
+    return Container(
+      height: 70,
+      width: 200,
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        controller: _scrollController,
+        children: [
+          SizedBox(
+              height: 70,
+              width: MediaQuery.sizeOf(context).width,
+              child: HistoricalItemWidget(historic: historic)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                color: Colors.grey,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          final TextEditingController controller =
+                              TextEditingController();
+                          controller.text = historic.title ?? '';
+                          return CustomAlertDialog(
+                            content: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: TextFormField(
+                                    maxLines: 4,
+                                    controller: controller,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  context.pop();
+                                },
+                                child: const Text('Annuler'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  _scrollController.animateTo(
+                                    _scrollController.position.minScrollExtent,
+                                    duration: const Duration(milliseconds: 500),
+                                    curve: Curves.easeOut,
+                                  );
+                                  context.read<HistoricalBloc>().add(
+                                        HistoricalEdited(
+                                          historicalConversation: historic,
+                                          title: controller.text,
+                                        ),
+                                      );
+                                  context.pop();
+                                },
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                ),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                color: Colors.red,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      _scrollController.position.minScrollExtent,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeOut,
+                    );
+                    context.read<HistoricalBloc>().add(
+                          HistoricalDeleted(
+                            historic,
+                          ),
+                        );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
