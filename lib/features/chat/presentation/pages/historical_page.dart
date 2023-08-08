@@ -304,9 +304,22 @@ class _HistoricalSlidableItemState extends State<HistoricalSlidableItem> {
         controller: _scrollController,
         children: [
           SizedBox(
-              height: 70,
-              width: MediaQuery.sizeOf(context).width,
-              child: HistoricalItemWidget(historic: historic)),
+            height: 70,
+            width: MediaQuery.sizeOf(context).width,
+            child: GestureDetector(
+              onTap: () {
+                context.read<ChatBloc>().add(
+                      ChatConversationInited(
+                        historical: historic,
+                      ),
+                    );
+                context.go('/${HistoricalPage.route}/${ChatPage.route}');
+              },
+              child: HistoricalItemWidget(
+                historic: historic,
+              ),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
