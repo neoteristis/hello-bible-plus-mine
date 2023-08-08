@@ -26,6 +26,9 @@ class HistoricalPage extends StatefulWidget {
 }
 
 class _HistoricalPageState extends State<HistoricalPage> {
+
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +38,7 @@ class _HistoricalPageState extends State<HistoricalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       endDrawer: const CustomDrawer(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -52,7 +56,7 @@ class _HistoricalPageState extends State<HistoricalPage> {
               horizontal: 20,
             ),
             onPressed: () {
-              Scaffold.of(context).openEndDrawer();
+              scaffoldKey.currentState?.openEndDrawer();
             },
             icon: SvgPicture.asset('assets/images/menu.svg'),
           )
