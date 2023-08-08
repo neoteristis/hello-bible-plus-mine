@@ -87,10 +87,14 @@ class TakeImage extends RegistrationEvent {
 }
 
 class RegistrationEmailChecked extends RegistrationEvent {
-  const RegistrationEmailChecked();
+  const RegistrationEmailChecked(
+    this.email,
+  );
+
+  final String email;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [email];
 }
 
 class RegistrationPasswordChanged extends RegistrationEvent {

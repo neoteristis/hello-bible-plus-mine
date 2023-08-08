@@ -20,20 +20,24 @@ import 'input_base_page.dart';
 class EmailInputPage extends StatelessWidget {
   static const String route = 'email-input';
 
-  const EmailInputPage({super.key});
+  EmailInputPage({super.key});
 
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
         BlocListener<RegistrationBloc, RegistrationState>(
-          listenWhen: (previous, current) => previous.nextStep != current.nextStep,
+          listenWhen: (previous, current) =>
+              previous.nextStep != current.nextStep,
           listener: (context, state) {
             switch (state.nextStep) {
               case Goto.login:
-                return context.go('/${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}/${PasswordInputPage.route}');
+                return context.go(
+                    '/${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}/${PasswordInputPage.route}');
               case Goto.registration:
-                return context.go('/${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}/${CreatePasswordInputPage.route}');
+                return context.go(
+                    '/${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}/${CreatePasswordInputPage.route}');
               default:
             }
           },
@@ -57,19 +61,28 @@ class EmailInputPage extends StatelessWidget {
               buildWhen: (previous, current) => previous.email != current.email,
               builder: (context, state) {
                 return CustomTextField(
+                  controller: controller,
                   onChanged: (value) {
                     context
-                      ..read<RegistrationBloc>().add(
-                        RegistrationEmailChanged(value),
-                      )
-                      ..read<AuthBloc>().add(
-                        AuthEmailChanged(value),
-                      );
+                        // ..read<RegistrationBloc>().add(
+                        //   RegistrationEmailChanged(value),
+                        // )
+                        // .
+                        .read<AuthBloc>()
+                        .add(
+                          AuthEmailChanged(value),
+                        );
                   },
                   keyboardType: TextInputType.emailAddress,
-                  onFieldSubmitted: (_) => onSubmit(context),
+                  onFieldSubmitted: (email) => onSubmit(
+                    context: context,
+                    email: email,
+                  ),
                   label: dict(context).enterMyEmail,
                   decoration: InputDecoration(
+                    // border: inputBorder(context),
+                    // focusedBorder: inputBorder(context),
+                    // enabledBorder: inputBorder(context),
                     filled: true,
                     fillColor: const Color(0xFFF3F5F7),
                     hintText: dict(context).hintEmailInput,
@@ -85,7 +98,8 @@ class EmailInputPage extends StatelessWidget {
               },
             ),
             buttonController: state.checkEmailBtnController,
-            onContinue: () => onSubmit(context),
+            onContinue: () =>
+                onSubmit(context: context, email: controller.text),
           );
         },
       ),
@@ -93,7 +107,15 @@ class EmailInputPage extends StatelessWidget {
   }
 }
 
-void onSubmit(BuildContext context) {
+InputBorder inputBorder(BuildContext context) => OutlineInputBorder(
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+      borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+    );
+
+void onSubmit({
+  required BuildContext context,
+  required String email,
+}) {
   unfocusKeyboard();
-  context.read<RegistrationBloc>().add(const RegistrationEmailChecked());
+  context.read<RegistrationBloc>().add(RegistrationEmailChecked(email));
 }
