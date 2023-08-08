@@ -67,7 +67,7 @@ class _HistoricalPageState extends State<HistoricalPage> {
         builder: (context, state) {
           switch (state.status) {
             case Status.loaded:
-              return HistoryLoaded();
+              return const HistoryLoaded();
             case Status.failed:
               return const Center(
                 child: Text(

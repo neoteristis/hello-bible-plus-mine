@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/logo.dart';
 import 'package:gpt/features/introduction/presentation/pages/landing_page.dart';
@@ -90,9 +91,11 @@ class BasePage extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             if (goBackSocialConnect ?? true) {
-                              context.go('${SplashScreen.route}${LandingPage.route}/${RegistrationPage.route}');
+                              context.go(
+                                  '${SplashScreen.route}${LandingPage.route}/${RegistrationPage.route}');
                             } else {
-                              context.go('${SplashScreen.route}${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}');
+                              context.go(
+                                  '${SplashScreen.route}${LandingPage.route}/${RegistrationPage.route}/${EmailInputPage.route}');
                             }
                           },
                           style: TextButton.styleFrom(

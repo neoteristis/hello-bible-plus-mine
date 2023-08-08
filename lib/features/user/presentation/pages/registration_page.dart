@@ -25,9 +25,7 @@ class RegistrationPage extends StatelessWidget {
           case Status.loaded:
             context
               ..read<AuthBloc>().add(AuthSuccessfullyLogged())
-              ..read<HomeBloc>().add(
-                ChatCategoriesBySectionFetched(),
-              );
+              ..read<HomeBloc>().add(ChatCategoriesBySectionFetched());
             break;
           case Status.failed:
             CustomDialog.error(context, state.failure?.message);
