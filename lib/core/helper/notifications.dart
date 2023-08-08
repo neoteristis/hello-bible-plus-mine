@@ -14,6 +14,8 @@ import 'package:gpt/features/chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
 import 'package:gpt/injections.dart';
 
+import '../../features/container/pages/section/presentation/pages/section_page.dart';
+
 Future setToken(String? token) async {
   final user = await getIt<DbService>().getUser();
   final id = user?.idString;
@@ -79,8 +81,7 @@ void _configureSelectNotificationSubject(BuildContext context) {
             final category = Category.fromJson(
               json,
             );
-
-            context.go('/${ChatPage.route}');
+            context.go('/${SectionPage.route}/${ChatPage.route}');
             context.read<ChatBloc>().scaffoldKey.currentState?.closeEndDrawer();
             context.read<ChatBloc>().add(
                   ChatConversationChanged(

@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:gpt/features/chat/domain/usecases/send_messages_usecase.dart';
 
 import '../../../../core/base_repository/base_repository.dart';
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/error/exception.dart';
 import '../../domain/entities/entities.dart';
-import '../../domain/usecases/fetch_historical_usecase.dart';
+import '../../domain/usecases/usecases.dart';
 
 abstract class ChatRemoteDatasources {
   Future<List<Category>> fetchCategories();
@@ -22,6 +21,8 @@ abstract class ChatRemoteDatasources {
   Future<Conversation> getConversationById(String conversationId);
   Future<List<String>> getSuggestions(MessageParam param);
   Future cancelMessage(Conversation param);
+  Future deleteHistoric(HistoricalConversation param);
+  Future editHistoric(PEditHistoric param);
 }
 
 class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
@@ -185,6 +186,42 @@ class ChatRemoteDatasourcesImp implements ChatRemoteDatasources {
         final res = await baseRepo.post(
           ApiConstants.stop(param.id!),
         );
+        return res.data;
+      }
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future deleteHistoric(HistoricalConversation param) async {
+    try {
+      final idConversation = param.idString;
+      if (idConversation != null) {
+        final res = await baseRepo.delete(
+          ApiConstants.conversation(
+            conversationId: idConversation,
+          ),
+        );
+        return res.data;
+      }
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future editHistoric(PEditHistoric param) async {
+    try {
+      final idConversation = param.historicalConversation?.idString;
+      if (idConversation != null) {
+        final res = await baseRepo.patch(
+            ApiConstants.conversation(
+              conversationId: idConversation,
+            ),
+            body: {
+              'title': param.title,
+            });
         return res.data;
       }
     } catch (e) {

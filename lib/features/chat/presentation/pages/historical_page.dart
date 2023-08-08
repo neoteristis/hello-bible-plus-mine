@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gpt/core/widgets/custom_drawer.dart';
+import 'package:gpt/core/widgets/custom_hero_focused.dart';
 import 'package:gpt/features/chat/presentation/pages/chat_page.dart';
 
 import '../../../../core/constants/pagination_const.dart';
 import '../../../../core/constants/status.dart';
+import '../../../../core/widgets/custom_alert_dialog.dart';
+import '../../../../core/widgets/custom_focused_menu.dart';
 import '../../../../core/widgets/custom_progress_indicator.dart';
 import '../../../../core/widgets/shimmer_widget.dart';
 import '../bloc/chat_bloc/chat_bloc.dart';
@@ -60,7 +63,7 @@ class _HistoricalPageState extends State<HistoricalPage> {
         builder: (context, state) {
           switch (state.status) {
             case Status.loaded:
-              return const HistoryLoaded();
+              return HistoryLoaded();
             case Status.failed:
               return const Center(
                 child: Text(
@@ -125,14 +128,96 @@ class HistoryLoaded extends StatelessWidget {
                 itemBuilder: (context, index) => index >= historicalCount &&
                         historicalCount >= itemNumber
                     ? const BottomLoader()
-                    : GestureDetector(
+                    : CustomHeroFocused(
                         onTap: () {
-                          context.read<ChatBloc>().add(ChatConversationInited(
-                                historical: historicals[index],
-                              ));
+                          context.read<ChatBloc>().add(
+                                ChatConversationInited(
+                                  historical: historicals[index],
+                                ),
+                              );
                           context
                               .go('/${HistoricalPage.route}/${ChatPage.route}');
                         },
+                        menuItems: [
+                          FocusedMenuItem(
+                            title: const Text('Renommer'),
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            trailingIcon: const Icon(
+                              Icons.edit,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  final TextEditingController controller =
+                                      TextEditingController();
+                                  controller.text =
+                                      historicals[index].title ?? '';
+                                  return CustomAlertDialog(
+                                    content: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Center(
+                                          child: TextFormField(
+                                            maxLines: 4,
+                                            controller: controller,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        child: const Text('Annuler'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          context.read<HistoricalBloc>().add(
+                                                HistoricalEdited(
+                                                  historicalConversation:
+                                                      historicals[index],
+                                                  title: controller.text,
+                                                ),
+                                              );
+                                          context.pop();
+                                        },
+                                        child: const Text('Ok'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          FocusedMenuItem(
+                            title: const Text(
+                              'Effacer',
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            trailingIcon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              context.read<HistoricalBloc>().add(
+                                    HistoricalDeleted(
+                                      historicals[index],
+                                    ),
+                                  );
+                            },
+                          ),
+                        ],
                         child: HistoricalItemWidget(
                           historic: historicals[index],
                         ),

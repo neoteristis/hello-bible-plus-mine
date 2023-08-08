@@ -8,10 +8,12 @@ class BubbleHero extends StatelessWidget {
   const BubbleHero({
     Key? key,
     required this.child,
+    this.onLongPress,
     this.onTap,
   }) : super(key: key);
 
   final Widget child;
+  final VoidCallback? onLongPress;
   final VoidCallback? onTap;
 
   @override
@@ -21,9 +23,10 @@ class BubbleHero extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: GestureDetector(
+          onTap: onTap,
           onLongPress: () {
-            if (onTap != null) {
-              onTap!();
+            if (onLongPress != null) {
+              onLongPress!();
             }
           },
           child: child,
@@ -38,10 +41,12 @@ class CustomHeroFocused extends StatefulWidget {
     super.key,
     required this.child,
     required this.menuItems,
+    this.onTap,
   });
 
   final Widget child;
   final List<FocusedMenuItem> menuItems;
+  final VoidCallback? onTap;
 
   @override
   State<CustomHeroFocused> createState() => _CustomHeroFocusedState();
@@ -67,7 +72,8 @@ class _CustomHeroFocusedState extends State<CustomHeroFocused> {
   Widget build(BuildContext context) {
     return BubbleHero(
       key: containerKey,
-      onTap: () async {
+      onTap: widget.onTap,
+      onLongPress: () async {
         getOffset();
         await Navigator.of(context).push(
           PageRouteBuilder(

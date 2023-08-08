@@ -138,7 +138,7 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
   }
 
   void submit(Category? category) {
-    if (category != null) {
+    if (category != null && controller.text.isNotEmpty) {
       unfocusKeyboard();
       context.go('/${HomePage.route}/${ChatPage.route}');
       context.read<ChatBloc>().add(

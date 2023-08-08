@@ -18,3 +18,28 @@ class HistoricalFetched extends HistoricalEvent {
 }
 
 class HistoricalCleared extends HistoricalEvent {}
+
+class HistoricalDeleted extends HistoricalEvent {
+  final HistoricalConversation historicalConversation;
+  const HistoricalDeleted(
+    this.historicalConversation,
+  );
+
+  @override
+  List<Object?> get props => [historicalConversation];
+}
+
+class HistoricalEdited extends HistoricalEvent {
+  final HistoricalConversation? historicalConversation;
+  final String? title;
+  const HistoricalEdited({
+    this.historicalConversation,
+    this.title,
+  });
+
+  @override
+  List<Object?> get props => [
+        historicalConversation,
+        title,
+      ];
+}

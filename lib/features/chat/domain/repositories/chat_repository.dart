@@ -19,7 +19,7 @@ abstract class ChatRepository {
   Future<Either<Failure, List<String>>> getSuggestions(MessageParam param);
   Future<Either<Failure, dynamic>> cancelMessageComing(
       Conversation conversation);
-  // Future<Either<Failure, dynamic>> startReading(String message);
-  // Future<Either<Failure, dynamic>> stopReading();
-  // Future<Either<Failure, dynamic>> pauseReading();
+  Future<Either<Failure, dynamic>> deleteHistoric(
+      HistoricalConversation historic);
+  Future<Either<Failure, dynamic>> editHistoric(PEditHistoric param);
 }

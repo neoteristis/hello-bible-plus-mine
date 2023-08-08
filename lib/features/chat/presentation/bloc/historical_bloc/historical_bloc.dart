@@ -7,6 +7,7 @@ import 'package:gpt/features/chat/domain/usecases/usecases.dart';
 import '../../../../../core/constants/status.dart';
 import '../../../../../core/error/failure.dart';
 import '../../../../../core/helper/is_bottom.dart';
+import '../../../../../core/helper/log.dart';
 import '../../../../../core/helper/throttle_droppable.dart';
 import '../../../domain/entities/entities.dart';
 
@@ -16,16 +17,82 @@ part 'historical_state.dart';
 
 class HistoricalBloc extends Bloc<HistoricalEvent, HistoricalState> {
   final FetchHistoricalUsecase fetchHistorical;
+  final DeleteHistoricUsecase deleteHistoric;
+  final EditHistoricUsecase editHistoric;
 
-  HistoricalBloc({required this.fetchHistorical})
-      : super(HistoricalState(scrollController: ScrollController())) {
+  HistoricalBloc({
+    required this.fetchHistorical,
+    required this.deleteHistoric,
+    required this.editHistoric,
+  }) : super(
+          HistoricalState(
+            scrollController: ScrollController(),
+          ),
+        ) {
     on<HistoricalFetched>(
       _onHistoricalFetched,
       transformer: throttleDroppable(),
     );
     on<HistoricalCleared>(_onHistoricalCleared);
+    on<HistoricalDeleted>(_onHistoricalDeleted);
+    on<HistoricalEdited>(_onHistoricalEdited);
 
     state.scrollController!.addListener(_onScroll);
+  }
+
+  void _onHistoricalEdited(
+    HistoricalEdited event,
+    Emitter<HistoricalState> emit,
+  ) async {
+    final historicalToRename = event.historicalConversation;
+    if (historicalToRename != null) {
+      final index = state.historicals?.indexOf(historicalToRename);
+      if (index != null) {
+        emit(
+          state.copyWith(
+            historicals: List.of(state.historicals ?? [])
+              ..removeAt(index)
+              ..insert(
+                index,
+                historicalToRename.copyWith(title: event.title),
+              ),
+          ),
+        );
+      }
+      final res = await editHistoric(
+        PEditHistoric(
+          title: event.title,
+          historicalConversation: historicalToRename,
+        ),
+      );
+      res.fold(
+        (l) {},
+        (r) {},
+      );
+    }
+  }
+
+  void _onHistoricalDeleted(
+    HistoricalDeleted event,
+    Emitter<HistoricalState> emit,
+  ) async {
+    final historicToRemove = event.historicalConversation;
+
+    final res = await deleteHistoric(historicToRemove);
+    return res.fold(
+      (l) => Log.info('remove failed'),
+      (r) {
+        Log.info('remove success');
+        return emit(
+          state.copyWith(
+            historicals: List.of(state.historicals ?? [])
+              ..remove(
+                historicToRemove,
+              ),
+          ),
+        );
+      },
+    );
   }
 
   void _onHistoricalCleared(

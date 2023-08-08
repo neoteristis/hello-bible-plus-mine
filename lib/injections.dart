@@ -299,6 +299,8 @@ void usecase() {
   // getIt.registerLazySingleton(() => ChangeNotifTimeUsecase(getIt()));
   getIt.registerLazySingleton(() => CancelMessageComingUsecase(getIt()));
   getIt.registerLazySingleton(() => FetchWelcomeThemeUsecase(getIt()));
+  getIt.registerLazySingleton(() => DeleteHistoricUsecase(getIt()));
+  getIt.registerLazySingleton(() => EditHistoricUsecase(getIt()));
 }
 
 void bloc() {
@@ -345,6 +347,8 @@ void bloc() {
   getIt.registerFactory(
     () => HistoricalBloc(
       fetchHistorical: getIt(),
+      deleteHistoric: getIt(),
+      editHistoric: getIt(),
     ),
   );
   getIt.registerFactory(

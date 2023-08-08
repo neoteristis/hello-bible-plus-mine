@@ -182,6 +182,35 @@ class ChatRepositoryImp implements ChatRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, dynamic>> deleteHistoric(
+      HistoricalConversation historic) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.deleteHistoric(historic);
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> editHistoric(PEditHistoric param) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final res = await remote.editHistoric(param);
+        return Right(res);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(info: e.message));
+      }
+    } else {
+      return const Left(NoConnexionFailure());
+    }
+  }
+
   // @override
   // Future<Either<Failure, dynamic>> startReading(String message) async {
   //   try {
