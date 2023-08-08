@@ -11,6 +11,7 @@ import '../../../../../../core/helper/unfocus_keyboard.dart';
 import '../../../../../chat/domain/entities/category.dart';
 import '../../../../../chat/presentation/bloc/chat_bloc/chat_bloc.dart';
 import '../../../../../chat/presentation/pages/chat_page.dart';
+import '../../domain/entities/welcome_theme.dart';
 import '../bloc/section_bloc.dart';
 
 class SectionPage extends StatefulWidget {
@@ -32,15 +33,6 @@ class _SectionPageState extends State<SectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    const border = OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(10),
-      ),
-      borderSide: BorderSide(
-        color: Colors.transparent,
-        width: 2,
-      ),
-    );
     return Scaffold(
       appBar: const CustomHomeAppBar(),
       endDrawer: const CustomDrawer(),
@@ -218,63 +210,14 @@ class _SectionPageState extends State<SectionPage> {
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 4.0,
-                                                horizontal: 18.0,
-                                              ),
-                                              child: TextField(
-                                                controller: controller,
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiary,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 4.0,
+                                                  horizontal: 18.0,
                                                 ),
-                                                textCapitalization:
-                                                    TextCapitalization
-                                                        .sentences,
-                                                decoration: InputDecoration(
-                                                  hintMaxLines: 1,
-                                                  filled: true,
-                                                  fillColor: Theme.of(context)
-                                                      .primaryColor
-                                                      .withOpacity(0.1),
-                                                  // fillColor: Theme.of(context)
-                                                  //     .colorScheme
-                                                  //     .onPrimary,
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                          .symmetric(
-                                                    horizontal: 20,
-                                                  ),
-                                                  suffixIcon: GestureDetector(
-                                                    onTap: () => submit(
-                                                        welcomeTheme.category),
-                                                    child: Icon(
-                                                      Icons
-                                                          .arrow_forward_ios_rounded,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                    ),
-                                                  ),
-                                                  border: border,
-                                                  enabledBorder: border,
-                                                  focusedBorder: border,
-                                                  hintStyle: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                  hintText: welcomeTheme
-                                                      .category?.placeholder,
-                                                ),
-                                                onSubmitted: (_) {
-                                                  submit(welcomeTheme.category);
-                                                },
-                                              ),
-                                            ),
+                                                child: SectionTextField(
+                                                  welcomeTheme: welcomeTheme,
+                                                )),
                                           ],
                                         ),
                                     ],
@@ -299,6 +242,77 @@ class _SectionPageState extends State<SectionPage> {
       ),
     );
   }
+}
+
+class SectionTextField extends StatefulWidget {
+  const SectionTextField({
+    super.key,
+    required this.welcomeTheme,
+  });
+
+  final WelcomeTheme welcomeTheme;
+
+  @override
+  State<SectionTextField> createState() => _SectionTextFieldState();
+}
+
+class _SectionTextFieldState extends State<SectionTextField> {
+  final TextEditingController controller = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    final welcomeTheme = widget.welcomeTheme;
+    return TextField(
+      controller: controller,
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.tertiary,
+      ),
+      textCapitalization: TextCapitalization.sentences,
+      onChanged: (_) {
+        setState(() {});
+      },
+      decoration: InputDecoration(
+        hintMaxLines: 1,
+        filled: true,
+        fillColor: Theme.of(context).primaryColor.withOpacity(0.1),
+        // fillColor: Theme.of(context)
+        //     .colorScheme
+        //     .onPrimary,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        suffixIcon: Visibility(
+          visible: controller.text.isNotEmpty,
+          child: GestureDetector(
+            onTap: () => submit(welcomeTheme.category),
+            child: Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+        ),
+        border: border,
+        enabledBorder: border,
+        focusedBorder: border,
+        hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              overflow: TextOverflow.ellipsis,
+            ),
+        hintText: welcomeTheme.category?.placeholder,
+      ),
+      onSubmitted: (_) {
+        submit(welcomeTheme.category);
+      },
+    );
+  }
+
+  final border = const OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(10),
+    ),
+    borderSide: BorderSide(
+      color: Colors.transparent,
+      width: 2,
+    ),
+  );
 
   void submit(Category? category) {
     if (controller.text.isNotEmpty) {

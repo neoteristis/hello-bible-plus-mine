@@ -111,6 +111,9 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
               onSubmitted: (String value) {
                 submit(category);
               },
+              onChanged: (_) {
+                setState(() {});
+              },
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Theme.of(context).colorScheme.onPrimary,
@@ -122,11 +125,14 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
                 border: border,
                 enabledBorder: border,
                 focusedBorder: border,
-                suffixIcon: GestureDetector(
-                  onTap: () => submit(category),
-                  child: const Icon(
-                    Icons.search,
-                    color: primaryColor,
+                suffixIcon: Visibility(
+                  visible: controller.text.isNotEmpty,
+                  child: GestureDetector(
+                    onTap: () => submit(category),
+                    child: const Icon(
+                      Icons.search,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -138,7 +144,7 @@ class _SearchTextFieldAppBarState extends State<SearchTextFieldAppBar> {
   }
 
   void submit(Category? category) {
-    if (category != null && controller.text.isNotEmpty) {
+    if (category != null) {
       unfocusKeyboard();
       context.go('/${HomePage.route}/${ChatPage.route}');
       context.read<ChatBloc>().add(
