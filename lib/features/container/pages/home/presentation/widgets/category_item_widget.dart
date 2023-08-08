@@ -33,11 +33,13 @@ class CategoryItemWidget extends StatelessWidget {
       onTap: () {
         context.read<ChatBloc>().scaffoldKey.currentState?.closeDrawer();
         unfocusKeyboard();
-        context.read<ChatBloc>().add(
-              ChatConversationChanged(
-                category: category!,
-              ),
-            );
+        context.read<ChatBloc>()
+          ..add(ChatStreamCanceled())
+          ..add(
+            ChatConversationChanged(
+              category: category!,
+            ),
+          );
         final route =
             '/${HomePage.route}/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}';
         context.go(route);

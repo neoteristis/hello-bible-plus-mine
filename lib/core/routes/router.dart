@@ -65,7 +65,7 @@ GoRouter get route => GoRouter(
                   routes: [
                     GoRoute(
                       path: EmailInputPage.route,
-                      builder: (context, state) => const EmailInputPage(),
+                      builder: (context, state) => EmailInputPage(),
                       routes: [
                         GoRoute(
                           path: PasswordInputPage.route,

@@ -167,6 +167,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationEmailChecked event,
     Emitter<RegistrationState> emit,
   ) async {
+    emit(
+      state.copyWith(
+        email: EmailInput.dirty(
+          event.email,
+        ),
+      ),
+    );
     final email = state.email;
     if (email.isNotValid) {
       email.isPure
