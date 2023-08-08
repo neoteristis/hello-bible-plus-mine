@@ -141,11 +141,13 @@ class _SectionPageState extends State<SectionPage> {
                               return GestureDetector(
                                 onTap: firstMessage != null
                                     ? () {
-                                        context.read<ChatBloc>().add(
-                                              ChatConversationInited(
-                                                welcomeTheme: welcomeTheme,
-                                              ),
-                                            );
+                                        context.read<ChatBloc>()
+                                          ..add(ChatStreamCanceled())
+                                          ..add(
+                                            ChatConversationInited(
+                                              welcomeTheme: welcomeTheme,
+                                            ),
+                                          );
                                         context.go(
                                           '/${SectionPage.route}/${ChatPage.route}?previousPage=${GoRouter.of(context).routerDelegate.currentConfiguration.fullPath.replaceAll('/', '')}',
                                         );

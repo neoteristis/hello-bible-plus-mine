@@ -34,6 +34,7 @@ class _ChatPageState extends State<ChatPage> {
       listenWhen: (previous, current) =>
           previous.goBackHome != current.goBackHome,
       listener: (context, state) {
+        // this is called when a warning word is sent from the chat
         if (state.goBackHome!) {
           unfocusKeyboard();
           context.go('/${HomePage.route}');
